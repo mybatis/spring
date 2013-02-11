@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>JdbcHelper xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../apidocs/org/mybatis/guice/datasource/helper/JdbcHelper.html">View Javadoc</a></div><pre>
+
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="2" href="#2">2</a>   <em class="jxr_comment"> *    Copyright 2010-2012 The MyBatis Team</em>
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> *    you may not use this file except in compliance with the License.</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> *    You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> *       <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> *    Unless required by applicable law or agreed to in writing, software</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> *    distributed under the License is distributed on an "AS IS" BASIS,</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> *    See the License for the specific language governing permissions and</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> *    limitations under the License.</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> org.mybatis.guice.datasource.helper;
+<a class="jxr_linenumber" name="17" href="#17">17</a>  
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> com.google.inject.name.Names.named;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> com.google.inject.util.Providers.guicify;
+<a class="jxr_linenumber" name="20" href="#20">20</a>  
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> com.google.inject.Binder;
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> com.google.inject.Key;
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> com.google.inject.Module;
+<a class="jxr_linenumber" name="24" href="#24">24</a>  
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_javadoccomment"> * Helper to bind &lt;code&gt;JDBC.driver&lt;/code&gt; and &lt;code&gt;JDBC.url&lt;/code&gt; properties.</em>
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <strong class="jxr_keyword">public</strong> enum <a href="../../../../../org/mybatis/guice/datasource/helper/JdbcHelper.html">JdbcHelper</a> <strong class="jxr_keyword">implements</strong> Module {
+<a class="jxr_linenumber" name="31" href="#31">31</a>  
+<a class="jxr_linenumber" name="32" href="#32">32</a>      Cache(<span class="jxr_string">"jdbc:Cache://${JDBC.host|localhost}:${JDBC.port|1972}/${JDBC.schema}"</span>, <span class="jxr_string">"com.intersys.jdbc.CacheDriver"</span>),
+<a class="jxr_linenumber" name="33" href="#33">33</a>  
+<a class="jxr_linenumber" name="34" href="#34">34</a>      Daffodil_DB(<span class="jxr_string">"jdbc:daffodilDB://${JDBC.host|localhost}:${JDBC.port|3456}/${JDBC.schema}"</span>, <span class="jxr_string">"in.co.daffodil.db.rmi.RmiDaffodilDBDriver"</span>),
+<a class="jxr_linenumber" name="35" href="#35">35</a>  
+<a class="jxr_linenumber" name="36" href="#36">36</a>      DB2(<span class="jxr_string">"jdbc:db2://${JDBC.host|localhost}:${JDBC.port|50000}/${JDBC.schema}"</span>, <span class="jxr_string">"com.ibm.db2.jcc.DB2Driver"</span>),
+<a class="jxr_linenumber" name="37" href="#37">37</a>  
+<a class="jxr_linenumber" name="38" href="#38">38</a>      DB2_DataDirect(<span class="jxr_string">"jdbc:datadirect:db2://${JDBC.host|localhost}:${JDBC.port|50000}/DatabaseName=${JDBC.schema}"</span>, <span class="jxr_string">"com.ddtek.jdbc.db2.DB2Driver"</span>),
+<a class="jxr_linenumber" name="39" href="#39">39</a>  
+<a class="jxr_linenumber" name="40" href="#40">40</a>      DB2_AS400_JTOpen(<span class="jxr_string">"jdbc:as400://${JDBC.host|localhost}"</span>, <span class="jxr_string">"com.ibm.as400.access.AS400JDBCDriver"</span>),
+<a class="jxr_linenumber" name="41" href="#41">41</a>  
+<a class="jxr_linenumber" name="42" href="#42">42</a>      Firebird(<span class="jxr_string">"jdbc:firebirdsql:${JDBC.host|localhost}/${JDBC.port|3050}:${JDBC.schema}"</span>, <span class="jxr_string">"org.firebirdsql.jdbc.FBDriver"</span>),
+<a class="jxr_linenumber" name="43" href="#43">43</a>  
+<a class="jxr_linenumber" name="44" href="#44">44</a>      FrontBase(<span class="jxr_string">"jdbc:FrontBase://${JDBC.host|localhost}/${JDBC.schema}"</span>, <span class="jxr_string">"jdbc.FrontBase.FBJDriver"</span>),
+<a class="jxr_linenumber" name="45" href="#45">45</a>  
+<a class="jxr_linenumber" name="46" href="#46">46</a>      HP_Neoview(<span class="jxr_string">"jdbc:hpt4jdbc://${neoview.system}:${JDBC.port}/:"</span>, <span class="jxr_string">"com.hp.t4jdbc.HPT4Driver"</span>),
+<a class="jxr_linenumber" name="47" href="#47">47</a>  
+<a class="jxr_linenumber" name="48" href="#48">48</a>      HSQLDB_Server(<span class="jxr_string">"jdbc:hsqldb:hsql://${JDBC.host|localhost}:${JDBC.port|9001}/${JDBC.schema}"</span>, <span class="jxr_string">"org.hsqldb.jdbcDriver"</span>),
+<a class="jxr_linenumber" name="49" href="#49">49</a>  
+<a class="jxr_linenumber" name="50" href="#50">50</a>      HSQLDB_Embedded(<span class="jxr_string">"jdbc:hsqldb:${JDBC.schema}"</span>, <span class="jxr_string">"org.hsqldb.jdbcDriver"</span>),
+<a class="jxr_linenumber" name="51" href="#51">51</a>  
+<a class="jxr_linenumber" name="52" href="#52">52</a>      HSQLDB_IN_MEMORY_NAMED(<span class="jxr_string">"jdbc:hsqldb:mem:${JDBC.schema|aname}"</span>, <span class="jxr_string">"org.hsqldb.jdbcDriver"</span>),
+<a class="jxr_linenumber" name="53" href="#53">53</a>  
+<a class="jxr_linenumber" name="54" href="#54">54</a>      H2_IN_MEMORY_PRIVATE(<span class="jxr_string">"jdbc:h2:mem"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="55" href="#55">55</a>  
+<a class="jxr_linenumber" name="56" href="#56">56</a>      H2_IN_MEMORY_NAMED(<span class="jxr_string">"jdbc:h2:mem:${JDBC.schema}"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="57" href="#57">57</a>  
+<a class="jxr_linenumber" name="58" href="#58">58</a>      H2_SERVER_TCP(<span class="jxr_string">"jdbc:h2:tcp://${JDBC.host|localhost}:${JDBC.port|9001}/${JDBC.schema}"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="59" href="#59">59</a>  
+<a class="jxr_linenumber" name="60" href="#60">60</a>      H2_SERVER_SSL(<span class="jxr_string">"jdbc:h2:ssl://${JDBC.host|localhost}:${JDBC.port|9001}/${JDBC.schema}"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="61" href="#61">61</a>  
+<a class="jxr_linenumber" name="62" href="#62">62</a>      H2_FILE(<span class="jxr_string">"jdbc:h2:file://${JDBC.schema}"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="63" href="#63">63</a>  
+<a class="jxr_linenumber" name="64" href="#64">64</a>      H2_EMBEDDED(<span class="jxr_string">"jdbc:h2:${JDBC.schema}"</span>, <span class="jxr_string">"org.h2.Driver"</span>),
+<a class="jxr_linenumber" name="65" href="#65">65</a>  
+<a class="jxr_linenumber" name="66" href="#66">66</a>      Informix(<span class="jxr_string">"jdbc:informix-sqli://${JDBC.host|localhost}:${JDBC.port|1533}/${JDBC.schema}:informixserver=${dbservername}"</span>, <span class="jxr_string">"com.informix.jdbc.IfxDriver"</span>),
+<a class="jxr_linenumber" name="67" href="#67">67</a>  
+<a class="jxr_linenumber" name="68" href="#68">68</a>      Informix_DataDirect(<span class="jxr_string">"jdbc:datadirect:informix://${JDBC.host|localhost}:${JDBC.port|1533};InformixServer=${informixserver};DatabaseServer=${JDBC.schema}"</span>, <span class="jxr_string">"com.ddtek.jdbc.informix.InformixDriver"</span>),
+<a class="jxr_linenumber" name="69" href="#69">69</a>  
+<a class="jxr_linenumber" name="70" href="#70">70</a>      Derby_Server(<span class="jxr_string">"jdbc:derby://${JDBC.host|localhost}:${JDBC.port|1527}/${JDBC.schema}"</span>, <span class="jxr_string">"org.apache.derby.jdbc.ClientDriver"</span>),
+<a class="jxr_linenumber" name="71" href="#71">71</a>  
+<a class="jxr_linenumber" name="72" href="#72">72</a>      Derby_Embedded(<span class="jxr_string">"jdbc:derby:${JDBC.schema};create=${derby.create|false}"</span>, <span class="jxr_string">"org.apache.derby.jdbc.EmbeddedDriver"</span>),
+<a class="jxr_linenumber" name="73" href="#73">73</a>  
+<a class="jxr_linenumber" name="74" href="#74">74</a>      JDataStore(<span class="jxr_string">"jdbc:borland:dslocal:${JDBC.schema}"</span>, <span class="jxr_string">"com.borland.datastore.jdbc.DataStoreDriver"</span>),
+<a class="jxr_linenumber" name="75" href="#75">75</a>  
+<a class="jxr_linenumber" name="76" href="#76">76</a>      JDBC_ODBC_Bridge(<span class="jxr_string">"jdbc:odbc:${ODBC.datasource}"</span>, <span class="jxr_string">"sun.jdbc.odbc.JdbcOdbcDriver"</span>),
+<a class="jxr_linenumber" name="77" href="#77">77</a>  
+<a class="jxr_linenumber" name="78" href="#78">78</a>      MaxDB(<span class="jxr_string">"jdbc:sapdb://${JDBC.host|localhost}:${JDBC.port|7210}/${JDBC.schema}"</span>, <span class="jxr_string">"com.sap.dbtech.jdbc.DriverSapDB"</span>),
+<a class="jxr_linenumber" name="79" href="#79">79</a>  
+<a class="jxr_linenumber" name="80" href="#80">80</a>      McKoi(<span class="jxr_string">"jdbc:mckoi://${JDBC.host|localhost}:${JDBC.port|9157}/${JDBC.schema}"</span>, <span class="jxr_string">"com.mckoi.JDBCDriver"</span>),
+<a class="jxr_linenumber" name="81" href="#81">81</a>  
+<a class="jxr_linenumber" name="82" href="#82">82</a>      Mimer(<span class="jxr_string">"jdbc:mimer:${mimer.protocol}://${JDBC.host|localhost}:${JDBC.port|1360}/${JDBC.schema}"</span>, <span class="jxr_string">"com.mimer.jdbc.Driver"</span>),
+<a class="jxr_linenumber" name="83" href="#83">83</a>  
+<a class="jxr_linenumber" name="84" href="#84">84</a>      MySQL(<span class="jxr_string">"jdbc:mysql://${JDBC.host|localhost}:${JDBC.port|3306}/${JDBC.schema}"</span>, <span class="jxr_string">"com.mysql.jdbc.Driver"</span>),
+<a class="jxr_linenumber" name="85" href="#85">85</a>  
+<a class="jxr_linenumber" name="86" href="#86">86</a>      Netezza(<span class="jxr_string">"jdbc:netezza://${JDBC.host|localhost}:${JDBC.port|5480}/${JDBC.schema}"</span>, <span class="jxr_string">"org.netezza.Driver"</span>),
+<a class="jxr_linenumber" name="87" href="#87">87</a>  
+<a class="jxr_linenumber" name="88" href="#88">88</a>      Oracle_Thin(<span class="jxr_string">"jdbc:oracle:thin:@${JDBC.host|localhost}:${JDBC.port|1521}:${oracle.sid|ORCL}"</span>, <span class="jxr_string">"oracle.jdbc.OracleDriver"</span>),
+<a class="jxr_linenumber" name="89" href="#89">89</a>  
+<a class="jxr_linenumber" name="90" href="#90">90</a>      Oracle_OCI(<span class="jxr_string">"jdbc:oracle:oci:@${JDBC.host|localhost}:${JDBC.port|1521}:${oracle.sid|ORCL}"</span>, <span class="jxr_string">"oracle.jdbc.OracleDriver"</span>),
+<a class="jxr_linenumber" name="91" href="#91">91</a>  
+<a class="jxr_linenumber" name="92" href="#92">92</a>      Oracle_DataDirect(<span class="jxr_string">"jdbc:datadirect:oracle://${JDBC.host|localhost}:${JDBC.port|1521};ServiceName=${oracle.servicename|ORCL}"</span>, <span class="jxr_string">"com.ddtek.jdbc.oracle.OracleDriver"</span>),
+<a class="jxr_linenumber" name="93" href="#93">93</a>  
+<a class="jxr_linenumber" name="94" href="#94">94</a>      Pervasive(<span class="jxr_string">"jdbc:pervasive://${JDBC.host|localhost}:${JDBC.port}/${JDBC.schema}"</span>, <span class="jxr_string">"pervasive.jdbc.PervasiveDriver"</span>),
+<a class="jxr_linenumber" name="95" href="#95">95</a>  
+<a class="jxr_linenumber" name="96" href="#96">96</a>      Pointbase_Embedded(<span class="jxr_string">"jdbc:pointbase:embedded:${JDBC.schema},database.home=${pointbase.home},create=${pointbase.create|false}"</span>, <span class="jxr_string">"com.pointbase.jdbc.jdbcUniversalDriver"</span>),
+<a class="jxr_linenumber" name="97" href="#97">97</a>  
+<a class="jxr_linenumber" name="98" href="#98">98</a>      Pointbase_Server(<span class="jxr_string">"jdbc:pointbase:server://${JDBC.host|localhost}:${JDBC.port|9092}/${JDBC.schema},database.home=${pointbase.home},create=${pointbase.create|false}"</span>, <span class="jxr_string">"com.pointbase.jdbc.jdbcUniversalDriver"</span>),
+<a class="jxr_linenumber" name="99" href="#99">99</a>  
+<a class="jxr_linenumber" name="100" href="#100">100</a>     PostgreSQL(<span class="jxr_string">"jdbc:postgresql://${JDBC.host|localhost}:${JDBC.port|5432}/${JDBC.schema}"</span>, <span class="jxr_string">"org.postgresql.Driver"</span>),
+<a class="jxr_linenumber" name="101" href="#101">101</a> 
+<a class="jxr_linenumber" name="102" href="#102">102</a>     Progress(<span class="jxr_string">"jdbc:jdbcProgress:T:${JDBC.host|localhost}:${JDBC.port|2055}:${JDBC.schema}"</span>, <span class="jxr_string">"com.progress.sql.jdbc.JdbcProgressDriver"</span>),
+<a class="jxr_linenumber" name="103" href="#103">103</a> 
+<a class="jxr_linenumber" name="104" href="#104">104</a>     SQL_Server_DataDirect(<span class="jxr_string">"jdbc:datadirect:sqlserver://${JDBC.host|localhost}:${JDBC.port|1433};DatabaseName=${JDBC.schema|Northwind}"</span>, <span class="jxr_string">"com.ddtek.jdbc.sqlserver.SQLServerDriver"</span>),
+<a class="jxr_linenumber" name="105" href="#105">105</a> 
+<a class="jxr_linenumber" name="106" href="#106">106</a>     SQL_Server_jTDS(<span class="jxr_string">"jdbc:jtds:sqlserver://${JDBC.host|localhost}:${JDBC.port|1433};DatabaseName=${JDBC.schema|Northwind};domain=${sqlserver.domain}"</span>, <span class="jxr_string">"net.sourceforge.jtds.jdbc.Driver"</span>),
+<a class="jxr_linenumber" name="107" href="#107">107</a> 
+<a class="jxr_linenumber" name="108" href="#108">108</a>     SQL_Server_MS_Driver(<span class="jxr_string">"jdbc:microsoft:sqlserver://${JDBC.host|localhost}:${JDBC.port|1433};DatabaseName=${JDBC.schema|Northwind}"</span>, <span class="jxr_string">"com.microsoft.jdbc.sqlserver.SQLServerDriver"</span>),
+<a class="jxr_linenumber" name="109" href="#109">109</a> 
+<a class="jxr_linenumber" name="110" href="#110">110</a>     SQL_Server_2005_MS_Driver(<span class="jxr_string">"jdbc:sqlserver://${JDBC.host|localhost}:${JDBC.port|1433};DatabaseName=${JDBC.schema|Northwind}"</span>, <span class="jxr_string">"com.microsoft.sqlserver.jdbc.SQLServerDriver"</span>),
+<a class="jxr_linenumber" name="111" href="#111">111</a> 
+<a class="jxr_linenumber" name="112" href="#112">112</a>     Sybase_ASE_jTDS(<span class="jxr_string">"jdbc:jtds:sybase://${JDBC.host|localhost}:${JDBC.port|5000};DatabaseName=${JDBC.schema}"</span>, <span class="jxr_string">"net.sourceforge.jtds.jdbc.Driver"</span>),
+<a class="jxr_linenumber" name="113" href="#113">113</a> 
+<a class="jxr_linenumber" name="114" href="#114">114</a>     Sybase_ASE_JConnect(<span class="jxr_string">"jdbc:sybase:Tds:${JDBC.host|localhost}:${JDBC.port|5000}/${JDBC.schema}"</span>, <span class="jxr_string">"com.sybase.jdbc3.jdbc.SybDriver"</span>),
+<a class="jxr_linenumber" name="115" href="#115">115</a> 
+<a class="jxr_linenumber" name="116" href="#116">116</a>     Sybase_SQL_Anywhere_JConnect(<span class="jxr_string">"jdbc:sybase:Tds:${JDBC.host|localhost}:${JDBC.port|2638}/${JDBC.schema}"</span>, <span class="jxr_string">"com.sybase.jdbc3.jdbc.SybDriver"</span>),
+<a class="jxr_linenumber" name="117" href="#117">117</a> 
+<a class="jxr_linenumber" name="118" href="#118">118</a>     Sybase_DataDirect(<span class="jxr_string">"jdbc:datadirect:sybase://${JDBC.host|localhost}:${JDBC.port|2048};ServiceName=${JDBC.schema}"</span>, <span class="jxr_string">"com.ddtek.jdbc.sybase.SybaseDriver"</span>);
+<a class="jxr_linenumber" name="119" href="#119">119</a> 
+<a class="jxr_linenumber" name="120" href="#120">120</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String JDBC_DRIVER = <span class="jxr_string">"JDBC.driver"</span>;
+<a class="jxr_linenumber" name="121" href="#121">121</a> 
+<a class="jxr_linenumber" name="122" href="#122">122</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String JDBC_URL = <span class="jxr_string">"JDBC.url"</span>;
+<a class="jxr_linenumber" name="123" href="#123">123</a> 
+<a class="jxr_linenumber" name="124" href="#124">124</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String urlTemplate;
+<a class="jxr_linenumber" name="125" href="#125">125</a> 
+<a class="jxr_linenumber" name="126" href="#126">126</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String driverClass;
+<a class="jxr_linenumber" name="127" href="#127">127</a> 
+<a class="jxr_linenumber" name="128" href="#128">128</a>     <a href="../../../../../org/mybatis/guice/datasource/helper/JdbcHelper.html">JdbcHelper</a>(String urlTemplate, String driverClass) {
+<a class="jxr_linenumber" name="129" href="#129">129</a>         <strong class="jxr_keyword">this</strong>.urlTemplate = urlTemplate;
+<a class="jxr_linenumber" name="130" href="#130">130</a>         <strong class="jxr_keyword">this</strong>.driverClass = driverClass;
+<a class="jxr_linenumber" name="131" href="#131">131</a>     }
+<a class="jxr_linenumber" name="132" href="#132">132</a> 
+<a class="jxr_linenumber" name="133" href="#133">133</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> configure(Binder binder) {
+<a class="jxr_linenumber" name="134" href="#134">134</a>         binder.bindConstant().annotatedWith(named(JDBC_DRIVER)).to(driverClass);
+<a class="jxr_linenumber" name="135" href="#135">135</a>         binder.bind(Key.get(String.<strong class="jxr_keyword">class</strong>, named(JDBC_URL))).toProvider(guicify(<strong class="jxr_keyword">new</strong> Formatter(urlTemplate)));
+<a class="jxr_linenumber" name="136" href="#136">136</a>     }
+<a class="jxr_linenumber" name="137" href="#137">137</a> 
+<a class="jxr_linenumber" name="138" href="#138">138</a> }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+
