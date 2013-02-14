@@ -66,7 +66,7 @@
   Class Hierarchy
 
 
-| MyBatis Guice
+| MyBatis-Spring
 
 </title>
 <link href="./../assets/android-developer-docs.css" rel="stylesheet" type="text/css" />
@@ -97,7 +97,7 @@
 <div id="header">
     <div id="headerLeft">
     
-      <span id="masthead-title">MyBatis Guice</span>
+      <span id="masthead-title">MyBatis-Spring</span>
     
     </div>
     <div id="headerRight">
@@ -150,29 +150,19 @@
               <ul>
                 
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/package-summary.html">org.mybatis.guice</a></li>
+  <a href="./org/mybatis/spring/package-summary.html">org.mybatis.spring</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/binder/package-summary.html">org.mybatis.guice.binder</a></li>
+  <a href="./org/mybatis/spring/annotation/package-summary.html">org.mybatis.spring.annotation</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/configuration/package-summary.html">org.mybatis.guice.configuration</a></li>
+  <a href="./org/mybatis/spring/batch/package-summary.html">org.mybatis.spring.batch</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/bonecp/package-summary.html">org.mybatis.guice.datasource.bonecp</a></li>
+  <a href="./org/mybatis/spring/config/package-summary.html">org.mybatis.spring.config</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/builtin/package-summary.html">org.mybatis.guice.datasource.builtin</a></li>
+  <a href="./org/mybatis/spring/mapper/package-summary.html">org.mybatis.spring.mapper</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/c3p0/package-summary.html">org.mybatis.guice.datasource.c3p0</a></li>
+  <a href="./org/mybatis/spring/support/package-summary.html">org.mybatis.spring.support</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/dbcp/package-summary.html">org.mybatis.guice.datasource.dbcp</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/helper/package-summary.html">org.mybatis.guice.datasource.helper</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/environment/package-summary.html">org.mybatis.guice.environment</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/mappers/package-summary.html">org.mybatis.guice.mappers</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/session/package-summary.html">org.mybatis.guice.session</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/transactional/package-summary.html">org.mybatis.guice.transactional</a></li>
+  <a href="./org/mybatis/spring/transaction/package-summary.html">org.mybatis.spring.transaction</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
@@ -247,13 +237,13 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/configuration/ConfigurationProvider.html">ConfigurationProvider</a>
+        <a href="./org/mybatis/spring/MyBatisExceptionTranslator.html">MyBatisExceptionTranslator</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            PersistenceExceptionTranslator
          &nbsp;&nbsp;
     
     &nbsp;
@@ -267,13 +257,21 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/bonecp/BoneCPProvider.html">BoneCPProvider</a>
+        <a href="./org/mybatis/spring/SqlSessionFactoryBean.html">SqlSessionFactoryBean</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            FactoryBean
+         &nbsp;&nbsp;
+    
+        
+            InitializingBean
+         &nbsp;&nbsp;
+    
+        
+            ApplicationListener
          &nbsp;&nbsp;
     
     &nbsp;
@@ -287,13 +285,13 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/builtin/JndiDataSourceProvider.html">JndiDataSourceProvider</a>
+        <a href="./org/mybatis/spring/SqlSessionTemplate.html">SqlSessionTemplate</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            SqlSession
          &nbsp;&nbsp;
     
     &nbsp;
@@ -307,13 +305,33 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/builtin/PooledDataSourceProvider.html">PooledDataSourceProvider</a>
+        <a href="./org/mybatis/spring/SqlSessionUtils.html">SqlSessionUtils</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="1">
+    
+        <a href="./org/mybatis/spring/annotation/MapperScannerRegistrar.html">MapperScannerRegistrar</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            ResourceLoaderAware
+         &nbsp;&nbsp;
+    
+        
+            ImportBeanDefinitionRegistrar
          &nbsp;&nbsp;
     
     &nbsp;
@@ -327,13 +345,17 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/builtin/UnpooledDataSourceProvider.html">UnpooledDataSourceProvider</a>
+        <a href="./org/mybatis/spring/batch/MyBatisBatchItemWriter.html">MyBatisBatchItemWriter</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            ItemWriter
+         &nbsp;&nbsp;
+    
+        
+            InitializingBean
          &nbsp;&nbsp;
     
     &nbsp;
@@ -347,13 +369,13 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/c3p0/C3p0DataSourceProvider.html">C3p0DataSourceProvider</a>
+        <a href="./org/mybatis/spring/config/MapperScannerBeanDefinitionParser.html">MapperScannerBeanDefinitionParser</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            BeanDefinitionParser
          &nbsp;&nbsp;
     
     &nbsp;
@@ -367,13 +389,25 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/dbcp/BasicDataSourceProvider.html">BasicDataSourceProvider</a>
+        <a href="./org/mybatis/spring/mapper/MapperScannerConfigurer.html">MapperScannerConfigurer</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            BeanNameAware
+         &nbsp;&nbsp;
+    
+        
+            InitializingBean
+         &nbsp;&nbsp;
+    
+        
+            BeanDefinitionRegistryPostProcessor
+         &nbsp;&nbsp;
+    
+        
+            ApplicationContextAware
          &nbsp;&nbsp;
     
     &nbsp;
@@ -387,13 +421,13 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/dbcp/DriverAdapterCPDSProvider.html">DriverAdapterCPDSProvider</a>
+        <a href="./org/mybatis/spring/transaction/SpringManagedTransaction.html">SpringManagedTransaction</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
+            Transaction
          &nbsp;&nbsp;
     
     &nbsp;
@@ -407,149 +441,13 @@
     <td class="jd-hierarchy-spacer"></td>
     <td class="jd-hierarchy-data" colspan="1">
     
-        <a href="./org/mybatis/guice/datasource/dbcp/PerUserPoolDataSourceModule.Builder.html">PerUserPoolDataSourceModule.Builder</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/datasource/dbcp/PerUserPoolDataSourceProvider.html">PerUserPoolDataSourceProvider</a>
+        <a href="./org/mybatis/spring/transaction/SpringManagedTransactionFactory.html">SpringManagedTransactionFactory</a>
     
     </td>
     <td class="jd-hierarchy-data">
     
         
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/datasource/dbcp/SharedPoolDataSourceProvider.html">SharedPoolDataSourceProvider</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/environment/EnvironmentProvider.html">EnvironmentProvider</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/mappers/MapperProvider.html">MapperProvider</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/session/SqlSessionFactoryProvider.html">SqlSessionFactoryProvider</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/session/SqlSessionManagerProvider.html">SqlSessionManagerProvider</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            Provider
-         &nbsp;&nbsp;
-    
-    &nbsp;
-    </td>
-</tr>
-
-
-
-
-<tr>
-    <td class="jd-hierarchy-spacer"></td>
-    <td class="jd-hierarchy-data" colspan="1">
-    
-        <a href="./org/mybatis/guice/transactional/TransactionalMethodInterceptor.html">TransactionalMethodInterceptor</a>
-    
-    </td>
-    <td class="jd-hierarchy-data">
-    
-        
-            MethodInterceptor
+            TransactionFactory
          &nbsp;&nbsp;
     
     &nbsp;

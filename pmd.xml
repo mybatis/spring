@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2013-02-11T21:25:32.208">
-<file name="/Users/stripodi/Documents/mybatis/guice/src/main/java/org/mybatis/guice/MyBatisModule.java">
-<violation beginline="16" endline="508" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.guice" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
+<pmd version="4.3" timestamp="2013-02-14T22:10:03.614">
+<file name="/Users/stripodi/Documents/mybatis/spring/src/main/java/org/mybatis/spring/SqlSessionTemplate.java">
+<violation beginline="16" endline="376" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.spring" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/Users/stripodi/Documents/mybatis/guice/src/main/java/org/mybatis/guice/XMLMyBatisModule.java">
-<violation beginline="151" endline="153" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.mybatis.guice" class="XMLMyBatisModule" method="internalConfigure" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
-Avoid empty catch blocks
-</violation>
-</file>
-<file name="/Users/stripodi/Documents/mybatis/guice/src/main/java/org/mybatis/guice/session/SqlSessionFactoryProvider.java">
-<violation beginline="52" endline="54" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.mybatis.guice.session" class="SqlSessionFactoryProvider" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused constructor parameters such as 'configuration'.
+<file name="/Users/stripodi/Documents/mybatis/spring/src/main/java/org/mybatis/spring/SqlSessionUtils.java">
+<violation beginline="16" endline="309" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.spring" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
+Too many static imports may lead to messy code
 </violation>
 </file>
 </pmd>

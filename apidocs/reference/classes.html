@@ -58,7 +58,7 @@
   Class Index
 
 
-| MyBatis Guice
+| MyBatis-Spring
 
 </title>
 <link href="./../assets/android-developer-docs.css" rel="stylesheet" type="text/css" />
@@ -89,7 +89,7 @@
 <div id="header">
     <div id="headerLeft">
     
-      <span id="masthead-title">MyBatis Guice</span>
+      <span id="masthead-title">MyBatis-Spring</span>
     
     </div>
     <div id="headerRight">
@@ -142,29 +142,19 @@
               <ul>
                 
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/package-summary.html">org.mybatis.guice</a></li>
+  <a href="./org/mybatis/spring/package-summary.html">org.mybatis.spring</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/binder/package-summary.html">org.mybatis.guice.binder</a></li>
+  <a href="./org/mybatis/spring/annotation/package-summary.html">org.mybatis.spring.annotation</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/configuration/package-summary.html">org.mybatis.guice.configuration</a></li>
+  <a href="./org/mybatis/spring/batch/package-summary.html">org.mybatis.spring.batch</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/bonecp/package-summary.html">org.mybatis.guice.datasource.bonecp</a></li>
+  <a href="./org/mybatis/spring/config/package-summary.html">org.mybatis.spring.config</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/builtin/package-summary.html">org.mybatis.guice.datasource.builtin</a></li>
+  <a href="./org/mybatis/spring/mapper/package-summary.html">org.mybatis.spring.mapper</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/c3p0/package-summary.html">org.mybatis.guice.datasource.c3p0</a></li>
+  <a href="./org/mybatis/spring/support/package-summary.html">org.mybatis.spring.support</a></li>
     <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/dbcp/package-summary.html">org.mybatis.guice.datasource.dbcp</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/datasource/helper/package-summary.html">org.mybatis.guice.datasource.helper</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/environment/package-summary.html">org.mybatis.guice.environment</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/mappers/package-summary.html">org.mybatis.guice.mappers</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/session/package-summary.html">org.mybatis.guice.session</a></li>
-    <li class="api apilevel-">
-  <a href="./org/mybatis/guice/transactional/package-summary.html">org.mybatis.guice.transactional</a></li>
+  <a href="./org/mybatis/spring/transaction/package-summary.html">org.mybatis.spring.transaction</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
@@ -212,53 +202,12 @@
 <div id="jd-content">
 
 <div class="jd-letterlist">
-    <a href="#letter_A">A</a>
-    <a href="#letter_B">B</a>
     <a href="#letter_C">C</a>
-    <a href="#letter_D">D</a>
-    <a href="#letter_E">E</a>
-    <a href="#letter_I">I</a>
-    <a href="#letter_J">J</a>
     <a href="#letter_M">M</a>
-    <a href="#letter_P">P</a>
+    <a href="#letter_N">N</a>
     <a href="#letter_S">S</a>
-    <a href="#letter_T">T</a>
-    <a href="#letter_U">U</a>
-    <a href="#letter_X">X</a>
 </div>
 
-
-
-<h2 id="letter_A">A</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/binder/AliasBinder.html">AliasBinder</a></td>
-            <td class="jd-descrcol" width="100%">Allows bind a <code>Class</code> to an already defined type alias.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_B">B</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/BasicDataSourceProvider.html">BasicDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the Apache commons-dbcp <code>BasicDataSource</code>.&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/bonecp/BoneCPProvider.html">BoneCPProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the BoneCP DataSource.&nbsp;</td>
-        </tr>
-    
-    
-</table>
 
 
 <h2 id="letter_C">C</h2>
@@ -266,72 +215,9 @@
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/c3p0/C3p0DataSourceProvider.html">C3p0DataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the C3P0 DataSource.&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/configuration/ConfigurationProvider.html">ConfigurationProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the myBatis Configuration.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_D">D</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/DriverAdapterCPDSProvider.html">DriverAdapterCPDSProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the Apache commons-dbcp <code>DriverAdapterCPDS</code>.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_E">E</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/environment/EnvironmentProvider.html">EnvironmentProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the myBatis Environment.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_I">I</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/transactional/Isolation.html">Isolation</a></td>
-            <td class="jd-descrcol" width="100%">Enum of isolation levels.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_J">J</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/helper/JdbcHelper.html">JdbcHelper</a></td>
-            <td class="jd-descrcol" width="100%">Helper to bind <code>JDBC.driver</code> and <code>JDBC.url</code> properties.&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/builtin/JndiDataSourceProvider.html">JndiDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the myBatis built-in JndiDataSourceFactory.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/mapper/ClassPathMapperScanner.html">ClassPathMapperScanner</a></td>
+            <td class="jd-descrcol" width="100%">A ClassPathBeanDefinitionScanner that registers Mappers by
+ <code>basePackage</code>, <code>annotationClass</code>, or <code>markerInterface</code>.&nbsp;</td>
         </tr>
     
     
@@ -343,94 +229,76 @@
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/mappers/MapperProvider.html">MapperProvider</a>&lt;T&gt;</td>
-            <td class="jd-descrcol" width="100%">A generic MyBatis mapper provider.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/mapper/MapperFactoryBean.html">MapperFactoryBean</a>&lt;T&gt;</td>
+            <td class="jd-descrcol" width="100%">BeanFactory that enables injection of MyBatis mapper interfaces.&nbsp;</td>
         </tr>
     
     
         <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/configuration/Mappers.html">Mappers</a></td>
-            <td class="jd-descrcol" width="100%">Marker for mapper interfaces.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/annotation/MapperScan.html">MapperScan</a></td>
+            <td class="jd-descrcol" width="100%">Use this annotation to register MyBatis mapper interfaces when using Java
+ Config.&nbsp;</td>
         </tr>
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/configuration/MappingTypeHandlers.html">MappingTypeHandlers</a></td>
-            <td class="jd-descrcol" width="100%">Marker for mapping type handler interfaces.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/config/MapperScannerBeanDefinitionParser.html">MapperScannerBeanDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">A {#code BeanDefinitionParser} that handles the element scan of the MyBatis.&nbsp;</td>
         </tr>
     
     
         <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/MyBatisModule.html">MyBatisModule</a></td>
-            <td class="jd-descrcol" width="100%">Easy to use helper Module that alleviates users to write the boilerplate
- google-guice bindings to create the SqlSessionFactory.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/mapper/MapperScannerConfigurer.html">MapperScannerConfigurer</a></td>
+            <td class="jd-descrcol" width="100%">BeanDefinitionRegistryPostProcessor that searches recursively starting from a base package for
+ interfaces and registers them as <code>MapperFactoryBean</code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/annotation/MapperScannerRegistrar.html">MapperScannerRegistrar</a></td>
+            <td class="jd-descrcol" width="100%">A ImportBeanDefinitionRegistrar to allow annotation configuration of
+ MyBatis mapper scanning.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/batch/MyBatisBatchItemWriter.html">MyBatisBatchItemWriter</a>&lt;T&gt;</td>
+            <td class="jd-descrcol" width="100%"><code>ItemWriter</code> that uses the batching features from
+ <code>SqlSessionTemplate</code> to execute a batch of statements for all items
+ provided.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/MyBatisExceptionTranslator.html">MyBatisExceptionTranslator</a></td>
+            <td class="jd-descrcol" width="100%">Default exception translator.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/batch/MyBatisPagingItemReader.html">MyBatisPagingItemReader</a>&lt;T&gt;</td>
+            <td class="jd-descrcol" width="100%"><code>org.springframework.batch.item.ItemReader</code> for reading database
+ records using MyBatis in a paging fashion.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/MyBatisSystemException.html">MyBatisSystemException</a></td>
+            <td class="jd-descrcol" width="100%">MyBatis specific subclass of <code>UncategorizedDataAccessException</code>, for MyBatis system errors that do
+ not match any concrete <code>org.springframework.dao</code> exceptions.&nbsp;</td>
         </tr>
     
     
 </table>
 
 
-<h2 id="letter_P">P</h2>
+<h2 id="letter_N">N</h2>
 <table class="jd-sumtable">
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserDefaultAutoCommit.html">PerUserDefaultAutoCommit</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserDefaultReadOnly.html">PerUserDefaultReadOnly</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserDefaultTransactionIsolation.html">PerUserDefaultTransactionIsolation</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserMaxActive.html">PerUserMaxActive</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserMaxIdle.html">PerUserMaxIdle</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserMaxWait.html">PerUserMaxWait</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserPoolDataSourceModule.html">PerUserPoolDataSourceModule</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserPoolDataSourceModule.Builder.html">PerUserPoolDataSourceModule.Builder</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/PerUserPoolDataSourceProvider.html">PerUserPoolDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the Apache commons-dbcp <code>PerUserPoolDataSource</code>.&nbsp;</td>
-        </tr>
-    
-    
-        <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/builtin/PooledDataSourceProvider.html">PooledDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the myBatis built-in PooledDataSource.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/config/NamespaceHandler.html">NamespaceHandler</a></td>
+            <td class="jd-descrcol" width="100%">Namespace handler for the MyBatis namespace.&nbsp;</td>
         </tr>
     
     
@@ -442,79 +310,46 @@
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/dbcp/SharedPoolDataSourceProvider.html">SharedPoolDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the Apache commons-dbcp <code>SharedPoolDataSource</code>.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/transaction/SpringManagedTransaction.html">SpringManagedTransaction</a></td>
+            <td class="jd-descrcol" width="100%"><code>SpringManagedTransaction</code> handles the lifecycle of a JDBC connection.&nbsp;</td>
         </tr>
     
     
         <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/session/SqlSessionFactoryProvider.html">SqlSessionFactoryProvider</a></td>
-            <td class="jd-descrcol" width="100%">Builds the SqlSessionFactory ant let google-guice injects his components.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/transaction/SpringManagedTransactionFactory.html">SpringManagedTransactionFactory</a></td>
+            <td class="jd-descrcol" width="100%">Creates a <code>SpringManagedTransaction</code>.&nbsp;</td>
         </tr>
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/session/SqlSessionManagerProvider.html">SqlSessionManagerProvider</a></td>
-            <td class="jd-descrcol" width="100%">&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_T">T</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/transactional/Transactional.html">Transactional</a></td>
-            <td class="jd-descrcol" width="100%">Any method marked with this annotation will be considered for
- transactionality.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/support/SqlSessionDaoSupport.html">SqlSessionDaoSupport</a></td>
+            <td class="jd-descrcol" width="100%">Convenient super class for MyBatis SqlSession data access objects.&nbsp;</td>
         </tr>
     
     
         <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/transactional/TransactionalMethodInterceptor.html">TransactionalMethodInterceptor</a></td>
-            <td class="jd-descrcol" width="100%">Method interceptor for <code><a href="./org/mybatis/guice/transactional/Transactional.html">Transactional</a></code> annotation.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/SqlSessionFactoryBean.html">SqlSessionFactoryBean</a></td>
+            <td class="jd-descrcol" width="100%"><code>FactoryBean</code> that creates an MyBatis <code>SqlSessionFactory</code>.&nbsp;</td>
         </tr>
     
     
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/configuration/TypeAliases.html">TypeAliases</a></td>
-            <td class="jd-descrcol" width="100%">Marker for type aliases.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/SqlSessionHolder.html">SqlSessionHolder</a></td>
+            <td class="jd-descrcol" width="100%">Used to keep current <code>SqlSession</code> in <code>TransactionSynchronizationManager</code>.&nbsp;</td>
         </tr>
     
     
         <tr class=" api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/binder/TypeHandlerBinder.html">TypeHandlerBinder</a>&lt;T&gt;</td>
-            <td class="jd-descrcol" width="100%">Bind the given <code>TypeHandler</code> to an already defined type.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/SqlSessionTemplate.html">SqlSessionTemplate</a></td>
+            <td class="jd-descrcol" width="100%">Thread safe, Spring managed, <code>SqlSession</code> that works with Spring
+ transaction management to ensure that that the actual SqlSession used is the
+ one associated with the current Spring transaction.&nbsp;</td>
         </tr>
     
     
-</table>
-
-
-<h2 id="letter_U">U</h2>
-<table class="jd-sumtable">
-    
-    
         <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/datasource/builtin/UnpooledDataSourceProvider.html">UnpooledDataSourceProvider</a></td>
-            <td class="jd-descrcol" width="100%">Provides the myBatis built-in UnpooledDataSource.&nbsp;</td>
-        </tr>
-    
-    
-</table>
-
-
-<h2 id="letter_X">X</h2>
-<table class="jd-sumtable">
-    
-    
-        <tr class="alt-color api apilevel-" >
-            <td class="jd-linkcol"><a href="./org/mybatis/guice/XMLMyBatisModule.html">XMLMyBatisModule</a></td>
-            <td class="jd-descrcol" width="100%">Easy to use helper Module that alleviates users to write the boilerplate
- google-guice bindings to create the SqlSessionFactory, via XML configuration.&nbsp;</td>
+            <td class="jd-linkcol"><a href="./org/mybatis/spring/SqlSessionUtils.html">SqlSessionUtils</a></td>
+            <td class="jd-descrcol" width="100%">Handles MyBatis SqlSession life cycle.&nbsp;</td>
         </tr>
     
     

@@ -1,700 +1,105 @@
 <api>
-<package name="org.mybatis.guice"
+<package name="org.mybatis.spring"
 >
-<class name="MyBatisModule"
- extends="org.mybatis.guice.AbstractMyBatisModule"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="MyBatisModule"
- type="org.mybatis.guice.MyBatisModule"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="addAlias"
- return="org.mybatis.guice.binder.AliasBinder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="alias" type="java.lang.String">
-</parameter>
-</method>
-<method name="addInterceptorClass"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="interceptorClass" type="java.lang.Class&lt;? extends org.apache.ibatis.plugin.Interceptor&gt;">
-</parameter>
-</method>
-<method name="addInterceptorsClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-</method>
-<method name="addInterceptorsClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="interceptorsClasses" type="java.util.Collection&lt;java.lang.Class&lt;? extends org.apache.ibatis.plugin.Interceptor&gt;&gt;">
-</parameter>
-</method>
-<method name="addMapperClass"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="mapperClass" type="java.lang.Class&lt;?&gt;">
-</parameter>
-</method>
-<method name="addMapperClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-</method>
-<method name="addMapperClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-<parameter name="test" type="org.apache.ibatis.io.ResolverUtil.Test">
-</parameter>
-</method>
-<method name="addMapperClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="mapperClasses" type="java.util.Collection&lt;java.lang.Class&lt;?&gt;&gt;">
-</parameter>
-</method>
-<method name="addSimpleAlias"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="type" type="java.lang.Class&lt;?&gt;">
-</parameter>
-</method>
-<method name="addSimpleAliases"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-</method>
-<method name="addSimpleAliases"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-<parameter name="test" type="org.apache.ibatis.io.ResolverUtil.Test">
-</parameter>
-</method>
-<method name="addSimpleAliases"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="types" type="java.util.Collection&lt;java.lang.Class&lt;?&gt;&gt;">
-</parameter>
-</method>
-<method name="addTypeHandlerClass"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="handlerClass" type="java.lang.Class&lt;? extends org.apache.ibatis.type.TypeHandler&lt;?&gt;&gt;">
-</parameter>
-</method>
-<method name="addTypeHandlerClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="packageName" type="java.lang.String">
-</parameter>
-</method>
-<method name="addTypeHandlersClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="handlersClasses" type="java.util.Collection&lt;java.lang.Class&lt;? extends org.apache.ibatis.type.TypeHandler&lt;?&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="aggressiveLazyLoading"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="aggressiveLazyLoading" type="boolean">
-</parameter>
-</method>
-<method name="autoMappingBehavior"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="autoMappingBehavior" type="org.apache.ibatis.session.AutoMappingBehavior">
-</parameter>
-</method>
-<method name="bindDataSourceProvider"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="dataSourceProvider" type="com.google.inject.Provider&lt;javax.sql.DataSource&gt;">
-</parameter>
-</method>
-<method name="bindDataSourceProvider"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="dataSourceProvider" type="javax.inject.Provider&lt;javax.sql.DataSource&gt;">
-</parameter>
-</method>
-<method name="bindDataSourceProviderType"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="dataSourceProviderType" type="java.lang.Class&lt;? extends javax.inject.Provider&lt;javax.sql.DataSource&gt;&gt;">
-</parameter>
-</method>
-<method name="bindObjectFactoryType"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="objectFactoryType" type="java.lang.Class&lt;? extends org.apache.ibatis.reflection.factory.ObjectFactory&gt;">
-</parameter>
-</method>
-<method name="bindTransactionFactory"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="transactionFactoryProvider" type="com.google.inject.Provider&lt;org.apache.ibatis.transaction.TransactionFactory&gt;">
-</parameter>
-</method>
-<method name="bindTransactionFactory"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="transactionFactoryProvider" type="javax.inject.Provider&lt;org.apache.ibatis.transaction.TransactionFactory&gt;">
-</parameter>
-</method>
-<method name="bindTransactionFactoryType"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="transactionFactoryType" type="java.lang.Class&lt;? extends org.apache.ibatis.transaction.TransactionFactory&gt;">
-</parameter>
-</method>
-<method name="configure"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="environmentId"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="environmentId" type="java.lang.String">
-</parameter>
-</method>
-<method name="executorType"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="executorType" type="org.apache.ibatis.session.ExecutorType">
-</parameter>
-</method>
-<method name="failFast"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="failFast" type="boolean">
-</parameter>
-</method>
-<method name="getResourceClassLoader"
- return="java.lang.ClassLoader"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="handleType"
- return="org.mybatis.guice.binder.TypeHandlerBinder&lt;T&gt;"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="type" type="java.lang.Class&lt;T&gt;">
-</parameter>
-</method>
-<method name="initialize"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="lazyLoadingEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="lazyLoadingEnabled" type="boolean">
-</parameter>
-</method>
-<method name="multipleResultSetsEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="multipleResultSetsEnabled" type="boolean">
-</parameter>
-</method>
-<method name="useCacheEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="useCacheEnabled" type="boolean">
-</parameter>
-</method>
-<method name="useColumnLabel"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="useColumnLabel" type="boolean">
-</parameter>
-</method>
-<method name="useGeneratedKeys"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="useGeneratedKeys" type="boolean">
-</parameter>
-</method>
-<method name="useJdbcDriverClassLoader"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</method>
-<method name="useResourceClassLoader"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="resourceClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</method>
-</class>
-<class name="XMLMyBatisModule"
- extends="org.mybatis.guice.AbstractMyBatisModule"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="XMLMyBatisModule"
- type="org.mybatis.guice.XMLMyBatisModule"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="addProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="properties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="configure"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="getResourceClassLoader"
- return="java.lang.ClassLoader"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="initialize"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="setClassPathResource"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="classPathResource" type="java.lang.String">
-</parameter>
-</method>
-<method name="setEnvironmentId"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="environmentId" type="java.lang.String">
-</parameter>
-</method>
-<method name="useJdbcDriverClassLoader"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</method>
-<method name="useResourceClassLoader"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="resourceClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.binder"
->
-<interface name="AliasBinder"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="to"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="type" type="java.lang.Class&lt;?&gt;">
-</parameter>
-</method>
-</interface>
-<interface name="TypeHandlerBinder"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="with"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="handler" type="java.lang.Class&lt;? extends org.apache.ibatis.type.TypeHandler&lt;? extends T&gt;&gt;">
-</parameter>
-</method>
-</interface>
-</package>
-<package name="org.mybatis.guice.configuration"
->
-<class name="ConfigurationProvider"
+<class name="MyBatisExceptionTranslator"
  extends="java.lang.Object"
  abstract="false"
  static="false"
- final="true"
+ final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<implements name="javax.inject.Provider">
+<implements name="org.springframework.dao.support.PersistenceExceptionTranslator">
 </implements>
-<constructor name="ConfigurationProvider"
- type="org.mybatis.guice.configuration.ConfigurationProvider"
+<constructor name="MyBatisExceptionTranslator"
+ type="org.mybatis.spring.MyBatisExceptionTranslator"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="environment" type="org.apache.ibatis.mapping.Environment">
+<parameter name="dataSource" type="javax.sql.DataSource">
+</parameter>
+<parameter name="exceptionTranslatorLazyInit" type="boolean">
 </parameter>
 </constructor>
-<method name="get"
- return="org.apache.ibatis.session.Configuration"
+<method name="translateExceptionIfPossible"
+ return="org.springframework.dao.DataAccessException"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="e" type="java.lang.RuntimeException">
+</parameter>
+</method>
+</class>
+<class name="MyBatisSystemException"
+ extends="org.springframework.dao.UncategorizedDataAccessException"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MyBatisSystemException"
+ type="org.mybatis.spring.MyBatisSystemException"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="cause" type="java.lang.Throwable">
+</parameter>
+</constructor>
+</class>
+<class name="SqlSessionFactoryBean"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="SqlSessionFactoryBean"
+ type="org.mybatis.spring.SqlSessionFactoryBean"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="afterPropertiesSet"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="buildSqlSessionFactory"
+ return="org.apache.ibatis.session.SqlSessionFactory"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<exception name="IOException" type="java.io.IOException">
+</exception>
+</method>
+<method name="getDatabaseIdProvider"
+ return="org.apache.ibatis.mapping.DatabaseIdProvider"
  abstract="false"
  native="false"
  synchronized="false"
@@ -704,7 +109,42 @@
  visibility="public"
 >
 </method>
-<method name="mapUnderscoreToCamelCase"
+<method name="getObject"
+ return="org.apache.ibatis.session.SqlSessionFactory"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="getObjectType"
+ return="java.lang.Class&lt;? extends org.apache.ibatis.session.SqlSessionFactory&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isSingleton"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onApplicationEvent"
  return="void"
  abstract="false"
  native="false"
@@ -714,10 +154,10 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="mapUnderscoreToCamelCase" type="boolean">
+<parameter name="event" type="org.springframework.context.ApplicationEvent">
 </parameter>
 </method>
-<method name="registerTypeHandlers"
+<method name="setConfigLocation"
  return="void"
  abstract="false"
  native="false"
@@ -727,10 +167,10 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="typeHandlers" type="java.util.Map&lt;java.lang.Class&lt;?&gt;, org.apache.ibatis.type.TypeHandler&lt;?&gt;&gt;">
+<parameter name="configLocation" type="org.springframework.core.io.Resource">
 </parameter>
 </method>
-<method name="setAggressiveLazyLoading"
+<method name="setConfigurationProperties"
  return="void"
  abstract="false"
  native="false"
@@ -738,12 +178,12 @@
  static="false"
  final="false"
  deprecated="not deprecated"
- visibility="protected"
+ visibility="public"
 >
-<parameter name="aggressiveLazyLoading" type="boolean">
+<parameter name="sqlSessionFactoryProperties" type="java.util.Properties">
 </parameter>
 </method>
-<method name="setAutoMappingBehavior"
+<method name="setDataSource"
  return="void"
  abstract="false"
  native="false"
@@ -751,12 +191,12 @@
  static="false"
  final="false"
  deprecated="not deprecated"
- visibility="protected"
+ visibility="public"
 >
-<parameter name="autoMappingBehavior" type="org.apache.ibatis.session.AutoMappingBehavior">
+<parameter name="dataSource" type="javax.sql.DataSource">
 </parameter>
 </method>
-<method name="setCacheEnabled"
+<method name="setDatabaseIdProvider"
  return="void"
  abstract="false"
  native="false"
@@ -764,22 +204,9 @@
  static="false"
  final="false"
  deprecated="not deprecated"
- visibility="protected"
+ visibility="public"
 >
-<parameter name="cacheEnabled" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultExecutorType"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="defaultExecutorType" type="org.apache.ibatis.session.ExecutorType">
+<parameter name="databaseIdProvider" type="org.apache.ibatis.mapping.DatabaseIdProvider">
 </parameter>
 </method>
 <method name="setEnvironment"
@@ -789,10 +216,10 @@
  synchronized="false"
  static="false"
  final="false"
- deprecated="deprecated"
+ deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="environment" type="org.apache.ibatis.mapping.Environment">
+<parameter name="environment" type="java.lang.String">
 </parameter>
 </method>
 <method name="setFailFast"
@@ -808,7 +235,7 @@
 <parameter name="failFast" type="boolean">
 </parameter>
 </method>
-<method name="setLazyLoadingEnabled"
+<method name="setMapperLocations"
  return="void"
  abstract="false"
  native="false"
@@ -818,33 +245,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="lazyLoadingEnabled" type="boolean">
-</parameter>
-</method>
-<method name="setMapperClasses"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="mapperClasses" type="java.util.Set&lt;java.lang.Class&lt;?&gt;&gt;">
-</parameter>
-</method>
-<method name="setMultipleResultSetsEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="multipleResultSetsEnabled" type="boolean">
+<parameter name="mapperLocations" type="org.springframework.core.io.Resource[]">
 </parameter>
 </method>
 <method name="setObjectFactory"
@@ -860,6 +261,19 @@
 <parameter name="objectFactory" type="org.apache.ibatis.reflection.factory.ObjectFactory">
 </parameter>
 </method>
+<method name="setObjectWrapperFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="objectWrapperFactory" type="org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory">
+</parameter>
+</method>
 <method name="setPlugins"
  return="void"
  abstract="false"
@@ -870,10 +284,10 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="plugins" type="java.util.Set&lt;org.apache.ibatis.plugin.Interceptor&gt;">
+<parameter name="plugins" type="org.apache.ibatis.plugin.Interceptor[]">
 </parameter>
 </method>
-<method name="setTypeAliases"
+<method name="setSqlSessionFactoryBuilder"
  return="void"
  abstract="false"
  native="false"
@@ -883,2731 +297,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="typeAliases" type="java.util.Map&lt;java.lang.String, java.lang.Class&lt;?&gt;&gt;">
-</parameter>
-</method>
-<method name="setUseColumnLabel"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="useColumnLabel" type="boolean">
-</parameter>
-</method>
-<method name="setUseGeneratedKeys"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="useGeneratedKeys" type="boolean">
-</parameter>
-</method>
-</class>
-<class name="Mappers"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="MappingTypeHandlers"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="TypeAliases"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-</package>
-<package name="org.mybatis.guice.datasource.bonecp"
->
-<class name="BoneCPProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="BoneCPProvider"
- type="org.mybatis.guice.datasource.bonecp.BoneCPProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAcquireIncrement"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="acquireIncrement" type="int">
-</parameter>
-</method>
-<method name="setAcquireRetryAttempts"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="acquireRetryAttempts" type="int">
-</parameter>
-</method>
-<method name="setClassLoader"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="classLoader" type="java.lang.ClassLoader">
-</parameter>
-</method>
-<method name="setCloseConnectionWatch"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="closeConnectionWatch" type="boolean">
-</parameter>
-</method>
-<method name="setConnectionHook"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="connectionHook" type="com.jolbox.bonecp.hooks.ConnectionHook">
-</parameter>
-</method>
-<method name="setConnectionHookClassName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="connectionHookClassName" type="java.lang.String">
-</parameter>
-</method>
-<method name="setConnectionTestStatement"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="connectionTestStatement" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDisableConnectionTracking"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="disableConnectionTracking" type="boolean">
-</parameter>
-</method>
-<method name="setDisableJMX"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="disableJMX" type="boolean">
-</parameter>
-</method>
-<method name="setDriverClass"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverClass" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDriverProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverProperties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="setIdleConnectionTestPeriod"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idleConnectionTestPeriod" type="long">
-</parameter>
-<parameter name="timeUnit" type="java.util.concurrent.TimeUnit">
-</parameter>
-</method>
-<method name="setIdleConnectionTestPeriodInMinutes"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idleConnectionTestPeriod" type="long">
-</parameter>
-</method>
-<method name="setIdleConnectionTestPeriodInSeconds"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idleConnectionTestPeriod" type="long">
-</parameter>
-</method>
-<method name="setIdleMaxAge"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idleMaxAge" type="long">
-</parameter>
-<parameter name="timeUnit" type="java.util.concurrent.TimeUnit">
-</parameter>
-</method>
-<method name="setInitSQL"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="initSQL" type="java.lang.String">
-</parameter>
-</method>
-<method name="setJdbcUrl"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="jdbcUrl" type="java.lang.String">
-</parameter>
-</method>
-<method name="setLazyInit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="lazyInit" type="boolean">
-</parameter>
-</method>
-<method name="setLogStatementsEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="logStatementsEnabled" type="boolean">
-</parameter>
-</method>
-<method name="setMaxConnectionAge"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxConnectionAge" type="long">
-</parameter>
-<parameter name="timeUnit" type="java.util.concurrent.TimeUnit">
-</parameter>
-</method>
-<method name="setMaxConnectionAgeInSeconds"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxConnectionAgeInSeconds" type="long">
-</parameter>
-</method>
-<method name="setMaxConnectionsPerPartition"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxConnectionsPerPartition" type="int">
-</parameter>
-</method>
-<method name="setMinConnectionsPerPartition"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minConnectionsPerPartition" type="int">
-</parameter>
-</method>
-<method name="setPartitionCount"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="partitionCount" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPoolAvailabilityThreshold"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="poolAvailabilityThreshold" type="int">
-</parameter>
-</method>
-<method name="setPoolName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="poolName" type="java.lang.String">
-</parameter>
-</method>
-<method name="setQueryExecuteTimeLimit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="queryExecuteTimeLimit" type="int">
-</parameter>
-<parameter name="timeUnit" type="java.util.concurrent.TimeUnit">
-</parameter>
-</method>
-<method name="setReleaseHelperThreads"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="releaseHelperThreads" type="int">
-</parameter>
-</method>
-<method name="setServiceOrder"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="serviceOrder" type="java.lang.String">
-</parameter>
-</method>
-<method name="setStatementReleaseHelperThreads"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statementReleaseHelperThreads" type="int">
-</parameter>
-</method>
-<method name="setStatementsCacheSize"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statementsCacheSize" type="int">
-</parameter>
-</method>
-<method name="setTransactionRecoveryEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="transactionRecoveryEnabled" type="boolean">
-</parameter>
-</method>
-<method name="setUsername"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.datasource.builtin"
->
-<class name="JndiDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="JndiDataSourceProvider"
- type="org.mybatis.guice.datasource.builtin.JndiDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setDataSource"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="dataSource" type="java.lang.String">
-</parameter>
-</method>
-<method name="setInitialContext"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="initialContext" type="java.lang.String">
-</parameter>
-</method>
-</class>
-<class name="PooledDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="PooledDataSourceProvider"
- type="org.mybatis.guice.datasource.builtin.PooledDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driver" type="java.lang.String">
-</parameter>
-<parameter name="url" type="java.lang.String">
-</parameter>
-<parameter name="driverClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setDriverProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverProperties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="loginTimeout" type="int">
-</parameter>
-</method>
-<method name="setMaximumActiveConnections"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maximumActiveConnections" type="int">
-</parameter>
-</method>
-<method name="setMaximumCheckoutTime"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maximumCheckoutTime" type="int">
-</parameter>
-</method>
-<method name="setMaximumIdleConnections"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maximumIdleConnections" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPingConnectionsNotUsedFor"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="pingConnectionsNotUsedFor" type="int">
-</parameter>
-</method>
-<method name="setPingEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="pingEnabled" type="boolean">
-</parameter>
-</method>
-<method name="setPingEnabled"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="pingQuery" type="java.lang.String">
-</parameter>
-</method>
-<method name="setTimeToWait"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="timeToWait" type="int">
-</parameter>
-</method>
-<method name="setUser"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-</class>
-<class name="UnpooledDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="UnpooledDataSourceProvider"
- type="org.mybatis.guice.datasource.builtin.UnpooledDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driver" type="java.lang.String">
-</parameter>
-<parameter name="url" type="java.lang.String">
-</parameter>
-<parameter name="driverClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setDriverProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverProperties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="loginTimeout" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setUser"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.datasource.c3p0"
->
-<class name="C3p0DataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="C3p0DataSourceProvider"
- type="org.mybatis.guice.datasource.c3p0.C3p0DataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driver" type="java.lang.String">
-</parameter>
-<parameter name="url" type="java.lang.String">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAautomaticTestTable"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="automaticTestTable" type="java.lang.String">
-</parameter>
-</method>
-<method name="setAcquireIncrement"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="acquireIncrement" type="int">
-</parameter>
-</method>
-<method name="setAcquireRetryAttempts"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="acquireRetryAttempts" type="int">
-</parameter>
-</method>
-<method name="setAcquireRetryDelay"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="acquireRetryDelay" type="int">
-</parameter>
-</method>
-<method name="setAutoCommitOnClose"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setBreakAfterAcquireFailure"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="breakAfterAcquireFailure" type="boolean">
-</parameter>
-</method>
-<method name="setCheckoutTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="checkoutTimeout" type="int">
-</parameter>
-</method>
-<method name="setConnectionCustomizerClassName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="connectionCustomizerClassName" type="java.lang.String">
-</parameter>
-</method>
-<method name="setConnectionTesterClassName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="connectionTesterClassName" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDriverProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverProperties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="setIdleConnectionTestPeriod"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idleConnectionTestPeriod" type="int">
-</parameter>
-</method>
-<method name="setInitialPoolSize"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="initialPoolSize" type="int">
-</parameter>
-</method>
-<method name="setMaxAdministrativeTaskTime"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxAdministrativeTaskTime" type="int">
-</parameter>
-</method>
-<method name="setMaxConnectionAge"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxConnectionAge" type="int">
-</parameter>
-</method>
-<method name="setMaxIdleTime"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxIdleTime" type="int">
-</parameter>
-</method>
-<method name="setMaxIdleTimeExcessConnections"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxIdleTimeExcessConnections" type="int">
-</parameter>
-</method>
-<method name="setMaxPoolSize"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxPoolSize" type="int">
-</parameter>
-</method>
-<method name="setMaxStatements"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxStatements" type="int">
-</parameter>
-</method>
-<method name="setMaxStatementsPerConnection"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxStatementsPerConnection" type="int">
-</parameter>
-</method>
-<method name="setMinPoolSize"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minPoolSize" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPreferredTestQuery"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="preferredTestQuery" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPropertyCycle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="propertyCycle" type="int">
-</parameter>
-</method>
-<method name="setTestConnectionOnCheckin"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testConnectionOnCheckin" type="boolean">
-</parameter>
-</method>
-<method name="setTestConnectionOnCheckout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testConnectionOnCheckout" type="boolean">
-</parameter>
-</method>
-<method name="setUnreturnedConnectionTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="unreturnedConnectionTimeout" type="int">
-</parameter>
-</method>
-<method name="setUser"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-<method name="setUsesTraditionalReflectiveProxies"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="usesTraditionalReflectiveProxies" type="boolean">
-</parameter>
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.datasource.dbcp"
->
-<class name="BasicDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="BasicDataSourceProvider"
- type="org.mybatis.guice.datasource.dbcp.BasicDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driver" type="java.lang.String">
-</parameter>
-<parameter name="url" type="java.lang.String">
-</parameter>
-<parameter name="driverClassLoader" type="java.lang.ClassLoader">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAccessToUnderlyingConnectionAllowed"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="allow" type="boolean">
-</parameter>
-</method>
-<method name="setAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultCatalog"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultCatalog" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDefaultReadOnly"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultReadOnly" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultTransactionIsolation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultTransactionIsolation" type="int">
-</parameter>
-</method>
-<method name="setDriverProperties"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driverProperties" type="java.util.Properties">
-</parameter>
-</method>
-<method name="setInitialSize"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="initialSize" type="int">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="loginTimeout" type="int">
-</parameter>
-</method>
-<method name="setMaxActive"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxActive" type="int">
-</parameter>
-</method>
-<method name="setMaxIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxIdle" type="int">
-</parameter>
-</method>
-<method name="setMaxOpenPreparedStatements"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxOpenPreparedStatements" type="int">
-</parameter>
-</method>
-<method name="setMaxWait"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxWait" type="long">
-</parameter>
-</method>
-<method name="setMinEvictableIdleTimeMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minEvictableIdleTimeMillis" type="long">
-</parameter>
-</method>
-<method name="setMinIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minIdle" type="int">
-</parameter>
-</method>
-<method name="setNumTestsPerEvictionRun"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="numTestsPerEvictionRun" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPoolPreparedStatements"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="poolPreparedStatements" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnBorrow"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnBorrow" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnReturn"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnReturn" type="boolean">
-</parameter>
-</method>
-<method name="setTestWhileIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testWhileIdle" type="boolean">
-</parameter>
-</method>
-<method name="setUser"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-<method name="setValidationQuery"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="validationQuery" type="java.lang.String">
-</parameter>
-</method>
-</class>
-<class name="DriverAdapterCPDSProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="DriverAdapterCPDSProvider"
- type="org.mybatis.guice.datasource.dbcp.DriverAdapterCPDSProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="driver" type="java.lang.String">
-</parameter>
-<parameter name="url" type="java.lang.String">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.ConnectionPoolDataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setDescription"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="description" type="java.lang.String">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="seconds" type="int">
-</parameter>
-</method>
-<method name="setMaxActive"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxActive" type="int">
-</parameter>
-</method>
-<method name="setMaxIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxIdle" type="int">
-</parameter>
-</method>
-<method name="setMaxPreparedStatements"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxPreparedStatements" type="int">
-</parameter>
-</method>
-<method name="setMinEvictableIdleTimeMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minEvictableIdleTimeMillis" type="int">
-</parameter>
-</method>
-<method name="setNumTestsPerEvictionRun"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="numTestsPerEvictionRun" type="int">
-</parameter>
-</method>
-<method name="setPassword"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="password" type="java.lang.String">
-</parameter>
-</method>
-<method name="setPoolPreparedStatements"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="poolPreparedStatements" type="boolean">
-</parameter>
-</method>
-<method name="setTimeBetweenEvictionRunsMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="timeBetweenEvictionRunsMillis" type="int">
-</parameter>
-</method>
-<method name="setUser"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="username" type="java.lang.String">
-</parameter>
-</method>
-</class>
-<class name="PerUserDefaultAutoCommit"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserDefaultReadOnly"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserDefaultTransactionIsolation"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserMaxActive"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserMaxIdle"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserMaxWait"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="PerUserPoolDataSourceModule"
- extends="com.google.inject.AbstractModule"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="configure"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-</class>
-<class name="PerUserPoolDataSourceModule.Builder"
- extends="java.lang.Object"
- abstract="false"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="PerUserPoolDataSourceModule.Builder"
- type="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="create"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setPerUserDefaultAutoCommitProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultAutoCommitProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Boolean&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="setPerUserDefaultReadOnlyProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultReadOnlyProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Boolean&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="setPerUserDefaultTransactionIsolationProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultTransactionIsolationProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Integer&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxActiveProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxActiveProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Integer&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxIdleProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxIdleProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Integer&gt;&gt;&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxWaitProviderClass"
- return="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceModule.Builder"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxWaitProviderClass" type="java.lang.Class&lt;com.google.inject.Provider&lt;java.util.Map&lt;java.lang.String, java.lang.Integer&gt;&gt;&gt;">
-</parameter>
-</method>
-</class>
-<class name="PerUserPoolDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="PerUserPoolDataSourceProvider"
- type="org.mybatis.guice.datasource.dbcp.PerUserPoolDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setConnectionPoolDataSource"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="cpds" type="javax.sql.ConnectionPoolDataSource">
-</parameter>
-</method>
-<method name="setDataSourceName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="name" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDefaultAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultMaxActive"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxActive" type="int">
-</parameter>
-</method>
-<method name="setDefaultMaxIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultMaxIdle" type="int">
-</parameter>
-</method>
-<method name="setDefaultMaxWait"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultMaxWait" type="int">
-</parameter>
-</method>
-<method name="setDefaultReadOnly"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultReadOnly" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultTransactionIsolation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultTransactionIsolation" type="int">
-</parameter>
-</method>
-<method name="setDescription"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="description" type="java.lang.String">
-</parameter>
-</method>
-<method name="setJndiEnvironment"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="key" type="java.lang.String">
-</parameter>
-<parameter name="value" type="java.lang.String">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="loginTimeout" type="int">
-</parameter>
-</method>
-<method name="setMinEvictableIdleTimeMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minEvictableIdleTimeMillis" type="int">
-</parameter>
-</method>
-<method name="setNumTestsPerEvictionRun"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="numTestsPerEvictionRun" type="int">
-</parameter>
-</method>
-<method name="setPerUserDefaultAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultAutoCommit" type="java.util.Map&lt;java.lang.String, java.lang.Boolean&gt;">
-</parameter>
-</method>
-<method name="setPerUserDefaultReadOnly"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultReadOnly" type="java.util.Map&lt;java.lang.String, java.lang.Boolean&gt;">
-</parameter>
-</method>
-<method name="setPerUserDefaultTransactionIsolation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserDefaultTransactionIsolation" type="java.util.Map&lt;java.lang.String, java.lang.Integer&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxActive"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxActive" type="java.util.Map&lt;java.lang.String, java.lang.Integer&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxIdle" type="java.util.Map&lt;java.lang.String, java.lang.Integer&gt;">
-</parameter>
-</method>
-<method name="setPerUserMaxWait"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="perUserMaxWait" type="java.util.Map&lt;java.lang.String, java.lang.Integer&gt;">
-</parameter>
-</method>
-<method name="setRollbackAfterValidation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="rollbackAfterValidation" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnBorrow"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnBorrow" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnReturn"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnReturn" type="boolean">
-</parameter>
-</method>
-<method name="setTestWhileIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testWhileIdle" type="boolean">
-</parameter>
-</method>
-<method name="setTimeBetweenEvictionRunsMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="timeBetweenEvictionRunsMillis" type="int">
-</parameter>
-</method>
-<method name="setValidationQuery"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="validationQuery" type="java.lang.String">
-</parameter>
-</method>
-</class>
-<class name="SharedPoolDataSourceProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="com.google.inject.Provider">
-</implements>
-<constructor name="SharedPoolDataSourceProvider"
- type="org.mybatis.guice.datasource.dbcp.SharedPoolDataSourceProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="cpds" type="javax.sql.ConnectionPoolDataSource">
-</parameter>
-</constructor>
-<method name="get"
- return="javax.sql.DataSource"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setDataSourceName"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="name" type="java.lang.String">
-</parameter>
-</method>
-<method name="setDefaultAutoCommit"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoCommit" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultReadOnly"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultReadOnly" type="boolean">
-</parameter>
-</method>
-<method name="setDefaultTransactionIsolation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="defaultTransactionIsolation" type="int">
-</parameter>
-</method>
-<method name="setDescription"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="description" type="java.lang.String">
-</parameter>
-</method>
-<method name="setJndiEnvironment"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="key" type="java.lang.String">
-</parameter>
-<parameter name="value" type="java.lang.String">
-</parameter>
-</method>
-<method name="setLoginTimeout"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="loginTimeout" type="int">
-</parameter>
-</method>
-<method name="setMaxActive"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxActive" type="int">
-</parameter>
-</method>
-<method name="setMaxIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxIdle" type="int">
-</parameter>
-</method>
-<method name="setMaxWait"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="maxWait" type="int">
-</parameter>
-</method>
-<method name="setMinEvictableIdleTimeMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="minEvictableIdleTimeMillis" type="int">
-</parameter>
-</method>
-<method name="setNumTestsPerEvictionRun"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="numTestsPerEvictionRun" type="int">
-</parameter>
-</method>
-<method name="setRollbackAfterValidation"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="rollbackAfterValidation" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnBorrow"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnBorrow" type="boolean">
-</parameter>
-</method>
-<method name="setTestOnReturn"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testOnReturn" type="boolean">
-</parameter>
-</method>
-<method name="setTestWhileIdle"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="testWhileIdle" type="boolean">
-</parameter>
-</method>
-<method name="setTimeBetweenEvictionRunsMillis"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="timeBetweenEvictionRunsMillis" type="int">
-</parameter>
-</method>
-<method name="setValidationQuery"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="validationQuery" type="java.lang.String">
-</parameter>
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.datasource.helper"
->
-<class name="JdbcHelper"
- extends="java.lang.Enum"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="com.google.inject.Module">
-</implements>
-<method name="configure"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="binder" type="com.google.inject.Binder">
-</parameter>
-</method>
-<method name="valueOf"
- return="org.mybatis.guice.datasource.helper.JdbcHelper"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="name" type="java.lang.String">
-</parameter>
-</method>
-<method name="values"
- return="org.mybatis.guice.datasource.helper.JdbcHelper[]"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-</class>
-</package>
-<package name="org.mybatis.guice.environment"
->
-<class name="EnvironmentProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="EnvironmentProvider"
- type="org.mybatis.guice.environment.EnvironmentProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="get"
- return="org.apache.ibatis.mapping.Environment"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setDataSource"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="dataSource" type="javax.sql.DataSource">
-</parameter>
-</method>
-<method name="setId"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="id" type="java.lang.String">
+<parameter name="sqlSessionFactoryBuilder" type="org.apache.ibatis.session.SqlSessionFactoryBuilder">
 </parameter>
 </method>
 <method name="setTransactionFactory"
@@ -3623,31 +313,293 @@
 <parameter name="transactionFactory" type="org.apache.ibatis.transaction.TransactionFactory">
 </parameter>
 </method>
-</class>
-</package>
-<package name="org.mybatis.guice.mappers"
+<method name="setTypeAliases"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
 >
-<class name="MapperProvider"
- extends="java.lang.Object"
+<parameter name="typeAliases" type="java.lang.Class&lt;?&gt;[]">
+</parameter>
+</method>
+<method name="setTypeAliasesPackage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="typeAliasesPackage" type="java.lang.String">
+</parameter>
+</method>
+<method name="setTypeAliasesSuperType"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="typeAliasesSuperType" type="java.lang.Class&lt;?&gt;">
+</parameter>
+</method>
+<method name="setTypeHandlers"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="typeHandlers" type="org.apache.ibatis.type.TypeHandler&lt;?&gt;[]">
+</parameter>
+</method>
+<method name="setTypeHandlersPackage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="typeHandlersPackage" type="java.lang.String">
+</parameter>
+</method>
+</class>
+<class name="SqlSessionHolder"
+ extends="org.springframework.transaction.support.ResourceHolderSupport"
  abstract="false"
  static="false"
  final="true"
  deprecated="not deprecated"
  visibility="public"
 >
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="MapperProvider"
- type="org.mybatis.guice.mappers.MapperProvider"
+<constructor name="SqlSessionHolder"
+ type="org.mybatis.spring.SqlSessionHolder"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="mapperType" type="java.lang.Class&lt;T&gt;">
+<parameter name="sqlSession" type="org.apache.ibatis.session.SqlSession">
+</parameter>
+<parameter name="executorType" type="org.apache.ibatis.session.ExecutorType">
+</parameter>
+<parameter name="exceptionTranslator" type="org.springframework.dao.support.PersistenceExceptionTranslator">
 </parameter>
 </constructor>
-<method name="get"
+<method name="getExecutorType"
+ return="org.apache.ibatis.session.ExecutorType"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPersistenceExceptionTranslator"
+ return="org.springframework.dao.support.PersistenceExceptionTranslator"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSqlSession"
+ return="org.apache.ibatis.session.SqlSession"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="SqlSessionTemplate"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.apache.ibatis.session.SqlSession">
+</implements>
+<constructor name="SqlSessionTemplate"
+ type="org.mybatis.spring.SqlSessionTemplate"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</constructor>
+<constructor name="SqlSessionTemplate"
+ type="org.mybatis.spring.SqlSessionTemplate"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+<parameter name="executorType" type="org.apache.ibatis.session.ExecutorType">
+</parameter>
+</constructor>
+<constructor name="SqlSessionTemplate"
+ type="org.mybatis.spring.SqlSessionTemplate"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+<parameter name="executorType" type="org.apache.ibatis.session.ExecutorType">
+</parameter>
+<parameter name="exceptionTranslator" type="org.springframework.dao.support.PersistenceExceptionTranslator">
+</parameter>
+</constructor>
+<method name="clearCache"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="close"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="commit"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="commit"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="force" type="boolean">
+</parameter>
+</method>
+<method name="delete"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="delete"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
+<method name="flushStatements"
+ return="java.util.List&lt;org.apache.ibatis.executor.BatchResult&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getConfiguration"
+ return="org.apache.ibatis.session.Configuration"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getConnection"
+ return="java.sql.Connection"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getExecutorType"
+ return="org.apache.ibatis.session.ExecutorType"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMapper"
  return="T"
  abstract="false"
  native="false"
@@ -3657,9 +609,11 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="type" type="java.lang.Class&lt;T&gt;">
+</parameter>
 </method>
-<method name="setSqlSessionManager"
- return="void"
+<method name="getPersistenceExceptionTranslator"
+ return="org.springframework.dao.support.PersistenceExceptionTranslator"
  abstract="false"
  native="false"
  synchronized="false"
@@ -3668,55 +622,8 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="sqlSessionManager" type="org.apache.ibatis.session.SqlSessionManager">
-</parameter>
 </method>
-</class>
-</package>
-<package name="org.mybatis.guice.session"
->
-<class name="SqlSessionFactoryProvider"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="javax.inject.Provider">
-</implements>
-<constructor name="SqlSessionFactoryProvider"
- type="org.mybatis.guice.session.SqlSessionFactoryProvider"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<constructor name="SqlSessionFactoryProvider"
- type="org.mybatis.guice.session.SqlSessionFactoryProvider"
- static="false"
- final="false"
- deprecated="deprecated"
- visibility="public"
->
-<parameter name="configuration" type="org.apache.ibatis.session.Configuration">
-</parameter>
-</constructor>
-<method name="createNewSqlSessionFactory"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="configuration" type="org.apache.ibatis.session.Configuration">
-</parameter>
-</method>
-<method name="get"
+<method name="getSqlSessionFactory"
  return="org.apache.ibatis.session.SqlSessionFactory"
  abstract="false"
  native="false"
@@ -3727,8 +634,263 @@
  visibility="public"
 >
 </method>
+<method name="insert"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="insert"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
+<method name="rollback"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="rollback"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="force" type="boolean">
+</parameter>
+</method>
+<method name="select"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
+</parameter>
+</method>
+<method name="select"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
+</parameter>
+<parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
+</parameter>
+</method>
+<method name="select"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
+</parameter>
+</method>
+<method name="selectList"
+ return="java.util.List&lt;E&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectList"
+ return="java.util.List&lt;E&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
+<method name="selectList"
+ return="java.util.List&lt;E&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
+</parameter>
+</method>
+<method name="selectMap"
+ return="java.util.Map&lt;K, V&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="mapKey" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectMap"
+ return="java.util.Map&lt;K, V&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="mapKey" type="java.lang.String">
+</parameter>
+<parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
+</parameter>
+</method>
+<method name="selectMap"
+ return="java.util.Map&lt;K, V&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="mapKey" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectOne"
+ return="T"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectOne"
+ return="T"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
+<method name="update"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="update"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
 </class>
-<class name="SqlSessionManagerProvider"
+<class name="SqlSessionUtils"
  extends="java.lang.Object"
  abstract="false"
  static="false"
@@ -3736,27 +898,170 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<implements name="javax.inject.Provider">
+<method name="closeSqlSession"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="session" type="org.apache.ibatis.session.SqlSession">
+</parameter>
+<parameter name="sessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+<method name="getSqlSession"
+ return="org.apache.ibatis.session.SqlSession"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+<method name="getSqlSession"
+ return="org.apache.ibatis.session.SqlSession"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+<parameter name="executorType" type="org.apache.ibatis.session.ExecutorType">
+</parameter>
+<parameter name="exceptionTranslator" type="org.springframework.dao.support.PersistenceExceptionTranslator">
+</parameter>
+</method>
+<method name="isSqlSessionTransactional"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="session" type="org.apache.ibatis.session.SqlSession">
+</parameter>
+<parameter name="sessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+</class>
+</package>
+<package name="org.mybatis.spring.annotation"
+>
+<class name="MapperScan"
+ extends="java.lang.Object"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.lang.annotation.Annotation">
 </implements>
-<constructor name="SqlSessionManagerProvider"
- type="org.mybatis.guice.session.SqlSessionManagerProvider"
+</class>
+<class name="MapperScannerRegistrar"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapperScannerRegistrar"
+ type="org.mybatis.spring.annotation.MapperScannerRegistrar"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
 </constructor>
-<constructor name="SqlSessionManagerProvider"
- type="org.mybatis.guice.session.SqlSessionManagerProvider"
+<method name="registerBeanDefinitions"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
  static="false"
  final="false"
- deprecated="deprecated"
+ deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+<parameter name="importingClassMetadata" type="org.springframework.core.type.AnnotationMetadata">
 </parameter>
+<parameter name="registry" type="org.springframework.beans.factory.support.BeanDefinitionRegistry">
+</parameter>
+</method>
+<method name="setResourceLoader"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="resourceLoader" type="org.springframework.core.io.ResourceLoader">
+</parameter>
+</method>
+</class>
+</package>
+<package name="org.mybatis.spring.batch"
+>
+<class name="MyBatisBatchItemWriter"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MyBatisBatchItemWriter"
+ type="org.mybatis.spring.batch.MyBatisBatchItemWriter"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
 </constructor>
-<method name="createNewSqlSessionManager"
+<method name="afterPropertiesSet"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAssertUpdates"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="assertUpdates" type="boolean">
+</parameter>
+</method>
+<method name="setSqlSessionFactory"
  return="void"
  abstract="false"
  native="false"
@@ -3769,8 +1074,191 @@
 <parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
 </parameter>
 </method>
-<method name="get"
- return="org.apache.ibatis.session.SqlSessionManager"
+<method name="setSqlSessionTemplate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplate" type="org.mybatis.spring.SqlSessionTemplate">
+</parameter>
+</method>
+<method name="setStatementId"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statementId" type="java.lang.String">
+</parameter>
+</method>
+<method name="write"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="items" type="java.util.List&lt;? extends T&gt;">
+</parameter>
+</method>
+<field name="logger"
+ type="org.apache.ibatis.logging.Log"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+</class>
+<class name="MyBatisPagingItemReader"
+ extends="org.springframework.batch.item.database.AbstractPagingItemReader"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MyBatisPagingItemReader"
+ type="org.mybatis.spring.batch.MyBatisPagingItemReader"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="doJumpToPage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="itemIndex" type="int">
+</parameter>
+</method>
+<method name="doReadPage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</method>
+<method name="setParameterValues"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="parameterValues" type="java.util.Map&lt;java.lang.String, java.lang.Object&gt;">
+</parameter>
+</method>
+<method name="setQueryId"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="queryId" type="java.lang.String">
+</parameter>
+</method>
+<method name="setSqlSessionFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+</class>
+</package>
+<package name="org.mybatis.spring.config"
+>
+<class name="MapperScannerBeanDefinitionParser"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.springframework.beans.factory.xml.BeanDefinitionParser">
+</implements>
+<constructor name="MapperScannerBeanDefinitionParser"
+ type="org.mybatis.spring.config.MapperScannerBeanDefinitionParser"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="parse"
+ return="org.springframework.beans.factory.config.BeanDefinition"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="element" type="org.w3c.dom.Element">
+</parameter>
+<parameter name="parserContext" type="org.springframework.beans.factory.xml.ParserContext">
+</parameter>
+</method>
+</class>
+<class name="NamespaceHandler"
+ extends="org.springframework.beans.factory.xml.NamespaceHandlerSupport"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="NamespaceHandler"
+ type="org.mybatis.spring.config.NamespaceHandler"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="init"
+ return="void"
  abstract="false"
  native="false"
  synchronized="false"
@@ -3782,83 +1270,28 @@
 </method>
 </class>
 </package>
-<package name="org.mybatis.guice.transactional"
+<package name="org.mybatis.spring.mapper"
 >
-<class name="Isolation"
- extends="java.lang.Enum"
+<class name="ClassPathMapperScanner"
+ extends="org.springframework.context.annotation.ClassPathBeanDefinitionScanner"
  abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="getTransactionIsolationLevel"
- return="org.apache.ibatis.session.TransactionIsolationLevel"
- abstract="false"
- native="false"
- synchronized="false"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-</method>
-<method name="valueOf"
- return="org.mybatis.guice.transactional.Isolation"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
+<constructor name="ClassPathMapperScanner"
+ type="org.mybatis.spring.mapper.ClassPathMapperScanner"
+ static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="name" type="java.lang.String">
+<parameter name="registry" type="org.springframework.beans.factory.support.BeanDefinitionRegistry">
 </parameter>
-</method>
-<method name="values"
- return="org.mybatis.guice.transactional.Isolation[]"
- abstract="false"
- native="false"
- synchronized="false"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-</class>
-<class name="Transactional"
- extends="java.lang.Object"
- abstract="true"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="java.lang.annotation.Annotation">
-</implements>
-</class>
-<class name="TransactionalMethodInterceptor"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-<implements name="org.aopalliance.intercept.MethodInterceptor">
-</implements>
-<constructor name="TransactionalMethodInterceptor"
- type="org.mybatis.guice.transactional.TransactionalMethodInterceptor"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
 </constructor>
-<method name="invoke"
- return="java.lang.Object"
+<method name="doScan"
+ return="java.util.Set&lt;org.springframework.beans.factory.config.BeanDefinitionHolder&gt;"
  abstract="false"
  native="false"
  synchronized="false"
@@ -3867,12 +1300,10 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="invocation" type="org.aopalliance.intercept.MethodInvocation">
+<parameter name="basePackages" type="java.lang.String...">
 </parameter>
-<exception name="Throwable" type="java.lang.Throwable">
-</exception>
 </method>
-<method name="setSqlSessionManager"
+<method name="registerFilters"
  return="void"
  abstract="false"
  native="false"
@@ -3882,7 +1313,605 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="sqlSessionManager" type="org.apache.ibatis.session.SqlSessionManager">
+</method>
+<method name="setAddToConfig"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="addToConfig" type="boolean">
+</parameter>
+</method>
+<method name="setAnnotationClass"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="annotationClass" type="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;">
+</parameter>
+</method>
+<method name="setMarkerInterface"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="markerInterface" type="java.lang.Class&lt;?&gt;">
+</parameter>
+</method>
+<method name="setSqlSessionFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+<method name="setSqlSessionFactoryBeanName"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactoryBeanName" type="java.lang.String">
+</parameter>
+</method>
+<method name="setSqlSessionTemplate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplate" type="org.mybatis.spring.SqlSessionTemplate">
+</parameter>
+</method>
+<method name="setSqlSessionTemplateBeanName"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplateBeanName" type="java.lang.String">
+</parameter>
+</method>
+</class>
+<class name="MapperFactoryBean"
+ extends="org.mybatis.spring.support.SqlSessionDaoSupport"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapperFactoryBean"
+ type="org.mybatis.spring.mapper.MapperFactoryBean"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getObject"
+ return="T"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="getObjectType"
+ return="java.lang.Class&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isSingleton"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAddToConfig"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="addToConfig" type="boolean">
+</parameter>
+</method>
+<method name="setMapperInterface"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="mapperInterface" type="java.lang.Class&lt;T&gt;">
+</parameter>
+</method>
+</class>
+<class name="MapperScannerConfigurer"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapperScannerConfigurer"
+ type="org.mybatis.spring.mapper.MapperScannerConfigurer"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="afterPropertiesSet"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="getNameGenerator"
+ return="org.springframework.beans.factory.support.BeanNameGenerator"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="postProcessBeanDefinitionRegistry"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="registry" type="org.springframework.beans.factory.support.BeanDefinitionRegistry">
+</parameter>
+<exception name="BeansException" type="org.springframework.beans.BeansException">
+</exception>
+</method>
+<method name="postProcessBeanFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="beanFactory" type="org.springframework.beans.factory.config.ConfigurableListableBeanFactory">
+</parameter>
+</method>
+<method name="setAddToConfig"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="addToConfig" type="boolean">
+</parameter>
+</method>
+<method name="setAnnotationClass"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="annotationClass" type="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;">
+</parameter>
+</method>
+<method name="setApplicationContext"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="applicationContext" type="org.springframework.context.ApplicationContext">
+</parameter>
+</method>
+<method name="setBasePackage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="basePackage" type="java.lang.String">
+</parameter>
+</method>
+<method name="setBeanName"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="name" type="java.lang.String">
+</parameter>
+</method>
+<method name="setMarkerInterface"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="superClass" type="java.lang.Class&lt;?&gt;">
+</parameter>
+</method>
+<method name="setNameGenerator"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="nameGenerator" type="org.springframework.beans.factory.support.BeanNameGenerator">
+</parameter>
+</method>
+<method name="setProcessPropertyPlaceHolders"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="processPropertyPlaceHolders" type="boolean">
+</parameter>
+</method>
+<method name="setSqlSessionFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+<method name="setSqlSessionFactoryBeanName"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactoryName" type="java.lang.String">
+</parameter>
+</method>
+<method name="setSqlSessionTemplate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplate" type="org.mybatis.spring.SqlSessionTemplate">
+</parameter>
+</method>
+<method name="setSqlSessionTemplateBeanName"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplateName" type="java.lang.String">
+</parameter>
+</method>
+</class>
+</package>
+<package name="org.mybatis.spring.support"
+>
+<class name="SqlSessionDaoSupport"
+ extends="org.springframework.dao.support.DaoSupport"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="SqlSessionDaoSupport"
+ type="org.mybatis.spring.support.SqlSessionDaoSupport"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="checkDaoConfig"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</method>
+<method name="getSqlSession"
+ return="org.apache.ibatis.session.SqlSession"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setSqlSessionFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
+</parameter>
+</method>
+<method name="setSqlSessionTemplate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionTemplate" type="org.mybatis.spring.SqlSessionTemplate">
+</parameter>
+</method>
+</class>
+</package>
+<package name="org.mybatis.spring.transaction"
+>
+<class name="SpringManagedTransaction"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.apache.ibatis.transaction.Transaction">
+</implements>
+<constructor name="SpringManagedTransaction"
+ type="org.mybatis.spring.transaction.SpringManagedTransaction"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="dataSource" type="javax.sql.DataSource">
+</parameter>
+</constructor>
+<method name="close"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="SQLException" type="java.sql.SQLException">
+</exception>
+</method>
+<method name="commit"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="SQLException" type="java.sql.SQLException">
+</exception>
+</method>
+<method name="getConnection"
+ return="java.sql.Connection"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="SQLException" type="java.sql.SQLException">
+</exception>
+</method>
+<method name="rollback"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="SQLException" type="java.sql.SQLException">
+</exception>
+</method>
+</class>
+<class name="SpringManagedTransactionFactory"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="org.apache.ibatis.transaction.TransactionFactory">
+</implements>
+<constructor name="SpringManagedTransactionFactory"
+ type="org.mybatis.spring.transaction.SpringManagedTransactionFactory"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="newTransaction"
+ return="org.apache.ibatis.transaction.Transaction"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="conn" type="java.sql.Connection">
+</parameter>
+</method>
+<method name="newTransaction"
+ return="org.apache.ibatis.transaction.Transaction"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="dataSource" type="javax.sql.DataSource">
+</parameter>
+<parameter name="level" type="org.apache.ibatis.session.TransactionIsolationLevel">
+</parameter>
+<parameter name="autoCommit" type="boolean">
+</parameter>
+</method>
+<method name="setProperties"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="props" type="java.util.Properties">
 </parameter>
 </method>
 </class>
