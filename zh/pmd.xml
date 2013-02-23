@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2013-02-20T21:02:00.909">
-<file name="/Users/stripodi/Documents/mybatis/spring/target/checkout/src/main/java/org/mybatis/spring/SqlSessionTemplate.java">
+<pmd version="4.3" timestamp="2013-02-23T03:39:02.272">
+<file name="/home/eduardo/git/spring/src/main/java/org/mybatis/spring/SqlSessionTemplate.java">
 <violation beginline="16" endline="376" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.spring" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/Users/stripodi/Documents/mybatis/spring/target/checkout/src/main/java/org/mybatis/spring/SqlSessionUtils.java">
+<file name="/home/eduardo/git/spring/src/main/java/org/mybatis/spring/SqlSessionUtils.java">
 <violation beginline="16" endline="309" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.spring" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
