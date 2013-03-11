@@ -205,14 +205,10 @@
           <tt>_pagesize</tt></li>
         </ul>
 
-        <p>And they could be mapped as the follow in a select statement :</p>
-        <div class="source"><pre class="prettyprint">
-          
-          &lt;select id=&quot;getEmployee&quot; resultMap=&quot;employeeBatchResult&quot;&gt;
-            SELECT id, name, job FROM employees ORDER BY id ASC LIMIT #{_skiprows}, #{_pagesize}
-          &lt;/select&gt;
-          
-        </pre></div>
+        <p>And they could be mapped as the follow in a select statement:</p>
+        <div class="source"><pre class="prettyprint">&lt;select id=&quot;getEmployee&quot; resultMap=&quot;employeeBatchResult&quot;&gt;
+  SELECT id, name, job FROM employees ORDER BY id ASC LIMIT #{_skiprows}, #{_pagesize}
+&lt;/select&gt;</pre></div>
 
         <p>Follows below a sample configuration snippet:</p>
         
@@ -223,50 +219,46 @@
 
         <p><b>Explaining a more complex example:</b></p>
 
-        <div class="source"><pre class="prettyprint">
-          
-          &lt;bean id=&quot;dateBasedCriteriaReader&quot;
-                class=&quot;org.mybatis.spring.batch.MyBatisPagingItemReader&quot;
-                p:sqlSessionFactory-ref=&quot;batchReadingSessionFactory&quot;
-                p:parameterValues-ref=&quot;datesParameters&quot;
-                p:queryId=&quot;com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot&quot;
-                p:pageSize=&quot;${batch.export.interactions.chunk.size}&quot;
-                scope=&quot;step&quot;
-              /&gt;
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;dateBasedCriteriaReader&quot;
+    class=&quot;org.mybatis.spring.batch.MyBatisPagingItemReader&quot;
+    p:sqlSessionFactory-ref=&quot;batchReadingSessionFactory&quot;
+    p:parameterValues-ref=&quot;datesParameters&quot;
+    p:queryId=&quot;com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot&quot;
+    p:pageSize=&quot;${batch.export.interactions.chunk.size}&quot;
+    scope=&quot;step&quot;/&gt;
 
-          &lt;util:map id=&quot;datesParameters&quot; key-type=&quot;or.joda.time.DateTime&quot; scope=&quot;step&quot;&gt;
-            &lt;entry key=&quot;yesterday&quot;
-                   value=&quot;#{jobExecutionContext['EXTRACTION_START_DATE']}&quot;/&gt;
-            &lt;entry key=&quot;today&quot;
-                   value=&quot;#{jobExecutionContext['TODAY_DATE']}&quot;/&gt;
-            &lt;entry key=&quot;first_day_of_the_month&quot;
-                   value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}&quot;/&gt;
-            &lt;entry key=&quot;first_day_of_the_previous_month&quot;
-                   value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}&quot;/&gt;
-          &lt;/util:map&gt;
-          
-        </pre></div>
+&lt;util:map id=&quot;datesParameters&quot; key-type=&quot;or.joda.time.DateTime&quot; scope=&quot;step&quot;&gt;
+  &lt;entry key=&quot;yesterday&quot; 
+    value=&quot;#{jobExecutionContext['EXTRACTION_START_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;today&quot; 
+    value=&quot;#{jobExecutionContext['TODAY_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;first_day_of_the_month&quot; 
+    value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;first_day_of_the_previous_month&quot; 
+    value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}&quot;/&gt;
+&lt;/util:map&gt;</pre></div>
 
         <p>
-          The previous example makes use of a few different things :
-          </p><ul>
-            <li><tt>sqlSessionFactory</tt> : You can specify your own sessionFactory to the reader, it might be
-              useful if you want to read from several database</li>
-            <li><tt>queryId</tt>: If the base code have several tables or bases to read from, and that you have different
-              queries, it might be interesting to uses different mapper files with different namespaces.
-              so when referring to the query, don't forget about the namespace of the mapper file.</li>
-            <li><tt>parameterValues</tt>: You can pass additional parameters via this map, the example above uses
-              a map that is build by spring using a SpEL expression taking values from the <tt>jobExecutionContext</tt>.
-              The keys of the map will be used by MyBatis in the mapper file (ex:
-              <i>yesterday</i> could be used as <tt>#{yesterday,jdbcType=TIMESTAMP}</tt>).
-              Note that the map and the reader are both built in the <tt>step</tt> scope in order to be able to use
-              the Spring EL expression with the <tt>jobExecutionContext</tt>. Also if MyBatis type handlers
-              are correctly configured you can pass custom instances like the parameters of this map that are JodaTime
-              dates.</li>
-            <li><tt>pageSize</tt>: If the batch flow is configured with chunk size, it is relevant to pass this
-              information to the reader as well, which is done via this property.</li>
-          </ul>
+          The previous example makes use of a few different things:
+        </p>
         
+        <ul>
+          <li><tt>sqlSessionFactory</tt>: You can specify your own sessionFactory to the reader, it might be
+            useful if you want to read from several database</li>
+          <li><tt>queryId</tt>: If the base code have several tables or bases to read from, and that you have different
+            queries, it might be interesting to uses different mapper files with different namespaces.
+            so when referring to the query, don't forget about the namespace of the mapper file.</li>
+          <li><tt>parameterValues</tt>: You can pass additional parameters via this map, the example above uses
+            a map that is build by spring using a SpEL expression taking values from the <tt>jobExecutionContext</tt>.
+            The keys of the map will be used by MyBatis in the mapper file (ex:
+            <i>yesterday</i> could be used as <tt>#{yesterday,jdbcType=TIMESTAMP}</tt>).
+            Note that the map and the reader are both built in the <tt>step</tt> scope in order to be able to use
+            the Spring EL expression with the <tt>jobExecutionContext</tt>. Also if MyBatis type handlers
+            are correctly configured you can pass custom instances like the parameters of this map that are JodaTime
+            dates.</li>
+          <li><tt>pageSize</tt>: If the batch flow is configured with chunk size, it is relevant to pass this
+            information to the reader as well, which is done via this property.</li>
+        </ul>
 
       </div>
 
@@ -275,10 +267,10 @@
         <p>
           It is an <tt>ItemWriter</tt> that uses the batching features from <tt>SqlSessionTemplate</tt>
           to execute a batch of statements for all items provided.
-          The <tt>SqlSessionFactory</tt> needs to be configured with a <tt>BATCH</tt> executor.</p>
+          The <tt>SqlSessionFactory</tt> needs to be configured with a <tt>BATCH</tt> executor.
+        </p>
 
-
-          <p>
+        <p>
           The user must provide an mapped statement id that will be executed when <tt>write()</tt> is called.
           It is expected that <tt>write()</tt> is called inside a transaction.<br />
         </p>
@@ -290,11 +282,12 @@
   &lt;property name=&quot;statementId&quot; value=&quot;updateEmployee&quot; /&gt;
 &lt;/bean&gt;</pre></div>
 
-        <p><b>Writing to different tables using composite writers (with some caveats) :</b></p>
+        <p><b>Writing to different tables using composite writers (with some caveats):</b></p>
 
-        <p>This technique can only be used with version 3.2 of mybatis-spring, as there was an
+        <p>This technique can only be used with MyBatis 3.2+, as there was an
           <a class="externalLink" href="http://code.google.com/p/mybatis/issues/detail?id=741">issue</a> in previous
-          versions that made the writer misbehave during.</p>
+          versions that made the writer misbehave during.
+        </p>
 
         <p>If the batch needs to write complex data, like records with associations, or even to different databases, then
           it is possible to work around the fact that insert statements only insert in one table. In order to make it
@@ -306,99 +299,83 @@
         <p>In a processor craft the Spring Batch Item in such way it will <i>hold</i> all the different records.
           Suppose for each Item there is an <i>Interaction</i> that have one association
           <i>InteractionMetadata</i>, and two non associated rows <i>VisitorInteraction</i> and
-          <i>CustomerInteraction</i>, the holder object will look like :</p>
+          <i>CustomerInteraction</i>, the holder object will look like:
+        </p>
 
-        <div class="source"><pre class="prettyprint">
-          
-          public class InteractionRecordToWriteInMultipleTables {
-              private final VisitorInteraction visitorInteraction;
-              private final CustomerInteraction customerInteraction;
-              private final Interaction interaction;
-              // ...
-          }
+        <div class="source"><pre class="prettyprint">public class InteractionRecordToWriteInMultipleTables {
+  private final VisitorInteraction visitorInteraction;
+  private final CustomerInteraction customerInteraction;
+  private final Interaction interaction;
+  // ...
+}
 
-          public class Interaction {
-              private final InteractionMetadata interactionMetadata;
-          }
-          
-        </pre></div>
+public class Interaction {
+  private final InteractionMetadata interactionMetadata;
+}</pre></div>
 
         <p>Then in the spring configuration there will be a <tt>CompositeItemWriter</tt> that will use delegate
           writers specifically configured for each kind of records. Note that as the <i>InteractionMetadata</i> is
-          an association in the example it will need to be written first so that Interaction can have the updated key.</p>
+          an association in the example it will need to be written first so that Interaction can have the updated key.
+        </p>
 
-        <div class="source"><pre class="prettyprint">
-          
-          &lt;bean id=&quot;interactionsItemWriter&quot;
-                class=&quot;org.springframework.batch.item.support.CompositeItemWriter&quot;&gt;
-            &lt;property name=&quot;delegates&quot;&gt;
-              &lt;list&gt;
-                &lt;ref bean=&quot;visitorInteractionsWriter&quot;/&gt;
-                &lt;ref bean=&quot;customerInteractionsWriter&quot;/&gt;
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;interactionsItemWriter&quot; class=&quot;org.springframework.batch.item.support.CompositeItemWriter&quot;&gt;
+  &lt;property name=&quot;delegates&quot;&gt;
+    &lt;list&gt;
+      &lt;ref bean=&quot;visitorInteractionsWriter&quot;/&gt;
+      &lt;ref bean=&quot;customerInteractionsWriter&quot;/&gt;
 
-                &lt;!-- Order is important --&gt;
-                &lt;ref bean=&quot;interactionMetadataWriter&quot;/&gt;
-                &lt;ref bean=&quot;interactionWriter&quot;/&gt;
-              &lt;/list&gt;
-            &lt;/property&gt;
-          &lt;/bean&gt;
-          
-        </pre></div>
+      &lt;!-- Order is important --&gt;
+      &lt;ref bean=&quot;interactionMetadataWriter&quot;/&gt;
+      &lt;ref bean=&quot;interactionWriter&quot;/&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</pre></div>
 
-        <p>Then each delegate writer will be configured as needed ; for example for <i>Interaction</i> and
-          <i>InteractionMetadata</i>:</p>
+        <p>Then each delegate writer will be configured as needed; for example for <i>Interaction</i> and
+          <i>InteractionMetadata</i>:
+        </p>
 
-        <div class="source"><pre class="prettyprint">
-          
-          &lt;bean id=&quot;interactionMetadataWriter&quot;
-                class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
-                p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
-                p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteractionMetadata&quot;
-              /&gt;
-          &lt;bean id=&quot;interactionWriter&quot;
-                class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
-                p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
-                p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteraction&quot;
-              /&gt;
-          
-        </pre></div>
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;interactionMetadataWriter&quot;
+  class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
+  p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
+  p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteractionMetadata&quot;/&gt;
+&lt;bean id=&quot;interactionWriter&quot;
+  class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
+  p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
+  p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteraction&quot;/&gt;</pre></div>
 
         <p>Same as the reader the <tt>statementId</tt> can refer to the statement with the prefixed namespace.</p>
 
         <p>Now in the mapper file the statement have to be crafted for each kind of records in the following way:</p>
 
-        <div class="source"><pre class="prettyprint">
-          
-          &lt;insert id=&quot;insertInteractionMetadata&quot;
-                  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
-                  useGeneratedKeys=&quot;true&quot;
-                  keyProperty=&quot;interaction.interactionMetadata.id&quot;
-                  keyColumn=&quot;id&quot;&gt;
-            &lt;!-- the insert statement using #{interaction.interactionMetadata.property,jdbcType=...} --&gt;
-          &lt;/insert&gt;
-          &lt;insert id=&quot;insertInteraction&quot;
-                  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
-                  useGeneratedKeys=&quot;true&quot;
-                  keyProperty=&quot;interaction.id&quot;
-                  keyColumn=&quot;id&quot;&gt;
-            &lt;!--
-             the insert statement using #{interaction.property,jdbcType=...} for regular properties
-             and #{interaction.interactionMetadata.property,jdbcType=...} for the InteractionMetadata property
-            --&gt;
-          &lt;/insert&gt;
-          
-        </pre></div>
+        <div class="source"><pre class="prettyprint">&lt;insert id=&quot;insertInteractionMetadata&quot;
+  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
+  useGeneratedKeys=&quot;true&quot;
+  keyProperty=&quot;interaction.interactionMetadata.id&quot;
+  keyColumn=&quot;id&quot;&gt;
+  &lt;!-- the insert statement using #{interaction.interactionMetadata.property,jdbcType=...} --&gt;
+&lt;/insert&gt;
+&lt;insert id=&quot;insertInteraction&quot;
+  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
+  useGeneratedKeys=&quot;true&quot;
+  keyProperty=&quot;interaction.id&quot;
+  keyColumn=&quot;id&quot;&gt;
+  &lt;!--
+   the insert statement using #{interaction.property,jdbcType=...} for regular properties
+   and #{interaction.interactionMetadata.property,jdbcType=...} for the InteractionMetadata property
+  --&gt;
+&lt;/insert&gt;</pre></div>
 
         <p>What's happening is that first the <tt>insertInteractionMetadata</tt> will be called, and the update
           statement is configured to return the ids created by the jdbc driver (<tt>keyProperty</tt> and <tt>keyColumn</tt>).
           As the <tt>InteractionMetadata</tt> object were updated by this query the next query can be used to write the parent
-          object <tt>Interaction</tt> via <tt>insertInteraction</tt>.</p>
+          object <tt>Interaction</tt> via <tt>insertInteraction</tt>.
+        </p>
 
         <p><b><i>However note that JDBC driver don't behave the same in this regard. At the time of this writing
           the H2 driver 1.3.168 will only return the latest index even in BATCH mode (see org.h2.jdbc.JdbcStatement#getGeneratedKeys),
-          while the MySQL JDBC driver will behave as expected and return all the IDs.</i></b></p>
-
-
+          while the MySQL JDBC driver will behave as expected and return all the IDs.</i></b>
+        </p>
       </div>
     </div>
   
