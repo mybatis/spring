@@ -173,65 +173,215 @@
   
     <div class="section"><h2>Spring Batch<a name="Spring_Batch"></a></h2>
       <p>
-        As of version 1.1.0 MyBatis-Spring provides two beans for building Spring Batch applications: the <tt>MyBatisPagingItemReader</tt> 
-        and the <tt>MyBatisBatchItemWriter</tt>. Both beans and this documentation are ports of their corresponding iBATIS 2.x versions 
-        that are provided by default by in the Spring Batch bundle.
+        Desde la versi&#xf3;n 1.1.0 MyBatis-Spring proporciona dos beans para construir aplicaciones Spring Batch: <tt>MyBatisPagingItemReader</tt> 
+        y <tt>MyBatisBatchItemWriter</tt>. Ambos benas y su documentaci&#xf3;n son ports de sus correspondientes versiones de iBATIS 2.x
+        que se proporcionan por defecto en el paquete de Spring Batch.
       </p>
       
       <p>
-        <span class="label important">NOTE</span>This about <a class="externalLink" href="http://static.springsource.org/spring-batch/">Spring Batch</a> and not
-        about MyBatis batch SqlSessions. For information about batch sessions go to section: Using an SqlSession.
+        <span class="label important">NOTA</span> 
+        Esta secci&#xf3;n se refiere a <a class="externalLink" href="http://static.springsource.org/spring-batch/">Spring Batch</a> y no a 
+        sesiones batch de MyBatis. Para obtener informaci&#xf3;n sobre las sesiones batch ve a la secci&#xf3;n
+        <a href="sqlsession.html">Usnado un SqlSession</a>.
       </p>
       
       <div class="section"><h3>MyBatisPagingItemReader<a name="MyBatisPagingItemReader"></a></h3>
         <p>
-          This bean is an <tt>IteamReader</tt> that reads records from a database using MyBatis in a paging fashion.
+          Este bean es un <tt>IteamReader</tt> que lee registros de una base de datos usando MyBatis de forma paginada.
         </p>
         
-		<p>
-		  It executes the query specified as the setQueryId property to retrieve requested data. 
-		  The query is executed using paged requests of a size specified in setPageSize property. 
-		  Additional pages are requested when needed as <tt>read()</tt> method is called, returning an object corresponding
-          to current position. 
-          
-          Some standard query parameters are provided by the reader and the SQL in the named query must use some or all of these parameters
-          (depending on the SQL variant) to construct a result set of the required size. The parameters are:
+        <p>
+          Ejecuta la sentencia especificada mediante la propiedad <tt>setQueryId</tt> para obtener los datos.
+          La sentencia se ejecuta usando peticiones paginadas del tama&#xf1;o indicando en la propiedad <tt>setPageSize</tt>.
+          Al llamar al m&#xe9;todo <tt>read()</tt> &#xe9;ste devuelve el objeto que corresponde a la posici&#xf3;n actual 
+          y solicita m&#xe1;s p&#xe1;ginas si es necesario.
+
+          El reader pasa algunos parametros est&#xe1;ndar y la SQL deber&#xe1; hacer uso de algunos de ellos para construir un resultset 
+          del tama&#xf1;o requerido. Los parametros son:
         </p>
 
-		 <ul>
-		 <li><tt>_page</tt>: the page number to be read (starting at 0)</li>
-		 <li><tt>_pagesize</tt>: the size of the pages, i.e. the number of rows to return</li>
-		 <li><tt>_skiprows</tt>: the product of <tt>_page</tt> and
-		 <tt>_pagesize</tt></li>
-		 </ul>
- 
-        <p>Follows below a sample configuration snippet:</p>
+        <ul>
+          <li><tt>_page</tt>: el n&#xfa;mero de p&#xe1;gina a leer (comenzando en 0)</li>
+          <li><tt>_pagesize</tt>: el tama&#xf1;o de la p&#xe1;gina, es decir, el n&#xfa;mero de filas a devolver</li>
+          <li><tt>_skiprows</tt>: el producto de <tt>_page</tt> por <tt>_pagesize</tt></li>
+        </ul>
+
+        <p>Se pueden mapear en un statement de tipo select de la siguiente forma:</p>
+        <div class="source"><pre class="prettyprint">&lt;select id=&quot;getEmployee&quot; resultMap=&quot;employeeBatchResult&quot;&gt;
+  SELECT id, name, job FROM employees ORDER BY id ASC LIMIT #{_skiprows}, #{_pagesize}
+&lt;/select&gt;</pre></div>
+
+        <p>A continuaci&#xf3;n se muestra un ejemplo de configuraci&#xf3;n:</p>
         
         <div class="source"><pre class="prettyprint">&lt;bean id=&quot;reader&quot; class=&quot;org.mybatis.spring.batch.MyBatisPagingItemReader&quot;&gt;
   &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt;
   &lt;property name=&quot;queryId&quot; value=&quot;getEmployee&quot; /&gt;
 &lt;/bean&gt;</pre></div>
+
+        <p><b>Veamos un ejemplo m&#xe1;s complejo:</b></p>
+
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;dateBasedCriteriaReader&quot;
+    class=&quot;org.mybatis.spring.batch.MyBatisPagingItemReader&quot;
+    p:sqlSessionFactory-ref=&quot;batchReadingSessionFactory&quot;
+    p:parameterValues-ref=&quot;datesParameters&quot;
+    p:queryId=&quot;com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot&quot;
+    p:pageSize=&quot;${batch.export.interactions.chunk.size}&quot;
+    scope=&quot;step&quot;/&gt;
+
+&lt;util:map id=&quot;datesParameters&quot; key-type=&quot;or.joda.time.DateTime&quot; scope=&quot;step&quot;&gt;
+  &lt;entry key=&quot;yesterday&quot; 
+    value=&quot;#{jobExecutionContext['EXTRACTION_START_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;today&quot; 
+    value=&quot;#{jobExecutionContext['TODAY_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;first_day_of_the_month&quot; 
+    value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}&quot;/&gt;
+  &lt;entry key=&quot;first_day_of_the_previous_month&quot; 
+    value=&quot;#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}&quot;/&gt;
+&lt;/util:map&gt;</pre></div>
+
+        <p>
+          El ejemplo anterior hace uso de tres cosas distintas:
+        </p>
+        
+        <ul>
+          <li><tt>sqlSessionFactory</tt>: Puedes tu propio sessionFactory, podr&#xed;a ser &#xfa;til si quires leer de 
+            varias bases de datos.</li>
+          <li><tt>queryId</tt>: Si el c&#xf3;digo accede a varias tablas, y tienes distintas sentencias de consulta,
+             puede ser interesante usar ficheros de mapeo distintos con namespaces distintos.
+             En este caso, al referirte a la query, no olvides incluir el namespace correspondiente.</li>
+          <li><tt>parameterValues</tt>: Puedes pasar parametros adicionales en este mapa, el ejemplo de arriba
+            usa un mapa que se construye usando una expresion SpEL y obteniendo valores del <tt>jobExecutionContext</tt>.
+            Las claves del mapa puede usarse en el fichero mapper de MyBatis (por ejemplo:
+            <i>yesterday</i> se puede usar como <tt>#{yesterday,jdbcType=TIMESTAMP}</tt>).
+            Observa que el mapa y el reader se consutruyen en un solo <tt>step</tt> para que sea posible usar la expresi&#xf3;n 
+            SpEL con el <tt>jobExecutionContext</tt>. Adicionalmente si los type handlers de MyBatis
+            est&#xe1;n configurados correctamente puedes pasar instancias personalizadas como los parametros del ejemplo que son
+            fechas JodaTime.</li>
+          <li><tt>pageSize</tt>: Si le flujo batch est&#xe1; configurado con un tama&#xf1;o de bloque (chunk size), 
+            es importante pasar esta informaci&#xf3;n al reader, y eso se hace mediante esta propiedad.</li>
+        </ul>
+
       </div>
 
       <div class="section"><h3>MyBatisBatchItemWriter<a name="MyBatisBatchItemWriter"></a></h3>
       
-      <p>
-        It is an <tt>ItemWriter</tt> that uses the batching features from <tt>SqlSessionTemplate</tt>
-        to execute a batch of statements for all items provided.
-      </p>
+        <p>
+          Es un <tt>ItemWriter</tt> que usa las capacidades de batch de <tt>SqlSessionTemplate</tt> para 
+          ejecutar sentencias batch para todos los elementos (items) proporcionados. 
+          El <tt>SqlSessionFactory</tt> debe configurarse con un executor de tipo <tt>BATCH</tt>.
+        </p>
+
+        <p>
+          Ejecuta la sentencia indicada en la propiedad <tt>statementId</tt> cuando se invoca a <tt>write()</tt>.
+          Se supone que <tt>write()</tt> se invoca dentro de una transacci&#xf3;n.<br />
+        </p>
  
-      <p>
-        The user must provide an mapped statement id that will be executed when <tt>write()</tt> is called.
-        It is expected that <tt>write()</tt> is called inside a transaction.<br />
-      </p>
- 
-        <p>Follows below a sample configuration snippet:</p>
+        <p>A continuaci&#xf3;n se muestra un ejemplo de configuraci&#xf3;n:</p>
         
         <div class="source"><pre class="prettyprint">&lt;bean id=&quot;writer&quot; class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;&gt;
   &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt;
   &lt;property name=&quot;statementId&quot; value=&quot;updateEmployee&quot; /&gt;
 &lt;/bean&gt;</pre></div>
- 
+
+        <p><b>Escribiendo en distintas tablas usando composite writers (con algunos condicionantes):</b></p>
+
+        <p>Esta t&#xe9;cnica s&#xf3;lo puede usarse con MyBatis 3.2+, por que hab&#xed;a un 
+          <a class="externalLink" href="http://code.google.com/p/mybatis/issues/detail?id=741">error</a> 
+          en las versiones anteriores que hac&#xed;an que el writer funcionara de forma incorrecta.
+        </p>
+
+        <p>Si el batch necesita escribir datos complejos, como registros con asociaciones, o en distintas bases de datos,
+          entonces es necesario sortear el problema de que los insert statements solo pueden escribir en una tabla.
+          Para conseguir esto debes preparar un <i>Item</i> para que sea escrito por el writer. Sin embargo, 
+          dependiendo de las circunstancias puede ser interesante usar la siguiente t&#xe9;cnica.
+          El truco siguiente funciona con items con asociaciones simples o con tablas no relacionadas.
+        </p>
+
+        <p>
+          Elabora el <tt>item</tt> de forma que <i>contenta</i> todos los resgistros distintos.
+          Supon que para cada <tt>item</tt> hay una <i>Interaction</i> que tiene una asociaci&#xf3;n
+          <i>InteractionMetadata</i> y dos filas no asociadas <i>VisitorInteraction</i> and
+          <i>CustomerInteraction</i>. El objeto contenedor ser&#xe1; de la siguiente forma:
+        </p>
+
+        <div class="source"><pre class="prettyprint">public class InteractionRecordToWriteInMultipleTables {
+  private final VisitorInteraction visitorInteraction;
+  private final CustomerInteraction customerInteraction;
+  private final Interaction interaction;
+  // ...
+}
+
+public class Interaction {
+  private final InteractionMetadata interactionMetadata;
+}</pre></div>
+
+        <p>
+          Entonces en la configuraci&#xf3;n de spring habr&#xe1; un <tt>CompositeItemWriter</tt> que usar&#xe1; writers
+          delegados configurados especificamente para cada tipo de registro. Fijate que el <i>InteractionMetadata</i> 
+          es una asociaci&#xf3;in en el ejemplo por lo que debe ser escrita antes para que la Interaction pueda recibir la clave
+          generada.
+        </p>
+
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;interactionsItemWriter&quot; class=&quot;org.springframework.batch.item.support.CompositeItemWriter&quot;&gt;
+  &lt;property name=&quot;delegates&quot;&gt;
+    &lt;list&gt;
+      &lt;ref bean=&quot;visitorInteractionsWriter&quot;/&gt;
+      &lt;ref bean=&quot;customerInteractionsWriter&quot;/&gt;
+
+      &lt;!-- Order is important --&gt;
+      &lt;ref bean=&quot;interactionMetadataWriter&quot;/&gt;
+      &lt;ref bean=&quot;interactionWriter&quot;/&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</pre></div>
+
+        <p>Cada writer delegados se configura como sea necesario, por ejemplo para <i>Interaction</i> y
+          <i>InteractionMetadata</i>:
+        </p>
+
+        <div class="source"><pre class="prettyprint">&lt;bean id=&quot;interactionMetadataWriter&quot;
+  class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
+  p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
+  p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteractionMetadata&quot;/&gt;
+&lt;bean id=&quot;interactionWriter&quot;
+  class=&quot;org.mybatis.spring.batch.MyBatisBatchItemWriter&quot;
+  p:sqlSessionTemplate-ref=&quot;batchSessionTemplate&quot;
+  p:statementId=&quot;com.my.name.space.batch.InteractionRecordToWriteInMultipleTablesMapper.insertInteraction&quot;/&gt;</pre></div>
+
+        <p>Al igual que con el reader el <tt>statementId</tt> puede hacer referencia al statement con un namespace como prefijo.</p>
+
+        <p>Ahora es debe elaborarse el fichero de mapeo para cada tipo de registro, de la siguiente forma:</p>
+
+        <div class="source"><pre class="prettyprint">&lt;insert id=&quot;insertInteractionMetadata&quot;
+  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
+  useGeneratedKeys=&quot;true&quot;
+  keyProperty=&quot;interaction.interactionMetadata.id&quot;
+  keyColumn=&quot;id&quot;&gt;
+  &lt;!-- the insert statement using #{interaction.interactionMetadata.property,jdbcType=...} --&gt;
+&lt;/insert&gt;
+&lt;insert id=&quot;insertInteraction&quot;
+  parameterType=&quot;com.my.batch.interactions.item.InteractionRecordToWriteInMultipleTables&quot;
+  useGeneratedKeys=&quot;true&quot;
+  keyProperty=&quot;interaction.id&quot;
+  keyColumn=&quot;id&quot;&gt;
+  &lt;!--
+   the insert statement using #{interaction.property,jdbcType=...} for regular properties
+   and #{interaction.interactionMetadata.property,jdbcType=...} for the InteractionMetadata property
+  --&gt;
+&lt;/insert&gt;</pre></div>
+
+        <p>
+          Lo que sucede es que primeramente se llamar&#xe1; a <tt>insertInteractionMetadata</tt>, y la sentencia de update 
+          est&#xe1; configurada para devolver las claves autogeneradas (<tt>keyProperty</tt> y <tt>keyColumn</tt>).
+          Una vez que el <tt>InteractionMetadata</tt> se ha almacenado por esta sentencia se puede ejecutar la siguiente para
+          escribir el objeto padre <tt>Interaction</tt> mediante <tt>insertInteraction</tt>.
+        </p>
+
+        <p><b><i>
+          Sin embargo, ten en cuenta que los drivers JDBC se comportan distinto en este aspecto. A la fecha en la que se escribe esto
+          el driver H2 1.3.168 solo devuelve el &#xfa;ltimo ID incluso en modo BATCH (see org.h2.jdbc.JdbcStatement#getGeneratedKeys),
+          mientras que el driver JDBC de MySQL se comporta como es de esperar y devuelve todos los IDs.</i></b>
+        </p>
       </div>
     </div>
   

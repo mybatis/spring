@@ -244,9 +244,9 @@
         
         <ul>
           <li><tt>sqlSessionFactory</tt>: You can specify your own sessionFactory to the reader, it might be
-            useful if you want to read from several database</li>
-          <li><tt>queryId</tt>: If the base code have several tables or bases to read from, and that you have different
-            queries, it might be interesting to uses different mapper files with different namespaces.
+            useful if you want to read from several databases.</li>
+          <li><tt>queryId</tt>: If the base code have several tables or databases to read from, and that you have different
+            queries, it might be interesting to use different mapper files with different namespaces.
             so when referring to the query, don't forget about the namespace of the mapper file.</li>
           <li><tt>parameterValues</tt>: You can pass additional parameters via this map, the example above uses
             a map that is build by spring using a SpEL expression taking values from the <tt>jobExecutionContext</tt>.
@@ -271,7 +271,7 @@
         </p>
 
         <p>
-          The user must provide an mapped statement id that will be executed when <tt>write()</tt> is called.
+          When <tt>write()</tt> is called it executes the mapped statement indicated in the property <tt>statementId</tt>. 
           It is expected that <tt>write()</tt> is called inside a transaction.<br />
         </p>
  
@@ -286,7 +286,7 @@
 
         <p>This technique can only be used with MyBatis 3.2+, as there was an
           <a class="externalLink" href="http://code.google.com/p/mybatis/issues/detail?id=741">issue</a> in previous
-          versions that made the writer misbehave during.
+          versions that made the writer misbehave.
         </p>
 
         <p>If the batch needs to write complex data, like records with associations, or even to different databases, then
@@ -372,7 +372,7 @@ public class Interaction {
           object <tt>Interaction</tt> via <tt>insertInteraction</tt>.
         </p>
 
-        <p><b><i>However note that JDBC driver don't behave the same in this regard. At the time of this writing
+        <p><b><i>However note that JDBC drivers don't behave the same in this regard. At the time of this writing
           the H2 driver 1.3.168 will only return the latest index even in BATCH mode (see org.h2.jdbc.JdbcStatement#getGeneratedKeys),
           while the MySQL JDBC driver will behave as expected and return all the IDs.</i></b>
         </p>

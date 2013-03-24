@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2013-03-24T15:58:59.919">
+<pmd version="4.3" timestamp="2013-03-24T23:11:37.348">
 <file name="/home/eduardo/git/spring2/src/main/java/org/mybatis/spring/SqlSessionTemplate.java">
 <violation beginline="16" endline="376" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.mybatis.spring" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
