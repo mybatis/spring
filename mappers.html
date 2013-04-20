@@ -335,9 +335,9 @@
 
       <p>
         Notice that there is no need to specify a <tt>SqlSessionFactory</tt> or
-        <tt>SqlSessionTemplate</tt> because the <tt>&lt;mybatis:scan/&gt;</tt>
-        will create <tt>MapperFactoryBean</tt>s that can be autowired. But if you are
-        using more than one <tt>DataSource</tt> autowire may not work for you. 
+        <tt>SqlSessionTemplate</tt> as an attribute in the <tt>&lt;mybatis:scan/&gt;</tt>
+        element because it will create <tt>MapperFactoryBean</tt>s that can be autowired. 
+        But if you are using more than one <tt>DataSource</tt> autowire may not work for you. 
         In this case you can use the <tt>factory-ref</tt> or
         <tt>template-ref</tt> attributes to set the right bean name to use.
       </p>
