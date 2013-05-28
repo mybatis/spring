@@ -1,4 +1,4 @@
---    Copyright 2010-2012 the original author or authors.
+--    Copyright 2010-2012 The myBatis Team
 
 --    Licensed under the Apache License, Version 2.0 (the "License");
 --    you may not use this file except in compliance with the License.
@@ -18,5 +18,5 @@ create table employees (
     id integer not null,
     name varchar(80) not null,
     salary integer not null,
-    constraint pk_employee primary key (id)
+    skill varchar(80) not null
 );
