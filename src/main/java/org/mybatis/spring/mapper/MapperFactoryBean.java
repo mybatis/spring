@@ -48,14 +48,14 @@ import org.springframework.beans.factory.FactoryBean;
  * Note that this factory can only inject <em>interfaces</em>, not concrete classes.
  *
  * @author Eduardo Macarron
- * 
+ *
  * @see SqlSessionTemplate
  * @version $Id$
  */
 public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements FactoryBean<T> {
 
+  private T mapperInstance;
   private Class<T> mapperInterface;
-
   private boolean addToConfig = true;
 
   /**
@@ -108,14 +108,19 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
    * {@inheritDoc}
    */
   public T getObject() throws Exception {
-    return getSqlSession().getMapper(this.mapperInterface);
+    if (this.mapperInstance == null) {
+      this.mapperInstance = getSqlSession().getMapper(this.mapperInterface);
+    }
+    return this.mapperInstance;
   }
 
   /**
    * {@inheritDoc}
    */
-  public Class<T> getObjectType() {
-    return this.mapperInterface;
+  public Class<? extends T> getObjectType() {
+    return this.mapperInstance != null
+            ? this.mapperInstance.getClass().asSubclass(this.mapperInterface)
+            : this.mapperInterface;
   }
 
   /**
