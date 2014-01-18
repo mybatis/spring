@@ -360,7 +360,7 @@
 <a class="jxr_linenumber" name="350" href="#350">350</a> <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="351" href="#351">351</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../org/mybatis/spring/SqlSessionTemplate.html">SqlSessionInterceptor</a> <strong class="jxr_keyword">implements</strong> InvocationHandler {
 <a class="jxr_linenumber" name="352" href="#352">352</a>     <strong class="jxr_keyword">public</strong> Object invoke(Object proxy, Method method, Object[] args) <strong class="jxr_keyword">throws</strong> Throwable {
-<a class="jxr_linenumber" name="353" href="#353">353</a>       <strong class="jxr_keyword">final</strong> SqlSession sqlSession = getSqlSession(
+<a class="jxr_linenumber" name="353" href="#353">353</a>       SqlSession sqlSession = getSqlSession(
 <a class="jxr_linenumber" name="354" href="#354">354</a>           SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.sqlSessionFactory,
 <a class="jxr_linenumber" name="355" href="#355">355</a>           SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.executorType,
 <a class="jxr_linenumber" name="356" href="#356">356</a>           SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.exceptionTranslator);
@@ -375,19 +375,24 @@
 <a class="jxr_linenumber" name="365" href="#365">365</a>       } <strong class="jxr_keyword">catch</strong> (Throwable t) {
 <a class="jxr_linenumber" name="366" href="#366">366</a>         Throwable unwrapped = unwrapThrowable(t);
 <a class="jxr_linenumber" name="367" href="#367">367</a>         <strong class="jxr_keyword">if</strong> (SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.exceptionTranslator != <strong class="jxr_keyword">null</strong> &amp;&amp; unwrapped instanceof PersistenceException) {
-<a class="jxr_linenumber" name="368" href="#368">368</a>           Throwable translated = SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.exceptionTranslator.translateExceptionIfPossible((PersistenceException) unwrapped);
-<a class="jxr_linenumber" name="369" href="#369">369</a>           <strong class="jxr_keyword">if</strong> (translated != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="370" href="#370">370</a>             unwrapped = translated;
-<a class="jxr_linenumber" name="371" href="#371">371</a>           }
-<a class="jxr_linenumber" name="372" href="#372">372</a>         }
-<a class="jxr_linenumber" name="373" href="#373">373</a>         <strong class="jxr_keyword">throw</strong> unwrapped;
-<a class="jxr_linenumber" name="374" href="#374">374</a>       } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="375" href="#375">375</a>         closeSqlSession(sqlSession, SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.sqlSessionFactory);
-<a class="jxr_linenumber" name="376" href="#376">376</a>       }
-<a class="jxr_linenumber" name="377" href="#377">377</a>     }
-<a class="jxr_linenumber" name="378" href="#378">378</a>   }
-<a class="jxr_linenumber" name="379" href="#379">379</a> 
-<a class="jxr_linenumber" name="380" href="#380">380</a> }
+<a class="jxr_linenumber" name="368" href="#368">368</a>           <em class="jxr_comment">// release the connection to avoid a deadlock if the translator is no loaded. See issue #22</em>
+<a class="jxr_linenumber" name="369" href="#369">369</a>           closeSqlSession(sqlSession, SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.sqlSessionFactory);
+<a class="jxr_linenumber" name="370" href="#370">370</a>           sqlSession = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="371" href="#371">371</a>           Throwable translated = SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.exceptionTranslator.translateExceptionIfPossible((PersistenceException) unwrapped);
+<a class="jxr_linenumber" name="372" href="#372">372</a>           <strong class="jxr_keyword">if</strong> (translated != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="373" href="#373">373</a>             unwrapped = translated;
+<a class="jxr_linenumber" name="374" href="#374">374</a>           }
+<a class="jxr_linenumber" name="375" href="#375">375</a>         }
+<a class="jxr_linenumber" name="376" href="#376">376</a>         <strong class="jxr_keyword">throw</strong> unwrapped;
+<a class="jxr_linenumber" name="377" href="#377">377</a>       } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="378" href="#378">378</a>         <strong class="jxr_keyword">if</strong> (sqlSession != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="379" href="#379">379</a>           closeSqlSession(sqlSession, SqlSessionTemplate.<strong class="jxr_keyword">this</strong>.sqlSessionFactory);
+<a class="jxr_linenumber" name="380" href="#380">380</a>         }
+<a class="jxr_linenumber" name="381" href="#381">381</a>       }
+<a class="jxr_linenumber" name="382" href="#382">382</a>     }
+<a class="jxr_linenumber" name="383" href="#383">383</a>   }
+<a class="jxr_linenumber" name="384" href="#384">384</a> 
+<a class="jxr_linenumber" name="385" href="#385">385</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

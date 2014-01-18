@@ -227,6 +227,18 @@
   
 
   
+  
+  
+  
+
+  
+   
+  
+  
+  
+  
+
+  
    
   
   
@@ -242,11 +254,6 @@
 
   
    
-  
-  
-  
-  
-
   
   
   
@@ -325,6 +332,14 @@ Summary:
   
 
   
+  
+  
+
+  
+  
+  
+
+  
     extends AbstractPagingItemReader&lt;T&gt;<br/>
   
   
@@ -345,11 +360,33 @@ Summary:
 
     <tr>
          	
-        <td colspan="4" class="jd-inheritance-class-cell">java.lang.Object</td>
+        <td colspan="6" class="jd-inheritance-class-cell">java.lang.Object</td>
     </tr>
     
 
     <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="5" class="jd-inheritance-class-cell">org.springframework.batch.item.ItemStreamSupport</td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="4" class="jd-inheritance-class-cell">org.springframework.batch.item.support.AbstractItemStreamItemReader&lt;T&gt;</td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
@@ -361,6 +398,10 @@ Summary:
         
             <td class="jd-inheritance-space">&nbsp;</td>
         
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
         <td colspan="2" class="jd-inheritance-class-cell">org.springframework.batch.item.database.AbstractPagingItemReader&lt;T&gt;</td>
@@ -368,6 +409,10 @@ Summary:
     
 
     <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
         
             <td class="jd-inheritance-space">&nbsp;</td>
         
@@ -491,6 +536,8 @@ org.springframework.batch.item.database.AbstractPagingItemReader
   </div>
 </div>
 </td></tr>
+
+
 
 
 
@@ -966,10 +1013,10 @@ From class
             
             
             
-            ExecutionContextUserSupport</nobr>
+            boolean</nobr>
         </td>
         <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">getExecutionContextUserSupport</span>()</nobr>
+        <span class="sympad">isSaveState</span>()</nobr>
         
   </td></tr>
 
@@ -982,10 +1029,10 @@ From class
             
             
             
-            boolean</nobr>
+            void</nobr>
         </td>
         <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">isSaveState</span>()</nobr>
+        <span class="sympad">jumpToItem</span>(int arg0)</nobr>
         
   </td></tr>
 
@@ -1001,7 +1048,147 @@ From class
             void</nobr>
         </td>
         <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">jumpToItem</span>(int arg0)</nobr>
+        <span class="sympad">open</span>(ExecutionContext arg0)</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            T</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">read</span>()</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            void</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">setCurrentItemCount</span>(int arg0)</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            void</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">setMaxItemCount</span>(int arg0)</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            void</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">setSaveState</span>(boolean arg0)</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            void</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">update</span>(ExecutionContext arg0)</nobr>
+        
+  </td></tr>
+
+
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-org.springframework.batch.item.ItemStreamSupport" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-org.springframework.batch.item.ItemStreamSupport-trigger"
+          src="../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From class
+
+  org.springframework.batch.item.ItemStreamSupport
+
+<div id="inherited-methods-org.springframework.batch.item.ItemStreamSupport">
+  <div id="inherited-methods-org.springframework.batch.item.ItemStreamSupport-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-org.springframework.batch.item.ItemStreamSupport-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            void</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">close</span>()</nobr>
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol"><nobr>
+            
+            
+            
+            
+            
+            String</nobr>
+        </td>
+        <td class="jd-linkcol" width="100%"><nobr>
+        <span class="sympad">getExecutionContextKey</span>(String arg0)</nobr>
         
   </td></tr>
 
@@ -1027,45 +1214,13 @@ From class
         <td class="jd-typecol"><nobr>
             
             
-            final
-            
-            
-            T</nobr>
-        </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">read</span>()</nobr>
-        
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
-            
-            
             
             
             
             void</nobr>
         </td>
         <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">setCurrentItemCount</span>(int arg0)</nobr>
-        
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
-            
-            
-            
-            
-            
-            void</nobr>
-        </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">setMaxItemCount</span>(int arg0)</nobr>
+        <span class="sympad">setExecutionContextName</span>(String arg0)</nobr>
         
   </td></tr>
 
@@ -1088,22 +1243,6 @@ From class
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
-            
-            
-            
-            
-            
-            void</nobr>
-        </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">setSaveState</span>(boolean arg0)</nobr>
-        
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol"><nobr>
             
             
@@ -1440,8 +1579,6 @@ From interface
   </div>
 </div>
 </td></tr>
-
-
 
 
 
