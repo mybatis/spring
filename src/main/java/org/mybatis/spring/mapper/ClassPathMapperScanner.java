@@ -115,7 +115,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));
       acceptAllInterfaces = false;
     }
-
+    
     // override AssignableTypeFilter to ignore matches on the actual marker interface
     if (this.markerInterface != null) {
       addIncludeFilter(new AssignableTypeFilter(this.markerInterface) {
@@ -173,14 +173,22 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
         definition.getPropertyValues().add("addToConfig", this.addToConfig);
 
         boolean explicitFactoryUsed = false;
+
         if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {
           definition.getPropertyValues().add("sqlSessionFactory", new RuntimeBeanReference(this.sqlSessionFactoryBeanName));
           explicitFactoryUsed = true;
         } else if (this.sqlSessionFactory != null) {
           definition.getPropertyValues().add("sqlSessionFactory", this.sqlSessionFactory);
           explicitFactoryUsed = true;
+        } else{
+          SqlSessionFactoryBeanName annotated = getSqlSessionFactoryBeanNameInMapper(definition.getPropertyValues().getPropertyValue("mapperInterface").getValue().toString());
+          
+          if(annotated != null){
+            definition.getPropertyValues().add("sqlSessionFactory", new RuntimeBeanReference(annotated.value()));
+            explicitFactoryUsed = true;
+          }
         }
-
+        
         if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {
           if (explicitFactoryUsed) {
             logger.warn("Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.");
@@ -206,7 +214,22 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
     return beanDefinitions;
   }
+  
+  private SqlSessionFactoryBeanName getSqlSessionFactoryBeanNameInMapper(String mapperClassName){
+      try{
+          SqlSessionFactoryBeanName annotated = Class.forName(mapperClassName).getAnnotation(SqlSessionFactoryBeanName.class);
 
+          if(annotated == null){
+              logger.warn("Annotation @SqlSessionFactoryBeanName is not found: " + mapperClassName);
+          }
+          
+          return annotated;
+      }catch(ClassNotFoundException ex){
+          logger.error("ClassName Error: " + mapperClassName);          
+          return null;
+      }
+  }
+  
   /**
    * {@inheritDoc}
    */
