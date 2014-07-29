@@ -1,5 +1,5 @@
-/**
- *    Copyright 2010-2015 the original author or authors.
+/*
+ *    Copyright 2010-2012 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
   public MapperFactoryBean() {
   }
 
-    /**
+  /**
    * Sets the mapper interface of the MyBatis mapper
    *
    * @param mapperInterface class of the interface
@@ -115,7 +115,6 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
   /**
    * {@inheritDoc}
    */
-  @Override
   public T getObject() throws Exception {
     return getSqlSession().getMapper(this.mapperInterface);
   }
@@ -123,7 +122,6 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
   /**
    * {@inheritDoc}
    */
-  @Override
   public Class<T> getObjectType() {
     return this.mapperInterface;
   }
@@ -131,9 +129,26 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
   /**
    * {@inheritDoc}
    */
-  @Override
   public boolean isSingleton() {
     return true;
   }
 
+  //------------- mutators --------------
+
+  /**
+   * Return the mapper interface of the MyBatis mapper
+   * @return class of the interface
+   */
+  public Class<T> getMapperInterface() {
+    return mapperInterface;
+  }
+
+  /**
+   * Return the flag for addition into MyBatis config.
+   * @return true if the mapper will be added to MyBatis in the case it is not already
+   * registered.
+   */
+  public boolean isAddToConfig() {
+    return addToConfig;
+  }
 }
