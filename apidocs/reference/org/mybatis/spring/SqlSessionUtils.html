@@ -48,29 +48,31 @@
 
 
 
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Javadoc API documentation for mybatis-spring." />
+
 <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.ico" />
 <title>
 
   SqlSessionUtils
 
 
-| MyBatis-Spring
+| mybatis-spring
 
 </title>
-<link href="../../../../assets/android-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="../../../../assets/doclava-developer-docs.css" rel="stylesheet" type="text/css" />
 <link href="../../../../assets/customizations.css" rel="stylesheet" type="text/css" />
 <script src="../../../../assets/search_autocomplete.js" type="text/javascript"></script>
 <script src="../../../../assets/jquery-resizable.min.js" type="text/javascript"></script>
-<script src="../../../../assets/android-developer-docs.js" type="text/javascript"></script>
+<script src="../../../../assets/doclava-developer-docs.js" type="text/javascript"></script>
 <script src="../../../../assets/prettify.js" type="text/javascript"></script>
 <script type="text/javascript">
   setToRoot("../../../", "../../../../assets/");
 </script>
-<script src="../../../../assets/android-developer-reference.js" type="text/javascript"></script>
+<script src="../../../../assets/doclava-developer-reference.js" type="text/javascript"></script>
 <script src="../../../../assets/navtree_data.js" type="text/javascript"></script>
 <script src="../../../../assets/customizations.js" type="text/javascript"></script>
 <noscript>
@@ -90,7 +92,7 @@
 <div id="header">
     <div id="headerLeft">
     
-      <span id="masthead-title">MyBatis-Spring</span>
+      <span id="masthead-title">mybatis-spring</span>
     
     </div>
     <div id="headerRight">
@@ -136,9 +138,9 @@
         <div id="nav-panels">
           <div id="resize-packages-nav">
             <div id="packages-nav">
-              <div id="index-links"><nobr>
+              <div id="index-links">
                 <a href="../../../packages.html"  >Package Index</a> | 
-                <a href="../../../classes.html" >Class Index</a></nobr>
+                <a href="../../../classes.html" >Class Index</a>
               </div>
               <ul>
                 
@@ -185,9 +187,9 @@
           </div><!-- end classes -->
         </div><!-- end nav-panels -->
         <div id="nav-tree" style="display:none">
-          <div id="index-links"><nobr>
+          <div id="index-links">
             <a href="../../../packages.html"  >Package Index</a> | 
-            <a href="../../../classes.html" >Class Index</a></nobr>
+            <a href="../../../classes.html" >Class Index</a>
           </div>
         </div><!-- end nav-tree -->
       </div><!-- end swapper -->
@@ -227,6 +229,7 @@
 
 
 <div class="sum-details-links">
+
 
 Summary:
 
@@ -380,16 +383,16 @@ Summary:
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             static
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#closeSqlSession(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)">closeSqlSession</a></span>(SqlSession session, SqlSessionFactory sessionFactory)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#closeSqlSession(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)">closeSqlSession</a></span>(SqlSession session, SqlSessionFactory sessionFactory)
         
         <div class="jd-descrdiv">Checks if <code>SqlSession</code> passed as an argument is managed by Spring <code>TransactionSynchronizationManager</code>
  If it is not, it closes it, otherwise it just updates the reference counter and
@@ -400,16 +403,34 @@ Summary:
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             static
             
-            SqlSession</nobr>
+            SqlSession
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory)">getSqlSession</a></span>(SqlSessionFactory sessionFactory)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)">getSqlSession</a></span>(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator)
+        
+        <div class="jd-descrdiv">Gets an SqlSession from Spring Transaction Manager or creates a new one if needed.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            SqlSession
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory)">getSqlSession</a></span>(SqlSessionFactory sessionFactory)
         
         <div class="jd-descrdiv">Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
  provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></div>
@@ -418,35 +439,17 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
-            
-            
-            
-            static
-            
-            SqlSession</nobr>
-        </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)">getSqlSession</a></span>(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator)</nobr>
-        
-        <div class="jd-descrdiv">Gets an SqlSession from Spring Transaction Manager or creates a new one if needed.</div>
-  
-  </td></tr>
-
-
-	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             static
             
-            boolean</nobr>
+            boolean
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#isSqlSessionTransactional(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)">isSqlSessionTransactional</a></span>(SqlSession session, SqlSessionFactory sessionFactory)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#isSqlSessionTransactional(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)">isSqlSessionTransactional</a></span>(SqlSession session, SqlSessionFactory sessionFactory)
         
         <div class="jd-descrdiv">Returns if the <code>SqlSession</code> passed as an argument is being managed by Spring</div>
   
@@ -489,176 +492,176 @@ From class
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             
             
-            Object</nobr>
+            Object
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">clone</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">clone</span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             
             
-            boolean</nobr>
+            boolean
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">equals</span>(Object arg0)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">equals</span>(Object arg0)
         
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">finalize</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">finalize</span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            Class&lt;?&gt;</nobr>
+            Class&lt;?&gt;
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">getClass</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">getClass</span>()
         
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             
             
-            int</nobr>
+            int
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">hashCode</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">hashCode</span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">notify</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notify</span>()
         
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">notifyAll</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notifyAll</span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             
             
             
-            String</nobr>
+            String
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">toString</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">toString</span>()
         
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">wait</span>()</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">wait</span>(long arg0)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0, int arg1)
         
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol"><nobr>
+        <td class="jd-typecol">
             
             
             final
             
             
-            void</nobr>
+            void
         </td>
-        <td class="jd-linkcol" width="100%"><nobr>
-        <span class="sympad">wait</span>(long arg0, int arg1)</nobr>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0)
         
   </td></tr>
 
@@ -711,7 +714,7 @@ From class
 
 
 
-<A NAME="closeSqlSession(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)"></A>
+<a id="closeSqlSession(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -744,63 +747,7 @@ From class
 </div>
 
 
-<A NAME="getSqlSession(org.apache.ibatis.session.SqlSessionFactory)"></A>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-         
-         
-        SqlSession
-      </span>
-      <span class="sympad">getSqlSession</span>
-      <span class="normal">(SqlSessionFactory sessionFactory)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
- provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>sessionFactory</td>
-          <td>a MyBatis <code>SqlSessionFactory</code> to create new sessions</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>a MyBatis <code>SqlSession</code></li></ul>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>TransientDataAccessResourceException</td>
-            <td>if a transaction is active and the
-             <code>SqlSessionFactory</code> is not using a <code>SpringManagedTransactionFactory</code>
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<A NAME="getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)"></A>
+<a id="getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -833,15 +780,15 @@ From class
       <h5 class="jd-tagtitle">Parameters</h5>
       <table class="jd-tagtable">
         <tr>
-          <th>sessionFactory</td>
+          <th>sessionFactory</th>
           <td>a MyBatis <code>SqlSessionFactory</code> to create new sessions</td>
         </tr>
         <tr>
-          <th>executorType</td>
+          <th>executorType</th>
           <td>The executor type of the SqlSession to create</td>
         </tr>
         <tr>
-          <th>exceptionTranslator</td>
+          <th>exceptionTranslator</th>
           <td>Optional. Translates SqlSession.commit() exceptions to Spring exceptions.</td>
         </tr>
       </table>
@@ -866,7 +813,63 @@ From class
 </div>
 
 
-<A NAME="isSqlSessionTransactional(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)"></A>
+<a id="getSqlSession(org.apache.ibatis.session.SqlSessionFactory)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        SqlSession
+      </span>
+      <span class="sympad">getSqlSession</span>
+      <span class="normal">(SqlSessionFactory sessionFactory)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
+ provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>sessionFactory</th>
+          <td>a MyBatis <code>SqlSessionFactory</code> to create new sessions</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist"><li>a MyBatis <code>SqlSession</code></li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">  
+        <tr>
+            <th>TransientDataAccessResourceException</td>
+            <td>if a transaction is active and the
+             <code>SqlSessionFactory</code> is not using a <code>SpringManagedTransactionFactory</code>
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="isSqlSessionTransactional(org.apache.ibatis.session.SqlSession, org.apache.ibatis.session.SqlSessionFactory)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -896,11 +899,11 @@ From class
       <h5 class="jd-tagtitle">Parameters</h5>
       <table class="jd-tagtable">
         <tr>
-          <th>session</td>
+          <th>session</th>
           <td>a MyBatis SqlSession to check</td>
         </tr>
         <tr>
-          <th>sessionFactory</td>
+          <th>sessionFactory</th>
           <td>the SqlSessionFactory which the SqlSession was built with</td>
         </tr>
       </table>
@@ -923,7 +926,7 @@ From class
 
 
 <!-- ========= END OF CLASS DATA ========= -->
-<A NAME="navbar_top"></A>
+<a id="navbar_top"></a>
 
 <div id="footer">
 Generated by <a href="http://code.google.com/p/doclava/">Doclava</a>.
@@ -936,7 +939,7 @@ Generated by <a href="http://code.google.com/p/doclava/">Doclava</a>.
 </div> <!-- end body-content --> 
 
 <script type="text/javascript">
-init(); /* initialize android-developer-docs.js */
+init(); /* initialize doclava-developer-docs.js */
 </script>
 
 </body>

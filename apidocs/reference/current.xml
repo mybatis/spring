@@ -698,6 +698,21 @@
 >
 <parameter name="statement" type="java.lang.String">
 </parameter>
+<parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
+</parameter>
+</method>
+<method name="select"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
 <parameter name="parameter" type="java.lang.Object">
 </parameter>
 <parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
@@ -722,21 +737,6 @@
 <parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
 </parameter>
 </method>
-<method name="select"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statement" type="java.lang.String">
-</parameter>
-<parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
-</parameter>
-</method>
 <method name="selectList"
  return="java.util.List&lt;E&gt;"
  abstract="false"
@@ -794,6 +794,21 @@
 >
 <parameter name="statement" type="java.lang.String">
 </parameter>
+<parameter name="mapKey" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectMap"
+ return="java.util.Map&lt;K, V&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
 <parameter name="parameter" type="java.lang.Object">
 </parameter>
 <parameter name="mapKey" type="java.lang.String">
@@ -816,21 +831,6 @@
 <parameter name="mapKey" type="java.lang.String">
 </parameter>
 <parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
-</parameter>
-</method>
-<method name="selectMap"
- return="java.util.Map&lt;K, V&gt;"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statement" type="java.lang.String">
-</parameter>
-<parameter name="mapKey" type="java.lang.String">
 </parameter>
 </method>
 <method name="selectOne"
@@ -1113,16 +1113,6 @@
 <parameter name="items" type="java.util.List&lt;? extends T&gt;">
 </parameter>
 </method>
-<field name="logger"
- type="org.apache.ibatis.logging.Log"
- transient="false"
- volatile="false"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="protected"
->
-</field>
 </class>
 <class name="MyBatisPagingItemReader"
  extends="org.springframework.batch.item.database.AbstractPagingItemReader"
@@ -1340,6 +1330,19 @@
 <parameter name="annotationClass" type="java.lang.Class&lt;? extends java.lang.annotation.Annotation&gt;">
 </parameter>
 </method>
+<method name="setMapperFactoryBean"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="mapperFactoryBean" type="org.mybatis.spring.mapper.MapperFactoryBean">
+</parameter>
+</method>
 <method name="setMarkerInterface"
  return="void"
  abstract="false"
@@ -1421,7 +1424,28 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="mapperInterface" type="java.lang.Class&lt;T&gt;">
+</parameter>
 </constructor>
+<constructor name="MapperFactoryBean"
+ type="org.mybatis.spring.mapper.MapperFactoryBean"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getMapperInterface"
+ return="java.lang.Class&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getObject"
  return="T"
  abstract="false"
@@ -1437,6 +1461,17 @@
 </method>
 <method name="getObjectType"
  return="java.lang.Class&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isAddToConfig"
+ return="boolean"
  abstract="false"
  native="false"
  synchronized="false"
@@ -1536,8 +1571,6 @@
 >
 <parameter name="registry" type="org.springframework.beans.factory.support.BeanDefinitionRegistry">
 </parameter>
-<exception name="BeansException" type="org.springframework.beans.BeansException">
-</exception>
 </method>
 <method name="postProcessBeanFactory"
  return="void"
@@ -1881,7 +1914,11 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="conn" type="java.sql.Connection">
+<parameter name="dataSource" type="javax.sql.DataSource">
+</parameter>
+<parameter name="level" type="org.apache.ibatis.session.TransactionIsolationLevel">
+</parameter>
+<parameter name="autoCommit" type="boolean">
 </parameter>
 </method>
 <method name="newTransaction"
@@ -1894,11 +1931,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="dataSource" type="javax.sql.DataSource">
-</parameter>
-<parameter name="level" type="org.apache.ibatis.session.TransactionIsolationLevel">
-</parameter>
-<parameter name="autoCommit" type="boolean">
+<parameter name="conn" type="java.sql.Connection">
 </parameter>
 </method>
 <method name="setProperties"
