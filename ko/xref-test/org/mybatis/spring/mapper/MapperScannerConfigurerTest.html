@@ -280,13 +280,14 @@
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>   
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/mybatis/spring/mapper/MapperScannerConfigurerTest.html">BeanNameGenerator</a> <strong class="jxr_keyword">implements</strong> org.springframework.beans.factory.support.BeanNameGenerator {
 <a class="jxr_linenumber" name="L274" href="#L274">274</a> 
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <strong class="jxr_keyword">public</strong> String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>       <strong class="jxr_keyword">return</strong> beanDefinition.getBeanClassName();
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>     }
-<a class="jxr_linenumber" name="L278" href="#L278">278</a> 
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>   }
-<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> }
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     @Override
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>     <strong class="jxr_keyword">public</strong> String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>       <strong class="jxr_keyword">return</strong> beanDefinition.getBeanClassName();
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     }
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> 
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>   }
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2010&#x2013;2015 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MyBatisCursorItemReader.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.batch</a> &gt; <span class="el_source">MyBatisCursorItemReader.java</span></div><h1>MyBatisCursorItemReader.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2010-2015 the original author or authors.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.mybatis.spring.batch;
+
+import static org.springframework.util.Assert.notNull;
+import static org.springframework.util.ClassUtils.getShortName;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
+import org.springframework.beans.factory.InitializingBean;
+
+/**
+ * @author Guillaume Darmont / guillaume@dropinocean.com
+ */
+public class MyBatisCursorItemReader&lt;T&gt; extends AbstractItemCountingItemStreamItemReader&lt;T&gt; implements InitializingBean {
+
+  private String queryId;
+
+  private SqlSessionFactory sqlSessionFactory;
+  private SqlSession sqlSession;
+
+  private Map&lt;String, Object&gt; parameterValues;
+
+  private Cursor&lt;T&gt; cursor;
+  private Iterator&lt;T&gt; cursorIterator;
+
+<span class="fc" id="L47">  public MyBatisCursorItemReader() {</span>
+<span class="fc" id="L48">    setName(getShortName(MyBatisCursorItemReader.class));</span>
+<span class="fc" id="L49">  }</span>
+
+  @Override
+  protected T doRead() throws Exception {
+<span class="fc" id="L53">    T next = null;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">    if (cursorIterator.hasNext()) {</span>
+<span class="fc" id="L55">      next = cursorIterator.next();</span>
+    }
+<span class="fc" id="L57">    return next;</span>
+  }
+
+  @Override
+  protected void doOpen() throws Exception {
+<span class="fc" id="L62">    Map&lt;String, Object&gt; parameters = new HashMap&lt;String, Object&gt;();</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">    if (parameterValues != null) {</span>
+<span class="nc" id="L64">      parameters.putAll(parameterValues);</span>
+    }
+
+<span class="fc" id="L67">    sqlSession = sqlSessionFactory.openSession(ExecutorType.SIMPLE);</span>
+<span class="fc" id="L68">    cursor = sqlSession.selectCursor(queryId, parameters);</span>
+<span class="fc" id="L69">    cursorIterator = cursor.iterator();</span>
+<span class="fc" id="L70">  }</span>
+
+  @Override
+  protected void doClose() throws Exception {
+<span class="fc" id="L74">    cursor.close();</span>
+<span class="fc" id="L75">    sqlSession.close();</span>
+<span class="fc" id="L76">    cursorIterator = null;</span>
+<span class="fc" id="L77">  }</span>
+
+  /**
+   * Check mandatory properties.
+   *
+   * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+   */
+  @Override
+  public void afterPropertiesSet() throws Exception {
+<span class="fc" id="L86">    notNull(sqlSessionFactory);</span>
+<span class="fc" id="L87">    notNull(queryId);</span>
+<span class="fc" id="L88">  }</span>
+
+  /**
+   * Public setter for {@link SqlSessionFactory} for injection purposes.
+   *
+   * @param SqlSessionFactory sqlSessionFactory
+   */
+  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+<span class="fc" id="L96">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="fc" id="L97">  }</span>
+
+  /**
+   * Public setter for the statement id identifying the statement in the SqlMap
+   * configuration file.
+   *
+   * @param queryId the id for the statement
+   */
+  public void setQueryId(String queryId) {
+<span class="fc" id="L106">    this.queryId = queryId;</span>
+<span class="fc" id="L107">  }</span>
+
+  /**
+   * The parameter values to be used for the query execution.
+   *
+   * @param parameterValues the values keyed by the parameter named used in
+   *                        the query string.
+   */
+  public void setParameterValues(Map&lt;String, Object&gt; parameterValues) {
+<span class="nc" id="L116">    this.parameterValues = parameterValues;</span>
+<span class="nc" id="L117">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

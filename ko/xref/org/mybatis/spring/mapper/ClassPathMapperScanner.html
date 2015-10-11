@@ -192,7 +192,7 @@
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>       <em class="jxr_comment">// the mapper interface is the original class of the bean</em>
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>       <em class="jxr_comment">// but, the actual class of the bean is MapperFactoryBean</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>       definition.getPropertyValues().add(<span class="jxr_string">"mapperInterface"</span>, definition.getBeanClassName());
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>       definition.getConstructorArgumentValues().addGenericArgumentValue(definition.getBeanClassName()); <em class="jxr_comment">// issue #59</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>       definition.setBeanClass(<strong class="jxr_keyword">this</strong>.mapperFactoryBean.getClass());
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> 
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>       definition.getPropertyValues().add(<span class="jxr_string">"addToConfig"</span>, <strong class="jxr_keyword">this</strong>.addToConfig);
