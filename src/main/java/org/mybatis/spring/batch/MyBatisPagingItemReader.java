@@ -24,6 +24,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.RowBounds;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.batch.item.database.AbstractPagingItemReader;
 
@@ -107,7 +109,7 @@ public class MyBatisPagingItemReader<T> extends AbstractPagingItemReader<T> {
     } else {
       results.clear();
     }
-    results.addAll(sqlSessionTemplate.<T> selectList(queryId, parameters));
+    results.addAll(sqlSessionTemplate.<T> selectList(queryId, parameters,new RowBounds(getPage() * getPageSize(), getPageSize() )));
   }
 
   @Override
