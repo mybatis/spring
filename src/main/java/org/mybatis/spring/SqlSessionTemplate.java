@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.Configuration;
@@ -36,6 +37,7 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 
 /**
@@ -68,12 +70,12 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
  * @author Putthibong Boonbong
  * @author Hunter Presnall
  * @author Eduardo Macarron
- * 
+ *
  * @see SqlSessionFactory
  * @see MyBatisExceptionTranslator
  * @version $Id$
  */
-public class SqlSessionTemplate implements SqlSession {
+public class SqlSessionTemplate implements SqlSession, DisposableBean {
 
   private final SqlSessionFactory sqlSessionFactory;
 
@@ -370,11 +372,32 @@ public class SqlSessionTemplate implements SqlSession {
   }
 
   /**
-   * Proxy needed to route MyBatis method calls to the proper SqlSession got
-   * from Spring's Transaction Manager
-   * It also unwraps exceptions thrown by {@code Method#invoke(Object, Object...)} to
-   * pass a {@code PersistenceException} to the {@code PersistenceExceptionTranslator}.
-   */
+  * Allow gently dispose bean:
+  * <pre>
+  * {@code
+  *
+  * <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  *  <constructor-arg index="0" ref="sqlSessionFactory" />
+  * </bean>
+  * }
+  *</pre>
+  *
+  * The implementation of {@link DisposableBean} forces spring context to use {@link DisposableBean#destroy()} method instead of {@link SqlSessionTemplate#close()} to shutdown gently.
+  *
+  * @see SqlSessionTemplate#close()
+  * @see org.springframework.beans.factory.support.DisposableBeanAdapter#inferDestroyMethodIfNecessary
+  * @see org.springframework.beans.factory.support.DisposableBeanAdapter#CLOSE_METHOD_NAME
+  */
+  @Override
+  public void destroy() throws Exception {
+  }
+
+  /**
+  * Proxy needed to route MyBatis method calls to the proper SqlSession got
+  * from Spring's Transaction Manager
+  * It also unwraps exceptions thrown by {@code Method#invoke(Object, Object...)} to
+  * pass a {@code PersistenceException} to the {@code PersistenceExceptionTranslator}.
+  */
   private class SqlSessionInterceptor implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -408,6 +431,18 @@ public class SqlSessionTemplate implements SqlSession {
         }
       }
     }
+  }
+
+  public <T> Cursor<T> selectCursor(String statement) {
+    return null;
+  }
+
+  public <T> Cursor<T> selectCursor(String statement, Object parameter) {
+    return null;
+  }
+
+  public <T> Cursor<T> selectCursor(String statement, Object parameter, RowBounds rowBounds) {
+    return null;
   }
 
 }
