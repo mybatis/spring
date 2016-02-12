@@ -28,7 +28,6 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.Configuration;
@@ -431,18 +430,6 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
         }
       }
     }
-  }
-
-  public <T> Cursor<T> selectCursor(String statement) {
-    return null;
-  }
-
-  public <T> Cursor<T> selectCursor(String statement, Object parameter) {
-    return null;
-  }
-
-  public <T> Cursor<T> selectCursor(String statement, Object parameter, RowBounds rowBounds) {
-    return null;
   }
 
 }
