@@ -133,6 +133,17 @@
  visibility="public"
 >
 </method>
+<method name="getVfs"
+ return="java.lang.Class&lt;? extends org.apache.ibatis.io.VFS&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="isSingleton"
  return="boolean"
  abstract="false"
@@ -376,6 +387,19 @@
  visibility="public"
 >
 <parameter name="typeHandlersPackage" type="java.lang.String">
+</parameter>
+</method>
+<method name="setVfs"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="vfs" type="java.lang.Class&lt;? extends org.apache.ibatis.io.VFS&gt;">
 </parameter>
 </method>
 </class>
@@ -748,51 +772,6 @@
 <parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
 </parameter>
 <parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
-</parameter>
-</method>
-<method name="selectCursor"
- return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statement" type="java.lang.String">
-</parameter>
-</method>
-<method name="selectCursor"
- return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statement" type="java.lang.String">
-</parameter>
-<parameter name="parameter" type="java.lang.Object">
-</parameter>
-</method>
-<method name="selectCursor"
- return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="statement" type="java.lang.String">
-</parameter>
-<parameter name="parameter" type="java.lang.Object">
-</parameter>
-<parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
 </parameter>
 </method>
 <method name="selectList"
@@ -1169,114 +1148,6 @@
  visibility="public"
 >
 <parameter name="items" type="java.util.List&lt;? extends T&gt;">
-</parameter>
-</method>
-</class>
-<class name="MyBatisCursorItemReader"
- extends="org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="MyBatisCursorItemReader"
- type="org.mybatis.spring.batch.MyBatisCursorItemReader"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<method name="afterPropertiesSet"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<exception name="Exception" type="java.lang.Exception">
-</exception>
-</method>
-<method name="doClose"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<exception name="Exception" type="java.lang.Exception">
-</exception>
-</method>
-<method name="doOpen"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<exception name="Exception" type="java.lang.Exception">
-</exception>
-</method>
-<method name="doRead"
- return="T"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<exception name="Exception" type="java.lang.Exception">
-</exception>
-</method>
-<method name="setParameterValues"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="parameterValues" type="java.util.Map&lt;java.lang.String, java.lang.Object&gt;">
-</parameter>
-</method>
-<method name="setQueryId"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="queryId" type="java.lang.String">
-</parameter>
-</method>
-<method name="setSqlSessionFactory"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
 </parameter>
 </method>
 </class>
