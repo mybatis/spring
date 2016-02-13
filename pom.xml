@@ -25,7 +25,7 @@
   </parent>
 
   <artifactId>mybatis-spring</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
+  <version>1.2.4</version>
   <packaging>jar</packaging>
 
   <name>mybatis-spring</name>
@@ -70,7 +70,7 @@
     </contributor>
 
     <contributor>
-      <name>Tom&#225;&#353; Pi&#328;os</name>
+      <name>Tomáš Piňos</name>
       <email>tomas.pinos@gmail.com</email>
     </contributor>
   </contributors>
@@ -79,7 +79,7 @@
     <url>http://github.com/mybatis/spring</url>
     <connection>scm:git:ssh://github.com/mybatis/spring.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/spring.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>mybatis-spring-1.2.4</tag>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
