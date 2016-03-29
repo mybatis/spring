@@ -412,9 +412,10 @@ Summary:
             SqlSession
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)">getSqlSession</a></span>(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator)
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory)">getSqlSession</a></span>(SqlSessionFactory sessionFactory)
         
-        <div class="jd-descrdiv">Gets an SqlSession from Spring Transaction Manager or creates a new one if needed.</div>
+        <div class="jd-descrdiv">Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
+ provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></div>
   
   </td></tr>
 
@@ -430,10 +431,9 @@ Summary:
             SqlSession
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory)">getSqlSession</a></span>(SqlSessionFactory sessionFactory)
+        <span class="sympad"><a href="../../../org/mybatis/spring/SqlSessionUtils.html#getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)">getSqlSession</a></span>(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator)
         
-        <div class="jd-descrdiv">Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
- provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></div>
+        <div class="jd-descrdiv">Gets an SqlSession from Spring Transaction Manager or creates a new one if needed.</div>
   
   </td></tr>
 
@@ -629,7 +629,7 @@ From class
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad">wait</span>()
+        <span class="sympad">wait</span>(long arg0, int arg1)
         
   </td></tr>
 
@@ -645,7 +645,7 @@ From class
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad">wait</span>(long arg0, int arg1)
+        <span class="sympad">wait</span>(long arg0)
         
   </td></tr>
 
@@ -661,7 +661,7 @@ From class
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad">wait</span>(long arg0)
+        <span class="sympad">wait</span>()
         
   </td></tr>
 
@@ -747,6 +747,62 @@ From class
 </div>
 
 
+<a id="getSqlSession(org.apache.ibatis.session.SqlSessionFactory)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        SqlSession
+      </span>
+      <span class="sympad">getSqlSession</span>
+      <span class="normal">(SqlSessionFactory sessionFactory)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
+ provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>sessionFactory</th>
+          <td>a MyBatis <code>SqlSessionFactory</code> to create new sessions</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist"><li>a MyBatis <code>SqlSession</code></li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">  
+        <tr>
+            <th>TransientDataAccessResourceException</td>
+            <td>if a transaction is active and the
+             <code>SqlSessionFactory</code> is not using a <code>SpringManagedTransactionFactory</code>
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
 <a id="getSqlSession(org.apache.ibatis.session.SqlSessionFactory, org.apache.ibatis.session.ExecutorType, org.springframework.dao.support.PersistenceExceptionTranslator)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -807,62 +863,6 @@ From class
       <h5 class="jd-tagtitle">See Also</h5>
       <ul class="nolist"><li><code><a href="../../../org/mybatis/spring/transaction/SpringManagedTransactionFactory.html">SpringManagedTransactionFactory</a></code></li>
       </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getSqlSession(org.apache.ibatis.session.SqlSessionFactory)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-         
-         
-        SqlSession
-      </span>
-      <span class="sympad">getSqlSession</span>
-      <span class="normal">(SqlSessionFactory sessionFactory)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Creates a new MyBatis <code>SqlSession</code> from the <code>SqlSessionFactory</code>
- provided as a parameter and using its <code>DataSource</code> and <code>ExecutorType</code></p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>sessionFactory</th>
-          <td>a MyBatis <code>SqlSessionFactory</code> to create new sessions</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>a MyBatis <code>SqlSession</code></li></ul>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>TransientDataAccessResourceException</td>
-            <td>if a transaction is active and the
-             <code>SqlSessionFactory</code> is not using a <code>SpringManagedTransactionFactory</code>
-</td>
-        </tr>
-      </table>
   </div>
 
     </div>

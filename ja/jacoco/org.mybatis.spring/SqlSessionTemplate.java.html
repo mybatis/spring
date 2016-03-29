@@ -106,7 +106,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
   public SqlSessionTemplate(SqlSessionFactory sqlSessionFactory, ExecutorType executorType) {
 <span class="fc" id="L107">    this(sqlSessionFactory, executorType,</span>
         new MyBatisExceptionTranslator(
-            sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(), true));
+<span class="fc" id="L109">            sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(), true));</span>
 <span class="fc" id="L110">  }</span>
 
   /**
@@ -133,7 +133,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
 <span class="fc" id="L133">    this.executorType = executorType;</span>
 <span class="fc" id="L134">    this.exceptionTranslator = exceptionTranslator;</span>
 <span class="fc" id="L135">    this.sqlSessionProxy = (SqlSession) newProxyInstance(</span>
-        SqlSessionFactory.class.getClassLoader(),
+<span class="fc" id="L136">        SqlSessionFactory.class.getClassLoader(),</span>
         new Class[] { SqlSession.class },
         new SqlSessionInterceptor());
 <span class="fc" id="L139">  }</span>
@@ -401,9 +401,9 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 <span class="fc" id="L403">      SqlSession sqlSession = getSqlSession(</span>
-          SqlSessionTemplate.this.sqlSessionFactory,
-          SqlSessionTemplate.this.executorType,
-          SqlSessionTemplate.this.exceptionTranslator);
+<span class="fc" id="L404">          SqlSessionTemplate.this.sqlSessionFactory,</span>
+<span class="fc" id="L405">          SqlSessionTemplate.this.executorType,</span>
+<span class="fc" id="L406">          SqlSessionTemplate.this.exceptionTranslator);</span>
       try {
 <span class="fc" id="L408">        Object result = method.invoke(sqlSession, args);</span>
 <span class="fc bfc" id="L409" title="All 2 branches covered.">        if (!isSqlSessionTransactional(sqlSession, SqlSessionTemplate.this.sqlSessionFactory)) {</span>

@@ -396,66 +396,66 @@
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>       configuration.setObjectWrapperFactory(<strong class="jxr_keyword">this</strong>.objectWrapperFactory);
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>     }
 <a class="jxr_linenumber" name="L390" href="#L390">390</a> 
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeAliasesPackage)) {
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>       String[] typeAliasPackageArray = tokenizeToStringArray(<strong class="jxr_keyword">this</strong>.typeAliasesPackage,
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>       <strong class="jxr_keyword">for</strong> (String packageToScan : typeAliasPackageArray) {
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         configuration.getTypeAliasRegistry().registerAliases(packageToScan,
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>                 typeAliasesSuperType == <strong class="jxr_keyword">null</strong> ? Object.<strong class="jxr_keyword">class</strong> : typeAliasesSuperType);
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>           LOGGER.debug(<span class="jxr_string">"Scanned package: '"</span> + packageToScan + <span class="jxr_string">"' for aliases"</span>);
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>         }
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>       }
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>     }
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> 
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeAliases)) {
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>       <strong class="jxr_keyword">for</strong> (Class&lt;?&gt; typeAlias : <strong class="jxr_keyword">this</strong>.typeAliases) {
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         configuration.getTypeAliasRegistry().registerAlias(typeAlias);
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>           LOGGER.debug(<span class="jxr_string">"Registered type alias: '"</span> + typeAlias + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         }
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>       }
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.plugins)) {
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>       <strong class="jxr_keyword">for</strong> (Interceptor plugin : <strong class="jxr_keyword">this</strong>.plugins) {
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>         configuration.addInterceptor(plugin);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>           LOGGER.debug(<span class="jxr_string">"Registered plugin: '"</span> + plugin + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         }
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>       }
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>     }
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> 
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeHandlersPackage)) {
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>       String[] typeHandlersPackageArray = tokenizeToStringArray(<strong class="jxr_keyword">this</strong>.typeHandlersPackage,
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>       <strong class="jxr_keyword">for</strong> (String packageToScan : typeHandlersPackageArray) {
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         configuration.getTypeHandlerRegistry().register(packageToScan);
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>           LOGGER.debug(<span class="jxr_string">"Scanned package: '"</span> + packageToScan + <span class="jxr_string">"' for type handlers"</span>);
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         }
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>       }
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>     }
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeHandlers)) {
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>       <strong class="jxr_keyword">for</strong> (TypeHandler&lt;?&gt; typeHandler : <strong class="jxr_keyword">this</strong>.typeHandlers) {
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         configuration.getTypeHandlerRegistry().register(typeHandler);
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>           LOGGER.debug(<span class="jxr_string">"Registered type handler: '"</span> + typeHandler + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         }
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>       }
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>     }
-<a class="jxr_linenumber" name="L440" href="#L440">440</a> 
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.databaseIdProvider != <strong class="jxr_keyword">null</strong>) {<em class="jxr_comment">//fix #64 set databaseId before parse mapper xmls</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         configuration.setDatabaseId(<strong class="jxr_keyword">this</strong>.databaseIdProvider.getDatabaseId(<strong class="jxr_keyword">this</strong>.dataSource));
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>       } <strong class="jxr_keyword">catch</strong> (SQLException e) {
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NestedIOException(<span class="jxr_string">"Failed getting a databaseId"</span>, e);
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>       }
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>     }
-<a class="jxr_linenumber" name="L448" href="#L448">448</a> 
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.vfs != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>       configuration.setVfsImpl(<strong class="jxr_keyword">this</strong>.vfs);
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.vfs != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>       configuration.setVfsImpl(<strong class="jxr_keyword">this</strong>.vfs);
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>     }
+<a class="jxr_linenumber" name="L394" href="#L394">394</a> 
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeAliasesPackage)) {
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>       String[] typeAliasPackageArray = tokenizeToStringArray(<strong class="jxr_keyword">this</strong>.typeAliasesPackage,
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>       <strong class="jxr_keyword">for</strong> (String packageToScan : typeAliasPackageArray) {
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         configuration.getTypeAliasRegistry().registerAliases(packageToScan,
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>                 typeAliasesSuperType == <strong class="jxr_keyword">null</strong> ? Object.<strong class="jxr_keyword">class</strong> : typeAliasesSuperType);
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>           LOGGER.debug(<span class="jxr_string">"Scanned package: '"</span> + packageToScan + <span class="jxr_string">"' for aliases"</span>);
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         }
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>       }
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     }
+<a class="jxr_linenumber" name="L406" href="#L406">406</a> 
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeAliases)) {
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>       <strong class="jxr_keyword">for</strong> (Class&lt;?&gt; typeAlias : <strong class="jxr_keyword">this</strong>.typeAliases) {
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         configuration.getTypeAliasRegistry().registerAlias(typeAlias);
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>           LOGGER.debug(<span class="jxr_string">"Registered type alias: '"</span> + typeAlias + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         }
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>       }
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>     }
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.plugins)) {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>       <strong class="jxr_keyword">for</strong> (Interceptor plugin : <strong class="jxr_keyword">this</strong>.plugins) {
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         configuration.addInterceptor(plugin);
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>           LOGGER.debug(<span class="jxr_string">"Registered plugin: '"</span> + plugin + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         }
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>       }
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>     }
+<a class="jxr_linenumber" name="L424" href="#L424">424</a> 
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeHandlersPackage)) {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>       String[] typeHandlersPackageArray = tokenizeToStringArray(<strong class="jxr_keyword">this</strong>.typeHandlersPackage,
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>       <strong class="jxr_keyword">for</strong> (String packageToScan : typeHandlersPackageArray) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         configuration.getTypeHandlerRegistry().register(packageToScan);
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>           LOGGER.debug(<span class="jxr_string">"Scanned package: '"</span> + packageToScan + <span class="jxr_string">"' for type handlers"</span>);
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>         }
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>       }
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     }
+<a class="jxr_linenumber" name="L435" href="#L435">435</a> 
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeHandlers)) {
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>       <strong class="jxr_keyword">for</strong> (TypeHandler&lt;?&gt; typeHandler : <strong class="jxr_keyword">this</strong>.typeHandlers) {
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         configuration.getTypeHandlerRegistry().register(typeHandler);
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>         <strong class="jxr_keyword">if</strong> (LOGGER.isDebugEnabled()) {
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>           LOGGER.debug(<span class="jxr_string">"Registered type handler: '"</span> + typeHandler + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         }
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>       }
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     }
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> 
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.databaseIdProvider != <strong class="jxr_keyword">null</strong>) {<em class="jxr_comment">//fix #64 set databaseId before parse mapper xmls</em>
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>       <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         configuration.setDatabaseId(<strong class="jxr_keyword">this</strong>.databaseIdProvider.getDatabaseId(<strong class="jxr_keyword">this</strong>.dataSource));
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>       } <strong class="jxr_keyword">catch</strong> (SQLException e) {
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NestedIOException(<span class="jxr_string">"Failed getting a databaseId"</span>, e);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>       }
 <a class="jxr_linenumber" name="L451" href="#L451">451</a>     }
 <a class="jxr_linenumber" name="L452" href="#L452">452</a> 
 <a class="jxr_linenumber" name="L453" href="#L453">453</a>     <strong class="jxr_keyword">if</strong> (xmlConfigBuilder != <strong class="jxr_keyword">null</strong>) {

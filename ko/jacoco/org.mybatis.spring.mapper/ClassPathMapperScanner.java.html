@@ -179,7 +179,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
 <span class="pc bpc" id="L180" title="1 of 2 branches missed.">      if (logger.isDebugEnabled()) {</span>
 <span class="nc" id="L181">        logger.debug(&quot;Creating MapperFactoryBean with name '&quot; + holder.getBeanName() </span>
-          + &quot;' and '&quot; + definition.getBeanClassName() + &quot;' mapperInterface&quot;);
+<span class="nc" id="L182">          + &quot;' and '&quot; + definition.getBeanClassName() + &quot;' mapperInterface&quot;);</span>
       }
 
       // the mapper interface is the original class of the bean
@@ -238,7 +238,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 <span class="fc" id="L238">      return true;</span>
     } else {
 <span class="fc" id="L240">      logger.warn(&quot;Skipping MapperFactoryBean with name '&quot; + beanName </span>
-          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;
+<span class="fc" id="L241">          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;</span>
           + &quot;. Bean already defined with the same name!&quot;);
 <span class="fc" id="L243">      return false;</span>
     }

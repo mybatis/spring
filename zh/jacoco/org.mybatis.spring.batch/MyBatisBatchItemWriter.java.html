@@ -133,7 +133,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 <span class="pc bpc" id="L133" title="1 of 2 branches missed.">      if (assertUpdates) {</span>
 <span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (results.size() != 1) {</span>
 <span class="nc" id="L135">          throw new InvalidDataAccessResourceUsageException(&quot;Batch execution returned invalid results. &quot; +</span>
-              &quot;Expected 1 but number of BatchResult objects returned was &quot; + results.size());
+<span class="nc" id="L136">              &quot;Expected 1 but number of BatchResult objects returned was &quot; + results.size());</span>
         }
 
 <span class="fc" id="L139">        int[] updateCounts = results.get(0).getUpdateCounts();</span>
@@ -142,7 +142,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 <span class="fc" id="L142">          int value = updateCounts[i];</span>
 <span class="pc bpc" id="L143" title="1 of 2 branches missed.">          if (value == 0) {</span>
 <span class="nc" id="L144">            throw new EmptyResultDataAccessException(&quot;Item &quot; + i + &quot; of &quot; + updateCounts.length</span>
-                + &quot; did not update any rows: [&quot; + items.get(i) + &quot;]&quot;, 1);
+<span class="nc" id="L145">                + &quot; did not update any rows: [&quot; + items.get(i) + &quot;]&quot;, 1);</span>
           }
         }
       }

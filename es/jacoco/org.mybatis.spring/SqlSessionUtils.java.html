@@ -289,8 +289,8 @@ public final class SqlSessionUtils {
 <span class="fc" id="L289">        } catch (PersistenceException p) {</span>
 <span class="pc bpc" id="L290" title="1 of 2 branches missed.">          if (this.holder.getPersistenceExceptionTranslator() != null) {</span>
 <span class="fc" id="L291">            DataAccessException translated = this.holder</span>
-                .getPersistenceExceptionTranslator()
-                .translateExceptionIfPossible(p);
+<span class="fc" id="L292">                .getPersistenceExceptionTranslator()</span>
+<span class="fc" id="L293">                .translateExceptionIfPossible(p);</span>
 <span class="pc bpc" id="L294" title="1 of 2 branches missed.">            if (translated != null) {</span>
 <span class="fc" id="L295">              throw translated;</span>
             }

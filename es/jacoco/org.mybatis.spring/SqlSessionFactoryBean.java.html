@@ -388,66 +388,66 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 <span class="fc" id="L388">      configuration.setObjectWrapperFactory(this.objectWrapperFactory);</span>
     }
 
-<span class="fc bfc" id="L391" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
-<span class="fc" id="L392">      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">    if (this.vfs != null) {</span>
+<span class="nc" id="L392">      configuration.setVfsImpl(this.vfs);</span>
+    }
+
+<span class="fc bfc" id="L395" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
+<span class="fc" id="L396">      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,</span>
           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<span class="fc bfc" id="L394" title="All 2 branches covered.">      for (String packageToScan : typeAliasPackageArray) {</span>
-<span class="fc bfc" id="L395" title="All 2 branches covered.">        configuration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">      for (String packageToScan : typeAliasPackageArray) {</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">        configuration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
                 typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
-<span class="pc bpc" id="L397" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L398">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for aliases&quot;);</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L402">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for aliases&quot;);</span>
         }
       }
     }
 
-<span class="fc bfc" id="L403" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
-<span class="fc bfc" id="L404" title="All 2 branches covered.">      for (Class&lt;?&gt; typeAlias : this.typeAliases) {</span>
-<span class="fc" id="L405">        configuration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
-<span class="pc bpc" id="L406" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L407">          LOGGER.debug(&quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">      for (Class&lt;?&gt; typeAlias : this.typeAliases) {</span>
+<span class="fc" id="L409">        configuration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L411">          LOGGER.debug(&quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
         }
       }
     }
 
-<span class="fc bfc" id="L412" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
-<span class="fc bfc" id="L413" title="All 2 branches covered.">      for (Interceptor plugin : this.plugins) {</span>
-<span class="fc" id="L414">        configuration.addInterceptor(plugin);</span>
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L416">          LOGGER.debug(&quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">      for (Interceptor plugin : this.plugins) {</span>
+<span class="fc" id="L418">        configuration.addInterceptor(plugin);</span>
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L420">          LOGGER.debug(&quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
         }
       }
     }
 
-<span class="fc bfc" id="L421" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
-<span class="fc" id="L422">      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,</span>
+<span class="fc bfc" id="L425" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
+<span class="fc" id="L426">      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,</span>
           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<span class="fc bfc" id="L424" title="All 2 branches covered.">      for (String packageToScan : typeHandlersPackageArray) {</span>
-<span class="fc" id="L425">        configuration.getTypeHandlerRegistry().register(packageToScan);</span>
-<span class="pc bpc" id="L426" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L427">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for type handlers&quot;);</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">      for (String packageToScan : typeHandlersPackageArray) {</span>
+<span class="fc" id="L429">        configuration.getTypeHandlerRegistry().register(packageToScan);</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L431">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for type handlers&quot;);</span>
         }
       }
     }
 
-<span class="fc bfc" id="L432" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
-<span class="fc bfc" id="L433" title="All 2 branches covered.">      for (TypeHandler&lt;?&gt; typeHandler : this.typeHandlers) {</span>
-<span class="fc" id="L434">        configuration.getTypeHandlerRegistry().register(typeHandler);</span>
-<span class="pc bpc" id="L435" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L436">          LOGGER.debug(&quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
+<span class="fc bfc" id="L437" title="All 2 branches covered.">      for (TypeHandler&lt;?&gt; typeHandler : this.typeHandlers) {</span>
+<span class="fc" id="L438">        configuration.getTypeHandlerRegistry().register(typeHandler);</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
+<span class="nc" id="L440">          LOGGER.debug(&quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
         }
       }
     }
 
-<span class="pc bpc" id="L441" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {//fix #64 set databaseId before parse mapper xmls</span>
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {//fix #64 set databaseId before parse mapper xmls</span>
       try {
-<span class="nc" id="L443">        configuration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
-<span class="nc" id="L444">      } catch (SQLException e) {</span>
-<span class="nc" id="L445">        throw new NestedIOException(&quot;Failed getting a databaseId&quot;, e);</span>
-<span class="nc" id="L446">      }</span>
-    }
-
-<span class="pc bpc" id="L449" title="1 of 2 branches missed.">    if (this.vfs != null) {</span>
-<span class="nc" id="L450">      configuration.setVfsImpl(this.vfs);</span>
+<span class="nc" id="L447">        configuration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
+<span class="nc" id="L448">      } catch (SQLException e) {</span>
+<span class="nc" id="L449">        throw new NestedIOException(&quot;Failed getting a databaseId&quot;, e);</span>
+<span class="nc" id="L450">      }</span>
     }
 
 <span class="fc bfc" id="L453" title="All 2 branches covered.">    if (xmlConfigBuilder != null) {</span>
@@ -478,7 +478,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
         try {
 <span class="fc" id="L480">          XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),</span>
-              configuration, mapperLocation.toString(), configuration.getSqlFragments());
+<span class="fc" id="L481">              configuration, mapperLocation.toString(), configuration.getSqlFragments());</span>
 <span class="fc" id="L482">          xmlMapperBuilder.parse();</span>
 <span class="nc" id="L483">        } catch (Exception e) {</span>
 <span class="nc" id="L484">          throw new NestedIOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>

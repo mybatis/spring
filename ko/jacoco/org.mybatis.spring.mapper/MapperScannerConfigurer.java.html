@@ -331,7 +331,7 @@ import org.springframework.util.StringUtils;
 
 <span class="pc bpc" id="L332" title="2 of 4 branches missed.">    if (!prcs.isEmpty() &amp;&amp; applicationContext instanceof GenericApplicationContext) {</span>
 <span class="fc" id="L333">      BeanDefinition mapperScannerBean = ((GenericApplicationContext) applicationContext)</span>
-          .getBeanFactory().getBeanDefinition(beanName);
+<span class="fc" id="L334">          .getBeanFactory().getBeanDefinition(beanName);</span>
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
       // property placeholder substitution. Instead, create a BeanFactory that just
