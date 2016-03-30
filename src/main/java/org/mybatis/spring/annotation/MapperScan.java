@@ -76,8 +76,8 @@ public @interface MapperScan {
   /**
    * Alias for the {@link #basePackages()} attribute. Allows for more concise
    * annotation declarations e.g.:
-   * {@code @EnableMyBatisMapperScanner("org.my.pkg")} instead of {@code
-   * @EnableMyBatisMapperScanner(basePackages= "org.my.pkg"})}.
+   * {@code @MapperScan("org.my.pkg")} instead of {@code
+   * @MapperScan(basePackages= "org.my.pkg"})}.
    */
   String[] value() default {};
 
