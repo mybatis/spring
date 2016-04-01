@@ -52,12 +52,12 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/mybatis/spring/config/MapperScannerBeanDefinitionParser.html">MapperScannerBeanDefinitionParser</a> <strong class="jxr_keyword">implements</strong> BeanDefinitionParser {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_BASE_PACKAGE = <span class="jxr_string">"base-package"</span>;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_ANNOTATION = <span class="jxr_string">"annotation"</span>;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_MARKER_INTERFACE = <span class="jxr_string">"marker-interface"</span>;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_NAME_GENERATOR = <span class="jxr_string">"name-generator"</span>;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_TEMPLATE_REF = <span class="jxr_string">"template-ref"</span>;
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String ATTRIBUTE_FACTORY_REF = <span class="jxr_string">"factory-ref"</span>;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_BASE_PACKAGE = <span class="jxr_string">"base-package"</span>;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_ANNOTATION = <span class="jxr_string">"annotation"</span>;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_MARKER_INTERFACE = <span class="jxr_string">"marker-interface"</span>;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_NAME_GENERATOR = <span class="jxr_string">"name-generator"</span>;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_TEMPLATE_REF = <span class="jxr_string">"template-ref"</span>;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_FACTORY_REF = <span class="jxr_string">"factory-ref"</span>;
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">   * {@inheritDoc}</em>

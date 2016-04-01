@@ -24,6 +24,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.transaction.TransactionException;
 
 /**
  * Default exception translator.
@@ -50,42 +51,44 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
    * @param exceptionTranslatorLazyInit if true, the translator instantiates internal stuff only the first time will
    *        have the need to translate exceptions.
    */
-<span class="fc" id="L53">  public MyBatisExceptionTranslator(DataSource dataSource, boolean exceptionTranslatorLazyInit) {</span>
-<span class="fc" id="L54">    this.dataSource = dataSource;</span>
+<span class="fc" id="L54">  public MyBatisExceptionTranslator(DataSource dataSource, boolean exceptionTranslatorLazyInit) {</span>
+<span class="fc" id="L55">    this.dataSource = dataSource;</span>
 
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">    if (!exceptionTranslatorLazyInit) {</span>
-<span class="nc" id="L57">      this.initExceptionTranslator();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">    if (!exceptionTranslatorLazyInit) {</span>
+<span class="nc" id="L58">      this.initExceptionTranslator();</span>
     }
-<span class="fc" id="L59">  }</span>
+<span class="fc" id="L60">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public DataAccessException translateExceptionIfPossible(RuntimeException e) {
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">    if (e instanceof PersistenceException) {</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    if (e instanceof PersistenceException) {</span>
       // Batch exceptions come inside another PersistenceException
       // recursion has a risk of infinite loop so better make another if
-<span class="fc bfc" id="L69" title="All 2 branches covered.">      if (e.getCause() instanceof PersistenceException) {</span>
-<span class="fc" id="L70">        e = (PersistenceException) e.getCause();</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">      if (e.getCause() instanceof PersistenceException) {</span>
+<span class="fc" id="L71">        e = (PersistenceException) e.getCause();</span>
       }
-<span class="fc bfc" id="L72" title="All 2 branches covered.">      if (e.getCause() instanceof SQLException) {</span>
-<span class="fc" id="L73">        this.initExceptionTranslator();</span>
-<span class="fc" id="L74">        return this.exceptionTranslator.translate(e.getMessage() + &quot;\n&quot;, null, (SQLException) e.getCause());</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">      if (e.getCause() instanceof SQLException) {</span>
+<span class="fc" id="L74">        this.initExceptionTranslator();</span>
+<span class="fc" id="L75">        return this.exceptionTranslator.translate(e.getMessage() + &quot;\n&quot;, null, (SQLException) e.getCause());</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">      } else if (e.getCause() instanceof TransactionException) {</span>
+<span class="nc" id="L77">        throw (TransactionException) e.getCause();</span>
       }
-<span class="fc" id="L76">      return new MyBatisSystemException(e);</span>
+<span class="fc" id="L79">      return new MyBatisSystemException(e);</span>
     } 
-<span class="nc" id="L78">    return null;</span>
+<span class="nc" id="L81">    return null;</span>
   }
 
   /**
    * Initializes the internal translator reference.
    */
   private synchronized void initExceptionTranslator() {
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">    if (this.exceptionTranslator == null) {</span>
-<span class="fc" id="L86">      this.exceptionTranslator = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (this.exceptionTranslator == null) {</span>
+<span class="fc" id="L89">      this.exceptionTranslator = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);</span>
     }
-<span class="fc" id="L88">  }</span>
+<span class="fc" id="L91">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

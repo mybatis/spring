@@ -98,6 +98,17 @@
 <exception name="IOException" type="java.io.IOException">
 </exception>
 </method>
+<method name="getCache"
+ return="org.apache.ibatis.cache.Cache"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getDatabaseIdProvider"
  return="org.apache.ibatis.mapping.DatabaseIdProvider"
  abstract="false"
@@ -168,6 +179,19 @@
 <parameter name="event" type="org.springframework.context.ApplicationEvent">
 </parameter>
 </method>
+<method name="setCache"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="cache" type="org.apache.ibatis.cache.Cache">
+</parameter>
+</method>
 <method name="setConfigLocation"
  return="void"
  abstract="false"
@@ -179,6 +203,19 @@
  visibility="public"
 >
 <parameter name="configLocation" type="org.springframework.core.io.Resource">
+</parameter>
+</method>
+<method name="setConfiguration"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="configuration" type="org.apache.ibatis.session.Configuration">
 </parameter>
 </method>
 <method name="setConfigurationProperties"
@@ -774,6 +811,51 @@
 <parameter name="handler" type="org.apache.ibatis.session.ResultHandler">
 </parameter>
 </method>
+<method name="selectCursor"
+ return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+</method>
+<method name="selectCursor"
+ return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+</method>
+<method name="selectCursor"
+ return="org.apache.ibatis.cursor.Cursor&lt;T&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="statement" type="java.lang.String">
+</parameter>
+<parameter name="parameter" type="java.lang.Object">
+</parameter>
+<parameter name="rowBounds" type="org.apache.ibatis.session.RowBounds">
+</parameter>
+</method>
 <method name="selectList"
  return="java.util.List&lt;E&gt;"
  abstract="false"
@@ -1148,6 +1230,114 @@
  visibility="public"
 >
 <parameter name="items" type="java.util.List&lt;? extends T&gt;">
+</parameter>
+</method>
+</class>
+<class name="MyBatisCursorItemReader"
+ extends="org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MyBatisCursorItemReader"
+ type="org.mybatis.spring.batch.MyBatisCursorItemReader"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="afterPropertiesSet"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="doClose"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="doOpen"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="doRead"
+ return="T"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<exception name="Exception" type="java.lang.Exception">
+</exception>
+</method>
+<method name="setParameterValues"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="parameterValues" type="java.util.Map&lt;java.lang.String, java.lang.Object&gt;">
+</parameter>
+</method>
+<method name="setQueryId"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="queryId" type="java.lang.String">
+</parameter>
+</method>
+<method name="setSqlSessionFactory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sqlSessionFactory" type="org.apache.ibatis.session.SqlSessionFactory">
 </parameter>
 </method>
 </class>
@@ -1898,6 +2088,19 @@
 </method>
 <method name="getConnection"
  return="java.sql.Connection"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<exception name="SQLException" type="java.sql.SQLException">
+</exception>
+</method>
+<method name="getTimeout"
+ return="java.lang.Integer"
  abstract="false"
  native="false"
  synchronized="false"

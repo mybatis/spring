@@ -5,7 +5,7 @@ var NAVTREE_DATA =
 , "" ], [ "org.mybatis.spring.annotation", "org/mybatis/spring/annotation/package-summary.html", [ [ "Classes", null, [ [ "MapperScannerRegistrar", "org/mybatis/spring/annotation/MapperScannerRegistrar.html", null, "" ] ]
 , "" ], [ "Annotations", null, [ [ "MapperScan", "org/mybatis/spring/annotation/MapperScan.html", null, "" ] ]
 , "" ] ]
-, "" ], [ "org.mybatis.spring.batch", "org/mybatis/spring/batch/package-summary.html", [ [ "Classes", null, [ [ "MyBatisBatchItemWriter", "org/mybatis/spring/batch/MyBatisBatchItemWriter.html", null, "" ], [ "MyBatisPagingItemReader", "org/mybatis/spring/batch/MyBatisPagingItemReader.html", null, "" ] ]
+, "" ], [ "org.mybatis.spring.batch", "org/mybatis/spring/batch/package-summary.html", [ [ "Classes", null, [ [ "MyBatisBatchItemWriter", "org/mybatis/spring/batch/MyBatisBatchItemWriter.html", null, "" ], [ "MyBatisCursorItemReader", "org/mybatis/spring/batch/MyBatisCursorItemReader.html", null, "" ], [ "MyBatisPagingItemReader", "org/mybatis/spring/batch/MyBatisPagingItemReader.html", null, "" ] ]
 , "" ] ]
 , "" ], [ "org.mybatis.spring.config", "org/mybatis/spring/config/package-summary.html", [ [ "Classes", null, [ [ "MapperScannerBeanDefinitionParser", "org/mybatis/spring/config/MapperScannerBeanDefinitionParser.html", null, "" ], [ "NamespaceHandler", "org/mybatis/spring/config/NamespaceHandler.html", null, "" ] ]
 , "" ] ]

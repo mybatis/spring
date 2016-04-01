@@ -47,9 +47,9 @@ public final class SqlSessionHolder extends ResourceHolderSupport {
    * @param sqlSession the {@code SqlSession} has to be hold.
    * @param executorType the {@code ExecutorType} has to be hold.
    */
-  public SqlSessionHolder(SqlSession sqlSession,
+<span class="fc" id="L50">  public SqlSessionHolder(SqlSession sqlSession,</span>
       ExecutorType executorType,
-<span class="fc" id="L52">      PersistenceExceptionTranslator exceptionTranslator) {</span>
+      PersistenceExceptionTranslator exceptionTranslator) {
 
 <span class="fc" id="L54">    notNull(sqlSession, &quot;SqlSession must not be null&quot;);</span>
 <span class="fc" id="L55">    notNull(executorType, &quot;ExecutorType must not be null&quot;);</span>

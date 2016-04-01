@@ -104,7 +104,7 @@ public class MyBatisPagingItemReader&lt;T&gt; extends AbstractPagingItemReader&l
 <span class="fc" id="L104">    parameters.put(&quot;_skiprows&quot;, getPage() * getPageSize());</span>
 <span class="pc bpc" id="L105" title="1 of 2 branches missed.">    if (results == null) {</span>
 <span class="fc" id="L106">      results = new CopyOnWriteArrayList&lt;T&gt;();</span>
-    } else {
+<span class="fc" id="L107">    } else {</span>
 <span class="nc" id="L108">      results.clear();</span>
     }
 <span class="fc" id="L110">    results.addAll(sqlSessionTemplate.&lt;T&gt; selectList(queryId, parameters));</span>
