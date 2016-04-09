@@ -78,7 +78,7 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>    <strong class="jxr_keyword">private</strong> Class&lt;?&gt; markerInterface;
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../org/mybatis/spring/mapper/MapperFactoryBean.html">MapperFactoryBean</a> mapperFactoryBean = <strong class="jxr_keyword">new</strong> <a href="../../../../org/mybatis/spring/mapper/MapperFactoryBean.html">MapperFactoryBean</a>();
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">private</strong> MapperFactoryBean&lt;?&gt; mapperFactoryBean = <strong class="jxr_keyword">new</strong> MapperFactoryBean&lt;Object&gt;();
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/mapper/ClassPathMapperScanner.html">ClassPathMapperScanner</a>(BeanDefinitionRegistry registry) {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">super</strong>(registry, false);
@@ -112,8 +112,8 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">this</strong>.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>   }
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> 
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setMapperFactoryBean(<a href="../../../../org/mybatis/spring/mapper/MapperFactoryBean.html">MapperFactoryBean</a> mapperFactoryBean) {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">this</strong>.mapperFactoryBean = mapperFactoryBean != <strong class="jxr_keyword">null</strong> ? mapperFactoryBean : <strong class="jxr_keyword">new</strong> <a href="../../../../org/mybatis/spring/mapper/MapperFactoryBean.html">MapperFactoryBean</a>();
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setMapperFactoryBean(MapperFactoryBean&lt;?&gt; mapperFactoryBean) {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">this</strong>.mapperFactoryBean = mapperFactoryBean != <strong class="jxr_keyword">null</strong> ? mapperFactoryBean : <strong class="jxr_keyword">new</strong> MapperFactoryBean&lt;Object&gt;();
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>   }
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 

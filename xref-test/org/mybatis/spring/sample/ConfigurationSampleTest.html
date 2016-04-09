@@ -37,8 +37,8 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionFactoryBean;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionTemplate;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.mapper.MapperFactoryBean;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.sample.dao.UserDao;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.sample.domain.User;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.sample.domain.User;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.sample.mapper.UserMapper;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.sample.service.FooService;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Autowired;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.annotation.Bean;
@@ -78,21 +78,21 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> SqlSessionFactory sqlSessionFactory() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>        SqlSessionFactoryBean ss = <strong class="jxr_keyword">new</strong> SqlSessionFactoryBean();
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>        ss.setDataSource(dataSource());
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>        ss.setMapperLocations(<strong class="jxr_keyword">new</strong> Resource[] { <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"org/mybatis/spring/sample/dao/UserDao.xml"</span>) });
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>        ss.setMapperLocations(<strong class="jxr_keyword">new</strong> Resource[] { <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"org/mybatis/spring/sample/mapper/UserMapper.xml"</span>) });
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>        <strong class="jxr_keyword">return</strong> (SqlSessionFactory) ss.getObject();
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      }
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      @Bean
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/sample/dao/UserDao.html">UserDao</a> userDao() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/sample/mapper/UserMapper.html">UserMapper</a> userMapper() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>        <em class="jxr_comment">// when using javaconfig a template requires less lines than a MapperFactoryBean</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>        SqlSessionTemplate sessionTemplate = <strong class="jxr_keyword">new</strong> SqlSessionTemplate(sqlSessionFactory());
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>        <strong class="jxr_keyword">return</strong> sessionTemplate.getMapper(UserDao.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>        <strong class="jxr_keyword">return</strong> sessionTemplate.getMapper(UserMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      }
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      @Bean
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/sample/dao/UserDao.html">UserDao</a> userDaoWithFactory() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>        MapperFactoryBean&lt;UserDao&gt; mapperFactoryBean = <strong class="jxr_keyword">new</strong> MapperFactoryBean&lt;UserDao&gt;();
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>        mapperFactoryBean.setMapperInterface(UserDao.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/sample/mapper/UserMapper.html">UserMapper</a> userMapperWithFactory() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>        MapperFactoryBean&lt;UserMapper&gt; mapperFactoryBean = <strong class="jxr_keyword">new</strong> MapperFactoryBean&lt;UserMapper&gt;();
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>        mapperFactoryBean.setMapperInterface(UserMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>        mapperFactoryBean.setSqlSessionFactory(sqlSessionFactory());
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>        mapperFactoryBean.afterPropertiesSet();
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>        <strong class="jxr_keyword">return</strong> mapperFactoryBean.getObject();
@@ -101,7 +101,7 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      @Bean
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/mybatis/spring/sample/service/FooService.html">FooService</a> fooService() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>        <a href="../../../../org/mybatis/spring/sample/service/FooService.html">FooService</a> fooService = <strong class="jxr_keyword">new</strong> <a href="../../../../org/mybatis/spring/sample/service/FooService.html">FooService</a>();
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>        fooService.setUserDao(userDao());
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>        fooService.setUserMapper(userMapper());
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>        <strong class="jxr_keyword">return</strong> fooService;
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>    }

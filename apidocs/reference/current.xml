@@ -1567,7 +1567,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="mapperFactoryBean" type="org.mybatis.spring.mapper.MapperFactoryBean">
+<parameter name="mapperFactoryBean" type="org.mybatis.spring.mapper.MapperFactoryBean&lt;?&gt;">
 </parameter>
 </method>
 <method name="setMarkerInterface"
