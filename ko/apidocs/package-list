@@ -1,0 +1,7 @@
+org.mybatis.spring
+org.mybatis.spring.annotation
+org.mybatis.spring.batch
+org.mybatis.spring.config
+org.mybatis.spring.mapper
+org.mybatis.spring.support
+org.mybatis.spring.transaction
