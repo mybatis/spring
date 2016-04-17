@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ClassPathMapperScanner.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">ClassPathMapperScanner.java</span></div><h1>ClassPathMapperScanner.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
- *    Copyright 2010-2015 the original author or authors.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ClassPathMapperScanner.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">ClassPathMapperScanner.java</span></div><h1>ClassPathMapperScanner.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -165,7 +165,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
 <span class="pc bpc" id="L166" title="1 of 2 branches missed.">    if (beanDefinitions.isEmpty()) {</span>
 <span class="nc" id="L167">      logger.warn(&quot;No MyBatis mapper was found in '&quot; + Arrays.toString(basePackages) + &quot;' package. Please check your configuration.&quot;);</span>
-<span class="nc" id="L168">    } else {</span>
+    } else {
 <span class="fc" id="L169">      processBeanDefinitions(beanDefinitions);</span>
     }
 
@@ -218,7 +218,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
         }
 <span class="fc" id="L219">        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span>
       }
-    }
+<span class="fc" id="L221">    }</span>
 <span class="fc" id="L222">  }</span>
 
   /**
@@ -239,7 +239,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     } else {
 <span class="fc" id="L240">      logger.warn(&quot;Skipping MapperFactoryBean with name '&quot; + beanName </span>
 <span class="fc" id="L241">          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;</span>
-<span class="fc" id="L242">          + &quot;. Bean already defined with the same name!&quot;);</span>
+          + &quot;. Bean already defined with the same name!&quot;);
 <span class="fc" id="L243">      return false;</span>
     }
   }

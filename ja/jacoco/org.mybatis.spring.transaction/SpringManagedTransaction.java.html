@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SpringManagedTransaction.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.transaction</a> &gt; <span class="el_source">SpringManagedTransaction.java</span></div><h1>SpringManagedTransaction.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2015 the original author or authors.
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -86,12 +86,12 @@ public class SpringManagedTransaction implements Transaction {
 <span class="fc" id="L86">    this.isConnectionTransactional = DataSourceUtils.isConnectionTransactional(this.connection, this.dataSource);</span>
 
 <span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L89">      LOGGER.debug(</span>
-<span class="nc" id="L90">          &quot;JDBC Connection [&quot;</span>
-<span class="nc" id="L91">              + this.connection</span>
-<span class="nc" id="L92">              + &quot;] will&quot;</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">              + (this.isConnectionTransactional ? &quot; &quot; : &quot; not &quot;)</span>
-<span class="nc" id="L94">              + &quot;be managed by Spring&quot;);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">      LOGGER.debug(</span>
+          &quot;JDBC Connection [&quot;
+              + this.connection
+              + &quot;] will&quot;
+              + (this.isConnectionTransactional ? &quot; &quot; : &quot; not &quot;)
+              + &quot;be managed by Spring&quot;);
     }
 <span class="fc" id="L96">  }</span>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SqlSessionFactoryBean.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionFactoryBean.java</span></div><h1>SqlSessionFactoryBean.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2015 the original author or authors.
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -323,7 +323,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
       // access code won't see properly exposed transactions (i.e.
       // transactions for the target DataSource).
 <span class="nc" id="L325">      this.dataSource = ((TransactionAwareDataSourceProxy) dataSource).getTargetDataSource();</span>
-<span class="nc" id="L326">    } else {</span>
+    } else {
 <span class="fc" id="L327">      this.dataSource = dataSource;</span>
     }
 <span class="fc" id="L329">  }</span>
@@ -376,7 +376,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 <span class="fc" id="L376">    notNull(dataSource, &quot;Property 'dataSource' is required&quot;);</span>
 <span class="fc" id="L377">    notNull(sqlSessionFactoryBuilder, &quot;Property 'sqlSessionFactoryBuilder' is required&quot;);</span>
 <span class="fc bfc" id="L378" title="All 8 branches covered.">    state((configuration == null &amp;&amp; configLocation == null) || !(configuration != null &amp;&amp; configLocation != null),</span>
-<span class="fc" id="L379">              &quot;Property 'configuration' and 'configLocation' can not specified with together&quot;);</span>
+              &quot;Property 'configuration' and 'configLocation' can not specified with together&quot;);
 
 <span class="fc" id="L381">    this.sqlSessionFactory = buildSqlSessionFactory();</span>
 <span class="fc" id="L382">  }</span>
@@ -406,7 +406,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 <span class="fc bfc" id="L406" title="All 2 branches covered.">    } else if (this.configLocation != null) {</span>
 <span class="fc" id="L407">      xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);</span>
 <span class="fc" id="L408">      configuration = xmlConfigBuilder.getConfiguration();</span>
-<span class="fc" id="L409">    } else {</span>
+    } else {
 <span class="pc bpc" id="L410" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L411">        LOGGER.debug(&quot;Property `configuration` or 'configLocation' not specified, using default MyBatis Configuration&quot;);</span>
       }
@@ -428,10 +428,10 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 <span class="fc bfc" id="L429" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
 <span class="fc" id="L430">      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,</span>
-<span class="fc" id="L431">          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);</span>
+          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 <span class="fc bfc" id="L432" title="All 2 branches covered.">      for (String packageToScan : typeAliasPackageArray) {</span>
-<span class="fc" id="L433">        configuration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
-<span class="fc bfc" id="L434" title="All 2 branches covered.">                typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        configuration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
+                typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
 <span class="pc bpc" id="L435" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L436">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for aliases&quot;);</span>
         }
@@ -458,7 +458,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 <span class="fc bfc" id="L459" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
 <span class="fc" id="L460">      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,</span>
-<span class="fc" id="L461">          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);</span>
+          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 <span class="fc bfc" id="L462" title="All 2 branches covered.">      for (String packageToScan : typeHandlersPackageArray) {</span>
 <span class="fc" id="L463">        configuration.getTypeHandlerRegistry().register(packageToScan);</span>
 <span class="pc bpc" id="L464" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
@@ -481,7 +481,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 <span class="nc" id="L481">        configuration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
 <span class="nc" id="L482">      } catch (SQLException e) {</span>
 <span class="nc" id="L483">        throw new NestedIOException(&quot;Failed getting a databaseId&quot;, e);</span>
-      }
+<span class="nc" id="L484">      }</span>
     }
 
 <span class="pc bpc" id="L487" title="1 of 2 branches missed.">    if (this.cache != null) {</span>
@@ -497,9 +497,9 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
         }
 <span class="nc" id="L498">      } catch (Exception ex) {</span>
 <span class="nc" id="L499">        throw new NestedIOException(&quot;Failed to parse config resource: &quot; + this.configLocation, ex);</span>
-<span class="nc" id="L500">      } finally {</span>
+      } finally {
 <span class="pc" id="L501">        ErrorContext.instance().reset();</span>
-<span class="nc" id="L502">      }</span>
+<span class="fc" id="L502">      }</span>
     }
 
 <span class="fc bfc" id="L505" title="All 2 branches covered.">    if (this.transactionFactory == null) {</span>
@@ -518,17 +518,17 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 <span class="fc" id="L518">          XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),</span>
 <span class="fc" id="L519">              configuration, mapperLocation.toString(), configuration.getSqlFragments());</span>
 <span class="fc" id="L520">          xmlMapperBuilder.parse();</span>
-<span class="pc" id="L521">        } catch (Exception e) {</span>
+<span class="nc" id="L521">        } catch (Exception e) {</span>
 <span class="nc" id="L522">          throw new NestedIOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>
-<span class="nc" id="L523">        } finally {</span>
+        } finally {
 <span class="pc" id="L524">          ErrorContext.instance().reset();</span>
-<span class="nc" id="L525">        }</span>
+<span class="fc" id="L525">        }</span>
 
 <span class="pc bpc" id="L527" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L528">          LOGGER.debug(&quot;Parsed mapper file: '&quot; + mapperLocation + &quot;'&quot;);</span>
         }
       }
-<span class="fc" id="L531">    } else {</span>
+    } else {
 <span class="pc bpc" id="L532" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L533">        LOGGER.debug(&quot;Property 'mapperLocations' was not specified or no matching resources found&quot;);</span>
       }

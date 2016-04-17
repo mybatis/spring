@@ -47,7 +47,7 @@ public final class SqlSessionUtils {
 
   private static final String NO_EXECUTOR_TYPE_SPECIFIED = &quot;No ExecutorType specified&quot;;
   private static final String NO_SQL_SESSION_FACTORY_SPECIFIED = &quot;No SqlSessionFactory specified&quot;;
-<span class="fc" id="L50">  private static final String NO_SQL_SESSION_SPECIFIED = &quot;No SqlSession specified&quot;;</span>
+  private static final String NO_SQL_SESSION_SPECIFIED = &quot;No SqlSession specified&quot;;
 
   /**
    * This class can't be instantiated, exposes static utility methods only.
@@ -135,17 +135,17 @@ public final class SqlSessionUtils {
 <span class="fc" id="L135">        TransactionSynchronizationManager.registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));</span>
 <span class="fc" id="L136">        holder.setSynchronizedWithTransaction(true);</span>
 <span class="fc" id="L137">        holder.requested();</span>
-<span class="fc" id="L138">      } else {</span>
+      } else {
 <span class="fc bfc" id="L139" title="All 2 branches covered.">        if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {</span>
 <span class="pc bpc" id="L140" title="1 of 2 branches missed.">          if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L141">            LOGGER.debug(&quot;SqlSession [&quot; + session + &quot;] was not registered for synchronization because DataSource is not transactional&quot;);</span>
           }
-<span class="nc" id="L143">        } else {</span>
+        } else {
 <span class="fc" id="L144">          throw new TransientDataAccessResourceException(</span>
-<span class="fc" id="L145">              &quot;SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization&quot;);</span>
+              &quot;SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization&quot;);
         }
       }
-    } else {
+<span class="fc" id="L148">    } else {</span>
 <span class="pc bpc" id="L149" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L150">        LOGGER.debug(&quot;SqlSession [&quot; + session + &quot;] was not registered for synchronization because synchronization is not active&quot;);</span>
       }
@@ -188,7 +188,7 @@ public final class SqlSessionUtils {
 <span class="nc" id="L188">        LOGGER.debug(&quot;Releasing transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
       }
 <span class="fc" id="L190">      holder.released();</span>
-<span class="fc" id="L191">    } else {</span>
+    } else {
 <span class="pc bpc" id="L192" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
 <span class="nc" id="L193">        LOGGER.debug(&quot;Closing non transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
       }
@@ -296,7 +296,7 @@ public final class SqlSessionUtils {
             }
           }
 <span class="nc" id="L298">          throw p;</span>
-        }
+<span class="fc" id="L299">        }</span>
       }
 <span class="fc" id="L301">    }</span>
 
