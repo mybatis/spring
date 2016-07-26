@@ -15,13 +15,18 @@
  */
 package org.mybatis.spring.mapper;
 
-import static org.springframework.util.Assert.notNull;
-
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.implementation.attribute.MethodAttributeAppender;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.FactoryBean;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * BeanFactory that enables injection of MyBatis mapper interfaces. It can be set up with a
@@ -92,7 +97,22 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
    */
   @Override
   public T getObject() throws Exception {
-    return getSqlSession().getMapper(this.mapperInterface);
+    T mapper = getSqlSession().getMapper(this.mapperInterface);
+    // Mapper returned by getSqlSession() is a Jdk Proxy, therefore
+    // it doesnt carry annotations initially present on the mapper interface.
+    // Here we create new class at runtime to restore them.
+    return (T) new ByteBuddy()
+      .subclass(Object.class)
+      .implement(this.mapperInterface)
+      .annotateType(this.mapperInterface.getAnnotations())
+      .method(ElementMatchers.isDeclaredBy(this.mapperInterface))
+      .intercept(MethodDelegation.to(mapper))
+      .attribute(MethodAttributeAppender.ForInstrumentedMethod.INCLUDING_RECEIVER)
+      .name(generateMapperClassName())
+      .make()
+      .load(this.mapperInterface.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+      .getLoaded()
+      .newInstance();
   }
 
   /**
@@ -154,5 +174,12 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
    */
   public boolean isAddToConfig() {
     return addToConfig;
+  }
+
+  /**
+   * Returns name for generated mapper based on mapper interface
+   */
+  private String generateMapperClassName() {
+    return String.format("%s$$BytebuddyGenerated", this.mapperInterface.getCanonicalName());
   }
 }

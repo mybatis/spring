@@ -137,6 +137,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.4.15</version>
+    </dependency>
+
     <!-- Test dependencies -->
 
     <dependency>
