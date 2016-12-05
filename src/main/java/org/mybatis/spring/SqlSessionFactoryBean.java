@@ -53,7 +53,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.ClassMetadata;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+import org.springframework.util.ClassUtils;
 
 /**
  * {@code FactoryBean} that creates an MyBatis {@code SqlSessionFactory}.
@@ -191,7 +197,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
   }
 
   /**
-   * Packages to search for type aliases.
+   * Packages to search for type aliases,wildcards are supported,such as a.b.**.c.
    *
    * @since 1.0.1
    *
@@ -390,7 +396,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
    * @return SqlSessionFactory
    * @throws IOException if loading the config file failed
    */
-  protected SqlSessionFactory buildSqlSessionFactory() throws IOException {
+  protected SqlSessionFactory buildSqlSessionFactory() throws Exception {
 
     Configuration configuration;
 
@@ -431,12 +437,24 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
       String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,
           ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
       for (String packageToScan : typeAliasPackageArray) {
-        configuration.getTypeAliasRegistry().registerAliases(packageToScan,
-                typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Scanned package: '" + packageToScan + "' for aliases");
-        }
-      }
+    	  String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
+					ClassUtils.convertClassNameToResourcePath(packageToScan) + "/**/*.class";
+		  	ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
+				Resource[] resources = rpr.getResources(pattern);
+				MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(rpr);
+				for (Resource resource : resources) {
+					if (resource.isReadable()) {
+						ClassMetadata classMetadata = readerFactory.getMetadataReader(resource).getClassMetadata();
+						Class clazz = Class.forName(classMetadata.getClassName());
+						if (typeAliasesSuperType == null || typeAliasesSuperType.isAssignableFrom(clazz)){
+							configuration.getTypeAliasRegistry().registerAlias(clazz);
+						}
+					}
+				}
+				if (LOGGER.isDebugEnabled()) {
+		          LOGGER.debug("Scanned package: '" + packageToScan + "' for aliases");
+		      }
+	      }
     }
 
     if (!isEmpty(this.typeAliases)) {
