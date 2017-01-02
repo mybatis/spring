@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MapperFactoryBean.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">MapperFactoryBean.java</span></div><h1>MapperFactoryBean.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperFactoryBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">MapperFactoryBean.java</span></div><h1>MapperFactoryBean.java</h1><pre class="source lang-java linenums">/**
  *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -50,50 +50,49 @@ import org.springframework.beans.factory.FactoryBean;
  * @author Eduardo Macarron
  *
  * @see SqlSessionTemplate
- * @version $Id$
  */
 public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements FactoryBean&lt;T&gt; {
 
   private Class&lt;T&gt; mapperInterface;
 
-<span class="fc" id="L59">  private boolean addToConfig = true;</span>
+<span class="fc" id="L58">  private boolean addToConfig = true;</span>
 
-<span class="fc" id="L61">  public MapperFactoryBean() {</span>
+<span class="fc" id="L60">  public MapperFactoryBean() {</span>
     //intentionally empty 
-<span class="fc" id="L63">  }</span>
+<span class="fc" id="L62">  }</span>
   
-<span class="fc" id="L65">  public MapperFactoryBean(Class&lt;T&gt; mapperInterface) {</span>
-<span class="fc" id="L66">    this.mapperInterface = mapperInterface;</span>
-<span class="fc" id="L67">  }</span>
+<span class="fc" id="L64">  public MapperFactoryBean(Class&lt;T&gt; mapperInterface) {</span>
+<span class="fc" id="L65">    this.mapperInterface = mapperInterface;</span>
+<span class="fc" id="L66">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   protected void checkDaoConfig() {
-<span class="fc" id="L74">    super.checkDaoConfig();</span>
+<span class="fc" id="L73">    super.checkDaoConfig();</span>
 
-<span class="fc" id="L76">    notNull(this.mapperInterface, &quot;Property 'mapperInterface' is required&quot;);</span>
+<span class="fc" id="L75">    notNull(this.mapperInterface, &quot;Property 'mapperInterface' is required&quot;);</span>
 
-<span class="fc" id="L78">    Configuration configuration = getSqlSession().getConfiguration();</span>
-<span class="fc bfc" id="L79" title="All 4 branches covered.">    if (this.addToConfig &amp;&amp; !configuration.hasMapper(this.mapperInterface)) {</span>
+<span class="fc" id="L77">    Configuration configuration = getSqlSession().getConfiguration();</span>
+<span class="fc bfc" id="L78" title="All 4 branches covered.">    if (this.addToConfig &amp;&amp; !configuration.hasMapper(this.mapperInterface)) {</span>
       try {
-<span class="fc" id="L81">        configuration.addMapper(this.mapperInterface);</span>
-<span class="nc" id="L82">      } catch (Exception e) {</span>
-<span class="nc" id="L83">        logger.error(&quot;Error while adding the mapper '&quot; + this.mapperInterface + &quot;' to configuration.&quot;, e);</span>
-<span class="nc" id="L84">        throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L80">        configuration.addMapper(this.mapperInterface);</span>
+<span class="nc" id="L81">      } catch (Exception e) {</span>
+<span class="nc" id="L82">        logger.error(&quot;Error while adding the mapper '&quot; + this.mapperInterface + &quot;' to configuration.&quot;, e);</span>
+<span class="nc" id="L83">        throw new IllegalArgumentException(e);</span>
       } finally {
-<span class="pc" id="L86">        ErrorContext.instance().reset();</span>
-<span class="fc" id="L87">      }</span>
+<span class="pc" id="L85">        ErrorContext.instance().reset();</span>
+<span class="fc" id="L86">      }</span>
     }
-<span class="fc" id="L89">  }</span>
+<span class="fc" id="L88">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public T getObject() throws Exception {
-<span class="fc" id="L96">    return getSqlSession().getMapper(this.mapperInterface);</span>
+<span class="fc" id="L95">    return getSqlSession().getMapper(this.mapperInterface);</span>
   }
 
   /**
@@ -101,7 +100,7 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    */
   @Override
   public Class&lt;T&gt; getObjectType() {
-<span class="fc" id="L104">    return this.mapperInterface;</span>
+<span class="fc" id="L103">    return this.mapperInterface;</span>
   }
 
   /**
@@ -109,7 +108,7 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    */
   @Override
   public boolean isSingleton() {
-<span class="fc" id="L112">    return true;</span>
+<span class="fc" id="L111">    return true;</span>
   }
 
   //------------- mutators --------------
@@ -120,8 +119,8 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    * @param mapperInterface class of the interface
    */
   public void setMapperInterface(Class&lt;T&gt; mapperInterface) {
-<span class="fc" id="L123">    this.mapperInterface = mapperInterface;</span>
-<span class="fc" id="L124">  }</span>
+<span class="fc" id="L122">    this.mapperInterface = mapperInterface;</span>
+<span class="fc" id="L123">  }</span>
 
   /**
    * Return the mapper interface of the MyBatis mapper
@@ -129,7 +128,7 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    * @return class of the interface
    */
   public Class&lt;T&gt; getMapperInterface() {
-<span class="fc" id="L132">    return mapperInterface;</span>
+<span class="fc" id="L131">    return mapperInterface;</span>
   }
 
   /**
@@ -144,8 +143,8 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    * @param addToConfig
    */
   public void setAddToConfig(boolean addToConfig) {
-<span class="fc" id="L147">    this.addToConfig = addToConfig;</span>
-<span class="fc" id="L148">  }</span>
+<span class="fc" id="L146">    this.addToConfig = addToConfig;</span>
+<span class="fc" id="L147">  }</span>
 
   /**
    * Return the flag for addition into MyBatis config.
@@ -154,7 +153,7 @@ public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements 
    * registered.
    */
   public boolean isAddToConfig() {
-<span class="fc" id="L157">    return addToConfig;</span>
+<span class="fc" id="L156">    return addToConfig;</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

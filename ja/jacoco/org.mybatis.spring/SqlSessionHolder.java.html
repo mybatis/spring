@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SqlSessionHolder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionHolder.java</span></div><h1>SqlSessionHolder.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2015 the original author or authors.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionHolder.java</span></div><h1>SqlSessionHolder.java</h1><pre class="source lang-java linenums">/**
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import org.springframework.transaction.support.ResourceHolderSupport;
  *
  * @author Hunter Presnall
  * @author Eduardo Macarron
- * 
- * @version $Id$
  */
 public final class SqlSessionHolder extends ResourceHolderSupport {
 
@@ -49,27 +47,27 @@ public final class SqlSessionHolder extends ResourceHolderSupport {
    */
   public SqlSessionHolder(SqlSession sqlSession,
       ExecutorType executorType,
-<span class="fc" id="L52">      PersistenceExceptionTranslator exceptionTranslator) {</span>
+<span class="fc" id="L50">      PersistenceExceptionTranslator exceptionTranslator) {</span>
 
-<span class="fc" id="L54">    notNull(sqlSession, &quot;SqlSession must not be null&quot;);</span>
-<span class="fc" id="L55">    notNull(executorType, &quot;ExecutorType must not be null&quot;);</span>
+<span class="fc" id="L52">    notNull(sqlSession, &quot;SqlSession must not be null&quot;);</span>
+<span class="fc" id="L53">    notNull(executorType, &quot;ExecutorType must not be null&quot;);</span>
 
-<span class="fc" id="L57">    this.sqlSession = sqlSession;</span>
-<span class="fc" id="L58">    this.executorType = executorType;</span>
-<span class="fc" id="L59">    this.exceptionTranslator = exceptionTranslator;</span>
-<span class="fc" id="L60">  }</span>
+<span class="fc" id="L55">    this.sqlSession = sqlSession;</span>
+<span class="fc" id="L56">    this.executorType = executorType;</span>
+<span class="fc" id="L57">    this.exceptionTranslator = exceptionTranslator;</span>
+<span class="fc" id="L58">  }</span>
 
   public SqlSession getSqlSession() {
-<span class="fc" id="L63">    return sqlSession;</span>
+<span class="fc" id="L61">    return sqlSession;</span>
   }
 
   public ExecutorType getExecutorType() {
-<span class="fc" id="L67">    return executorType;</span>
+<span class="fc" id="L65">    return executorType;</span>
   }
 
   public PersistenceExceptionTranslator getPersistenceExceptionTranslator() {
-<span class="fc" id="L71">    return exceptionTranslator;</span>
+<span class="fc" id="L69">    return exceptionTranslator;</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
