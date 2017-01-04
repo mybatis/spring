@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../testapidocs/org/mybatis/spring/batch/SpringBatchTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2015 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2016 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> *    you may not use this file except in compliance with the License.</em>
@@ -77,8 +77,8 @@
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      writer.write(employees);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      assertEquals(20000, session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      assertEquals(employees.size(), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>      assertEquals(Integer.valueOf(20000), session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      assertEquals(Integer.valueOf(employees.size()), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>    }
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>    @Test
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      writer.write(employees);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      <em class="jxr_comment">// Assert that we have a WRONG employee count</em>
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      assertNotEquals(employees.size(), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      assertNotEquals(Integer.valueOf(employees.size()), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>    }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>    @Test
@@ -112,8 +112,8 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>       }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>       writer.write(employees);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> 
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>       assertEquals(20000, session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>       assertEquals(employees.size(), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>       assertEquals(Integer.valueOf(20000), session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>       assertEquals(Integer.valueOf(employees.size()), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     } <strong class="jxr_keyword">finally</strong> {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>       cursorNoNestedItemReader.doClose();
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     }
@@ -133,8 +133,8 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>       }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>       writer.write(employees);
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>       assertEquals(20000, session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>       assertEquals(employees.size(), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>       assertEquals(Integer.valueOf(20000), session.selectOne(<span class="jxr_string">"checkSalarySum"</span>));
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>       assertEquals(Integer.valueOf(employees.size()), session.selectOne(<span class="jxr_string">"checkEmployeeCount"</span>));
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     } <strong class="jxr_keyword">finally</strong> {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>       cursorNestedItemReader.doClose();
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     }
@@ -142,6 +142,6 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2010&#x2013;2016 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2010&#x2013;2017 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>
 </body>
 </html>
