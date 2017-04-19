@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
+import java.io.Serializable;
 
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -74,7 +75,7 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
  * @see SqlSessionFactory
  * @see MyBatisExceptionTranslator
  */
-public class SqlSessionTemplate implements SqlSession, DisposableBean {
+public class SqlSessionTemplate implements SqlSession, DisposableBean,Serializable {
 
   private final SqlSessionFactory sqlSessionFactory;
 
