@@ -15,10 +15,17 @@
  */
 package org.mybatis.spring;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public interface TestMapper {
 
   int findTest();
 
   void insertTest(String test);
+
+  @Cacheable
+  void annotatedMethod();
 
 }

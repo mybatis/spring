@@ -15,26 +15,24 @@
  */
 package org.mybatis.spring.mapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import com.mockrunner.mock.jdbc.MockConnection;
+import com.mockrunner.mock.jdbc.MockDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mybatis.spring.AbstractMyBatisSpringTest;
-import org.mybatis.spring.MyBatisSystemException;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.TestMapper;
+import org.mybatis.spring.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.mockrunner.mock.jdbc.MockConnection;
-import com.mockrunner.mock.jdbc.MockDataSource;
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.*;
 
 public final class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
 
@@ -191,6 +189,51 @@ public final class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
     }
   }
 
+  @Test
+  public void testMapperRetainsInterfaceMethodAnnotations() throws Exception {
+    try {
+      TestMapper mapperObject = createMapper(sqlSessionTemplate, true);
+
+      Method annotatedMethod = mapperObject.getClass().getMethod("annotatedMethod");
+      Cacheable methodAnnotation = annotatedMethod.getAnnotation(Cacheable.class);
+      assertNotNull("Method should carry annotation", methodAnnotation);
+    } finally {
+      // connection not used; force close to avoid failing in validateConnectionClosed()
+      connection.close();
+    }
+  }
+
+  @Test
+  public void testMapperRetainsInterfaceAnnotations() throws Exception {
+    try {
+      TestMapper mapperObject = createMapper(sqlSessionTemplate, true);
+
+      Transactional classAnnotation = mapperObject.getClass().getAnnotation(Transactional.class);
+      assertNotNull("Class should carry classAnnotation", classAnnotation);
+    } finally {
+      // connection not used; force close to avoid failing in validateConnectionClosed()
+      connection.close();
+    }
+  }
+
+  @Test
+  public void testMapperShouldAllowForCreatingMultipleObjects() throws Exception {
+    try {
+      MapperFactoryBean<TestMapper> mapper = new MapperFactoryBean<TestMapper>();
+      mapper.setMapperInterface(TestMapper.class);
+      mapper.setSqlSessionTemplate(sqlSessionTemplate);
+      mapper.setAddToConfig(true);
+      mapper.afterPropertiesSet();
+
+      mapper.getObject();
+      mapper.getObject();
+    } finally {
+      // connection not used; force close to avoid failing in validateConnectionClosed()
+      connection.close();
+    }
+  }
+
+
   private void find() throws Exception {
     find(MapperFactoryBeanTest.sqlSessionTemplate, true);
   }
@@ -202,12 +245,16 @@ public final class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   private void find(SqlSessionTemplate sqlSessionTemplate, boolean addToConfig) throws Exception {
     // recreate the mapper for each test since sqlSessionTemplate or the underlying
     // SqlSessionFactory could change for each test
+    createMapper(sqlSessionTemplate, addToConfig).findTest();
+  }
+
+  private TestMapper createMapper(SqlSessionTemplate sqlSessionTemplate, boolean addToConfig) throws Exception {
     MapperFactoryBean<TestMapper> mapper = new MapperFactoryBean<TestMapper>();
     mapper.setMapperInterface(TestMapper.class);
     mapper.setSqlSessionTemplate(sqlSessionTemplate);
     mapper.setAddToConfig(addToConfig);
     mapper.afterPropertiesSet();
 
-    mapper.getObject().findTest();
+    return mapper.getObject();
   }
 }
