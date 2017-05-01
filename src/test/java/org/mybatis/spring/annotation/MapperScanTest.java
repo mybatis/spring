@@ -37,7 +37,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import com.mockrunner.mock.jdbc.MockDataSource;
 
@@ -259,12 +258,12 @@ public final class MapperScanTest {
   }
 
   @Configuration
-  @MapperScan(basePackages = "org.mybatis.spring.mapper", annotationClass = Component.class)
+  @MapperScan(basePackages = "org.mybatis.spring.mapper", annotationClass = Mapper.class)
   public static class AppConfigWithAnnotation {
   }
 
   @Configuration
-  @MapperScan(basePackages = "org.mybatis.spring.mapper", annotationClass = Component.class, markerInterface = MapperInterface.class)
+  @MapperScan(basePackages = "org.mybatis.spring.mapper", annotationClass = Mapper.class, markerInterface = MapperInterface.class)
   public static class AppConfigWithMarkerInterfaceAndAnnotation {
   }
 
