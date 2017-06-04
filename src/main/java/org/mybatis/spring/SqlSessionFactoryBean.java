@@ -505,6 +505,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
               configuration, mapperLocation.toString(), configuration.getSqlFragments());
           xmlMapperBuilder.parse();
         } catch (Exception e) {
+          LOGGER.error("Failed to parse mapping resource: '" + mapperLocation + "'", e);
           throw new NestedIOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
         } finally {
           ErrorContext.instance().reset();
