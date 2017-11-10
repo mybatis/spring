@@ -27,6 +27,8 @@ import org.mockito.*;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 
+import static org.junit.Assert.fail;
+
 /**
  * Tests for {@link MyBatisCursorItemReader}.
  */
@@ -59,6 +61,7 @@ public class MyBatisCursorItemReaderTest {
     ExecutionContext executionContext = new ExecutionContext();
     try {
       itemReader.open(executionContext);
+      fail();
     } catch (ItemStreamException e) {
       Assert.assertThat(e.getMessage(), Is.is("Failed to initialize the reader"));
       Assert.assertThat(e.getCause(), IsInstanceOf.instanceOf(RuntimeException.class));
