@@ -482,6 +482,7 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         xmlConfigBuilder.parse();
         LOGGER.debug(() -> "Parsed configuration file: '" + this.configLocation + "'");
       } catch (Exception ex) {
+        LOGGER.error(() -> "Parsed error", ex);
         throw new NestedIOException("Failed to parse config resource: " + this.configLocation, ex);
       } finally {
         ErrorContext.instance().reset();
