@@ -18,6 +18,6 @@ Supported Versions
 - master (2.0.x) - Support for Java 8, Spring 5, and Junit 5 plus other java 8 requirements
 
 Essentials
------------
+------------
 
 * [See the docs](http://mybatis.github.io/spring/)
