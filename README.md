@@ -17,7 +17,7 @@ Supported Versions
 - 1.3.x - Continued support for Java 6
 - master (2.0.x) - Support for Java 8, Spring 5, and Junit 5 plus other java 8 requirements
 
-Essentials
+Essentialsmmmmmm
 ----------
 
 * [See the docs](http://mybatis.github.io/spring/)
