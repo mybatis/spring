@@ -296,6 +296,16 @@ public final class SqlSessionFactoryBeanTest {
   }
 
   @Test
+  void testErrorMessageWhenXmlConfigBuilderParseError() throws Exception {
+    setupFactoryBean();
+
+    factoryBean.setConfigLocation(new org.springframework.core.io.ClassPathResource(
+        "org/mybatis/spring/mybatis-config-problem.xml"));
+    Throwable e = assertThrows(Exception.class, () -> factoryBean.getObject());
+    assertThat(e.getMessage()).contains("The error may exist in org/mybatis/spring/TestProblemMapper.xml");
+  }
+
+  @Test
   void testNullMapperLocations() throws Exception {
     setupFactoryBean();
     // default should also be null, but test explicitly setting to null
