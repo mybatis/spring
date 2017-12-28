@@ -482,7 +482,9 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
         xmlConfigBuilder.parse();
         LOGGER.debug(() -> "Parsed configuration file: '" + this.configLocation + "'");
       } catch (Exception ex) {
-        throw new NestedIOException("Failed to parse config resource: " + this.configLocation, ex);
+        throw new NestedIOException(
+            "Failed to parse config resource: " + this.configLocation + " error detail: " + ErrorContext.instance(),
+            ex);
       } finally {
         ErrorContext.instance().reset();
       }
@@ -505,7 +507,9 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
               configuration, mapperLocation.toString(), configuration.getSqlFragments());
           xmlMapperBuilder.parse();
         } catch (Exception e) {
-          throw new NestedIOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
+          throw new NestedIOException(
+              "Failed to parse mapping resource: '" + mapperLocation + "'" + " error detail: " + ErrorContext
+                  .instance(), e);
         } finally {
           ErrorContext.instance().reset();
         }
