@@ -107,7 +107,7 @@
 
       <subsection name="MyBatisCursorItemReader">
         <p>
-          This bean is an <code>IteamReader</code> that reads records from a database using a cursor.
+          This bean is an <code>ItemReader</code> that reads records from a database using a cursor.
         </p>
 
         <p>
