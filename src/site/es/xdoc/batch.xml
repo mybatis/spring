@@ -42,7 +42,7 @@
       
       <subsection name="MyBatisPagingItemReader">
         <p>
-          Este bean es un <code>IteamReader</code> que lee registros de una base de datos usando paginación.
+          Este bean es un <code>ItemReader</code> que lee registros de una base de datos usando paginación.
         </p>
         
         <p>
@@ -120,7 +120,7 @@
 
       <subsection name="MyBatisCursorItemReader">
         <p>
-          Este bean es un <code>IteamReader</code> que lee registros de la base de datos usando un cursor.
+          Este bean es un <code>ItemReader</code> que lee registros de la base de datos usando un cursor.
         </p>
 
         <p>

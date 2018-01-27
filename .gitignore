@@ -6,3 +6,4 @@
 *.log
 *.iml
 /.idea
+/bin/
