@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2012 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
  */
 package org.mybatis.spring.support;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.SQLException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mybatis.spring.AbstractMyBatisSpringTest;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -30,71 +31,69 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.support.GenericApplicationContext;
 
-/**
- * @version $Id$
- */
 public final class SqlSessionDaoSupportTest extends AbstractMyBatisSpringTest {
   private SqlSessionDaoSupport sqlSessionDaoSupport;
 
   private GenericApplicationContext applicationContext;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     sqlSessionDaoSupport = new MockSqlSessionDao();
   }
 
-  @After
-  public void closeConnection() throws SQLException {
+  @AfterEach
+  void closeConnection() throws SQLException {
     connection.close();
   }
 
   @Test
-  public void testWithSqlSessionTemplate() {
+  void testWithSqlSessionTemplate() {
     SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
     sqlSessionDaoSupport.setSqlSessionTemplate(sessionTemplate);
     sqlSessionDaoSupport.afterPropertiesSet();
 
-    assertEquals("should store the Template", sessionTemplate, sqlSessionDaoSupport.getSqlSession());
+    assertThat(sqlSessionDaoSupport.getSqlSession()).as("should store the Template").isEqualTo(sessionTemplate);
   }
 
   @Test
-  public void testWithSqlSessionFactory() {
+  void testWithSqlSessionFactory() {
     sqlSessionDaoSupport.setSqlSessionFactory(sqlSessionFactory);
     sqlSessionDaoSupport.afterPropertiesSet();
 
-    assertEquals("should store the Factory", sqlSessionFactory, ((SqlSessionTemplate) sqlSessionDaoSupport
-        .getSqlSession()).getSqlSessionFactory());
+    assertThat(((SqlSessionTemplate) sqlSessionDaoSupport.getSqlSession()).getSqlSessionFactory())
+        .as("should store the Factory")
+        .isEqualTo(sqlSessionFactory);
   }
 
   @Test
-  public void testWithBothFactoryAndTemplate() {
+  void testWithBothFactoryAndTemplate() {
     SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
     sqlSessionDaoSupport.setSqlSessionTemplate(sessionTemplate);
     sqlSessionDaoSupport.setSqlSessionFactory(sqlSessionFactory);
     sqlSessionDaoSupport.afterPropertiesSet();
 
-    assertEquals("should ignore the Factory", sessionTemplate, sqlSessionDaoSupport.getSqlSession());
+    assertThat(sqlSessionDaoSupport.getSqlSession()).as("should ignore the Factory").isEqualTo(sessionTemplate);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testWithNoFactoryOrSession() {
-    sqlSessionDaoSupport.afterPropertiesSet();
+  @Test
+  void testWithNoFactoryOrSession() {
+    assertThrows(IllegalArgumentException.class, sqlSessionDaoSupport::afterPropertiesSet);
   }
 
-  @Test(expected = org.springframework.beans.factory.BeanCreationException.class)
-  public void testAutowireWithNoFactoryOrSession() {
+  @Test
+  void testAutowireWithNoFactoryOrSession() {
     setupContext();
-    startContext();
+    assertThrows(BeanCreationException.class, this::startContext);
   }
 
-  @Test(expected = BeanCreationException.class)
-  public void testAutowireWithTwoFactories() {
+  @Test
+  void testAutowireWithTwoFactories() {
     setupContext();
 
     setupSqlSessionFactory("factory1");
     setupSqlSessionFactory("factory2");
 
-    startContext();
+    assertThrows(BeanCreationException.class, this::startContext);
   }
 
   private void setupContext() {

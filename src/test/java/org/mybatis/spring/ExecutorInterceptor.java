@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2012 the original author or authors.
+/**
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import org.apache.ibatis.plugin.Signature;
  * The Executor is not accessible from DefaultSqlSession, so it is much easier to use an Interceptor
  * rather than subclass a new SqlSessionFactory, etc. Also, there is the potential to change the
  * default MyBatis behavior, which could change the test results.
- *
- * @version $Id$
  */
 @Intercepts({
     @Signature(type = Executor.class, method = "commit", args = { boolean.class }),
@@ -46,6 +44,7 @@ final class ExecutorInterceptor implements Interceptor {
 
   private boolean closed;
 
+  @Override
   public Object intercept(Invocation invocation) throws Throwable {
     if ("commit".equals(invocation.getMethod().getName())) {
       ++this.commitCount;
@@ -58,10 +57,12 @@ final class ExecutorInterceptor implements Interceptor {
     return invocation.proceed();
   }
 
+  @Override
   public Object plugin(Object target) {
     return Plugin.wrap(target, this);
   }
 
+  @Override
   public void setProperties(Properties properties) {
     // do nothing
   }

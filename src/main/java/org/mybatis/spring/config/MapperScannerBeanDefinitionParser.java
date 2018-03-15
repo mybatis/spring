@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -39,21 +39,21 @@ import org.w3c.dom.Element;
  * @since 1.2.0
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
- * @version $Id$
  */
 
 public class MapperScannerBeanDefinitionParser implements BeanDefinitionParser {
 
-  private static String ATTRIBUTE_BASE_PACKAGE = "base-package";
-  private static String ATTRIBUTE_ANNOTATION = "annotation";
-  private static String ATTRIBUTE_MARKER_INTERFACE = "marker-interface";
-  private static String ATTRIBUTE_NAME_GENERATOR = "name-generator";
-  private static String ATTRIBUTE_TEMPLATE_REF = "template-ref";
-  private static String ATTRIBUTE_FACTORY_REF = "factory-ref";
+  private static final String ATTRIBUTE_BASE_PACKAGE = "base-package";
+  private static final String ATTRIBUTE_ANNOTATION = "annotation";
+  private static final String ATTRIBUTE_MARKER_INTERFACE = "marker-interface";
+  private static final String ATTRIBUTE_NAME_GENERATOR = "name-generator";
+  private static final String ATTRIBUTE_TEMPLATE_REF = "template-ref";
+  private static final String ATTRIBUTE_FACTORY_REF = "factory-ref";
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public synchronized BeanDefinition parse(Element element, ParserContext parserContext) {
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(parserContext.getRegistry());
     ClassLoader classLoader = scanner.getResourceLoader().getClassLoader();
@@ -74,7 +74,7 @@ public class MapperScannerBeanDefinitionParser implements BeanDefinitionParser {
       String nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
       if (StringUtils.hasText(nameGeneratorClassName)) {
         Class<?> nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);
-        BeanNameGenerator nameGenerator = BeanUtils.instantiateClass((Class<?>) nameGeneratorClass, BeanNameGenerator.class);
+        BeanNameGenerator nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.class);
         scanner.setBeanNameGenerator(nameGenerator);
       }
     } catch (Exception ex) {

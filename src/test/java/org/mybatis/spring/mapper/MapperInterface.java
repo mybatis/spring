@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2012 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,12 +15,9 @@
  */
 package org.mybatis.spring.mapper;
 
-/**
- * @version $Id$
- */
 // marker interface for MapperScannerPostProcessor tests
 // when used as a marker interface,
 // this class should be ignored even though it has methods
 public interface MapperInterface {
-  public void method();
+  void method();
 }

@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.mybatis.spring.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -61,16 +62,16 @@ import org.springframework.context.annotation.Import;
  *
  * @author Michael Lanyon
  * @author Eduardo Macarron
- * 
+ *
  * @since 1.2.0
  * @see MapperScannerRegistrar
  * @see MapperFactoryBean
- * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
 @Import(MapperScannerRegistrar.class)
+@Repeatable(MapperScans.class)
 public @interface MapperScan {
 
   /**
@@ -101,7 +102,7 @@ public @interface MapperScan {
    * within the Spring container.
    */
   Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
-  
+
   /**
    * This property specifies the annotation that the scanner will search for.
    * <p>
@@ -135,5 +136,11 @@ public @interface MapperScan {
    * have more than one datasource.
    */
   String sqlSessionFactoryRef() default "";
+
+  /**
+   * Specifies a custom MapperFactoryBean to return a mybatis proxy as spring bean.
+   *
+   */
+  Class<? extends MapperFactoryBean> factoryBean() default MapperFactoryBean.class;
 
 }

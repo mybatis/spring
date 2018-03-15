@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,18 +24,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.transaction.TransactionException;
 
 /**
  * Default exception translator.
  *
  * Translates MyBatis SqlSession returned exception into a Spring
  * {@code DataAccessException} using Spring's {@code SQLExceptionTranslator}
- * Can load {@code SQLExceptionTranslator} eagerly of when the
+ * Can load {@code SQLExceptionTranslator} eagerly or when the
  * first exception is translated.
  *
  * @author Eduardo Macarron
- * 
- * @version $Id$
  */
 public class MyBatisExceptionTranslator implements PersistenceExceptionTranslator {
 
@@ -61,6 +60,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   /**
    * {@inheritDoc}
    */
+  @Override
   public DataAccessException translateExceptionIfPossible(RuntimeException e) {
     if (e instanceof PersistenceException) {
       // Batch exceptions come inside another PersistenceException
@@ -71,6 +71,8 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
       if (e.getCause() instanceof SQLException) {
         this.initExceptionTranslator();
         return this.exceptionTranslator.translate(e.getMessage() + "\n", null, (SQLException) e.getCause());
+      } else if (e.getCause() instanceof TransactionException) {
+        throw (TransactionException) e.getCause();
       }
       return new MyBatisSystemException(e);
     } 

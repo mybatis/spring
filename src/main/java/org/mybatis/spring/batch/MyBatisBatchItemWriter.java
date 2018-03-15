@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@ import static org.springframework.util.Assert.notNull;
 import java.util.List;
 
 import org.apache.ibatis.executor.BatchResult;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.InitializingBean;
@@ -50,11 +51,10 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
  * @author Eduardo Macarron
  * 
  * @since 1.1.0
- * @version $Id$
  */
 public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBean {
 
-  protected static final Log logger = LogFactory.getLog(MyBatisBatchItemWriter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisBatchItemWriter.class);
 
   private SqlSessionTemplate sqlSessionTemplate;
 
@@ -75,7 +75,7 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
   /**
    * Public setter for {@link SqlSessionFactory} for injection purposes.
    *
-   * @param SqlSessionFactory sqlSessionFactory
+   * @param sqlSessionFactory a factory object for the {@link SqlSession}.
    */
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
     if (sqlSessionTemplate == null) {
@@ -86,7 +86,7 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
   /**
    * Public setter for the {@link SqlSessionTemplate}.
    *
-   * @param SqlSessionTemplate the SqlSessionTemplate
+   * @param sqlSessionTemplate a template object for use the {@link SqlSession} on the Spring managed transaction
    */
   public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
     this.sqlSessionTemplate = sqlSessionTemplate;
@@ -105,6 +105,7 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
   /**
    * Check mandatory properties - there must be an SqlSession and a statementId.
    */
+  @Override
   public void afterPropertiesSet() {
     notNull(sqlSessionTemplate, "A SqlSessionFactory or a SqlSessionTemplate is required.");
     isTrue(ExecutorType.BATCH == sqlSessionTemplate.getExecutorType(), "SqlSessionTemplate's executor type must be BATCH");
@@ -114,13 +115,11 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
   /**
    * {@inheritDoc}
    */
+  @Override
   public void write(final List<? extends T> items) {
 
     if (!items.isEmpty()) {
-
-      if (logger.isDebugEnabled()) {
-        logger.debug("Executing batch with " + items.size() + " items.");
-      }
+      LOGGER.debug(() -> "Executing batch with " + items.size() + " items.");
 
       for (T item : items) {
         sqlSessionTemplate.update(statementId, item);

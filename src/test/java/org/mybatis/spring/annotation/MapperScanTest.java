@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,18 +15,20 @@
  */
 package org.mybatis.spring.annotation;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.AnnotatedMapper;
 import org.mybatis.spring.mapper.MapperInterface;
 import org.mybatis.spring.mapper.MapperSubinterface;
 import org.mybatis.spring.mapper.child.MapperChildInterface;
+import org.mybatis.spring.type.DummyMapperFactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
@@ -43,14 +45,12 @@ import com.mockrunner.mock.jdbc.MockDataSource;
  * Test for the MapperScannerRegistrar.
  * <p>
  * This test works fine with Spring 3.1 and 3.2 but with 3.1 the registrar is called twice.
- * 
- * @version $Id$
  */
 public final class MapperScanTest {
   private AnnotationConfigApplicationContext applicationContext;
 
-  @Before
-  public void setupContext() {
+  @BeforeEach
+  void setupContext() {
     applicationContext = new AnnotationConfigApplicationContext();
 
     setupSqlSessionFactory("sqlSessionFactory");
@@ -68,21 +68,23 @@ public final class MapperScanTest {
     applicationContext.getBean("sqlSessionFactory");
   }
 
-  @After
-  public void assertNoMapperClass() {
-    // concrete classes should always be ignored by MapperScannerPostProcessor
-    assertBeanNotLoaded("mapperClass");
+  @AfterEach
+  void assertNoMapperClass() {
+    try {
+      // concrete classes should always be ignored by MapperScannerPostProcessor
+      assertBeanNotLoaded("mapperClass");
 
-    // no method interfaces should be ignored too
-    assertBeanNotLoaded("package-info");
-    // assertBeanNotLoaded("annotatedMapperZeroMethods"); // as of 1.1.0 mappers
-    // with no methods are loaded
-
-    applicationContext.destroy();
+      // no method interfaces should be ignored too
+      assertBeanNotLoaded("package-info");
+      // assertBeanNotLoaded("annotatedMapperZeroMethods"); // as of 1.1.0 mappers
+      // with no methods are loaded
+    } finally {
+      applicationContext.close();
+    }
   }
 
   @Test
-  public void testInterfaceScan() {
+  void testInterfaceScan() {
     applicationContext.register(AppConfigWithPackageScan.class);
 
     startContext();
@@ -95,7 +97,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testInterfaceScanWithPackageClasses() {
+  void testInterfaceScanWithPackageClasses() {
     applicationContext.register(AppConfigWithPackageClasses.class);
 
     startContext();
@@ -108,7 +110,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testNameGenerator() {
+  void testNameGenerator() {
     applicationContext.register(AppConfigWithNameGenerator.class);
 
     startContext();
@@ -121,7 +123,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testMarkerInterfaceScan() {
+  void testMarkerInterfaceScan() {
     applicationContext.register(AppConfigWithMarkerInterface.class);
 
     startContext();
@@ -135,7 +137,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testAnnotationScan() {
+  void testAnnotationScan() {
     applicationContext.register(AppConfigWithAnnotation.class);
 
     startContext();
@@ -149,7 +151,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testMarkerInterfaceAndAnnotationScan() {
+  void testMarkerInterfaceAndAnnotationScan() {
     applicationContext.register(AppConfigWithMarkerInterfaceAndAnnotation.class);
 
     startContext();
@@ -163,7 +165,23 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testScanWithNameConflict() {
+  void testCustomMapperFactoryBean() {
+    applicationContext.register(AppConfigWithCustomMapperFactoryBean.class);
+
+    startContext();
+
+    // all interfaces with methods should be loaded
+    applicationContext.getBean("mapperInterface");
+    applicationContext.getBean("mapperSubinterface");
+    applicationContext.getBean("mapperChildInterface");
+    applicationContext.getBean("annotatedMapper");
+
+    assertTrue(DummyMapperFactoryBean.getMapperCount() > 0);
+
+  }
+
+  @Test
+  void testScanWithNameConflict() {
     GenericBeanDefinition definition = new GenericBeanDefinition();
     definition.setBeanClass(Object.class);
     applicationContext.registerBeanDefinition("mapperInterface", definition);
@@ -172,7 +190,9 @@ public final class MapperScanTest {
 
     startContext();
 
-    assertSame("scanner should not overwite existing bean definition", applicationContext.getBean("mapperInterface").getClass(), Object.class);
+    assertThat(applicationContext.getBean("mapperInterface").getClass())
+        .as("scanner should not overwrite existing bean definition")
+        .isSameAs(Object.class);
   }
 
   private void setupSqlSessionFactory(String name) {
@@ -192,7 +212,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testScanWithExplicitSqlSessionFactory() {
+  void testScanWithExplicitSqlSessionFactory() {
     applicationContext.register(AppConfigWithSqlSessionFactory.class);
 
     startContext();
@@ -205,7 +225,7 @@ public final class MapperScanTest {
   }
 
   @Test
-  public void testScanWithExplicitSqlSessionTemplate() throws Exception {
+  void testScanWithExplicitSqlSessionTemplate() throws Exception {
     GenericBeanDefinition definition = new GenericBeanDefinition();
     definition.setBeanClass(SqlSessionTemplate.class);
     ConstructorArgumentValues constructorArgs = new ConstructorArgumentValues();
@@ -223,6 +243,26 @@ public final class MapperScanTest {
     applicationContext.getBean("mapperChildInterface");
     applicationContext.getBean("annotatedMapper");
     
+  }
+
+  @Test
+  void testScanWithMapperScanIsRepeat() {
+    applicationContext.register(AppConfigWithMapperScanIsRepeat.class);
+
+    startContext();
+
+    applicationContext.getBean("ds1Mapper");
+    applicationContext.getBean("ds2Mapper");
+  }
+
+  @Test
+  void testScanWithMapperScans() {
+    applicationContext.register(AppConfigWithMapperScans.class);
+
+    startContext();
+
+    applicationContext.getBean("ds1Mapper");
+    applicationContext.getBean("ds2Mapper");
   }
 
   @Configuration
@@ -265,8 +305,28 @@ public final class MapperScanTest {
   public static class AppConfigWithNameGenerator {
   }
 
+  @Configuration
+  @MapperScan(basePackages = "org.mybatis.spring.mapper", factoryBean = DummyMapperFactoryBean.class)
+  public static class AppConfigWithCustomMapperFactoryBean {
+  }
+
+  @Configuration
+  @MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds1")
+  @MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds2")
+  public static class AppConfigWithMapperScanIsRepeat {
+  }
+
+  @Configuration
+  @MapperScans({
+      @MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds1")
+      ,@MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds2")
+  })
+  public static class AppConfigWithMapperScans {
+  }
+
   public static class BeanNameGenerator implements org.springframework.beans.factory.support.BeanNameGenerator {
 
+    @Override
     public String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
       return beanDefinition.getBeanClassName();
     }

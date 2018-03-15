@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2012 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,27 +15,22 @@
  */
 package org.mybatis.spring;
 
-import static org.springframework.transaction.support.TransactionSynchronizationManager.bindResource;
-import static org.springframework.transaction.support.TransactionSynchronizationManager.getResource;
-import static org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive;
-import static org.springframework.transaction.support.TransactionSynchronizationManager.isSynchronizationActive;
-import static org.springframework.transaction.support.TransactionSynchronizationManager.registerSynchronization;
-import static org.springframework.transaction.support.TransactionSynchronizationManager.unbindResource;
 import static org.springframework.util.Assert.notNull;
 
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Handles MyBatis SqlSession life cycle. It can register and get SqlSessions from
@@ -43,12 +38,14 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
  *
  * @author Hunter Presnall 
  * @author Eduardo Macarron
- *
- * @version $Id$
  */
 public final class SqlSessionUtils {
 
-  private static final Log logger = LogFactory.getLog(SqlSessionUtils.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SqlSessionUtils.class);
+
+  private static final String NO_EXECUTOR_TYPE_SPECIFIED = "No ExecutorType specified";
+  private static final String NO_SQL_SESSION_FACTORY_SPECIFIED = "No SqlSessionFactory specified";
+  private static final String NO_SQL_SESSION_SPECIFIED = "No SqlSession specified";
 
   /**
    * This class can't be instantiated, exposes static utility methods only.
@@ -86,11 +83,67 @@ public final class SqlSessionUtils {
    */
   public static SqlSession getSqlSession(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator) {
 
-    notNull(sessionFactory, "No SqlSessionFactory specified");
-    notNull(executorType, "No ExecutorType specified");
+    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
+    notNull(executorType, NO_EXECUTOR_TYPE_SPECIFIED);
 
-    SqlSessionHolder holder = (SqlSessionHolder) getResource(sessionFactory);
+    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 
+    SqlSession session = sessionHolder(executorType, holder);
+    if (session != null) {
+      return session;
+    }
+
+    LOGGER.debug(() -> "Creating a new SqlSession");
+    session = sessionFactory.openSession(executorType);
+
+    registerSessionHolder(sessionFactory, executorType, exceptionTranslator, session);
+
+    return session;
+  }
+
+  /**
+   * Register session holder if synchronization is active (i.e. a Spring TX is active).
+   *
+   * Note: The DataSource used by the Environment should be synchronized with the
+   * transaction either through DataSourceTxMgr or another tx synchronization.
+   * Further assume that if an exception is thrown, whatever started the transaction will
+   * handle closing / rolling back the Connection associated with the SqlSession.
+   * 
+   * @param sessionFactory sqlSessionFactory used for registration.
+   * @param executorType executorType used for registration.
+   * @param exceptionTranslator persistenceExceptionTranslator used for registration.
+   * @param session sqlSession used for registration.
+   */
+  private static void registerSessionHolder(SqlSessionFactory sessionFactory, ExecutorType executorType,
+      PersistenceExceptionTranslator exceptionTranslator, SqlSession session) {
+    SqlSessionHolder holder;
+    if (TransactionSynchronizationManager.isSynchronizationActive()) {
+      Environment environment = sessionFactory.getConfiguration().getEnvironment();
+
+      if (environment.getTransactionFactory() instanceof SpringManagedTransactionFactory) {
+        LOGGER.debug(() -> "Registering transaction synchronization for SqlSession [" + session + "]");
+
+        holder = new SqlSessionHolder(session, executorType, exceptionTranslator);
+        TransactionSynchronizationManager.bindResource(sessionFactory, holder);
+        TransactionSynchronizationManager.registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));
+        holder.setSynchronizedWithTransaction(true);
+        holder.requested();
+      } else {
+        if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {
+          LOGGER.debug(() -> "SqlSession [" + session + "] was not registered for synchronization because DataSource is not transactional");
+        } else {
+          throw new TransientDataAccessResourceException(
+              "SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization");
+        }
+      }
+    } else {
+      LOGGER.debug(() -> "SqlSession [" + session + "] was not registered for synchronization because synchronization is not active");
+    }
+
+}
+
+  private static SqlSession sessionHolder(ExecutorType executorType, SqlSessionHolder holder) {
+    SqlSession session = null;
     if (holder != null && holder.isSynchronizedWithTransaction()) {
       if (holder.getExecutorType() != executorType) {
         throw new TransientDataAccessResourceException("Cannot change the ExecutorType when there is an existing transaction");
@@ -98,54 +151,9 @@ public final class SqlSessionUtils {
 
       holder.requested();
 
-      if (logger.isDebugEnabled()) {
-        logger.debug("Fetched SqlSession [" + holder.getSqlSession() + "] from current transaction");
-      }
-
-      return holder.getSqlSession();
+      LOGGER.debug(() -> "Fetched SqlSession [" + holder.getSqlSession() + "] from current transaction");
+      session = holder.getSqlSession();
     }
-
-    if (logger.isDebugEnabled()) {
-      logger.debug("Creating a new SqlSession");
-    }
-
-    SqlSession session = sessionFactory.openSession(executorType);
-
-    // Register session holder if synchronization is active (i.e. a Spring TX is active)
-    //
-    // Note: The DataSource used by the Environment should be synchronized with the
-    // transaction either through DataSourceTxMgr or another tx synchronization.
-    // Further assume that if an exception is thrown, whatever started the transaction will
-    // handle closing / rolling back the Connection associated with the SqlSession.
-    if (isSynchronizationActive()) {
-      Environment environment = sessionFactory.getConfiguration().getEnvironment();
-
-      if (environment.getTransactionFactory() instanceof SpringManagedTransactionFactory) {
-        if (logger.isDebugEnabled()) {
-          logger.debug("Registering transaction synchronization for SqlSession [" + session + "]");
-        }
-
-        holder = new SqlSessionHolder(session, executorType, exceptionTranslator);
-        bindResource(sessionFactory, holder);
-        registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));
-        holder.setSynchronizedWithTransaction(true);
-        holder.requested();
-      } else {
-        if (getResource(environment.getDataSource()) == null) {
-          if (logger.isDebugEnabled()) {
-            logger.debug("SqlSession [" + session + "] was not registered for synchronization because DataSource is not transactional");
-          }
-        } else {
-          throw new TransientDataAccessResourceException(
-              "SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization");
-        }
-      }
-    } else {
-      if (logger.isDebugEnabled()) {
-        logger.debug("SqlSession [" + session + "] was not registered for synchronization because synchronization is not active");
-      }
-    }
-
     return session;
   }
 
@@ -158,20 +166,15 @@ public final class SqlSessionUtils {
    * @param sessionFactory
    */
   public static void closeSqlSession(SqlSession session, SqlSessionFactory sessionFactory) {
+    notNull(session, NO_SQL_SESSION_SPECIFIED);
+    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
 
-    notNull(session, "No SqlSession specified");
-    notNull(sessionFactory, "No SqlSessionFactory specified");
-
-    SqlSessionHolder holder = (SqlSessionHolder) getResource(sessionFactory);
+    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
     if ((holder != null) && (holder.getSqlSession() == session)) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Releasing transactional SqlSession [" + session + "]");
-      }
+      LOGGER.debug(() -> "Releasing transactional SqlSession [" + session + "]");
       holder.released();
     } else {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Closing non transactional SqlSession [" + session + "]");
-      }
+      LOGGER.debug(() -> "Closing non transactional SqlSession [" + session + "]");
       session.close();
     }
   }
@@ -184,10 +187,10 @@ public final class SqlSessionUtils {
    * @return true if session is transactional, otherwise false
    */
   public static boolean isSqlSessionTransactional(SqlSession session, SqlSessionFactory sessionFactory) {
-    notNull(session, "No SqlSession specified");
-    notNull(sessionFactory, "No SqlSessionFactory specified");
+    notNull(session, NO_SQL_SESSION_SPECIFIED);
+    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
 
-    SqlSessionHolder holder = (SqlSessionHolder) getResource(sessionFactory);
+    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 
     return (holder != null) && (holder.getSqlSession() == session);
   }
@@ -203,6 +206,8 @@ public final class SqlSessionUtils {
     private final SqlSessionHolder holder;
 
     private final SqlSessionFactory sessionFactory;
+
+    private boolean holderActive = true;
 
     public SqlSessionSynchronization(SqlSessionHolder holder, SqlSessionFactory sessionFactory) {
       notNull(holder, "Parameter 'holder' must be not null");
@@ -226,7 +231,10 @@ public final class SqlSessionUtils {
      */
     @Override
     public void suspend() {
-      unbindResource(this.sessionFactory);
+      if (this.holderActive) {
+        LOGGER.debug(() -> "Transaction synchronization suspending SqlSession [" + this.holder.getSqlSession() + "]");
+        TransactionSynchronizationManager.unbindResource(this.sessionFactory);
+      }
     }
 
     /**
@@ -234,7 +242,10 @@ public final class SqlSessionUtils {
      */
     @Override
     public void resume() {
-      bindResource(this.sessionFactory, this.holder);
+      if (this.holderActive) {
+        LOGGER.debug(() -> "Transaction synchronization resuming SqlSession [" + this.holder.getSqlSession() + "]");
+        TransactionSynchronizationManager.bindResource(this.sessionFactory, this.holder);
+      }
     }
 
     /**
@@ -242,17 +253,21 @@ public final class SqlSessionUtils {
      */
     @Override
     public void beforeCommit(boolean readOnly) {
-      // Flush BATCH statements so they are actually executed before the connection is committed.
-      // If there is no tx active data will be rolled back so there is no need to flush batches
-      if (this.holder.getExecutorType() == ExecutorType.BATCH && isActualTransactionActive()) {
+      // Connection commit or rollback will be handled by ConnectionSynchronization or
+      // DataSourceTransactionManager.
+      // But, do cleanup the SqlSession / Executor, including flushing BATCH statements so
+      // they are actually executed.
+      // SpringManagedTransaction will no-op the commit over the jdbc connection
+      // TODO This updates 2nd level caches but the tx may be rolledback later on! 
+      if (TransactionSynchronizationManager.isActualTransactionActive()) {
         try {
-          if (logger.isDebugEnabled()) {
-            logger.debug("Transaction synchronization flushing SqlSession [" + this.holder.getSqlSession() + "]");
-          }
-          this.holder.getSqlSession().flushStatements();
+          LOGGER.debug(() -> "Transaction synchronization committing SqlSession [" + this.holder.getSqlSession() + "]");
+          this.holder.getSqlSession().commit();
         } catch (PersistenceException p) {
           if (this.holder.getPersistenceExceptionTranslator() != null) {
-            DataAccessException translated = this.holder.getPersistenceExceptionTranslator().translateExceptionIfPossible(p);
+            DataAccessException translated = this.holder
+                .getPersistenceExceptionTranslator()
+                .translateExceptionIfPossible(p);
             if (translated != null) {
               throw translated;
             }
@@ -266,46 +281,33 @@ public final class SqlSessionUtils {
      * {@inheritDoc}
      */
     @Override
-    public void afterCompletion(int status) {
-      // Unbind the SqlSession from tx synchronization
-      // Note, commit/rollback is needed to ensure 2nd level cache is properly updated
-      // SpringTransaction will no-op the connection commit/rollback
-      try {
-        // Do not call commit unless there is really a transaction; 
-        // no need to commit if just tx synchronization is active but no transaction was started
-        if (isActualTransactionActive()) {
-          switch (status) {
-          case STATUS_COMMITTED:
-            if (logger.isDebugEnabled()) {
-              logger.debug("Transaction synchronization committing SqlSession [" + this.holder.getSqlSession() + "]");
-            }
-            holder.getSqlSession().commit();
-            break;
-          case STATUS_ROLLED_BACK:
-            if (logger.isDebugEnabled()) {
-              logger.debug("Transaction synchronization rolling back SqlSession [" + this.holder.getSqlSession() + "]");
-            }
-            holder.getSqlSession().rollback();
-            break;
-          default:
-            if (logger.isDebugEnabled()) {
-              logger.debug("Transaction synchronization ended with unknown status for SqlSession [" + this.holder.getSqlSession() + "]");
-            }
-          }
-        }
-      } finally {
-        if (!holder.isOpen()) {
-          unbindResource(sessionFactory);
-          try {
-            if (logger.isDebugEnabled()) {
-              logger.debug("Transaction synchronization closing SqlSession [" + this.holder.getSqlSession() + "]");
-            }
-            this.holder.getSqlSession().close();
-          } finally {
-            this.holder.reset();
-          }
-        }
+    public void beforeCompletion() {
+      // Issue #18 Close SqlSession and deregister it now
+      // because afterCompletion may be called from a different thread
+      if (!this.holder.isOpen()) {
+        LOGGER.debug(() -> "Transaction synchronization deregistering SqlSession [" + this.holder.getSqlSession() + "]");
+        TransactionSynchronizationManager.unbindResource(sessionFactory);
+        this.holderActive = false;
+        LOGGER.debug(() -> "Transaction synchronization closing SqlSession [" + this.holder.getSqlSession() + "]");
+        this.holder.getSqlSession().close();
       }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterCompletion(int status) {
+      if (this.holderActive) {
+        // afterCompletion may have been called from a different thread
+        // so avoid failing if there is nothing in this one
+        LOGGER.debug(() -> "Transaction synchronization deregistering SqlSession [" + this.holder.getSqlSession() + "]");
+        TransactionSynchronizationManager.unbindResourceIfPossible(sessionFactory);
+        this.holderActive = false;
+        LOGGER.debug(() -> "Transaction synchronization closing SqlSession [" + this.holder.getSqlSession() + "]");
+        this.holder.getSqlSession().close();
+      }
+      this.holder.reset();
     }
   }
 

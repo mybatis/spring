@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2013 the original author or authors.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+       Copyright 2010-2017 the original author or authors.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
 -->
-
-<!--  version: $Id$ -->
-
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
@@ -30,8 +29,9 @@
   <body>
     <section name="Spring Batch">
       <p>
-        MyBatis-Spring 1.1.0 以降では、 Spring Batch を構築するための Bean として <code>MyBatisPagingItemReader</code> と <code>MyBatisBatchItemWriter</code> が用意されています。
-        これらの Bean 及びこのドキュメントは、いずれも Spring Batch の一部として提供されていた iBATIS 2.x 用のものを移植したものです。
+        MyBatis-Spring 1.1.0 以降では、 Spring Batch を構築するための Bean として <code>MyBatisPagingItemReader</code> 、 <code>MyBatisCursorItemReader</code> 、 <code>MyBatisBatchItemWriter</code> が用意されています。
+        また、2.0.0 以降では、Java Configuration をサポートするための Builder クラスとして <code>MyBatisPagingItemReaderBuilder</code> 、
+        <code>MyBatisCursorItemReaderBuilder</code> 、 <code>MyBatisBatchItemWriterBuilder</code> が用意されています。
       </p>
       
       <p>
@@ -66,29 +66,63 @@
         
         <source><![CDATA[<bean id="reader" class="org.mybatis.spring.batch.MyBatisPagingItemReader">
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-  <property name="queryId" value="getEmployee" />
+  <property name="queryId" value="com.my.name.space.batch.EmployeeMapper.getEmployee" />
 </bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public MyBatisPagingItemReader<Employee> reader() {
+  return new MyBatisPagingItemReaderBuilder<Employee>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .queryId("com.my.name.space.batch.EmployeeMapper.getEmployee")
+      .build();
+}]]></source>
 
         <p><strong>さらに複雑な例：</strong></p>
 
-        <source><![CDATA[<bean id="dateBasedCriteriaReader"
-    class="org.mybatis.spring.batch.MyBatisPagingItemReader"
-    p:sqlSessionFactory-ref="batchReadingSessionFactory"
-    p:parameterValues-ref="datesParameters"
-    p:queryId="com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot"
-    p:pageSize="${200}"
-    scope="step"/>
+        <source><![CDATA[
+<bean id="dateBasedCriteriaReader"
+  class="org.mybatis.spring.batch.MyBatisPagingItemReader"
+  p:sqlSessionFactory-ref="batchReadingSessionFactory"
+  p:parameterValues-ref="datesParameters"
+  p:queryId="com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot"
+  p:pageSize="200"
+  scope="step"/>
 
-<util:map id="datesParameters" key-type="or.joda.time.DateTime" scope="step">
-  <entry key="yesterday" 
-    value="#{jobExecutionContext['EXTRACTION_START_DATE']}"/>
-  <entry key="today" 
-    value="#{jobExecutionContext['TODAY_DATE']}"/>
-  <entry key="first_day_of_the_month" 
-    value="#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}"/>
-  <entry key="first_day_of_the_previous_month" 
-    value="#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}"/>
+<util:map id="datesParameters" scope="step">
+  <entry key="yesterday" value="#{jobExecutionContext['EXTRACTION_START_DATE']}"/>
+  <entry key="today" value="#{jobExecutionContext['TODAY_DATE']}"/>
+  <entry key="first_day_of_the_month" value="#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}"/>
+  <entry key="first_day_of_the_previous_month" value="#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}"/>
 </util:map>]]></source>
+
+        <source><![CDATA[
+@StepScope
+@Bean
+public MyBatisPagingItemReader<User> dateBasedCriteriaReader(
+    @Value("#{@datesParameters}") Map<String, Object> datesParameters) throws Exception {
+  return new MyBatisPagingItemReaderBuilder<User>()
+      .sqlSessionFactory(batchReadingSessionFactory())
+      .queryId("com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot")
+      .parameterValues(datesParameters)
+      .pageSize(200)
+      .build();
+}
+
+@StepScope
+@Bean
+public Map<String, Object> datesParameters(
+    @Value("#{jobExecutionContext['EXTRACTION_START_DATE']}") LocalDate yesterday,
+    @Value("#{jobExecutionContext['TODAY_DATE']}") LocalDate today,
+    @Value("#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}") LocalDate firstDayOfTheMonth,
+    @Value("#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}") LocalDate firstDayOfThePreviousMonth) {
+  Map<String, Object> map = new HashMap<>();
+  map.put("yesterday", yesterday);
+  map.put("today", today);
+  map.put("first_day_of_the_month", firstDayOfTheMonth);
+  map.put("first_day_of_the_previous_month", firstDayOfThePreviousMonth);
+  return map;
+}]]></source>
 
         <p>
           The previous example makes use of a few different things:
@@ -103,6 +137,50 @@
           また、MyBatis の Type Handler が正しく設定されていれば、この例のように JodaTime のようなカスタムのインスタンスを引数として渡すこともできます。</li>
           <li><code>pageSize</code>: バッチ処理のチャンクサイズを指定します。</li>
         </ul>
+
+      </subsection>
+
+      <subsection name="MyBatisCursorItemReader">
+        <p>
+          This bean is an <code>ItemReader</code> that reads records from a database using a cursor.
+        </p>
+
+        <p>
+          <span class="label important">NOTE</span> To use this bean you need at least MyBatis 3.4.0 or a newer version.
+        </p>
+        
+        <p>
+          It executes the query specified as the <code>setQueryId</code> property to retrieve requested data
+          by using the method <code>selectCursor()</code>.
+          Each time a <code>read()</code> method is called it will return the next element of the cursor until no more
+          elements are left.
+        </p>
+        
+        <p>
+          The reader will use a separate connection so the select statement does no participate in any transactions created 
+          as part of the step processing.
+        </p>
+
+        <p>When using the cursor you can just execute a regular query:</p>
+        <source><![CDATA[<select id="getEmployee" resultMap="employeeBatchResult">
+  SELECT id, name, job FROM employees ORDER BY id ASC
+</select>]]></source>
+
+        <p>Follows below a sample configuration snippet:</p>
+        
+        <source><![CDATA[<bean id="reader" class="org.mybatis.spring.batch.MyBatisCursorItemReader">
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  <property name="queryId" value="com.my.name.space.batch.EmployeeMapper.getEmployee" />
+</bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public MyBatisCursorItemReader<Employee> reader() {
+  return new MyBatisCursorItemReaderBuilder<Employee>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .queryId("com.my.name.space.batch.EmployeeMapper.getEmployee")
+      .build();
+}]]></source>
 
       </subsection>
 
@@ -122,9 +200,18 @@
         
         <source><![CDATA[<bean id="writer" class="org.mybatis.spring.batch.MyBatisBatchItemWriter">
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-  <property name="statementId" value="updateEmployee" />
+  <property name="statementId" value="com.my.name.space.batch.EmployeeMapper.updateEmployee" />
 </bean>]]></source>
- 
+
+        <source><![CDATA[
+@Bean
+public MyBatisBatchItemWriter<User> writer() {
+  return new MyBatisBatchItemWriterBuilder<User>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .statementId("com.my.name.space.batch.EmployeeMapper.updateEmployee")
+      .build();
+}]]></source>
+
         <p><strong>Composite Writer を使って複数のテーブルに書き込む（注意事項あり）</strong></p>
 
         <p>このテクニックを使うには MyBatis 3.2 以降が必要です。それ以前のバージョンには <a href="http://code.google.com/p/mybatis/issues/detail?id=741">問題</a> があるため、Writer が期待通りに動作しません。
@@ -160,6 +247,19 @@ public class Interaction {
     </list>
   </property>
 </bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public CompositeItemWriter<?> interactionsItemWriter() {
+  CompositeItemWriter compositeItemWriter = new CompositeItemWriter();
+  List<ItemWriter<?>> writers = new ArrayList<>(4);
+  writers.add(visitorInteractionsWriter());
+  writers.add(customerInteractionsWriter());
+  writers.add(interactionMetadataWriter());
+  writers.add(interactionWriter());
+  compositeItemWriter.setDelegates(writers);
+  return compositeItemWriter;
+}]]></source>
 
         <p>それぞれの writer を必要に応じて設定します。例えば <em>Interaction</em> と <em>InteractionMetadata</em> の設定は次のようになります。
         </p>

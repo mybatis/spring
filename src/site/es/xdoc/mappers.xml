@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2012 the original author or authors.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+       Copyright 2010-2017 the original author or authors.
 
-      http://www.apache.org/licenses/LICENSE-2.0
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
 -->
-
-<!--  version: $Id$ -->
-
 <document xmlns="http://maven.apache.org/XDOC/2.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
@@ -34,19 +33,19 @@
         <code>SqlSessionDaoSupport</code> o <code>SqlSessionTemplate</code>, Mybatis-Spring 
 		puede crear un mapper thread-safe que puedes inyectar directamente en otros beans.
       </p>
-      
-      <source><![CDATA[<bean id="fooService" class="org.mybatis.spring.sample.mapper.FooServiceImpl">
-  <property name="userMapper" ref="userMapper" />
+
+      <source><![CDATA[<bean id="fooService" class="org.mybatis.spring.sample.service.FooServiceImpl">
+  <constructor-arg ref="userMapper" />
 </bean>]]></source>
- 
+
       <p>
          Una vez inyectado, el mapper está listo para se usado en la lógica de aplicación:
       </p>
          <source><![CDATA[public class FooServiceImpl implements FooService {
 
-  private UserMapper userMapper;
+  private final UserMapper userMapper;
 
-  public void setUserMapper(UserMapper userMapper) {
+  public FooServiceImpl(UserMapper userMapper) {
     this.userMapper = userMapper;
   }
 
@@ -99,20 +98,13 @@
        <p>
          Cuando uses Java Config puedes obtener un mapper directamente desde un <code>SqlSessionTemplate</code> como sigue: 
        </p>
-        
-<source><![CDATA[    @Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
-      SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-      sqlSessionFactory.setDataSource(dataSource());
-      return (SqlSessionFactory) sqlSessionFactory.getObject();
-    }
 
-    @Bean
-    public UserMapper userMapper() throws Exception {
-      SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory());
-      return sessionTemplate.getMapper(UserMapper.class);
-    }
-]]></source>
+    <source><![CDATA[
+@Bean
+public UserMapper userMapper() throws Exception {
+  SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory());
+  return sessionTemplate.getMapper(UserMapper.class);
+}]]></source>
 
        <p>
          Ten en cuenta que no puedes devolver un mapper obtenido de la una <code>SqlSession</code> normal de MyBatis
@@ -154,10 +146,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
   xsi:schemaLocation="
-  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
   http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
  
   <mybatis:scan base-package="org.mybatis.spring.sample.mapper" />
+
+  <!-- ... -->
 
 </beans>]]></source>
 
@@ -185,7 +179,7 @@
 
       <p>
         Los mappers descubiertos serán nombrados usando la estratégia de nombres por defecto de Spring para los componentes
-        autodetectados (ver la sección 3.14.4 del manual de Spring).
+        autodetectados (see <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator">the Spring reference document(Core Technologies -Naming autodetected components-)</a>).
         Es decir, si no se encuentra ninguna anotación, se usará el nombre no cualificado sin capitalizar del mapper.
         Pero si se encuentra una anotación @Component o JSR-330 @Named se obtendrá el nombre de dicha anotación.
         Fíjate que puedes usar como valor de la <code>annotation</code> el valor <code>org.springframework.stereotype.Component</code>,
@@ -211,18 +205,7 @@
    <source><![CDATA[@Configuration
 @MapperScan("org.mybatis.spring.sample.mapper")
 public class AppConfig {
-
-  @Bean
-  public DataSource dataSource() {
-    return new EmbeddedDatabaseBuilder().addScript("schema.sql").build()
-  }
-
-  @Bean
-  public SqlSessionFactory sqlSessionFactory() throws Exception {
-    SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-    sessionFactory.setDataSource(dataSource());
-    return sessionFactory.getObject();
-  }
+  // ...
 }
 ]]></source>
 	

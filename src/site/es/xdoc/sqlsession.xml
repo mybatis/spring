@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2012 the original author or authors.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+       Copyright 2010-2017 the original author or authors.
 
-      http://www.apache.org/licenses/LICENSE-2.0
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
 -->
-
-<!--  version: $Id$ -->
-
 <document xmlns="http://maven.apache.org/XDOC/2.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
@@ -64,8 +63,14 @@
       </p>
         <source><![CDATA[<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
   <constructor-arg index="0" ref="sqlSessionFactory" />
-</bean>]]></source>        
-     
+</bean>]]></source>
+
+      <source><![CDATA[
+@Bean
+public SqlSessionTemplate sqlSession() throws Exception {
+  return new SqlSessionTemplate(sqlSessionFactory());
+}]]></source>
+
       <p>
         Este bean puede ser inyectado directamente en tus DAOs. Necesitarás una propiedad
         <code>SqlSession</code> en tu bean como se muestra a continuación:
@@ -79,7 +84,7 @@
   }
 
   public User getUser(String userId) {
-    return (User) sqlSession.selectOne("org.mybatis.spring.sample.mapper.UserMapper.getUser", userId);
+    return sqlSession.selectOne("org.mybatis.spring.sample.mapper.UserMapper.getUser", userId);
   }
 }]]></source>
       <p>
@@ -98,14 +103,22 @@
   <constructor-arg index="0" ref="sqlSessionFactory" />
   <constructor-arg index="1" value="BATCH" />
 </bean>]]></source>
+
+      <source><![CDATA[
+@Bean
+public SqlSessionTemplate sqlSession() throws Exception {
+  return new SqlSessionTemplate(sqlSessionFactory(), ExecutorType.BATCH);
+}]]></source>
+
       <p>
         Ahora todos tus statements se ejecutarán en batch de forma que puedes programar lo siguiente:
       </p>
-        <source><![CDATA[public void insertUsers(User[] users) {
-   for (User user : users) {
-     sqlSession.insert("org.mybatis.spring.sample.mapper.UserMapper.insertUser", user);
-   }
- }]]></source> 
+        <source><![CDATA[
+public void insertUsers(List<User> users) {
+  for (User user : users) {
+    sqlSession.insert("org.mybatis.spring.sample.mapper.UserMapper.insertUser", user);
+  }
+}]]></source>
   
       <p>
         Fijate que esta configuración si el método de ejecución deseado es distinto del establecido por defecto
@@ -127,7 +140,7 @@
       </p>
         <source><![CDATA[public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
   public User getUser(String userId) {
-    return (User) getSqlSession().selectOne("org.mybatis.spring.sample.mapper.UserMapper.getUser", userId);
+    return getSqlSession().selectOne("org.mybatis.spring.sample.mapper.UserMapper.getUser", userId);
   }
 }]]></source>
       <p>
@@ -146,7 +159,7 @@
         Asumiendo una clase <code>UserDaoImpl</code> que extiende 
         <code>SqlSessionDaoSupport</code>, se puede configurar Spring de la siguiente forma:
       </p>
-        <source><![CDATA[<bean id="userMapper" class="org.mybatis.spring.sample.mapper.UserDaoImpl">
+      <source><![CDATA[<bean id="userDao" class="org.mybatis.spring.sample.dao.UserDaoImpl">
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>]]></source>
       </subsection>

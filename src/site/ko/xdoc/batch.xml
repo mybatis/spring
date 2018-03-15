@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2013 the original author or authors.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+       Copyright 2010-2017 the original author or authors.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
 -->
-
-<!--  version: $Id$ -->
-
 <document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
@@ -29,15 +28,19 @@
 
   <body>
     <section name="Spring Batch">
-      <p>마이바티스 스프링 연동모듈의 1.1.0버전에서는 스프링 배치 애플리케이션을 만들기 위해 두개의 빈을 제공한다. 
-       두개의 빈은 <code>MyBatisPagingItemReader</code> 와 <code>MyBatisBatchItemWriter</code>이다. 
-       이 두개의 빈과 이 문서는 스프링 배치에서 이미 기본적으로 제공하는 것으로 아이바티스 2.x 버전에서 제공했다. </p>
+      <p>
+        마이바티스 스프링 연동모듈의 1.1.0버전에서는 스프링 배치 애플리케이션을 만들기 위해 두개의 빈을 제공한다.
+        두개의 빈은 <code>MyBatisPagingItemReader</code> 와 <code>MyBatisCursorItemReader</code> 와 <code>MyBatisBatchItemWriter</code>이다.
+        
+        또한 2.0.0 버전에서는 Java Configuration 을 지원하는 다음의 세 가지 Builder class 를 제공한다. 
+        <code>MyBatisPagingItemReaderBuilder</code>, <code>MyBatisCursorItemReaderBuilder</code> 그리고 <code>MyBatisBatchItemWriterBuilder</code> 이다.
+      </p>
       
       <p><span class="label important">중요</span> 이 문서는 <a href="http://static.springsource.org/spring-batch/">스프링 배치</a>에 대한 것으로 
        마이바티스 배치 SqlSession을 다루지는 않는다. 배치 세션에 대해서는 <a href="sqlsession.html">SqlSession 사용</a>에서 좀더 다루었다. </p>
       
       <subsection name="MyBatisPagingItemReader">
-        <p>이 빈은 마이바티스로 페이지를 처리하는 형태로 데이터베이스 데이터를 읽어오는 <code>IteamReader</code>이다. </p>
+        <p>이 빈은 마이바티스로 페이지를 처리하는 형태로 데이터베이스 데이터를 읽어오는 <code>ItemReader</code>이다. </p>
         
         <p>요청된 데이터를 가져오기 위해 <code>setQueryId</code> 프로퍼티에 명시된 쿼리를 실행한다.
          쿼리는 <code>setPageSize</code> 프로퍼티에 명시된 크기만큼 데이터를 가져오도록 실행된다.
@@ -60,29 +63,63 @@
         
         <source><![CDATA[<bean id="reader" class="org.mybatis.spring.batch.MyBatisPagingItemReader">
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-  <property name="queryId" value="getEmployee" />
+  <property name="queryId" value="com.my.name.space.batch.EmployeeMapper.getEmployee" />
 </bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public MyBatisPagingItemReader<Employee> reader() {
+  return new MyBatisPagingItemReaderBuilder<Employee>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .queryId("com.my.name.space.batch.EmployeeMapper.getEmployee")
+      .build();
+}]]></source>
 
         <p><strong>좀더 복잡한 예제를 보자. </strong></p>
 
-        <source><![CDATA[<bean id="dateBasedCriteriaReader"
-    class="org.mybatis.spring.batch.MyBatisPagingItemReader"
-    p:sqlSessionFactory-ref="batchReadingSessionFactory"
-    p:parameterValues-ref="datesParameters"
-    p:queryId="com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot"
-    p:pageSize="${200}"
-    scope="step"/>
+        <source><![CDATA[
+<bean id="dateBasedCriteriaReader"
+  class="org.mybatis.spring.batch.MyBatisPagingItemReader"
+  p:sqlSessionFactory-ref="batchReadingSessionFactory"
+  p:parameterValues-ref="datesParameters"
+  p:queryId="com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot"
+  p:pageSize="200"
+  scope="step"/>
 
-<util:map id="datesParameters" key-type="or.joda.time.DateTime" scope="step">
-  <entry key="yesterday" 
-    value="#{jobExecutionContext['EXTRACTION_START_DATE']}"/>
-  <entry key="today" 
-    value="#{jobExecutionContext['TODAY_DATE']}"/>
-  <entry key="first_day_of_the_month" 
-    value="#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}"/>
-  <entry key="first_day_of_the_previous_month" 
-    value="#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}"/>
+<util:map id="datesParameters" scope="step">
+  <entry key="yesterday" value="#{jobExecutionContext['EXTRACTION_START_DATE']}"/>
+  <entry key="today" value="#{jobExecutionContext['TODAY_DATE']}"/>
+  <entry key="first_day_of_the_month" value="#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}"/>
+  <entry key="first_day_of_the_previous_month" value="#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}"/>
 </util:map>]]></source>
+
+        <source><![CDATA[
+@StepScope
+@Bean
+public MyBatisPagingItemReader<User> dateBasedCriteriaReader(
+    @Value("#{@datesParameters}") Map<String, Object> datesParameters) throws Exception {
+  return new MyBatisPagingItemReaderBuilder<User>()
+      .sqlSessionFactory(batchReadingSessionFactory())
+      .queryId("com.my.name.space.batch.ExampleMapper.queryUserInteractionsOnSpecificTimeSlot")
+      .parameterValues(datesParameters)
+      .pageSize(200)
+      .build();
+}
+
+@StepScope
+@Bean
+public Map<String, Object> datesParameters(
+    @Value("#{jobExecutionContext['EXTRACTION_START_DATE']}") LocalDate yesterday,
+    @Value("#{jobExecutionContext['TODAY_DATE']}") LocalDate today,
+    @Value("#{jobExecutionContext['FIRST_DAY_OF_THE_MONTH_DATE']}") LocalDate firstDayOfTheMonth,
+    @Value("#{jobExecutionContext['FIRST_DAY_OF_THE_PREVIOUS_MONTH_DATE']}") LocalDate firstDayOfThePreviousMonth) {
+  Map<String, Object> map = new HashMap<>();
+  map.put("yesterday", yesterday);
+  map.put("today", today);
+  map.put("first_day_of_the_month", firstDayOfTheMonth);
+  map.put("first_day_of_the_previous_month", firstDayOfThePreviousMonth);
+  return map;
+}]]></source>
 
         <p>앞의 예제와는 몇가지 차이점이 있다. </p>
         
@@ -102,6 +139,47 @@
 
       </subsection>
 
+      <subsection name="MyBatisCursorItemReader">
+        <p>
+          이 빈은 cursor 를 사용하여 데이터베이스에서 레코드를 읽는 <code>ItemReader</code> 이다.
+        </p>
+
+        <p>
+          <span class="label important">중요</span> 이 빈을 사용하려면 최소한 MyBatis 3.4.0 이나 그 이상이어야 한다.
+        </p>
+        
+        <p>
+          <code>setQueryId</code> 속성으로 지정된 쿼리를 실행하여 <code>selectCursor()</code> 메서드를 사용하여 요청 된 데이터를 검색한다.
+          <code>read()</code> 메서드가 호출 될 때마다 요소가 더 이상 남아 있지 않을 때까지 cursor 의 다음 요소를 반환한다.
+        </p>
+        
+        <p>
+          reader 는 별도의 connection 을 사용하므로 select 문은 step processing 일부로 생성된 트랜잭션에 속하지 않는다.
+        </p>
+
+        <p>cursor 를 사용할 때 다음과 같이 일반 쿼리를 실행할 수 있다.</p>
+        <source><![CDATA[<select id="getEmployee" resultMap="employeeBatchResult">
+  SELECT id, name, job FROM employees ORDER BY id ASC
+</select>]]></source>
+
+        <p>아래는 샘플 설정이다.</p>
+        
+        <source><![CDATA[<bean id="reader" class="org.mybatis.spring.batch.MyBatisCursorItemReader">
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  <property name="queryId" value="com.my.name.space.batch.EmployeeMapper.getEmployee" />
+</bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public MyBatisCursorItemReader<Employee> reader() {
+  return new MyBatisCursorItemReaderBuilder<Employee>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .queryId("com.my.name.space.batch.EmployeeMapper.getEmployee")
+      .build();
+}]]></source>
+
+      </subsection>
+
       <subsection name="MyBatisBatchItemWriter">
       
         <p>모든 아이템을 배치로 구문을 일괄실행하기 위해 <code>SqlSessionTemplate</code>에서 배치로 작업을 처리하는 <code>ItemWriter</code>이다.
@@ -114,8 +192,17 @@
         
         <source><![CDATA[<bean id="writer" class="org.mybatis.spring.batch.MyBatisBatchItemWriter">
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-  <property name="statementId" value="updateEmployee" />
+  <property name="statementId" value="com.my.name.space.batch.EmployeeMapper.updateEmployee" />
 </bean>]]></source>
+
+        <source><![CDATA[
+@Bean
+public MyBatisBatchItemWriter<User> writer() {
+  return new MyBatisBatchItemWriterBuilder<User>()
+      .sqlSessionFactory(sqlSessionFactory())
+      .statementId("com.my.name.space.batch.EmployeeMapper.updateEmployee")
+      .build();
+}]]></source>
 
         <p><strong>여러개의 테이블에 데이터를 쓰려면 한꺼번에 처리할 수 있도록 만든 writer(몇가지 규칙을 가지고)를 사용하자. </strong></p>
 
@@ -159,7 +246,20 @@ public class Interaction {
   </property>
 </bean>]]></source>
 
-        <p>각각의 전용(delegate) writer는 필요할 만큼 설정할 수 있다. 
+        <source><![CDATA[
+@Bean
+public CompositeItemWriter<?> interactionsItemWriter() {
+  CompositeItemWriter compositeItemWriter = new CompositeItemWriter();
+  List<ItemWriter<?>> writers = new ArrayList<>(4);
+  writers.add(visitorInteractionsWriter());
+  writers.add(customerInteractionsWriter());
+  writers.add(interactionMetadataWriter());
+  writers.add(interactionWriter());
+  compositeItemWriter.setDelegates(writers);
+  return compositeItemWriter;
+}]]></source>
+
+        <p>각각의 전용(delegate) writer는 필요할 만큼 설정할 수 있다.
          예를들면 <em>Interaction</em> 과 <em>InteractionMetadata</em>를 위한 writer가 있다. </p>
 
         <source><![CDATA[<bean id="interactionMetadataWriter"

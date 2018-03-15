@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.Configuration;
@@ -36,6 +37,7 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 
 /**
@@ -65,15 +67,14 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
  * }
  * </pre>
  *
- * @author Putthibong Boonbong
+ * @author Putthiphong Boonphong
  * @author Hunter Presnall
  * @author Eduardo Macarron
- * 
+ *
  * @see SqlSessionFactory
  * @see MyBatisExceptionTranslator
- * @version $Id$
  */
-public class SqlSessionTemplate implements SqlSession {
+public class SqlSessionTemplate implements SqlSession, DisposableBean {
 
   private final SqlSessionFactory sqlSessionFactory;
 
@@ -152,62 +153,95 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public <T> T selectOne(String statement) {
-    return this.sqlSessionProxy.<T> selectOne(statement);
+    return this.sqlSessionProxy.selectOne(statement);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <T> T selectOne(String statement, Object parameter) {
-    return this.sqlSessionProxy.<T> selectOne(statement, parameter);
+    return this.sqlSessionProxy.selectOne(statement, parameter);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <K, V> Map<K, V> selectMap(String statement, String mapKey) {
-    return this.sqlSessionProxy.<K, V> selectMap(statement, mapKey);
+    return this.sqlSessionProxy.selectMap(statement, mapKey);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey) {
-    return this.sqlSessionProxy.<K, V> selectMap(statement, parameter, mapKey);
+    return this.sqlSessionProxy.selectMap(statement, parameter, mapKey);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds) {
-    return this.sqlSessionProxy.<K, V> selectMap(statement, parameter, mapKey, rowBounds);
+    return this.sqlSessionProxy.selectMap(statement, parameter, mapKey, rowBounds);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
+  public <T> Cursor<T> selectCursor(String statement) {
+    return this.sqlSessionProxy.selectCursor(statement);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public <T> Cursor<T> selectCursor(String statement, Object parameter) {
+    return this.sqlSessionProxy.selectCursor(statement, parameter);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public <T> Cursor<T> selectCursor(String statement, Object parameter, RowBounds rowBounds) {
+    return this.sqlSessionProxy.selectCursor(statement, parameter, rowBounds);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public <E> List<E> selectList(String statement) {
-    return this.sqlSessionProxy.<E> selectList(statement);
+    return this.sqlSessionProxy.selectList(statement);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <E> List<E> selectList(String statement, Object parameter) {
-    return this.sqlSessionProxy.<E> selectList(statement, parameter);
+    return this.sqlSessionProxy.selectList(statement, parameter);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
-    return this.sqlSessionProxy.<E> selectList(statement, parameter, rowBounds);
+    return this.sqlSessionProxy.selectList(statement, parameter, rowBounds);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public void select(String statement, ResultHandler handler) {
     this.sqlSessionProxy.select(statement, handler);
   }
@@ -215,6 +249,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void select(String statement, Object parameter, ResultHandler handler) {
     this.sqlSessionProxy.select(statement, parameter, handler);
   }
@@ -222,6 +257,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void select(String statement, Object parameter, RowBounds rowBounds, ResultHandler handler) {
     this.sqlSessionProxy.select(statement, parameter, rowBounds, handler);
   }
@@ -229,6 +265,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int insert(String statement) {
     return this.sqlSessionProxy.insert(statement);
   }
@@ -236,6 +273,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int insert(String statement, Object parameter) {
     return this.sqlSessionProxy.insert(statement, parameter);
   }
@@ -243,6 +281,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int update(String statement) {
     return this.sqlSessionProxy.update(statement);
   }
@@ -250,6 +289,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int update(String statement, Object parameter) {
     return this.sqlSessionProxy.update(statement, parameter);
   }
@@ -257,6 +297,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int delete(String statement) {
     return this.sqlSessionProxy.delete(statement);
   }
@@ -264,6 +305,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int delete(String statement, Object parameter) {
     return this.sqlSessionProxy.delete(statement, parameter);
   }
@@ -271,6 +313,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public <T> T getMapper(Class<T> type) {
     return getConfiguration().getMapper(type, this);
   }
@@ -278,6 +321,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void commit() {
     throw new UnsupportedOperationException("Manual commit is not allowed over a Spring managed SqlSession");
   }
@@ -285,6 +329,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void commit(boolean force) {
     throw new UnsupportedOperationException("Manual commit is not allowed over a Spring managed SqlSession");
   }
@@ -292,6 +337,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void rollback() {
     throw new UnsupportedOperationException("Manual rollback is not allowed over a Spring managed SqlSession");
   }
@@ -299,6 +345,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void rollback(boolean force) {
     throw new UnsupportedOperationException("Manual rollback is not allowed over a Spring managed SqlSession");
   }
@@ -306,6 +353,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void close() {
     throw new UnsupportedOperationException("Manual close is not allowed over a Spring managed SqlSession");
   }
@@ -313,6 +361,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void clearCache() {
     this.sqlSessionProxy.clearCache();
   }
@@ -321,6 +370,7 @@ public class SqlSessionTemplate implements SqlSession {
    * {@inheritDoc}
    *
    */
+  @Override
   public Configuration getConfiguration() {
     return this.sqlSessionFactory.getConfiguration();
   }
@@ -328,6 +378,7 @@ public class SqlSessionTemplate implements SqlSession {
   /**
    * {@inheritDoc}
    */
+  @Override
   public Connection getConnection() {
     return this.sqlSessionProxy.getConnection();
   }
@@ -338,19 +389,43 @@ public class SqlSessionTemplate implements SqlSession {
    * @since 1.0.2
    *
    */
+  @Override
   public List<BatchResult> flushStatements() {
     return this.sqlSessionProxy.flushStatements();
   }
 
   /**
+  * Allow gently dispose bean:
+  * <pre>
+  * {@code
+  *
+  * <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  *  <constructor-arg index="0" ref="sqlSessionFactory" />
+  * </bean>
+  * }
+  *</pre>
+  *
+  * The implementation of {@link DisposableBean} forces spring context to use {@link DisposableBean#destroy()} method instead of {@link SqlSessionTemplate#close()} to shutdown gently.
+  *
+  * @see SqlSessionTemplate#close()
+  * @see org.springframework.beans.factory.support.DisposableBeanAdapter#inferDestroyMethodIfNecessary
+  * @see org.springframework.beans.factory.support.DisposableBeanAdapter#CLOSE_METHOD_NAME
+  */
+  @Override
+  public void destroy() throws Exception {
+  //This method forces spring disposer to avoid call of SqlSessionTemplate.close() which gives UnsupportedOperationException
+  }
+
+    /**
    * Proxy needed to route MyBatis method calls to the proper SqlSession got
    * from Spring's Transaction Manager
    * It also unwraps exceptions thrown by {@code Method#invoke(Object, Object...)} to
    * pass a {@code PersistenceException} to the {@code PersistenceExceptionTranslator}.
    */
   private class SqlSessionInterceptor implements InvocationHandler {
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-      final SqlSession sqlSession = getSqlSession(
+      SqlSession sqlSession = getSqlSession(
           SqlSessionTemplate.this.sqlSessionFactory,
           SqlSessionTemplate.this.executorType,
           SqlSessionTemplate.this.exceptionTranslator);
@@ -365,6 +440,9 @@ public class SqlSessionTemplate implements SqlSession {
       } catch (Throwable t) {
         Throwable unwrapped = unwrapThrowable(t);
         if (SqlSessionTemplate.this.exceptionTranslator != null && unwrapped instanceof PersistenceException) {
+          // release the connection to avoid a deadlock if the translator is no loaded. See issue #22
+          closeSqlSession(sqlSession, SqlSessionTemplate.this.sqlSessionFactory);
+          sqlSession = null;
           Throwable translated = SqlSessionTemplate.this.exceptionTranslator.translateExceptionIfPossible((PersistenceException) unwrapped);
           if (translated != null) {
             unwrapped = translated;
@@ -372,7 +450,9 @@ public class SqlSessionTemplate implements SqlSession {
         }
         throw unwrapped;
       } finally {
-        closeSqlSession(sqlSession, SqlSessionTemplate.this.sqlSessionFactory);
+        if (sqlSession != null) {
+          closeSqlSession(sqlSession, SqlSessionTemplate.this.sqlSessionFactory);
+        }
       }
     }
   }

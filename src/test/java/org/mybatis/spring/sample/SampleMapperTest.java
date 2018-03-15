@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2012 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,14 +15,12 @@
  */
 package org.mybatis.spring.sample;
 
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * Example of MyBatis-Spring integration with a DAO created by
  * MapperFactoryBean.
- * 
- * @version $Id$
  */
-@ContextConfiguration(locations = { "classpath:org/mybatis/spring/sample/config/applicationContext-mapper.xml" })
+@SpringJUnitConfig(locations = { "classpath:org/mybatis/spring/sample/config/applicationContext-mapper.xml" })
 public class SampleMapperTest extends AbstractSampleTest {
 }

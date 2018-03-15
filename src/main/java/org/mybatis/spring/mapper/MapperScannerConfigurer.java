@@ -1,5 +1,5 @@
-/*
- *    Copyright 2010-2013 the original author or authors.
+/**
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
@@ -38,7 +37,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.util.StringUtils;
 
 /**
@@ -70,7 +68,7 @@ import org.springframework.util.StringUtils;
  * <p>
  * Passing in an actual object which may require placeholders (i.e. DB user password) will fail. 
  * Using bean names defers actual object creation until later in the startup
- * process, after all placeholder substituation is completed. However, note that this configurer
+ * process, after all placeholder substitution is completed. However, note that this configurer
  * does support property placeholders of its <em>own</em> properties. The <code>basePackage</code>
  * and bean name properties all support <code>${property}</code> style substitution.
  * <p>
@@ -92,7 +90,6 @@ import org.springframework.util.StringUtils;
  *
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
- * @version $Id$
  */
 public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
 
@@ -176,7 +173,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
    * more than one in the spring context. Usually this is only needed when you
    * have more than one datasource.
    * <p>
-   * Use {@link #setSqlSessionTemplateBeanName(String)} instead
+   * @deprecated Use {@link #setSqlSessionTemplateBeanName(String)} instead
    *
    * @param sqlSessionTemplate
    */
@@ -207,7 +204,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
    * more than one in the spring context. Usually this is only needed when you
    * have more than one datasource.
    * <p>
-   * Use {@link #setSqlSessionFactoryBeanName(String)} instead.
+   * @deprecated Use {@link #setSqlSessionFactoryBeanName(String)} instead.
    *
    * @param sqlSessionFactory
    */
@@ -246,6 +243,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
   }
@@ -253,6 +251,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setBeanName(String name) {
     this.beanName = name;
   }
@@ -280,6 +279,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
   /**
    * {@inheritDoc}
    */
+  @Override
   public void afterPropertiesSet() throws Exception {
     notNull(this.basePackage, "Property 'basePackage' is required");
   }
@@ -287,6 +287,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
   /**
    * {@inheritDoc}
    */
+  @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
     // left intentionally blank
   }
@@ -296,7 +297,8 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
    * 
    * @since 1.0.2
    */
-  public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+  @Override
+  public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
     if (this.processPropertyPlaceHolders) {
       processPropertyPlaceHolders();
     }
@@ -325,8 +327,8 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
   private void processPropertyPlaceHolders() {
     Map<String, PropertyResourceConfigurer> prcs = applicationContext.getBeansOfType(PropertyResourceConfigurer.class);
 
-    if (!prcs.isEmpty() && applicationContext instanceof GenericApplicationContext) {
-      BeanDefinition mapperScannerBean = ((GenericApplicationContext) applicationContext)
+    if (!prcs.isEmpty() && applicationContext instanceof ConfigurableApplicationContext) {
+      BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) applicationContext)
           .getBeanFactory().getBeanDefinition(beanName);
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
