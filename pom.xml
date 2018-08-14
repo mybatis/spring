@@ -336,6 +336,30 @@
           </plugin>
         </plugins>
       </build>
+      <!-- for gh-311 (modify url of maven central to http from https) -->
+      <repositories>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <releases>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>http://repo1.maven.org/maven2/</url>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
   </profiles>
 
