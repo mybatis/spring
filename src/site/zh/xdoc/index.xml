@@ -25,13 +25,14 @@
     <author email="hpresnall@gmail.com">Hunter Presnall</author>
     <author email="eduardo.macarron@gmail.com">Eduardo Macarron</author>
     <author email="nanlei1987@gmail.com">Nan Lei</author>
+    <author email="kyao233@163.com">Yao Kai</author>
   </properties>
 
  <body>
  <section name="简介">
   <subsection name="什么是 MyBatis-Spring？">
       <p>
-        MyBatis-Spring 会帮助你将 MyBatis 代码无缝地整合到 Spring 中。它将允许 MyBatis 参与到 Spring 的事务管理之中，创建映射器 mapper 和 <code>SqlSession</code> 并注入到 bean 中，以及将 Mybatis 的异常转换为 Spring 的 <code>DataAccessException</code>。最终，可以做到应用代码不依赖于 MyBatis，Spring 或 MyBatis-Spring。
+        MyBatis-Spring 会帮助你将 MyBatis 代码无缝地整合到 Spring 中。这个库将允许 MyBatis 参与到 Spring 的事务管理之中，创建映射器 mapper 和 <code>SqlSession</code> 并注入到 bean 中，以及将 Mybatis 的异常转换为 Spring 的 <code>DataAccessException</code>。最终，它可以让你构建对 MyBatis，Spring 或 MyBatis-Spring 没有依赖的代码。
       </p>
   </subsection>
 
