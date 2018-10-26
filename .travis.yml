@@ -13,6 +13,10 @@ jdk:
   - openjdk7
   - openjdk6
 
+before_install:
+  # for gh-311 (modify to use the TLSv1.2 on Java 7)
+  - export _JAVA_OPTIONS=-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+
 after_success:
   - chmod -R 777 ./travis/after_success.sh
   - ./travis/after_success.sh
