@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpringManagedTransaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.transaction</a> &gt; <span class="el_source">SpringManagedTransaction.java</span></div><h1>SpringManagedTransaction.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.transaction.Transaction;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -44,7 +44,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class SpringManagedTransaction implements Transaction {
 
-<span class="fc" id="L47">  private static final Log LOGGER = LogFactory.getLog(SpringManagedTransaction.class);</span>
+<span class="fc" id="L47">  private static final Logger LOGGER = LoggerFactory.getLogger(SpringManagedTransaction.class);</span>
 
   private final DataSource dataSource;
 
@@ -83,61 +83,55 @@ public class SpringManagedTransaction implements Transaction {
 <span class="fc" id="L83">    this.autoCommit = this.connection.getAutoCommit();</span>
 <span class="fc" id="L84">    this.isConnectionTransactional = DataSourceUtils.isConnectionTransactional(this.connection, this.dataSource);</span>
 
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">    if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">      LOGGER.debug(</span>
-          &quot;JDBC Connection [&quot;
-              + this.connection
-              + &quot;] will&quot;
-              + (this.isConnectionTransactional ? &quot; &quot; : &quot; not &quot;)
-              + &quot;be managed by Spring&quot;);
-    }
-<span class="fc" id="L94">  }</span>
+<span class="fc" id="L86">    LOGGER.debug(() -&gt;</span>
+<span class="nc" id="L87">        &quot;JDBC Connection [&quot;</span>
+<span class="nc" id="L88">            + this.connection</span>
+<span class="nc" id="L89">            + &quot;] will&quot;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            + (this.isConnectionTransactional ? &quot; &quot; : &quot; not &quot;)</span>
+<span class="nc" id="L91">            + &quot;be managed by Spring&quot;);</span>
+<span class="fc" id="L92">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void commit() throws SQLException {
-<span class="pc bpc" id="L101" title="1 of 6 branches missed.">    if (this.connection != null &amp;&amp; !this.isConnectionTransactional &amp;&amp; !this.autoCommit) {</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L103">        LOGGER.debug(&quot;Committing JDBC Connection [&quot; + this.connection + &quot;]&quot;);</span>
-      }
-<span class="fc" id="L105">      this.connection.commit();</span>
+<span class="pc bpc" id="L99" title="1 of 6 branches missed.">    if (this.connection != null &amp;&amp; !this.isConnectionTransactional &amp;&amp; !this.autoCommit) {</span>
+<span class="pc" id="L100">      LOGGER.debug(() -&gt; &quot;Committing JDBC Connection [&quot; + this.connection + &quot;]&quot;);</span>
+<span class="fc" id="L101">      this.connection.commit();</span>
     }
-<span class="fc" id="L107">  }</span>
+<span class="fc" id="L103">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void rollback() throws SQLException {
-<span class="pc bpc" id="L114" title="2 of 6 branches missed.">    if (this.connection != null &amp;&amp; !this.isConnectionTransactional &amp;&amp; !this.autoCommit) {</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L116">        LOGGER.debug(&quot;Rolling back JDBC Connection [&quot; + this.connection + &quot;]&quot;);</span>
-      }
-<span class="fc" id="L118">      this.connection.rollback();</span>
+<span class="pc bpc" id="L110" title="2 of 6 branches missed.">    if (this.connection != null &amp;&amp; !this.isConnectionTransactional &amp;&amp; !this.autoCommit) {</span>
+<span class="pc" id="L111">      LOGGER.debug(() -&gt; &quot;Rolling back JDBC Connection [&quot; + this.connection + &quot;]&quot;);</span>
+<span class="fc" id="L112">      this.connection.rollback();</span>
     }
-<span class="fc" id="L120">  }</span>
+<span class="fc" id="L114">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void close() throws SQLException {
-<span class="fc" id="L127">    DataSourceUtils.releaseConnection(this.connection, this.dataSource);</span>
-<span class="fc" id="L128">  }</span>
+  public void close() {
+<span class="fc" id="L121">    DataSourceUtils.releaseConnection(this.connection, this.dataSource);</span>
+<span class="fc" id="L122">  }</span>
     
   /**
    * {@inheritDoc}
    */
   @Override
-  public Integer getTimeout() throws SQLException {
-<span class="fc" id="L135">    ConnectionHolder holder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);</span>
-<span class="pc bpc" id="L136" title="1 of 4 branches missed.">    if (holder != null &amp;&amp; holder.hasTimeout()) {</span>
-<span class="nc" id="L137">      return holder.getTimeToLiveInSeconds();</span>
+  public Integer getTimeout() {
+<span class="fc" id="L129">    ConnectionHolder holder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);</span>
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">    if (holder != null &amp;&amp; holder.hasTimeout()) {</span>
+<span class="nc" id="L131">      return holder.getTimeToLiveInSeconds();</span>
     } 
-<span class="fc" id="L139">    return null;</span>
+<span class="fc" id="L133">    return null;</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

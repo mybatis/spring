@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionFactoryBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionFactoryBean.java</span></div><h1>SqlSessionFactoryBean.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import javax.sql.DataSource;
 
@@ -32,8 +34,6 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.VFS;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
@@ -44,6 +44,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.TypeHandler;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -64,7 +66,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
  * demarcation in combination with a {@code SqlSessionFactory}. JTA should be used for transactions
  * which span multiple databases or when container managed transactions (CMT) are being used.
  *
- * @author Putthibong Boonbong
+ * @author Putthiphong Boonphong
  * @author Hunter Presnall
  * @author Eduardo Macarron
  * @author Eddú Meléndez
@@ -73,9 +75,9 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
  * @see #setConfigLocation
  * @see #setDataSource
  */
-<span class="fc" id="L76">public class SqlSessionFactoryBean implements FactoryBean&lt;SqlSessionFactory&gt;, InitializingBean, ApplicationListener&lt;ApplicationEvent&gt; {</span>
+<span class="fc" id="L78">public class SqlSessionFactoryBean implements FactoryBean&lt;SqlSessionFactory&gt;, InitializingBean, ApplicationListener&lt;ApplicationEvent&gt; {</span>
 
-<span class="fc" id="L78">  private static final Log LOGGER = LogFactory.getLog(SqlSessionFactoryBean.class);</span>
+<span class="fc" id="L80">  private static final Logger LOGGER = LoggerFactory.getLogger(SqlSessionFactoryBean.class);</span>
 
   private Resource configLocation;
 
@@ -89,12 +91,12 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
   private Properties configurationProperties;
 
-<span class="fc" id="L92">  private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();</span>
+<span class="fc" id="L94">  private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();</span>
 
   private SqlSessionFactory sqlSessionFactory;
 
   //EnvironmentAware requires spring 3.1
-<span class="fc" id="L97">  private String environment = SqlSessionFactoryBean.class.getSimpleName();</span>
+<span class="fc" id="L99">  private String environment = SqlSessionFactoryBean.class.getSimpleName();</span>
 
   private boolean failFast;
 
@@ -125,30 +127,30 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * Sets the ObjectFactory.
    *
    * @since 1.1.2
-   * @param objectFactory
+   * @param objectFactory a custom ObjectFactory
    */
   public void setObjectFactory(ObjectFactory objectFactory) {
-<span class="fc" id="L131">    this.objectFactory = objectFactory;</span>
-<span class="fc" id="L132">  }</span>
+<span class="fc" id="L133">    this.objectFactory = objectFactory;</span>
+<span class="fc" id="L134">  }</span>
 
   /**
    * Sets the ObjectWrapperFactory.
    *
    * @since 1.1.2
-   * @param objectWrapperFactory
+   * @param objectWrapperFactory a specified ObjectWrapperFactory
    */
   public void setObjectWrapperFactory(ObjectWrapperFactory objectWrapperFactory) {
-<span class="fc" id="L141">    this.objectWrapperFactory = objectWrapperFactory;</span>
-<span class="fc" id="L142">  }</span>
+<span class="fc" id="L143">    this.objectWrapperFactory = objectWrapperFactory;</span>
+<span class="fc" id="L144">  }</span>
 
   /**
    * Gets the DatabaseIdProvider
    *
    * @since 1.1.0
-   * @return
+   * @return a specified DatabaseIdProvider
    */
   public DatabaseIdProvider getDatabaseIdProvider() {
-<span class="nc" id="L151">    return databaseIdProvider;</span>
+<span class="nc" id="L153">    return databaseIdProvider;</span>
   }
 
   /**
@@ -156,27 +158,43 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * As of version 1.2.2 this variable is not initialized by default.
    *
    * @since 1.1.0
-   * @param databaseIdProvider
+   * @param databaseIdProvider a DatabaseIdProvider
    */
   public void setDatabaseIdProvider(DatabaseIdProvider databaseIdProvider) {
-<span class="fc" id="L162">    this.databaseIdProvider = databaseIdProvider;</span>
-<span class="fc" id="L163">  }</span>
+<span class="fc" id="L164">    this.databaseIdProvider = databaseIdProvider;</span>
+<span class="fc" id="L165">  }</span>
 
+  /**
+   * Gets the VFS.
+   * @return a specified VFS
+   */
   public Class&lt;? extends VFS&gt; getVfs() {
-<span class="nc" id="L166">    return this.vfs;</span>
+<span class="nc" id="L172">    return this.vfs;</span>
   }
 
+  /**
+   * Sets the VFS.
+   * @param vfs a VFS
+   */
   public void setVfs(Class&lt;? extends VFS&gt; vfs) {
-<span class="nc" id="L170">    this.vfs = vfs;</span>
-<span class="nc" id="L171">  }</span>
+<span class="nc" id="L180">    this.vfs = vfs;</span>
+<span class="nc" id="L181">  }</span>
 
+  /**
+   * Gets the Cache.
+   * @return a specified Cache
+   */
   public Cache getCache() {
-<span class="fc" id="L174">    return this.cache;</span>
+<span class="fc" id="L188">    return this.cache;</span>
   }
 
+  /**
+   * Sets the Cache.
+   * @param cache a Cache
+   */
   public void setCache(Cache cache) {
-<span class="fc" id="L178">    this.cache = cache;</span>
-<span class="fc" id="L179">  }</span>
+<span class="fc" id="L196">    this.cache = cache;</span>
+<span class="fc" id="L197">  }</span>
 
   /**
    * Mybatis plugin list.
@@ -187,8 +205,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    *
    */
   public void setPlugins(Interceptor[] plugins) {
-<span class="fc" id="L190">    this.plugins = plugins;</span>
-<span class="fc" id="L191">  }</span>
+<span class="fc" id="L208">    this.plugins = plugins;</span>
+<span class="fc" id="L209">  }</span>
 
   /**
    * Packages to search for type aliases.
@@ -199,8 +217,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    *
    */
   public void setTypeAliasesPackage(String typeAliasesPackage) {
-<span class="fc" id="L202">    this.typeAliasesPackage = typeAliasesPackage;</span>
-<span class="fc" id="L203">  }</span>
+<span class="fc" id="L220">    this.typeAliasesPackage = typeAliasesPackage;</span>
+<span class="fc" id="L221">  }</span>
 
   /**
    * Super class which domain objects have to extend to have a type alias created.
@@ -212,8 +230,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    *
    */
   public void setTypeAliasesSuperType(Class&lt;?&gt; typeAliasesSuperType) {
-<span class="fc" id="L215">    this.typeAliasesSuperType = typeAliasesSuperType;</span>
-<span class="fc" id="L216">  }</span>
+<span class="fc" id="L233">    this.typeAliasesSuperType = typeAliasesSuperType;</span>
+<span class="fc" id="L234">  }</span>
 
   /**
    * Packages to search for type handlers.
@@ -224,8 +242,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    *
    */
   public void setTypeHandlersPackage(String typeHandlersPackage) {
-<span class="fc" id="L227">    this.typeHandlersPackage = typeHandlersPackage;</span>
-<span class="fc" id="L228">  }</span>
+<span class="fc" id="L245">    this.typeHandlersPackage = typeHandlersPackage;</span>
+<span class="fc" id="L246">  }</span>
 
   /**
    * Set type handlers. They must be annotated with {@code MappedTypes} and optionally with {@code MappedJdbcTypes}
@@ -235,8 +253,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @param typeHandlers Type handler list
    */
   public void setTypeHandlers(TypeHandler&lt;?&gt;[] typeHandlers) {
-<span class="fc" id="L238">    this.typeHandlers = typeHandlers;</span>
-<span class="fc" id="L239">  }</span>
+<span class="fc" id="L256">    this.typeHandlers = typeHandlers;</span>
+<span class="fc" id="L257">  }</span>
 
   /**
    * List of type aliases to register. They can be annotated with {@code Alias}
@@ -246,8 +264,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @param typeAliases Type aliases list
    */
   public void setTypeAliases(Class&lt;?&gt;[] typeAliases) {
-<span class="fc" id="L249">    this.typeAliases = typeAliases;</span>
-<span class="fc" id="L250">  }</span>
+<span class="fc" id="L267">    this.typeAliases = typeAliases;</span>
+<span class="fc" id="L268">  }</span>
 
   /**
    * If true, a final check is done on Configuration to assure that all mapped
@@ -259,16 +277,18 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @param failFast enable failFast
    */
   public void setFailFast(boolean failFast) {
-<span class="nc" id="L262">    this.failFast = failFast;</span>
-<span class="nc" id="L263">  }</span>
+<span class="nc" id="L280">    this.failFast = failFast;</span>
+<span class="nc" id="L281">  }</span>
 
   /**
    * Set the location of the MyBatis {@code SqlSessionFactory} config file. A typical value is
    * &quot;WEB-INF/mybatis-configuration.xml&quot;.
+   *
+   * @param configLocation a location the MyBatis config file
    */
   public void setConfigLocation(Resource configLocation) {
-<span class="fc" id="L270">    this.configLocation = configLocation;</span>
-<span class="fc" id="L271">  }</span>
+<span class="fc" id="L290">    this.configLocation = configLocation;</span>
+<span class="fc" id="L291">  }</span>
 
   /**
    * Set a customized MyBatis configuration.
@@ -276,8 +296,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @since 1.3.0
    */
   public void setConfiguration(Configuration configuration) {
-<span class="fc" id="L279">    this.configuration = configuration;</span>
-<span class="fc" id="L280">  }</span>
+<span class="fc" id="L299">    this.configuration = configuration;</span>
+<span class="fc" id="L300">  }</span>
 
   /**
    * Set locations of MyBatis mapper files that are going to be merged into the {@code SqlSessionFactory}
@@ -286,19 +306,23 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * This is an alternative to specifying &quot;&amp;lt;sqlmapper&amp;gt;&quot; entries in an MyBatis config file.
    * This property being based on Spring's resource abstraction also allows for specifying
    * resource patterns here: e.g. &quot;classpath*:sqlmap/*-mapper.xml&quot;.
+   *
+   * @param mapperLocations location of MyBatis mapper files
    */
   public void setMapperLocations(Resource[] mapperLocations) {
-<span class="fc" id="L291">    this.mapperLocations = mapperLocations;</span>
-<span class="fc" id="L292">  }</span>
+<span class="fc" id="L313">    this.mapperLocations = mapperLocations;</span>
+<span class="fc" id="L314">  }</span>
 
   /**
    * Set optional properties to be passed into the SqlSession configuration, as alternative to a
    * {@code &amp;lt;properties&amp;gt;} tag in the configuration xml file. This will be used to
    * resolve placeholders in the config file.
+   *
+   * @param  sqlSessionFactoryProperties optional properties for the SqlSessionFactory
    */
   public void setConfigurationProperties(Properties sqlSessionFactoryProperties) {
-<span class="fc" id="L300">    this.configurationProperties = sqlSessionFactoryProperties;</span>
-<span class="fc" id="L301">  }</span>
+<span class="fc" id="L324">    this.configurationProperties = sqlSessionFactoryProperties;</span>
+<span class="fc" id="L325">  }</span>
 
   /**
    * Set the JDBC {@code DataSource} that this instance should manage transactions for. The {@code DataSource}
@@ -314,18 +338,20 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * underlying target {@code DataSource}. If there's nevertheless a {@code TransactionAwareDataSourceProxy}
    * passed in, it will be unwrapped to extract its target {@code DataSource}.
    *
+   * @param dataSource a JDBC {@code DataSource}
+   *
    */
   public void setDataSource(DataSource dataSource) {
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">    if (dataSource instanceof TransactionAwareDataSourceProxy) {</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">    if (dataSource instanceof TransactionAwareDataSourceProxy) {</span>
       // If we got a TransactionAwareDataSourceProxy, we need to perform
       // transactions for its underlying target DataSource, else data
       // access code won't see properly exposed transactions (i.e.
       // transactions for the target DataSource).
-<span class="nc" id="L324">      this.dataSource = ((TransactionAwareDataSourceProxy) dataSource).getTargetDataSource();</span>
-    } else {
-<span class="fc" id="L326">      this.dataSource = dataSource;</span>
+<span class="nc" id="L350">      this.dataSource = ((TransactionAwareDataSourceProxy) dataSource).getTargetDataSource();</span>
+<span class="nc" id="L351">    } else {</span>
+<span class="fc" id="L352">      this.dataSource = dataSource;</span>
     }
-<span class="fc" id="L328">  }</span>
+<span class="fc" id="L354">  }</span>
 
   /**
    * Sets the {@code SqlSessionFactoryBuilder} to use when creating the {@code SqlSessionFactory}.
@@ -333,10 +359,12 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * This is mainly meant for testing so that mock SqlSessionFactory classes can be injected. By
    * default, {@code SqlSessionFactoryBuilder} creates {@code DefaultSqlSessionFactory} instances.
    *
+   * @param sqlSessionFactoryBuilder a SqlSessionFactoryBuilder
+   *
    */
   public void setSqlSessionFactoryBuilder(SqlSessionFactoryBuilder sqlSessionFactoryBuilder) {
-<span class="fc" id="L338">    this.sqlSessionFactoryBuilder = sqlSessionFactoryBuilder;</span>
-<span class="fc" id="L339">  }</span>
+<span class="fc" id="L366">    this.sqlSessionFactoryBuilder = sqlSessionFactoryBuilder;</span>
+<span class="fc" id="L367">  }</span>
 
   /**
    * Set the MyBatis TransactionFactory to use. Default is {@code SpringManagedTransactionFactory}
@@ -353,8 +381,8 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @param transactionFactory the MyBatis TransactionFactory
    */
   public void setTransactionFactory(TransactionFactory transactionFactory) {
-<span class="fc" id="L356">    this.transactionFactory = transactionFactory;</span>
-<span class="fc" id="L357">  }</span>
+<span class="fc" id="L384">    this.transactionFactory = transactionFactory;</span>
+<span class="fc" id="L385">  }</span>
 
   /**
    * &lt;b&gt;NOTE:&lt;/b&gt; This class &lt;em&gt;overrides&lt;/em&gt; any {@code Environment} you have set in the MyBatis
@@ -364,21 +392,21 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    * @param environment the environment name
    */
   public void setEnvironment(String environment) {
-<span class="fc" id="L367">    this.environment = environment;</span>
-<span class="fc" id="L368">  }</span>
+<span class="fc" id="L395">    this.environment = environment;</span>
+<span class="fc" id="L396">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-<span class="fc" id="L375">    notNull(dataSource, &quot;Property 'dataSource' is required&quot;);</span>
-<span class="fc" id="L376">    notNull(sqlSessionFactoryBuilder, &quot;Property 'sqlSessionFactoryBuilder' is required&quot;);</span>
-<span class="fc bfc" id="L377" title="All 8 branches covered.">    state((configuration == null &amp;&amp; configLocation == null) || !(configuration != null &amp;&amp; configLocation != null),</span>
-              &quot;Property 'configuration' and 'configLocation' can not specified with together&quot;);
+<span class="fc" id="L403">    notNull(dataSource, &quot;Property 'dataSource' is required&quot;);</span>
+<span class="fc" id="L404">    notNull(sqlSessionFactoryBuilder, &quot;Property 'sqlSessionFactoryBuilder' is required&quot;);</span>
+<span class="fc bfc" id="L405" title="All 8 branches covered.">    state((configuration == null &amp;&amp; configLocation == null) || !(configuration != null &amp;&amp; configLocation != null),</span>
+<span class="fc" id="L406">              &quot;Property 'configuration' and 'configLocation' can not specified with together&quot;);</span>
 
-<span class="fc" id="L380">    this.sqlSessionFactory = buildSqlSessionFactory();</span>
-<span class="fc" id="L381">  }</span>
+<span class="fc" id="L408">    this.sqlSessionFactory = buildSqlSessionFactory();</span>
+<span class="fc" id="L409">  }</span>
 
   /**
    * Build a {@code SqlSessionFactory} instance.
@@ -392,150 +420,116 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    */
   protected SqlSessionFactory buildSqlSessionFactory() throws IOException {
 
-    Configuration configuration;
+    final Configuration targetConfiguration;
 
-<span class="fc" id="L397">    XMLConfigBuilder xmlConfigBuilder = null;</span>
-<span class="fc bfc" id="L398" title="All 2 branches covered.">    if (this.configuration != null) {</span>
-<span class="fc" id="L399">      configuration = this.configuration;</span>
-<span class="fc bfc" id="L400" title="All 2 branches covered.">      if (configuration.getVariables() == null) {</span>
-<span class="fc" id="L401">        configuration.setVariables(this.configurationProperties);</span>
-<span class="fc bfc" id="L402" title="All 2 branches covered.">      } else if (this.configurationProperties != null) {</span>
-<span class="fc" id="L403">        configuration.getVariables().putAll(this.configurationProperties);</span>
+<span class="fc" id="L425">    XMLConfigBuilder xmlConfigBuilder = null;</span>
+<span class="fc bfc" id="L426" title="All 2 branches covered.">    if (this.configuration != null) {</span>
+<span class="fc" id="L427">      targetConfiguration = this.configuration;</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">      if (targetConfiguration.getVariables() == null) {</span>
+<span class="fc" id="L429">        targetConfiguration.setVariables(this.configurationProperties);</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">      } else if (this.configurationProperties != null) {</span>
+<span class="fc" id="L431">        targetConfiguration.getVariables().putAll(this.configurationProperties);</span>
       }
-<span class="fc bfc" id="L405" title="All 2 branches covered.">    } else if (this.configLocation != null) {</span>
-<span class="fc" id="L406">      xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);</span>
-<span class="fc" id="L407">      configuration = xmlConfigBuilder.getConfiguration();</span>
-    } else {
-<span class="pc bpc" id="L409" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L410">        LOGGER.debug(&quot;Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration&quot;);</span>
-      }
-<span class="fc" id="L412">      configuration = new Configuration();</span>
-<span class="fc bfc" id="L413" title="All 2 branches covered.">      if (this.configurationProperties != null) {</span>
-<span class="fc" id="L414">        configuration.setVariables(this.configurationProperties);</span>
-      }
+<span class="fc bfc" id="L433" title="All 2 branches covered.">    } else if (this.configLocation != null) {</span>
+<span class="fc" id="L434">      xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);</span>
+<span class="fc" id="L435">      targetConfiguration = xmlConfigBuilder.getConfiguration();</span>
+<span class="fc" id="L436">    } else {</span>
+<span class="pc" id="L437">      LOGGER.debug(() -&gt; &quot;Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration&quot;);</span>
+<span class="fc" id="L438">      targetConfiguration = new Configuration();</span>
+<span class="fc" id="L439">      Optional.ofNullable(this.configurationProperties).ifPresent(targetConfiguration::setVariables);</span>
     }
 
-<span class="fc bfc" id="L418" title="All 2 branches covered.">    if (this.objectFactory != null) {</span>
-<span class="fc" id="L419">      configuration.setObjectFactory(this.objectFactory);</span>
+<span class="fc" id="L442">    Optional.ofNullable(this.objectFactory).ifPresent(targetConfiguration::setObjectFactory);</span>
+<span class="fc" id="L443">    Optional.ofNullable(this.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);</span>
+<span class="fc" id="L444">    Optional.ofNullable(this.vfs).ifPresent(targetConfiguration::setVfsImpl);</span>
+
+<span class="fc bfc" id="L446" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
+<span class="fc" id="L447">      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,</span>
+<span class="fc" id="L448">          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);</span>
+<span class="fc" id="L449">      Stream.of(typeAliasPackageArray).forEach(packageToScan -&gt; {</span>
+<span class="fc" id="L450">        targetConfiguration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">            typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);</span>
+<span class="pc" id="L452">        LOGGER.debug(() -&gt; &quot;Scanned package: '&quot; + packageToScan + &quot;' for aliases&quot;);</span>
+<span class="fc" id="L453">      });</span>
     }
 
-<span class="fc bfc" id="L422" title="All 2 branches covered.">    if (this.objectWrapperFactory != null) {</span>
-<span class="fc" id="L423">      configuration.setObjectWrapperFactory(this.objectWrapperFactory);</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
+<span class="fc" id="L457">      Stream.of(this.typeAliases).forEach(typeAlias -&gt; {</span>
+<span class="fc" id="L458">        targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
+<span class="pc" id="L459">        LOGGER.debug(() -&gt; &quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
+<span class="fc" id="L460">      });</span>
     }
 
-<span class="pc bpc" id="L426" title="1 of 2 branches missed.">    if (this.vfs != null) {</span>
-<span class="nc" id="L427">      configuration.setVfsImpl(this.vfs);</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
+<span class="fc" id="L464">      Stream.of(this.plugins).forEach(plugin -&gt; {</span>
+<span class="fc" id="L465">        targetConfiguration.addInterceptor(plugin);</span>
+<span class="pc" id="L466">        LOGGER.debug(() -&gt; &quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
+<span class="fc" id="L467">      });</span>
     }
 
-<span class="fc bfc" id="L430" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
-<span class="fc" id="L431">      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,</span>
-          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<span class="fc bfc" id="L433" title="All 2 branches covered.">      for (String packageToScan : typeAliasPackageArray) {</span>
-<span class="fc bfc" id="L434" title="All 2 branches covered.">        configuration.getTypeAliasRegistry().registerAliases(packageToScan,</span>
-                typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L437">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for aliases&quot;);</span>
-        }
-      }
+<span class="fc bfc" id="L470" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
+<span class="fc" id="L471">      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,</span>
+<span class="fc" id="L472">          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);</span>
+<span class="fc" id="L473">      Stream.of(typeHandlersPackageArray).forEach(packageToScan -&gt; {</span>
+<span class="fc" id="L474">        targetConfiguration.getTypeHandlerRegistry().register(packageToScan);</span>
+<span class="pc" id="L475">        LOGGER.debug(() -&gt; &quot;Scanned package: '&quot; + packageToScan + &quot;' for type handlers&quot;);</span>
+<span class="fc" id="L476">      });</span>
     }
 
-<span class="fc bfc" id="L442" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
-<span class="fc bfc" id="L443" title="All 2 branches covered.">      for (Class&lt;?&gt; typeAlias : this.typeAliases) {</span>
-<span class="fc" id="L444">        configuration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L446">          LOGGER.debug(&quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
-        }
-      }
+<span class="fc bfc" id="L479" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
+<span class="fc" id="L480">      Stream.of(this.typeHandlers).forEach(typeHandler -&gt; {</span>
+<span class="fc" id="L481">        targetConfiguration.getTypeHandlerRegistry().register(typeHandler);</span>
+<span class="pc" id="L482">        LOGGER.debug(() -&gt; &quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
+<span class="fc" id="L483">      });</span>
     }
 
-<span class="fc bfc" id="L451" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
-<span class="fc bfc" id="L452" title="All 2 branches covered.">      for (Interceptor plugin : this.plugins) {</span>
-<span class="fc" id="L453">        configuration.addInterceptor(plugin);</span>
-<span class="pc bpc" id="L454" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L455">          LOGGER.debug(&quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
-        }
-      }
-    }
-
-<span class="fc bfc" id="L460" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
-<span class="fc" id="L461">      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,</span>
-          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<span class="fc bfc" id="L463" title="All 2 branches covered.">      for (String packageToScan : typeHandlersPackageArray) {</span>
-<span class="fc" id="L464">        configuration.getTypeHandlerRegistry().register(packageToScan);</span>
-<span class="pc bpc" id="L465" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L466">          LOGGER.debug(&quot;Scanned package: '&quot; + packageToScan + &quot;' for type handlers&quot;);</span>
-        }
-      }
-    }
-
-<span class="fc bfc" id="L471" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
-<span class="fc bfc" id="L472" title="All 2 branches covered.">      for (TypeHandler&lt;?&gt; typeHandler : this.typeHandlers) {</span>
-<span class="fc" id="L473">        configuration.getTypeHandlerRegistry().register(typeHandler);</span>
-<span class="pc bpc" id="L474" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L475">          LOGGER.debug(&quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
-        }
-      }
-    }
-
-<span class="pc bpc" id="L480" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {//fix #64 set databaseId before parse mapper xmls</span>
+<span class="pc bpc" id="L486" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {//fix #64 set databaseId before parse mapper xmls</span>
       try {
-<span class="nc" id="L482">        configuration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
-<span class="nc" id="L483">      } catch (SQLException e) {</span>
-<span class="nc" id="L484">        throw new NestedIOException(&quot;Failed getting a databaseId&quot;, e);</span>
-<span class="nc" id="L485">      }</span>
+<span class="nc" id="L488">        targetConfiguration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
+<span class="nc" id="L489">      } catch (SQLException e) {</span>
+<span class="nc" id="L490">        throw new NestedIOException(&quot;Failed getting a databaseId&quot;, e);</span>
+      }
     }
 
-<span class="pc bpc" id="L488" title="1 of 2 branches missed.">    if (this.cache != null) {</span>
-<span class="nc" id="L489">      configuration.addCache(this.cache);</span>
-    }
+<span class="fc" id="L494">    Optional.ofNullable(this.cache).ifPresent(targetConfiguration::addCache);</span>
 
-<span class="fc bfc" id="L492" title="All 2 branches covered.">    if (xmlConfigBuilder != null) {</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">    if (xmlConfigBuilder != null) {</span>
       try {
-<span class="fc" id="L494">        xmlConfigBuilder.parse();</span>
-
-<span class="pc bpc" id="L496" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L497">          LOGGER.debug(&quot;Parsed configuration file: '&quot; + this.configLocation + &quot;'&quot;);</span>
-        }
-<span class="nc" id="L499">      } catch (Exception ex) {</span>
-<span class="nc" id="L500">        throw new NestedIOException(&quot;Failed to parse config resource: &quot; + this.configLocation, ex);</span>
+<span class="fc" id="L498">        xmlConfigBuilder.parse();</span>
+<span class="pc" id="L499">        LOGGER.debug(() -&gt; &quot;Parsed configuration file: '&quot; + this.configLocation + &quot;'&quot;);</span>
+<span class="pc" id="L500">      } catch (Exception ex) {</span>
+<span class="nc" id="L501">        throw new NestedIOException(&quot;Failed to parse config resource: &quot; + this.configLocation, ex);</span>
       } finally {
-<span class="pc" id="L502">        ErrorContext.instance().reset();</span>
-<span class="fc" id="L503">      }</span>
+<span class="fc" id="L503">        ErrorContext.instance().reset();</span>
+      }
     }
 
-<span class="fc bfc" id="L506" title="All 2 branches covered.">    if (this.transactionFactory == null) {</span>
-<span class="fc" id="L507">      this.transactionFactory = new SpringManagedTransactionFactory();</span>
-    }
+<span class="fc" id="L507">    targetConfiguration.setEnvironment(new Environment(this.environment,</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">        this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,</span>
+<span class="fc" id="L509">        this.dataSource));</span>
 
-<span class="fc" id="L510">    configuration.setEnvironment(new Environment(this.environment, this.transactionFactory, this.dataSource));</span>
-
-<span class="fc bfc" id="L512" title="All 2 branches covered.">    if (!isEmpty(this.mapperLocations)) {</span>
-<span class="fc bfc" id="L513" title="All 2 branches covered.">      for (Resource mapperLocation : this.mapperLocations) {</span>
-<span class="fc bfc" id="L514" title="All 2 branches covered.">        if (mapperLocation == null) {</span>
-<span class="fc" id="L515">          continue;</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">    if (!isEmpty(this.mapperLocations)) {</span>
+<span class="fc bfc" id="L512" title="All 2 branches covered.">      for (Resource mapperLocation : this.mapperLocations) {</span>
+<span class="fc bfc" id="L513" title="All 2 branches covered.">        if (mapperLocation == null) {</span>
+<span class="fc" id="L514">          continue;</span>
         }
 
         try {
-<span class="fc" id="L519">          XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),</span>
-<span class="fc" id="L520">              configuration, mapperLocation.toString(), configuration.getSqlFragments());</span>
-<span class="fc" id="L521">          xmlMapperBuilder.parse();</span>
-<span class="nc" id="L522">        } catch (Exception e) {</span>
-<span class="nc" id="L523">          throw new NestedIOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>
+<span class="fc" id="L518">          XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),</span>
+<span class="fc" id="L519">              targetConfiguration, mapperLocation.toString(), targetConfiguration.getSqlFragments());</span>
+<span class="fc" id="L520">          xmlMapperBuilder.parse();</span>
+<span class="pc" id="L521">        } catch (Exception e) {</span>
+<span class="nc" id="L522">          throw new NestedIOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>
         } finally {
-<span class="pc" id="L525">          ErrorContext.instance().reset();</span>
-<span class="fc" id="L526">        }</span>
-
-<span class="pc bpc" id="L528" title="1 of 2 branches missed.">        if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L529">          LOGGER.debug(&quot;Parsed mapper file: '&quot; + mapperLocation + &quot;'&quot;);</span>
+<span class="fc" id="L524">          ErrorContext.instance().reset();</span>
         }
+<span class="pc" id="L526">        LOGGER.debug(() -&gt; &quot;Parsed mapper file: '&quot; + mapperLocation + &quot;'&quot;);</span>
       }
-    } else {
-<span class="pc bpc" id="L533" title="1 of 2 branches missed.">      if (LOGGER.isDebugEnabled()) {</span>
-<span class="nc" id="L534">        LOGGER.debug(&quot;Property 'mapperLocations' was not specified or no matching resources found&quot;);</span>
-      }
+<span class="fc" id="L528">    } else {</span>
+<span class="pc" id="L529">      LOGGER.debug(() -&gt; &quot;Property 'mapperLocations' was not specified or no matching resources found&quot;);</span>
     }
 
-<span class="fc" id="L538">    return this.sqlSessionFactoryBuilder.build(configuration);</span>
+<span class="fc" id="L532">    return this.sqlSessionFactoryBuilder.build(targetConfiguration);</span>
   }
 
   /**
@@ -543,11 +537,11 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    */
   @Override
   public SqlSessionFactory getObject() throws Exception {
-<span class="fc bfc" id="L546" title="All 2 branches covered.">    if (this.sqlSessionFactory == null) {</span>
-<span class="fc" id="L547">      afterPropertiesSet();</span>
+<span class="fc bfc" id="L540" title="All 2 branches covered.">    if (this.sqlSessionFactory == null) {</span>
+<span class="fc" id="L541">      afterPropertiesSet();</span>
     }
 
-<span class="fc" id="L550">    return this.sqlSessionFactory;</span>
+<span class="fc" id="L544">    return this.sqlSessionFactory;</span>
   }
 
   /**
@@ -555,7 +549,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    */
   @Override
   public Class&lt;? extends SqlSessionFactory&gt; getObjectType() {
-<span class="fc bfc" id="L558" title="All 2 branches covered.">    return this.sqlSessionFactory == null ? SqlSessionFactory.class : this.sqlSessionFactory.getClass();</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">    return this.sqlSessionFactory == null ? SqlSessionFactory.class : this.sqlSessionFactory.getClass();</span>
   }
 
   /**
@@ -563,7 +557,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    */
   @Override
   public boolean isSingleton() {
-<span class="fc" id="L566">    return true;</span>
+<span class="fc" id="L560">    return true;</span>
   }
 
   /**
@@ -571,11 +565,11 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
    */
   @Override
   public void onApplicationEvent(ApplicationEvent event) {
-<span class="pc bpc" id="L574" title="3 of 4 branches missed.">    if (failFast &amp;&amp; event instanceof ContextRefreshedEvent) {</span>
+<span class="pc bpc" id="L568" title="3 of 4 branches missed.">    if (failFast &amp;&amp; event instanceof ContextRefreshedEvent) {</span>
       // fail-fast -&gt; check all statements are completed
-<span class="nc" id="L576">      this.sqlSessionFactory.getConfiguration().getMappedStatementNames();</span>
+<span class="nc" id="L570">      this.sqlSessionFactory.getConfiguration().getMappedStatementNames();</span>
     }
-<span class="fc" id="L578">  }</span>
+<span class="fc" id="L572">  }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

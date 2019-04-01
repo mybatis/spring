@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassPathMapperScanner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">ClassPathMapperScanner.java</span></div><h1>ClassPathMapperScanner.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -15,12 +15,9 @@
  */
 package org.mybatis.spring.mapper;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.Set;
-
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -30,12 +27,13 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
-import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Set;
 
 /**
  * A {@link ClassPathBeanDefinitionScanner} that registers Mappers by
@@ -55,6 +53,8 @@ import org.springframework.util.StringUtils;
  */
 public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
+<span class="fc" id="L56">  private static final Logger LOGGER = LoggerFactory.getLogger(ClassPathMapperScanner.class);</span>
+
 <span class="fc" id="L58">  private boolean addToConfig = true;</span>
 
   private SqlSessionFactory sqlSessionFactory;
@@ -69,7 +69,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
   private Class&lt;?&gt; markerInterface;
 
-<span class="fc" id="L72">  private MapperFactoryBean&lt;?&gt; mapperFactoryBean = new MapperFactoryBean&lt;Object&gt;();</span>
+<span class="fc" id="L72">  private MapperFactoryBean&lt;?&gt; mapperFactoryBean = new MapperFactoryBean&lt;&gt;();</span>
 
   public ClassPathMapperScanner(BeanDefinitionRegistry registry) {
 <span class="fc" id="L75">    super(registry, false);</span>
@@ -104,7 +104,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 <span class="fc" id="L104">  }</span>
 
   public void setMapperFactoryBean(MapperFactoryBean&lt;?&gt; mapperFactoryBean) {
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">    this.mapperFactoryBean = mapperFactoryBean != null ? mapperFactoryBean : new MapperFactoryBean&lt;Object&gt;();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">    this.mapperFactoryBean = mapperFactoryBean != null ? mapperFactoryBean : new MapperFactoryBean&lt;&gt;();</span>
 <span class="fc" id="L108">  }</span>
 
 
@@ -135,23 +135,15 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
 <span class="fc bfc" id="L136" title="All 2 branches covered.">    if (acceptAllInterfaces) {</span>
       // default include filter that accepts all classes
-<span class="fc" id="L138">      addIncludeFilter(new TypeFilter() {</span>
-        @Override
-        public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
-<span class="fc" id="L141">          return true;</span>
-        }
-      });
+<span class="fc" id="L138">      addIncludeFilter((metadataReader, metadataReaderFactory) -&gt; true);</span>
     }
 
     // exclude package-info.java
-<span class="fc" id="L147">    addExcludeFilter(new TypeFilter() {</span>
-      @Override
-      public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
-<span class="fc" id="L150">        String className = metadataReader.getClassMetadata().getClassName();</span>
-<span class="fc" id="L151">        return className.endsWith(&quot;package-info&quot;);</span>
-      }
+<span class="fc" id="L142">    addExcludeFilter((metadataReader, metadataReaderFactory) -&gt; {</span>
+<span class="fc" id="L143">      String className = metadataReader.getClassMetadata().getClassName();</span>
+<span class="fc" id="L144">      return className.endsWith(&quot;package-info&quot;);</span>
     });
-<span class="fc" id="L154">  }</span>
+<span class="fc" id="L146">  }</span>
 
   /**
    * Calls the parent search that will search and register all the candidates.
@@ -160,72 +152,68 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    */
   @Override
   public Set&lt;BeanDefinitionHolder&gt; doScan(String... basePackages) {
-<span class="fc" id="L163">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = super.doScan(basePackages);</span>
+<span class="fc" id="L155">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = super.doScan(basePackages);</span>
 
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">    if (beanDefinitions.isEmpty()) {</span>
-<span class="nc" id="L166">      logger.warn(&quot;No MyBatis mapper was found in '&quot; + Arrays.toString(basePackages) + &quot;' package. Please check your configuration.&quot;);</span>
-    } else {
-<span class="fc" id="L168">      processBeanDefinitions(beanDefinitions);</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">    if (beanDefinitions.isEmpty()) {</span>
+<span class="nc" id="L158">      LOGGER.warn(() -&gt; &quot;No MyBatis mapper was found in '&quot; + Arrays.toString(basePackages) + &quot;' package. Please check your configuration.&quot;);</span>
+<span class="nc" id="L159">    } else {</span>
+<span class="fc" id="L160">      processBeanDefinitions(beanDefinitions);</span>
     }
 
-<span class="fc" id="L171">    return beanDefinitions;</span>
+<span class="fc" id="L163">    return beanDefinitions;</span>
   }
 
   private void processBeanDefinitions(Set&lt;BeanDefinitionHolder&gt; beanDefinitions) {
     GenericBeanDefinition definition;
-<span class="fc bfc" id="L176" title="All 2 branches covered.">    for (BeanDefinitionHolder holder : beanDefinitions) {</span>
-<span class="fc" id="L177">      definition = (GenericBeanDefinition) holder.getBeanDefinition();</span>
-
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">      if (logger.isDebugEnabled()) {</span>
-<span class="nc" id="L180">        logger.debug(&quot;Creating MapperFactoryBean with name '&quot; + holder.getBeanName() </span>
-<span class="nc" id="L181">          + &quot;' and '&quot; + definition.getBeanClassName() + &quot;' mapperInterface&quot;);</span>
-      }
+<span class="fc bfc" id="L168" title="All 2 branches covered.">    for (BeanDefinitionHolder holder : beanDefinitions) {</span>
+<span class="fc" id="L169">      definition = (GenericBeanDefinition) holder.getBeanDefinition();</span>
+<span class="fc" id="L170">      String beanClassName = definition.getBeanClassName();</span>
+<span class="pc" id="L171">      LOGGER.debug(() -&gt; &quot;Creating MapperFactoryBean with name '&quot; + holder.getBeanName()</span>
+<span class="nc" id="L172">          + &quot;' and '&quot; + beanClassName + &quot;' mapperInterface&quot;);</span>
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
-<span class="fc" id="L186">      definition.getConstructorArgumentValues().addGenericArgumentValue(definition.getBeanClassName()); // issue #59</span>
-<span class="fc" id="L187">      definition.setBeanClass(this.mapperFactoryBean.getClass());</span>
+<span class="fc" id="L176">      definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59</span>
+<span class="fc" id="L177">      definition.setBeanClass(this.mapperFactoryBean.getClass());</span>
 
-<span class="fc" id="L189">      definition.getPropertyValues().add(&quot;addToConfig&quot;, this.addToConfig);</span>
+<span class="fc" id="L179">      definition.getPropertyValues().add(&quot;addToConfig&quot;, this.addToConfig);</span>
 
-<span class="fc" id="L191">      boolean explicitFactoryUsed = false;</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {</span>
-<span class="fc" id="L193">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, new RuntimeBeanReference(this.sqlSessionFactoryBeanName));</span>
-<span class="fc" id="L194">        explicitFactoryUsed = true;</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">      } else if (this.sqlSessionFactory != null) {</span>
-<span class="nc" id="L196">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, this.sqlSessionFactory);</span>
-<span class="nc" id="L197">        explicitFactoryUsed = true;</span>
+<span class="fc" id="L181">      boolean explicitFactoryUsed = false;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {</span>
+<span class="fc" id="L183">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, new RuntimeBeanReference(this.sqlSessionFactoryBeanName));</span>
+<span class="fc" id="L184">        explicitFactoryUsed = true;</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">      } else if (this.sqlSessionFactory != null) {</span>
+<span class="nc" id="L186">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, this.sqlSessionFactory);</span>
+<span class="nc" id="L187">        explicitFactoryUsed = true;</span>
       }
 
-<span class="fc bfc" id="L200" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {</span>
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (explicitFactoryUsed) {</span>
-<span class="nc" id="L202">          logger.warn(&quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        if (explicitFactoryUsed) {</span>
+<span class="nc" id="L192">          LOGGER.warn(() -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
         }
-<span class="fc" id="L204">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, new RuntimeBeanReference(this.sqlSessionTemplateBeanName));</span>
-<span class="fc" id="L205">        explicitFactoryUsed = true;</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">      } else if (this.sqlSessionTemplate != null) {</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (explicitFactoryUsed) {</span>
-<span class="nc" id="L208">          logger.warn(&quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
+<span class="fc" id="L194">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, new RuntimeBeanReference(this.sqlSessionTemplateBeanName));</span>
+<span class="fc" id="L195">        explicitFactoryUsed = true;</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">      } else if (this.sqlSessionTemplate != null) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (explicitFactoryUsed) {</span>
+<span class="nc" id="L198">          LOGGER.warn(() -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
         }
-<span class="nc" id="L210">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, this.sqlSessionTemplate);</span>
-<span class="nc" id="L211">        explicitFactoryUsed = true;</span>
+<span class="nc" id="L200">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, this.sqlSessionTemplate);</span>
+<span class="nc" id="L201">        explicitFactoryUsed = true;</span>
       }
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">      if (!explicitFactoryUsed) {</span>
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
-<span class="nc" id="L216">          logger.debug(&quot;Enabling autowire by type for MapperFactoryBean with name '&quot; + holder.getBeanName() + &quot;'.&quot;);</span>
-        }
-<span class="fc" id="L218">        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">      if (!explicitFactoryUsed) {</span>
+<span class="pc" id="L205">        LOGGER.debug(() -&gt; &quot;Enabling autowire by type for MapperFactoryBean with name '&quot; + holder.getBeanName() + &quot;'.&quot;);</span>
+<span class="fc" id="L206">        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span>
       }
-<span class="fc" id="L220">    }</span>
-<span class="fc" id="L221">  }</span>
+    }
+<span class="fc" id="L209">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-<span class="pc bpc" id="L228" title="1 of 4 branches missed.">    return beanDefinition.getMetadata().isInterface() &amp;&amp; beanDefinition.getMetadata().isIndependent();</span>
+<span class="pc bpc" id="L216" title="1 of 4 branches missed.">    return beanDefinition.getMetadata().isInterface() &amp;&amp; beanDefinition.getMetadata().isIndependent();</span>
   }
 
   /**
@@ -233,15 +221,15 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    */
   @Override
   protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">    if (super.checkCandidate(beanName, beanDefinition)) {</span>
-<span class="fc" id="L237">      return true;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">    if (super.checkCandidate(beanName, beanDefinition)) {</span>
+<span class="fc" id="L225">      return true;</span>
     } else {
-<span class="fc" id="L239">      logger.warn(&quot;Skipping MapperFactoryBean with name '&quot; + beanName </span>
-<span class="fc" id="L240">          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;</span>
-          + &quot;. Bean already defined with the same name!&quot;);
-<span class="fc" id="L242">      return false;</span>
+<span class="fc" id="L227">      LOGGER.warn(() -&gt; &quot;Skipping MapperFactoryBean with name '&quot; + beanName</span>
+<span class="fc" id="L228">          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;</span>
+<span class="fc" id="L229">          + &quot;. Bean already defined with the same name!&quot;);</span>
+<span class="fc" id="L230">      return false;</span>
     }
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

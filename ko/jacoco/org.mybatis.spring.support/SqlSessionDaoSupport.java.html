@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionDaoSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.support</a> &gt; <span class="el_source">SqlSessionDaoSupport.java</span></div><h1>SqlSessionDaoSupport.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -29,31 +29,64 @@ import org.springframework.dao.support.DaoSupport;
  * This class needs a SqlSessionTemplate or a SqlSessionFactory.
  * If both are set the SqlSessionFactory will be ignored.
  * &lt;p&gt;
- * {code Autowired} was removed from setSqlSessionTemplate and setSqlSessionFactory
- * in version 1.2.0.
  * 
- * @author Putthibong Boonbong
+ * @author Putthiphong Boonphong
+ * @author Eduardo Macarron
  *
  * @see #setSqlSessionFactory
  * @see #setSqlSessionTemplate
  * @see SqlSessionTemplate
  */
-<span class="fc" id="L41">public abstract class SqlSessionDaoSupport extends DaoSupport {</span>
+<span class="fc" id="L40">public abstract class SqlSessionDaoSupport extends DaoSupport {</span>
 
-  private SqlSession sqlSession;
+  private SqlSessionTemplate sqlSessionTemplate;
 
-  private boolean externalSqlSession;
-
+  /**
+   * Set MyBatis SqlSessionFactory to be used by this DAO.
+   * Will automatically create SqlSessionTemplate for the given SqlSessionFactory.
+   *
+   * @param sqlSessionFactory a factory of SqlSession
+   */
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">    if (!this.externalSqlSession) {</span>
-<span class="fc" id="L49">      this.sqlSession = new SqlSessionTemplate(sqlSessionFactory);</span>
+<span class="pc bpc" id="L51" title="1 of 4 branches missed.">    if (this.sqlSessionTemplate == null || sqlSessionFactory != this.sqlSessionTemplate.getSqlSessionFactory()) {</span>
+<span class="fc" id="L52">      this.sqlSessionTemplate = createSqlSessionTemplate(sqlSessionFactory);</span>
     }
-<span class="fc" id="L51">  }</span>
+<span class="fc" id="L54">  }</span>
 
+  /**
+   * Create a SqlSessionTemplate for the given SqlSessionFactory.
+   * Only invoked if populating the DAO with a SqlSessionFactory reference!
+   * &lt;p&gt;Can be overridden in subclasses to provide a SqlSessionTemplate instance
+   * with different configuration, or a custom SqlSessionTemplate subclass.
+   * @param sqlSessionFactory the MyBatis SqlSessionFactory to create a SqlSessionTemplate for
+   * @return the new SqlSessionTemplate instance
+   * @see #setSqlSessionFactory
+   */
+  @SuppressWarnings(&quot;WeakerAccess&quot;)
+  protected SqlSessionTemplate createSqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+<span class="fc" id="L67">    return new SqlSessionTemplate(sqlSessionFactory);</span>
+  }
+
+  /**
+   * Return the MyBatis SqlSessionFactory used by this DAO.
+   *
+   * @return a factory of SqlSession
+   */
+  public final SqlSessionFactory getSqlSessionFactory() {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    return (this.sqlSessionTemplate != null ? this.sqlSessionTemplate.getSqlSessionFactory() : null);</span>
+  }
+
+
+  /**
+   * Set the SqlSessionTemplate for this DAO explicitly,
+   * as an alternative to specifying a SqlSessionFactory.
+   *
+   * @param sqlSessionTemplate a template of SqlSession
+   * @see #setSqlSessionFactory
+   */
   public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-<span class="fc" id="L54">    this.sqlSession = sqlSessionTemplate;</span>
-<span class="fc" id="L55">    this.externalSqlSession = true;</span>
-<span class="fc" id="L56">  }</span>
+<span class="fc" id="L88">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
+<span class="fc" id="L89">  }</span>
 
   /**
    * Users should use this method to get a SqlSession to call its statement methods
@@ -63,7 +96,23 @@ import org.springframework.dao.support.DaoSupport;
    * @return Spring managed thread safe SqlSession
    */
   public SqlSession getSqlSession() {
-<span class="fc" id="L66">    return this.sqlSession;</span>
+<span class="fc" id="L99">    return this.sqlSessionTemplate;</span>
+  }
+
+  /**
+   * Return the SqlSessionTemplate for this DAO,
+   * pre-initialized with the SessionFactory or set explicitly.
+   * &lt;p&gt;&lt;b&gt;Note: The returned SqlSessionTemplate is a shared instance.&lt;/b&gt;
+   * You may introspect its configuration, but not modify the configuration
+   * (other than from within an {@link #initDao} implementation).
+   * Consider creating a custom SqlSessionTemplate instance via
+   * {@code new SqlSessionTemplate(getSqlSessionFactory())}, in which case
+   * you're allowed to customize the settings on the resulting instance.
+   *
+   * @return a template of SqlSession
+   */
+  public SqlSessionTemplate getSqlSessionTemplate() {
+<span class="nc" id="L115">    return this.sqlSessionTemplate;</span>
   }
 
   /**
@@ -71,8 +120,8 @@ import org.springframework.dao.support.DaoSupport;
    */
   @Override
   protected void checkDaoConfig() {
-<span class="fc" id="L74">    notNull(this.sqlSession, &quot;Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required&quot;);</span>
-<span class="fc" id="L75">  }</span>
+<span class="fc" id="L123">    notNull(this.sqlSessionTemplate, &quot;Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required&quot;);</span>
+<span class="fc" id="L124">  }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

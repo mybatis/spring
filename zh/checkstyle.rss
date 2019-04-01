@@ -23,11 +23,11 @@ under the License.
     <link>http://www.mybatis.org/spring/</link>
     <description>mybatis-spring - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2010 - 2018 MyBatis.org</copyright>
+    <copyright>&#169;2010 - 2019 MyBatis.org</copyright>
     <item>
-      <title>File: 30,
+      <title>File: 21,
              Errors: 0,
-             Warnings: 220,
+             Warnings: 150,
              Infos: 0
       </title>
             <link>http://www.mybatis.org/spring//checkstyle.html</link>
@@ -52,7 +52,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  15
+                  10
                 </td>
                 <td>
                   0
@@ -60,147 +60,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.package-info.java">org/mybatis/spring/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#src.test.java.log4j.properties">src/test/java/log4j.properties</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.transaction.package-info.java">org/mybatis/spring/transaction/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#src.test.java.org.mybatis.spring.submitted.webapp_placeholder.conf.properties">src/test/java/org/mybatis/spring/submitted/webapp_placeholder/conf.properties</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#release.properties">release.properties</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.MyBatisPagingItemReader.java">org/mybatis/spring/batch/MyBatisPagingItemReader.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  5
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.SqlSessionUtils.java">org/mybatis/spring/SqlSessionUtils.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  30
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.mapper.MapperScannerConfigurer.java">org/mybatis/spring/mapper/MapperScannerConfigurer.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  42
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.support.package-info.java">org/mybatis/spring/support/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.config.package-info.java">org/mybatis/spring/config/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.annotation.MapperScannerRegistrar.java">org/mybatis/spring/annotation/MapperScannerRegistrar.java</a>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.logging.Logger.java">org/mybatis/logging/Logger.java</a>
                 </td>
                 <td>
                   0
@@ -214,27 +74,13 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.annotation.package-info.java">org/mybatis/spring/annotation/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.SqlSessionFactoryBean.java">org/mybatis/spring/SqlSessionFactoryBean.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  32
+                  11
                 </td>
                 <td>
                   0
@@ -248,7 +94,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  8
                 </td>
                 <td>
                   0
@@ -276,7 +122,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  9
+                  12
                 </td>
                 <td>
                   0
@@ -290,7 +136,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  5
+                  1
                 </td>
                 <td>
                   0
@@ -304,7 +150,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  5
+                  1
                 </td>
                 <td>
                   0
@@ -318,35 +164,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  5
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.package-info.java">org/mybatis/spring/batch/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.config.NamespaceHandler.java">org/mybatis/spring/config/NamespaceHandler.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
+                  3
                 </td>
                 <td>
                   0
@@ -360,7 +178,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  36
+                  12
                 </td>
                 <td>
                   0
@@ -382,27 +200,13 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#.mvn.wrapper.maven-wrapper.properties">.mvn/wrapper/maven-wrapper.properties</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.transaction.SpringManagedTransaction.java">org/mybatis/spring/transaction/SpringManagedTransaction.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  9
+                  6
                 </td>
                 <td>
                   0
@@ -410,13 +214,13 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.mapper.package-info.java">org/mybatis/spring/mapper/package-info.java</a>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.MyBatisPagingItemReader.java">org/mybatis/spring/batch/MyBatisPagingItemReader.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  0
+                  3
                 </td>
                 <td>
                   0
@@ -424,7 +228,21 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.SqlSessionHolder.java">org/mybatis/spring/SqlSessionHolder.java</a>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder.java">org/mybatis/spring/batch/builder/MyBatisPagingItemReaderBuilder.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.builder.MyBatisBatchItemWriterBuilder.java">org/mybatis/spring/batch/builder/MyBatisBatchItemWriterBuilder.java</a>
                 </td>
                 <td>
                   0
@@ -438,13 +256,55 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.transaction.SpringManagedTransactionFactory.java">org/mybatis/spring/transaction/SpringManagedTransactionFactory.java</a>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.SqlSessionUtils.java">org/mybatis/spring/SqlSessionUtils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  13
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.mapper.MapperScannerConfigurer.java">org/mybatis/spring/mapper/MapperScannerConfigurer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  36
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.batch.builder.MyBatisCursorItemReaderBuilder.java">org/mybatis/spring/batch/builder/MyBatisCursorItemReaderBuilder.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
                   2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.logging.LoggerFactory.java">org/mybatis/logging/LoggerFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -459,6 +319,20 @@ under the License.
                 </td>
                 <td>
                   11
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.annotation.MapperScans.java">org/mybatis/spring/annotation/MapperScans.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
                 </td>
                 <td>
                   0

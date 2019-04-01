@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperScannerConfigurer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">MapperScannerConfigurer.java</span></div><h1>MapperScannerConfigurer.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2018 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *    you may not use this file except in compliance with the License.
@@ -68,12 +68,11 @@ import org.springframework.util.StringUtils;
  * &lt;p&gt;
  * Passing in an actual object which may require placeholders (i.e. DB user password) will fail. 
  * Using bean names defers actual object creation until later in the startup
- * process, after all placeholder substituation is completed. However, note that this configurer
+ * process, after all placeholder substitution is completed. However, note that this configurer
  * does support property placeholders of its &lt;em&gt;own&lt;/em&gt; properties. The &lt;code&gt;basePackage&lt;/code&gt;
  * and bean name properties all support &lt;code&gt;${property}&lt;/code&gt; style substitution.
  * &lt;p&gt;
  * Configuration sample:
- * &lt;p&gt;
  *
  * &lt;pre class=&quot;code&quot;&gt;
  * {@code
@@ -91,11 +90,11 @@ import org.springframework.util.StringUtils;
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
  */
-<span class="fc" id="L94">public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {</span>
+<span class="fc" id="L93">public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {</span>
 
   private String basePackage;
 
-<span class="fc" id="L98">  private boolean addToConfig = true;</span>
+<span class="fc" id="L97">  private boolean addToConfig = true;</span>
 
   private SqlSessionFactory sqlSessionFactory;
 
@@ -127,18 +126,18 @@ import org.springframework.util.StringUtils;
    * @param basePackage base package name
    */
   public void setBasePackage(String basePackage) {
-<span class="fc" id="L130">    this.basePackage = basePackage;</span>
-<span class="fc" id="L131">  }</span>
+<span class="fc" id="L129">    this.basePackage = basePackage;</span>
+<span class="fc" id="L130">  }</span>
 
   /**
    * Same as {@code MapperFactoryBean#setAddToConfig(boolean)}.
    *
-   * @param addToConfig
+   * @param addToConfig a flag that whether add mapper to MyBatis or not
    * @see MapperFactoryBean#setAddToConfig(boolean)
    */
   public void setAddToConfig(boolean addToConfig) {
-<span class="nc" id="L140">    this.addToConfig = addToConfig;</span>
-<span class="nc" id="L141">  }</span>
+<span class="nc" id="L139">    this.addToConfig = addToConfig;</span>
+<span class="nc" id="L140">  }</span>
 
   /**
    * This property specifies the annotation that the scanner will search for.
@@ -151,8 +150,8 @@ import org.springframework.util.StringUtils;
    * @param annotationClass annotation class
    */
   public void setAnnotationClass(Class&lt;? extends Annotation&gt; annotationClass) {
-<span class="fc" id="L154">    this.annotationClass = annotationClass;</span>
-<span class="fc" id="L155">  }</span>
+<span class="fc" id="L153">    this.annotationClass = annotationClass;</span>
+<span class="fc" id="L154">  }</span>
 
   /**
    * This property specifies the parent that the scanner will search for.
@@ -165,8 +164,8 @@ import org.springframework.util.StringUtils;
    * @param superClass parent class
    */
   public void setMarkerInterface(Class&lt;?&gt; superClass) {
-<span class="fc" id="L168">    this.markerInterface = superClass;</span>
-<span class="fc" id="L169">  }</span>
+<span class="fc" id="L167">    this.markerInterface = superClass;</span>
+<span class="fc" id="L168">  }</span>
 
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is
@@ -175,12 +174,12 @@ import org.springframework.util.StringUtils;
    * &lt;p&gt;
    * @deprecated Use {@link #setSqlSessionTemplateBeanName(String)} instead
    *
-   * @param sqlSessionTemplate
+   * @param sqlSessionTemplate a template of SqlSession
    */
   @Deprecated
   public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-<span class="nc" id="L182">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
-<span class="nc" id="L183">  }</span>
+<span class="nc" id="L181">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
+<span class="nc" id="L182">  }</span>
 
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is
@@ -196,8 +195,8 @@ import org.springframework.util.StringUtils;
    * @param sqlSessionTemplateName Bean name of the {@code SqlSessionTemplate}
    */
   public void setSqlSessionTemplateBeanName(String sqlSessionTemplateName) {
-<span class="fc" id="L199">    this.sqlSessionTemplateBeanName = sqlSessionTemplateName;</span>
-<span class="fc" id="L200">  }</span>
+<span class="fc" id="L198">    this.sqlSessionTemplateBeanName = sqlSessionTemplateName;</span>
+<span class="fc" id="L199">  }</span>
 
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is
@@ -206,12 +205,12 @@ import org.springframework.util.StringUtils;
    * &lt;p&gt;
    * @deprecated Use {@link #setSqlSessionFactoryBeanName(String)} instead.
    *
-   * @param sqlSessionFactory
+   * @param sqlSessionFactory a factory of SqlSession
    */
   @Deprecated
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-<span class="nc" id="L213">    this.sqlSessionFactory = sqlSessionFactory;</span>
-<span class="nc" id="L214">  }</span>
+<span class="nc" id="L212">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="nc" id="L213">  }</span>
 
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is
@@ -227,34 +226,36 @@ import org.springframework.util.StringUtils;
    * @param sqlSessionFactoryName Bean name of the {@code SqlSessionFactory}
    */
   public void setSqlSessionFactoryBeanName(String sqlSessionFactoryName) {
-<span class="fc" id="L230">    this.sqlSessionFactoryBeanName = sqlSessionFactoryName;</span>
-<span class="fc" id="L231">  }</span>
+<span class="fc" id="L229">    this.sqlSessionFactoryBeanName = sqlSessionFactoryName;</span>
+<span class="fc" id="L230">  }</span>
 
   /**
-   *
+   * Specifies a flag that whether execute a property placeholder processing or not.
+   * &lt;p&gt;
+   * The default is {@literal false}. This means that a property placeholder processing does not execute.
    * @since 1.1.1
    *
-   * @param processPropertyPlaceHolders
+   * @param processPropertyPlaceHolders a flag that whether execute a property placeholder processing or not
    */
   public void setProcessPropertyPlaceHolders(boolean processPropertyPlaceHolders) {
-<span class="fc" id="L240">    this.processPropertyPlaceHolders = processPropertyPlaceHolders;</span>
-<span class="fc" id="L241">  }</span>
+<span class="fc" id="L241">    this.processPropertyPlaceHolders = processPropertyPlaceHolders;</span>
+<span class="fc" id="L242">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
-<span class="fc" id="L248">    this.applicationContext = applicationContext;</span>
-<span class="fc" id="L249">  }</span>
+<span class="fc" id="L249">    this.applicationContext = applicationContext;</span>
+<span class="fc" id="L250">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void setBeanName(String name) {
-<span class="fc" id="L256">    this.beanName = name;</span>
-<span class="fc" id="L257">  }</span>
+<span class="fc" id="L257">    this.beanName = name;</span>
+<span class="fc" id="L258">  }</span>
 
   /**
    * Gets beanNameGenerator to be used while running the scanner.
@@ -263,7 +264,7 @@ import org.springframework.util.StringUtils;
    * @since 1.2.0
    */
   public BeanNameGenerator getNameGenerator() {
-<span class="nc" id="L266">    return nameGenerator;</span>
+<span class="nc" id="L267">    return nameGenerator;</span>
   }
 
   /**
@@ -273,16 +274,16 @@ import org.springframework.util.StringUtils;
    * @since 1.2.0
    */
   public void setNameGenerator(BeanNameGenerator nameGenerator) {
-<span class="fc" id="L276">    this.nameGenerator = nameGenerator;</span>
-<span class="fc" id="L277">  }</span>
+<span class="fc" id="L277">    this.nameGenerator = nameGenerator;</span>
+<span class="fc" id="L278">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-<span class="fc" id="L284">    notNull(this.basePackage, &quot;Property 'basePackage' is required&quot;);</span>
-<span class="fc" id="L285">  }</span>
+<span class="fc" id="L285">    notNull(this.basePackage, &quot;Property 'basePackage' is required&quot;);</span>
+<span class="fc" id="L286">  }</span>
 
   /**
    * {@inheritDoc}
@@ -290,7 +291,7 @@ import org.springframework.util.StringUtils;
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
     // left intentionally blank
-<span class="fc" id="L293">  }</span>
+<span class="fc" id="L294">  }</span>
 
   /**
    * {@inheritDoc}
@@ -299,23 +300,23 @@ import org.springframework.util.StringUtils;
    */
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
-<span class="fc bfc" id="L302" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
-<span class="fc" id="L303">      processPropertyPlaceHolders();</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
+<span class="fc" id="L304">      processPropertyPlaceHolders();</span>
     }
 
-<span class="fc" id="L306">    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);</span>
-<span class="fc" id="L307">    scanner.setAddToConfig(this.addToConfig);</span>
-<span class="fc" id="L308">    scanner.setAnnotationClass(this.annotationClass);</span>
-<span class="fc" id="L309">    scanner.setMarkerInterface(this.markerInterface);</span>
-<span class="fc" id="L310">    scanner.setSqlSessionFactory(this.sqlSessionFactory);</span>
-<span class="fc" id="L311">    scanner.setSqlSessionTemplate(this.sqlSessionTemplate);</span>
-<span class="fc" id="L312">    scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);</span>
-<span class="fc" id="L313">    scanner.setSqlSessionTemplateBeanName(this.sqlSessionTemplateBeanName);</span>
-<span class="fc" id="L314">    scanner.setResourceLoader(this.applicationContext);</span>
-<span class="fc" id="L315">    scanner.setBeanNameGenerator(this.nameGenerator);</span>
-<span class="fc" id="L316">    scanner.registerFilters();</span>
-<span class="fc" id="L317">    scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));</span>
-<span class="fc" id="L318">  }</span>
+<span class="fc" id="L307">    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);</span>
+<span class="fc" id="L308">    scanner.setAddToConfig(this.addToConfig);</span>
+<span class="fc" id="L309">    scanner.setAnnotationClass(this.annotationClass);</span>
+<span class="fc" id="L310">    scanner.setMarkerInterface(this.markerInterface);</span>
+<span class="fc" id="L311">    scanner.setSqlSessionFactory(this.sqlSessionFactory);</span>
+<span class="fc" id="L312">    scanner.setSqlSessionTemplate(this.sqlSessionTemplate);</span>
+<span class="fc" id="L313">    scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);</span>
+<span class="fc" id="L314">    scanner.setSqlSessionTemplateBeanName(this.sqlSessionTemplateBeanName);</span>
+<span class="fc" id="L315">    scanner.setResourceLoader(this.applicationContext);</span>
+<span class="fc" id="L316">    scanner.setBeanNameGenerator(this.nameGenerator);</span>
+<span class="fc" id="L317">    scanner.registerFilters();</span>
+<span class="fc" id="L318">    scanner.scan(StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));</span>
+<span class="fc" id="L319">  }</span>
 
   /*
    * BeanDefinitionRegistries are called early in application startup, before
@@ -325,49 +326,49 @@ import org.springframework.util.StringUtils;
    * definition. Then update the values.
    */
   private void processPropertyPlaceHolders() {
-<span class="fc" id="L328">    Map&lt;String, PropertyResourceConfigurer&gt; prcs = applicationContext.getBeansOfType(PropertyResourceConfigurer.class);</span>
+<span class="fc" id="L329">    Map&lt;String, PropertyResourceConfigurer&gt; prcs = applicationContext.getBeansOfType(PropertyResourceConfigurer.class);</span>
 
-<span class="pc bpc" id="L330" title="2 of 4 branches missed.">    if (!prcs.isEmpty() &amp;&amp; applicationContext instanceof ConfigurableApplicationContext) {</span>
-<span class="fc" id="L331">      BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) applicationContext)</span>
-<span class="fc" id="L332">          .getBeanFactory().getBeanDefinition(beanName);</span>
+<span class="pc bpc" id="L331" title="2 of 4 branches missed.">    if (!prcs.isEmpty() &amp;&amp; applicationContext instanceof ConfigurableApplicationContext) {</span>
+<span class="fc" id="L332">      BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) applicationContext)</span>
+<span class="fc" id="L333">          .getBeanFactory().getBeanDefinition(beanName);</span>
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
       // property placeholder substitution. Instead, create a BeanFactory that just
       // contains this mapper scanner and post process the factory.
-<span class="fc" id="L337">      DefaultListableBeanFactory factory = new DefaultListableBeanFactory();</span>
-<span class="fc" id="L338">      factory.registerBeanDefinition(beanName, mapperScannerBean);</span>
+<span class="fc" id="L338">      DefaultListableBeanFactory factory = new DefaultListableBeanFactory();</span>
+<span class="fc" id="L339">      factory.registerBeanDefinition(beanName, mapperScannerBean);</span>
 
-<span class="fc bfc" id="L340" title="All 2 branches covered.">      for (PropertyResourceConfigurer prc : prcs.values()) {</span>
-<span class="fc" id="L341">        prc.postProcessBeanFactory(factory);</span>
-<span class="fc" id="L342">      }</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">      for (PropertyResourceConfigurer prc : prcs.values()) {</span>
+<span class="fc" id="L342">        prc.postProcessBeanFactory(factory);</span>
+      }
 
-<span class="fc" id="L344">      PropertyValues values = mapperScannerBean.getPropertyValues();</span>
+<span class="fc" id="L345">      PropertyValues values = mapperScannerBean.getPropertyValues();</span>
 
-<span class="fc" id="L346">      this.basePackage = updatePropertyValue(&quot;basePackage&quot;, values);</span>
-<span class="fc" id="L347">      this.sqlSessionFactoryBeanName = updatePropertyValue(&quot;sqlSessionFactoryBeanName&quot;, values);</span>
-<span class="fc" id="L348">      this.sqlSessionTemplateBeanName = updatePropertyValue(&quot;sqlSessionTemplateBeanName&quot;, values);</span>
+<span class="fc" id="L347">      this.basePackage = updatePropertyValue(&quot;basePackage&quot;, values);</span>
+<span class="fc" id="L348">      this.sqlSessionFactoryBeanName = updatePropertyValue(&quot;sqlSessionFactoryBeanName&quot;, values);</span>
+<span class="fc" id="L349">      this.sqlSessionTemplateBeanName = updatePropertyValue(&quot;sqlSessionTemplateBeanName&quot;, values);</span>
     }
-<span class="fc" id="L350">  }</span>
+<span class="fc" id="L351">  }</span>
 
   private String updatePropertyValue(String propertyName, PropertyValues values) {
-<span class="fc" id="L353">    PropertyValue property = values.getPropertyValue(propertyName);</span>
+<span class="fc" id="L354">    PropertyValue property = values.getPropertyValue(propertyName);</span>
 
-<span class="fc bfc" id="L355" title="All 2 branches covered.">    if (property == null) {</span>
-<span class="fc" id="L356">      return null;</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">    if (property == null) {</span>
+<span class="fc" id="L357">      return null;</span>
     }
 
-<span class="fc" id="L359">    Object value = property.getValue();</span>
+<span class="fc" id="L360">    Object value = property.getValue();</span>
 
-<span class="pc bpc" id="L361" title="1 of 2 branches missed.">    if (value == null) {</span>
-<span class="nc" id="L362">      return null;</span>
-<span class="fc bfc" id="L363" title="All 2 branches covered.">    } else if (value instanceof String) {</span>
-<span class="fc" id="L364">      return value.toString();</span>
-<span class="pc bpc" id="L365" title="1 of 2 branches missed.">    } else if (value instanceof TypedStringValue) {</span>
-<span class="fc" id="L366">      return ((TypedStringValue) value).getValue();</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">    if (value == null) {</span>
+<span class="nc" id="L363">      return null;</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">    } else if (value instanceof String) {</span>
+<span class="fc" id="L365">      return value.toString();</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">    } else if (value instanceof TypedStringValue) {</span>
+<span class="fc" id="L367">      return ((TypedStringValue) value).getValue();</span>
     } else {
-<span class="nc" id="L368">      return null;</span>
+<span class="nc" id="L369">      return null;</span>
     }
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
