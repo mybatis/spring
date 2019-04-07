@@ -349,7 +349,7 @@
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>   @Test
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>   <strong class="jxr_keyword">void</strong> testSearchATypeAliasPackage() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L343" href="#L343">343</a>     setupFactoryBean();
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>     factoryBean.setTypeAliasesPackage(<span class="jxr_string">"org/mybatis/spring/type"</span>);
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>     factoryBean.setTypeAliasesPackage(<span class="jxr_string">"org.mybatis.spring.type"</span>);
 <a class="jxr_linenumber" name="L345" href="#L345">345</a> 
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>     TypeAliasRegistry typeAliasRegistry = factoryBean.getObject().getConfiguration().getTypeAliasRegistry();
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"testAlias"</span>);
@@ -362,7 +362,7 @@
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>   <strong class="jxr_keyword">void</strong> testSearchATypeAliasPackageWithSuperType() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L355" href="#L355">355</a>     setupFactoryBean();
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>     factoryBean.setTypeAliasesSuperType(SuperType.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     factoryBean.setTypeAliasesPackage(<span class="jxr_string">"org/mybatis/spring/type"</span>);
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>     factoryBean.setTypeAliasesPackage(<span class="jxr_string">"org.mybatis.*.type"</span>);
 <a class="jxr_linenumber" name="L358" href="#L358">358</a> 
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>     TypeAliasRegistry typeAliasRegistry = factoryBean.getObject().getConfiguration().getTypeAliasRegistry();
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"testAlias2"</span>);
@@ -373,64 +373,86 @@
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>   }
 <a class="jxr_linenumber" name="L366" href="#L366">366</a> 
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>   @Test
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>   <strong class="jxr_keyword">void</strong> testSearchATypeHandlerPackage() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>   <strong class="jxr_keyword">void</strong> testSearchATypeAliasPackageWithSamePackage() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>     setupFactoryBean();
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>     factoryBean.setTypeHandlersPackage(<span class="jxr_string">"org/mybatis/spring/type"</span>);
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>     factoryBean.setTypeAliasesPackage(<span class="jxr_string">"org.mybatis.spring.type, org.*.spring.type"</span>);
 <a class="jxr_linenumber" name="L371" href="#L371">371</a> 
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>     TypeHandlerRegistry typeHandlerRegistry = factoryBean.getObject().getConfiguration().getTypeHandlerRegistry();
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigInteger.<strong class="jxr_keyword">class</strong>)).isTrue();
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigDecimal.<strong class="jxr_keyword">class</strong>)).isTrue();
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>   }
-<a class="jxr_linenumber" name="L376" href="#L376">376</a> 
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>   @Test
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>   <strong class="jxr_keyword">void</strong> testSetObjectFactory() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>     setupFactoryBean();
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>     factoryBean.setObjectFactory(<strong class="jxr_keyword">new</strong> TestObjectFactory());
-<a class="jxr_linenumber" name="L381" href="#L381">381</a> 
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     ObjectFactory objectFactory = factoryBean.getObject().getConfiguration().getObjectFactory();
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>     assertThat(objectFactory).isInstanceOf(TestObjectFactory.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>   }
-<a class="jxr_linenumber" name="L385" href="#L385">385</a> 
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>   @Test
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>   <strong class="jxr_keyword">void</strong> testSetObjectWrapperFactory() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>     setupFactoryBean();
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>     factoryBean.setObjectWrapperFactory(<strong class="jxr_keyword">new</strong> TestObjectWrapperFactory());
-<a class="jxr_linenumber" name="L390" href="#L390">390</a> 
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     ObjectWrapperFactory objectWrapperFactory = factoryBean.getObject().getConfiguration().getObjectWrapperFactory();
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>     assertThat(objectWrapperFactory).isInstanceOf(TestObjectWrapperFactory.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>   }
-<a class="jxr_linenumber" name="L394" href="#L394">394</a> 
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>   @Test
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>   <strong class="jxr_keyword">void</strong> testAddCache() {
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>     setupFactoryBean();
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>     PerpetualCache cache = <strong class="jxr_keyword">new</strong> PerpetualCache(<span class="jxr_string">"test-cache"</span>);
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">this</strong>.factoryBean.setCache(cache);
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     assertThat(<strong class="jxr_keyword">this</strong>.factoryBean.getCache().getId()).isEqualTo(<span class="jxr_string">"test-cache"</span>);
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>   }
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> 
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertDefaultConfig(SqlSessionFactory factory) {
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>     assertConfig(factory, SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>.getSimpleName(),
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         org.mybatis.spring.transaction.SpringManagedTransactionFactory.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>     assertThat(factory.getConfiguration().getVariables().size()).isEqualTo(0);
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>   }
-<a class="jxr_linenumber" name="L408" href="#L408">408</a> 
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertConfig(SqlSessionFactory factory, Class&lt;? <strong class="jxr_keyword">extends</strong> TransactionFactory&gt; transactionFactoryClass) {
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     assertConfig(factory, SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>.getSimpleName(), transactionFactoryClass);
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>   }
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>     TypeAliasRegistry typeAliasRegistry = factoryBean.getObject().getConfiguration().getTypeAliasRegistry();
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"testAlias"</span>);
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"testAlias2"</span>);
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"dummyTypeHandler"</span>);
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>     typeAliasRegistry.resolveAlias(<span class="jxr_string">"superType"</span>);
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>   }
+<a class="jxr_linenumber" name="L378" href="#L378">378</a> 
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>   @Test
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>   <strong class="jxr_keyword">void</strong> testSearchATypeHandlerPackage() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>     setupFactoryBean();
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     factoryBean.setTypeHandlersPackage(<span class="jxr_string">"org.**.type"</span>);
+<a class="jxr_linenumber" name="L383" href="#L383">383</a> 
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>     TypeHandlerRegistry typeHandlerRegistry = factoryBean.getObject().getConfiguration().getTypeHandlerRegistry();
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigInteger.<strong class="jxr_keyword">class</strong>)).isTrue();
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigDecimal.<strong class="jxr_keyword">class</strong>)).isTrue();
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>   }
+<a class="jxr_linenumber" name="L388" href="#L388">388</a> 
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>   @Test
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>   <strong class="jxr_keyword">void</strong> testSearchATypeHandlerPackageWithSamePackage() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     setupFactoryBean();
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>     factoryBean.setTypeHandlersPackage(<span class="jxr_string">"org.mybatis.spring.type, org.mybatis.*.type"</span>);
+<a class="jxr_linenumber" name="L393" href="#L393">393</a> 
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>     TypeHandlerRegistry typeHandlerRegistry = factoryBean.getObject().getConfiguration().getTypeHandlerRegistry();
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigInteger.<strong class="jxr_keyword">class</strong>)).isTrue();
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     assertThat(typeHandlerRegistry.hasTypeHandler(BigDecimal.<strong class="jxr_keyword">class</strong>)).isTrue();
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>   }
+<a class="jxr_linenumber" name="L398" href="#L398">398</a> 
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>   @Test
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>   <strong class="jxr_keyword">void</strong> testSetObjectFactory() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>     setupFactoryBean();
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>     factoryBean.setObjectFactory(<strong class="jxr_keyword">new</strong> TestObjectFactory());
+<a class="jxr_linenumber" name="L403" href="#L403">403</a> 
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     ObjectFactory objectFactory = factoryBean.getObject().getConfiguration().getObjectFactory();
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     assertThat(objectFactory).isInstanceOf(TestObjectFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>   }
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> 
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>   @Test
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>   <strong class="jxr_keyword">void</strong> testSetObjectWrapperFactory() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>     setupFactoryBean();
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     factoryBean.setObjectWrapperFactory(<strong class="jxr_keyword">new</strong> TestObjectWrapperFactory());
 <a class="jxr_linenumber" name="L412" href="#L412">412</a> 
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertConfig(SqlSessionFactory factory, String environment,
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>       Class&lt;? <strong class="jxr_keyword">extends</strong> TransactionFactory&gt; transactionFactoryClass) {
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>     assertThat(factory.getConfiguration().getEnvironment().getId()).isEqualTo(environment);
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     assertThat(factory.getConfiguration().getEnvironment().getDataSource()).isSameAs(dataSource);
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>     assertThat(factory.getConfiguration().getEnvironment().getTransactionFactory().getClass()).isSameAs(transactionFactoryClass);
-<a class="jxr_linenumber" name="L418" href="#L418">418</a> 
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>     <em class="jxr_comment">// no mappers configured =&gt; no mapped statements or other parsed elements</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>     assertThat(factory.getConfiguration().getMappedStatementNames().size()).isEqualTo(0);
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     assertThat(factory.getConfiguration().getResultMapNames().size()).isEqualTo(0);
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>     assertThat(factory.getConfiguration().getParameterMapNames().size()).isEqualTo(0);
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     assertThat(factory.getConfiguration().getSqlFragments().size()).isEqualTo(0);
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>   }
-<a class="jxr_linenumber" name="L425" href="#L425">425</a> }
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     ObjectWrapperFactory objectWrapperFactory = factoryBean.getObject().getConfiguration().getObjectWrapperFactory();
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>     assertThat(objectWrapperFactory).isInstanceOf(TestObjectWrapperFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>   }
+<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>   @Test
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>   <strong class="jxr_keyword">void</strong> testAddCache() {
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     setupFactoryBean();
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     PerpetualCache cache = <strong class="jxr_keyword">new</strong> PerpetualCache(<span class="jxr_string">"test-cache"</span>);
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <strong class="jxr_keyword">this</strong>.factoryBean.setCache(cache);
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>     assertThat(<strong class="jxr_keyword">this</strong>.factoryBean.getCache().getId()).isEqualTo(<span class="jxr_string">"test-cache"</span>);
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>   }
+<a class="jxr_linenumber" name="L424" href="#L424">424</a> 
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertDefaultConfig(SqlSessionFactory factory) {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>     assertConfig(factory, SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>.getSimpleName(),
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         org.mybatis.spring.transaction.SpringManagedTransactionFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     assertThat(factory.getConfiguration().getVariables().size()).isEqualTo(0);
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>   }
+<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertConfig(SqlSessionFactory factory, Class&lt;? <strong class="jxr_keyword">extends</strong> TransactionFactory&gt; transactionFactoryClass) {
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     assertConfig(factory, SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>.getSimpleName(), transactionFactoryClass);
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>   }
+<a class="jxr_linenumber" name="L434" href="#L434">434</a> 
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertConfig(SqlSessionFactory factory, String environment,
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>       Class&lt;? <strong class="jxr_keyword">extends</strong> TransactionFactory&gt; transactionFactoryClass) {
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>     assertThat(factory.getConfiguration().getEnvironment().getId()).isEqualTo(environment);
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     assertThat(factory.getConfiguration().getEnvironment().getDataSource()).isSameAs(dataSource);
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>     assertThat(factory.getConfiguration().getEnvironment().getTransactionFactory().getClass()).isSameAs(transactionFactoryClass);
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> 
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <em class="jxr_comment">// no mappers configured =&gt; no mapped statements or other parsed elements</em>
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     assertThat(factory.getConfiguration().getMappedStatementNames().size()).isEqualTo(0);
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     assertThat(factory.getConfiguration().getResultMapNames().size()).isEqualTo(0);
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>     assertThat(factory.getConfiguration().getParameterMapNames().size()).isEqualTo(0);
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     assertThat(factory.getConfiguration().getSqlFragments().size()).isEqualTo(0);
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>   }
+<a class="jxr_linenumber" name="L447" href="#L447">447</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2010&#x2013;2019 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>

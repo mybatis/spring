@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../apidocs/org/mybatis/spring/config/MapperScannerBeanDefinitionParser.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2016 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2019 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> *    you may not use this file except in compliance with the License.</em>
@@ -57,48 +57,56 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_NAME_GENERATOR = <span class="jxr_string">"name-generator"</span>;
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_TEMPLATE_REF = <span class="jxr_string">"template-ref"</span>;
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_FACTORY_REF = <span class="jxr_string">"factory-ref"</span>;
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>    <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">   * {@inheritDoc}</em>
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>    @Override
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">synchronized</strong> BeanDefinition parse(Element element, ParserContext parserContext) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapp<a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapper/ClassPathMapperScanner.html#ClassPathMapperScanner">ClassPathMapperScanner</a>ner.html#ClassPathMapperScanner">ClassPathMapperScanner</a> scanner = <strong class="jxr_keyword">new</strong> <a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapper/ClassPathMapperScanner.html#ClassPathMapperScanner">ClassPathMapperScanner</a>(parserContext.getRegistry());
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      ClassLoader classLoader = scanner.getResourceLoader().getClassLoader();
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      XmlReaderContext readerContext = parserContext.getReaderContext();
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      scanner.setResourceLoader(readerContext.getResourceLoader());
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>        String annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(annotationClassName)) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          Class&lt;? <strong class="jxr_keyword">extends</strong> Annotation&gt; markerInterface = (Class&lt;? <strong class="jxr_keyword">extends</strong> Annotation&gt;) classLoader.loadClass(annotationClassName);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          scanner.setAnnotationClass(markerInterface);
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>        }
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>        String markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(markerInterfaceClassName)) {
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          Class&lt;?&gt; markerInterface = classLoader.loadClass(markerInterfaceClassName);
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          scanner.setMarkerInterface(markerInterface);
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>        }
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>        String nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(nameGeneratorClassName)) {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          Class&lt;?&gt; nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          BeanNameGenerator nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          scanner.setBeanNameGenerator(nameGenerator);
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>        }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      } <strong class="jxr_keyword">catch</strong> (Exception ex) {
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>        readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>      }
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>      String sqlSessionTemplateBeanName = element.getAttribute(ATTRIBUTE_TEMPLATE_REF);
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      scanner.setSqlSessionTemplateBeanName(sqlSessionTemplateBeanName);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      String sqlSessionFactoryBeanName = element.getAttribute(ATTRIBUTE_FACTORY_REF);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      scanner.setSqlSessionFactoryBeanName(sqlSessionFactoryBeanName);
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      scanner.registerFilters();
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      String basePackage = element.getAttribute(ATTRIBUTE_BASE_PACKAGE);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      scanner.scan(StringUtils.tokenizeToStringArray(basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>    }
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>  
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>  }
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS = <span class="jxr_string">"mapper-factory-bean-class"</span>;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">   * {@inheritDoc}</em>
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>    @Override
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">synchronized</strong> BeanDefinition parse(Element element, ParserContext parserContext) {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapp<a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapper/ClassPathMapperScanner.html#ClassPathMapperScanner">ClassPathMapperScanner</a>ner.html#ClassPathMapperScanner">ClassPathMapperScanner</a> scanner = <strong class="jxr_keyword">new</strong> <a name="ClassPathMapperScanner" href="../../../../org/mybatis/spring/mapper/ClassPathMapperScanner.html#ClassPathMapperScanner">ClassPathMapperScanner</a>(parserContext.getRegistry());
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      ClassLoader classLoader = scanner.getResourceLoader().getClassLoader();
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      XmlReaderContext readerContext = parserContext.getReaderContext();
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      scanner.setResourceLoader(readerContext.getResourceLoader());
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>        String annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(annotationClassName)) {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          Class&lt;? <strong class="jxr_keyword">extends</strong> Annotation&gt; markerInterface = (Class&lt;? <strong class="jxr_keyword">extends</strong> Annotation&gt;) classLoader.loadClass(annotationClassName);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          scanner.setAnnotationClass(markerInterface);
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>        }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>        String markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(markerInterfaceClassName)) {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          Class&lt;?&gt; markerInterface = classLoader.loadClass(markerInterfaceClassName);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          scanner.setMarkerInterface(markerInterface);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>        }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>        String nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(nameGeneratorClassName)) {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          Class&lt;?&gt; nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          BeanNameGenerator nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          scanner.setBeanNameGenerator(nameGenerator);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>        }
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>        String mapperFactoryBeanClassName = element.getAttribute(ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>        <strong class="jxr_keyword">if</strong> (StringUtils.hasText(mapperFactoryBeanClassName)) {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          Class&lt;? <strong class="jxr_keyword">extends</strong> MapperFactoryBean&gt; mapperFactoryBeanClass =
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              (Class&lt;? <strong class="jxr_keyword">extends</strong> MapperFactoryBean&gt;)classLoader.loadClass(mapperFactoryBeanClassName);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          scanner.setMapperFactoryBeanClass(mapperFactoryBeanClass);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>        }
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      } <strong class="jxr_keyword">catch</strong> (Exception ex) {
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>        readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      String sqlSessionTemplateBeanName = element.getAttribute(ATTRIBUTE_TEMPLATE_REF);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      scanner.setSqlSessionTemplateBeanName(sqlSessionTemplateBeanName);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      String sqlSessionFactoryBeanName = element.getAttribute(ATTRIBUTE_FACTORY_REF);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      scanner.setSqlSessionFactoryBeanName(sqlSessionFactoryBeanName);
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      scanner.registerFilters();
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      String basePackage = element.getAttribute(ATTRIBUTE_BASE_PACKAGE);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      scanner.scan(StringUtils.tokenizeToStringArray(basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>    }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a> 
+<a class="jxr_linenumber" name="L101" href="#L101">101</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2010&#x2013;2019 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>

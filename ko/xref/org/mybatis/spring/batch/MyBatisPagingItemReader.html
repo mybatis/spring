@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../../apidocs/org/mybatis/spring/batch/MyBatisPagingItemReader.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2017 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2019 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> *    you may not use this file except in compliance with the License.</em>
@@ -23,18 +23,18 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">package</strong> org.mybatis.spring.batch;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.springframework.util.Assert.notNull;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.springframework.util.ClassUtils.getShortName;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.util.concurrent.CopyOnWriteArrayList;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.ExecutorType;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSession;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSessionFactory;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionTemplate;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.springframework.batch.item.database.AbstractPagingItemReader;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.ExecutorType;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSession;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSessionFactory;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionTemplate;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.springframework.batch.item.database.AbstractPagingItemReader;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.concurrent.CopyOnWriteArrayList;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.springframework.util.Assert.notNull;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.springframework.util.ClassUtils.getShortName;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * {@code org.springframework.batch.item.ItemReader} for reading database</em>
@@ -97,33 +97,35 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> afterPropertiesSet() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">super</strong>.afterPropertiesSet();
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      notNull(sqlSessionFactory, <span class="jxr_string">"A SqlSessionFactory is required."</span>);
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      sqlSessionTemplate = <strong class="jxr_keyword">new</strong> <a name="SqlSessionTemplate" href="../../../../org/mybatis/spring/SqlSessionTemplate.html#SqlSessionTemplate">SqlSessionTemplate</a>(sqlSessionFactory, ExecutorType.BATCH);
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      notNull(queryId, <span class="jxr_string">"A queryId is required."</span>);
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>    }
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>  
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>    @Override
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> doReadPage() {
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      Map&lt;String, Object&gt; parameters = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">if</strong> (parameterValues != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>       parameters.putAll(parameterValues);
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>     }
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>     parameters.put(<span class="jxr_string">"_page"</span>, getPage());
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>     parameters.put(<span class="jxr_string">"_pagesize"</span>, getPageSize());
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     parameters.put(<span class="jxr_string">"_skiprows"</span>, getPage() * getPageSize());
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">if</strong> (results == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>       results = <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>       results.clear();
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     }
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     results.addAll(sqlSessionTemplate.selectList(queryId, parameters));
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>   }
-<a class="jxr_linenumber" name="L112" href="#L112">112</a> 
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>   @Override
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>   <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> doJumpToPage(<strong class="jxr_keyword">int</strong> itemIndex) {
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>       <em class="jxr_comment">// Not Implemented</em>
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>   }
-<a class="jxr_linenumber" name="L117" href="#L117">117</a> 
-<a class="jxr_linenumber" name="L118" href="#L118">118</a> }
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      notNull(queryId, <span class="jxr_string">"A queryId is required."</span>);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>    }
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>  
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>    @Override
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> doReadPage() {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      <strong class="jxr_keyword">if</strong> (sqlSessionTemplate == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>        sqlSessionTemplate = <strong class="jxr_keyword">new</strong> <a name="SqlSessionTemplate" href="../../../../org/mybatis/spring/SqlSessionTemplate.html#SqlSessionTemplate">SqlSessionTemplate</a>(sqlSessionFactory, ExecutorType.BATCH);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     Map&lt;String, Object&gt; parameters = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">if</strong> (parameterValues != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>       parameters.putAll(parameterValues);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>     }
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     parameters.put(<span class="jxr_string">"_page"</span>, getPage());
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     parameters.put(<span class="jxr_string">"_pagesize"</span>, getPageSize());
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>     parameters.put(<span class="jxr_string">"_skiprows"</span>, getPage() * getPageSize());
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">if</strong> (results == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>       results = <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>       results.clear();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     }
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     results.addAll(sqlSessionTemplate.selectList(queryId, parameters));
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>   }
+<a class="jxr_linenumber" name="L114" href="#L114">114</a> 
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>   @Override
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>   <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> doJumpToPage(<strong class="jxr_keyword">int</strong> itemIndex) {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>       <em class="jxr_comment">// Not Implemented</em>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>   }
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> 
+<a class="jxr_linenumber" name="L120" href="#L120">120</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2010&#x2013;2019 <a href="http://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>
