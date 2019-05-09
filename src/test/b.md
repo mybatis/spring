@@ -1,13 +1,13 @@
-[http](http://www.baidu.com)
+[http://www.baidu.com](http://www.baidu.com)
 
-[www](www.baidu.com)
+[www.baidu.com](www.baidu.com)
 
-[..](../README.md)
+[../README.md](../README.md)
 
-[.](./test.md)
+[./test.md](./test.md)
 
-[a](a.md)
+[a.md](a.md)
 
-[c](resources/c.md)
+[resources/c.md](resources/c.md)
 
-[12312313](www.1231231231313123.com)
+[www.1231231231313123.com](www.1231231231313123.com)
