@@ -2,9 +2,9 @@
 
 [www.baidu.com](www.baidu.com)
 
-[../README.md](../README.md)
+[./README.md](./README.md)
 
-[./test.md](./test.md)
+[/test.md](/test.md)
 
 [a.md](a.md)
 
