@@ -83,7 +83,7 @@
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
-    <system>GitHub Issue Management</system>
+    <system>GitHub Issue Management  </system>
     <url>https://github.com/mybatis/spring/issues</url>
   </issueManagement>
   <ciManagement>
