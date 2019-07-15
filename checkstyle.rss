@@ -25,9 +25,9 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2010 - 2019 MyBatis.org</copyright>
     <item>
-      <title>File: 37,
+      <title>File: 39,
              Errors: 0,
-             Warnings: 170,
+             Warnings: 148,
              Infos: 0
       </title>
             <link>http://www.mybatis.org/spring//checkstyle.html</link>
@@ -52,7 +52,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  11
+                  8
                 </td>
                 <td>
                   0
@@ -88,7 +88,35 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#src.test.java.org.mybatis.spring.config.lazy.properties">src/test/java/org/mybatis/spring/config/lazy.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://www.mybatis.org/spring//checkstyle.html#src.test.java.org.mybatis.spring.submitted.webapp_placeholder.conf.properties">src/test/java/org/mybatis/spring/submitted/webapp_placeholder/conf.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#src.test.java.org.mybatis.spring.annotation.scan.properties">src/test/java/org/mybatis/spring/annotation/scan.properties</a>
                 </td>
                 <td>
                   0
@@ -122,7 +150,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  7
                 </td>
                 <td>
                   0
@@ -150,7 +178,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  13
+                  5
                 </td>
                 <td>
                   0
@@ -164,7 +192,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  36
+                  34
                 </td>
                 <td>
                   0
@@ -201,20 +229,6 @@ under the License.
                           <tr>
                 <td>
                   <a href="http://www.mybatis.org/spring//checkstyle.html#org.mybatis.spring.config.package-info.java">org/mybatis/spring/config/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://www.mybatis.org/spring//checkstyle.html#target.maven-archiver.pom.properties">target/maven-archiver/pom.properties</a>
                 </td>
                 <td>
                   0
@@ -276,7 +290,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  25
+                  24
                 </td>
                 <td>
                   0
@@ -304,7 +318,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  6
+                  8
                 </td>
                 <td>
                   0
@@ -318,7 +332,21 @@ under the License.
                   0
                 </td>
                 <td>
-                  12
+                  10
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mybatis.org/spring//checkstyle.html#target.formatter-maven-cache.properties">target/formatter-maven-cache.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
@@ -360,7 +388,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  3
+                  1
                 </td>
                 <td>
                   0
@@ -402,7 +430,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  12
+                  8
                 </td>
                 <td>
                   0
@@ -416,7 +444,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  2
+                  1
                 </td>
                 <td>
                   0
@@ -542,7 +570,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  11
+                  10
                 </td>
                 <td>
                   0
@@ -556,7 +584,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  6
+                  7
                 </td>
                 <td>
                   0

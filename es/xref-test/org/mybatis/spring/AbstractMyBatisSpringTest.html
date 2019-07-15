@@ -7,19 +7,19 @@
 <body>
 <div id="overview"><a href="../../../../../testapidocs/org/mybatis/spring/AbstractMyBatisSpringTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *    Copyright 2010-2017 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyright 2010-2019 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> *    Licensed under the Apache License, Version 2.0 (the "License");</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> *    you may not use this file except in compliance with the License.</em>
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> *    You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *       <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *    <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *    Unless required by applicable law or agreed to in writing, software</em>
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> *    distributed under the License is distributed on an "AS IS" BASIS,</em>
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> *    See the License for the specific language governing permissions and</em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> *    limitations under the License.</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * See the License for the specific language governing permissions and</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * limitations under the License.</em>
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">package</strong> org.mybatis.spring;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
@@ -61,10 +61,10 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupBase() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <em class="jxr_comment">// create an SqlSessionFactory that will use SpringManagedTransactions</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      SqlSessionFactoryBean factoryBean = <strong class="jxr_keyword">new</strong> SqlSessionFactoryBean();
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      factoryBean.setMapperLocations(<strong class="jxr_keyword">new</strong> Resource[] { <strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"org/mybatis/spring/TestMapper.xml"</span>) });
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      factoryBean.setMapperLocations(<strong class="jxr_keyword">new</strong> ClassPathResource(<span class="jxr_string">"org/mybatis/spring/TestMapper.xml"</span>));
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <em class="jxr_comment">// note running without SqlSessionFactoryBean.configLocation set =&gt; default configuration</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      factoryBean.setDataSource(dataSource);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      factoryBean.setPlugins(<strong class="jxr_keyword">new</strong> Interceptor[] { executorInterceptor });
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      factoryBean.setPlugins(executorInterceptor);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      exceptionTranslator = <strong class="jxr_keyword">new</strong> MyBatisExceptionTranslator(dataSource, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
@@ -115,8 +115,8 @@
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>   }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>   <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> assertExecuteCount(<strong class="jxr_keyword">int</strong> count) {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     assertThat(connection.getPreparedStatementResultSetHandler().getExecutedStatements().size()).as(
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <span class="jxr_string">"should have executed %d SQL statements"</span>, count).isEqualTo(count);
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     assertThat(connection.getPreparedStatementResultSetHandler().getExecutedStatements().size())
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         .as(<span class="jxr_string">"should have executed %d SQL statements"</span>, count).isEqualTo(count);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>   }
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> 
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>   <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> assertConnectionClosed(MockConnection connection) {
@@ -141,8 +141,8 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>   }
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_comment">   * Setup a new Connection before each test since its closed state will need to be checked</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_comment">   * afterwards and there is no Connection.open().</em>
+<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_comment">   * Setup a new Connection before each test since its closed state will need to be checked afterwards and there is no</em>
+<a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_comment">   * Connection.open().</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_comment">   */</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>   @BeforeEach
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupConnection() <strong class="jxr_keyword">throws</strong> SQLException {
