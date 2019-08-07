@@ -16,6 +16,13 @@ jdk:
 before_install:
   # for gh-311 (modify to use the TLSv1.2 on Java 7)
   - export _JAVA_OPTIONS=-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+  - |
+    if [ $TRAVIS_JDK_VERSION == "openjdk6" ]; then
+      jdk_switcher use openjdk7
+      ./mvnw install -P jdk16
+      ./mvnw clean
+      jdk_switcher use openjdk6
+    fi
 
 after_success:
   - chmod -R 777 ./travis/after_success.sh
