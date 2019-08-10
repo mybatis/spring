@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2016 the original author or authors.
+       Copyright 2010-2017 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -34,5 +34,5 @@
          autowired. -->
     <mybatis:scan base-package="org.mybatis.spring.mapper" 
     marker-interface="org.mybatis.spring.mapper.MapperInterface"
-    annotation="org.springframework.stereotype.Component" />
+    annotation="org.mybatis.spring.annotation.Mapper" />
 </beans>

@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.Mapper;
 import org.mybatis.spring.mapper.child.MapperChildInterface;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -36,7 +37,6 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.stereotype.Component;
 
 import com.mockrunner.mock.jdbc.MockDataSource;
 
@@ -130,7 +130,7 @@ public final class MapperScannerConfigurerTest {
   @Test
   public void testAnnotationScan() {
     applicationContext.getBeanDefinition("mapperScanner").getPropertyValues().add(
-        "annotationClass", Component.class);
+        "annotationClass", Mapper.class);
 
     startContext();
 
@@ -147,7 +147,7 @@ public final class MapperScannerConfigurerTest {
     applicationContext.getBeanDefinition("mapperScanner").getPropertyValues().add(
         "markerInterface", MapperInterface.class);
     applicationContext.getBeanDefinition("mapperScanner").getPropertyValues().add(
-        "annotationClass", Component.class);
+        "annotationClass", Mapper.class);
 
     startContext();
 
