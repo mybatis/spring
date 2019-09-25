@@ -27,6 +27,7 @@ public class AutowireTest {
   public void shouldReturnMapper() {
     context = new ClassPathXmlApplicationContext("classpath:org/mybatis/spring/submitted/autowire/spring.xml");
 
+    // git
     FooMapper fooMapper = (FooMapper) context.getBean("fooMapper");
     assertNotNull(fooMapper);
     fooMapper.executeFoo();
