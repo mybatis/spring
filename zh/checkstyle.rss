@@ -23,11 +23,11 @@ under the License.
     <link>http://www.mybatis.org/spring/</link>
     <description>mybatis-spring - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2010 - 2019 MyBatis.org</copyright>
+    <copyright>&#169;2010 - 2020 MyBatis.org</copyright>
     <item>
       <title>File: 21,
              Errors: 0,
-             Warnings: 148,
+             Warnings: 149,
              Infos: 0
       </title>
             <link>http://www.mybatis.org/spring//checkstyle.html</link>
@@ -94,7 +94,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  9
                 </td>
                 <td>
                   0
