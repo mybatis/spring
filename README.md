@@ -14,7 +14,7 @@ MyBatis-Spring adapter is an easy-to-use Spring bridge for MyBatis sql mapping f
 Supported Versions
 ------------------
 
-- 1.3.x - Continued support for Java 6 and 7
+- 1.3.x - Continued support for Java 6 and 7 and 8
 - master (2.0.x) - Support for Java 8, Spring 5, and Junit 5 plus other java 8 requirements
 
 Essentials
