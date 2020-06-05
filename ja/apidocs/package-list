@@ -1,6 +1,8 @@
+org.mybatis.logging
 org.mybatis.spring
 org.mybatis.spring.annotation
 org.mybatis.spring.batch
+org.mybatis.spring.batch.builder
 org.mybatis.spring.config
 org.mybatis.spring.mapper
 org.mybatis.spring.support
