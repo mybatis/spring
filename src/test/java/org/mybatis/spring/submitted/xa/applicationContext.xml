@@ -74,9 +74,9 @@
 
 	<context:component-scan base-package="org.mybatis.spring.submitted.xa" />
 
-	<bean id="master" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+	<bean id="primary" class="com.atomikos.jdbc.AtomikosDataSourceBean"
 		init-method="init" destroy-method="close">
-		<property name="uniqueResourceName" value="masterDBUniqueName" />
+		<property name="uniqueResourceName" value="primaryDBUniqueName" />
 		<property name="xaDataSourceClassName" value="org.apache.derby.jdbc.EmbeddedXADataSource" />
 		<property name="localTransactionMode" value="true"/>
 		<property name="minPoolSize">
@@ -87,15 +87,15 @@
 		</property>
 		<property name="xaProperties">
 			<props>
-				<prop key="databaseName">memory:masterDB</prop>
+				<prop key="databaseName">memory:primaryDB</prop>
 				<prop key="createDatabase">create</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="slave" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+	<bean id="replica" class="com.atomikos.jdbc.AtomikosDataSourceBean"
 		init-method="init" destroy-method="close">
-		<property name="uniqueResourceName" value="slaveDBUniqueName" />
+		<property name="uniqueResourceName" value="replicaDBUniqueName" />
 		<property name="xaDataSourceClassName" value="org.apache.derby.jdbc.EmbeddedXADataSource" />
 		<property name="localTransactionMode" value="true"/>
 		<property name="minPoolSize">
@@ -106,45 +106,45 @@
 		</property>
 		<property name="xaProperties">
 			<props>
-				<prop key="databaseName">memory:slaveDB</prop>
+				<prop key="databaseName">memory:replicaDB</prop>
 				<prop key="createDatabase">create</prop>
 			</props>
 		</property>
 	</bean>
 
-	<jdbc:initialize-database data-source="master">
+	<jdbc:initialize-database data-source="primary">
 		<jdbc:script
 			location="classpath:org/mybatis/spring/submitted/xa/database-schema.sql" />
 	</jdbc:initialize-database>
 
-	<jdbc:initialize-database data-source="slave">
+	<jdbc:initialize-database data-source="replica">
 		<jdbc:script
 			location="classpath:org/mybatis/spring/submitted/xa/database-schema.sql" />
 	</jdbc:initialize-database>
 
-	<bean id="sqlSessionFactoryMaster" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactoryPrimary" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="databaseIdProvider">
 			<null />
 		</property>
-		<property name="dataSource" ref="master" />
+		<property name="dataSource" ref="primary" />
 		<property name="typeAliasesPackage" value="org.mybatis.jpetstore.domain" />
 	</bean>
 
-	<bean id="userMapperMaster" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="sqlSessionFactory" ref="sqlSessionFactoryMaster" />
+	<bean id="userMapperPrimary" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactoryPrimary" />
 		<property name="mapperInterface" value="org.mybatis.spring.submitted.xa.UserMapper" />
 	</bean>
 
-	<bean id="sqlSessionFactorySlave" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactoryReplica" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="databaseIdProvider">
 			<null />
 		</property>
-		<property name="dataSource" ref="slave" />
+		<property name="dataSource" ref="replica" />
 		<property name="typeAliasesPackage" value="org.mybatis.jpetstore.domain" />
 	</bean>
 
-	<bean id="userMapperSlave" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="sqlSessionFactory" ref="sqlSessionFactorySlave" />
+	<bean id="userMapperReplica" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactoryReplica" />
 		<property name="mapperInterface" value="org.mybatis.spring.submitted.xa.UserMapper" />
 	</bean>
 
