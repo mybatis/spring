@@ -47,7 +47,7 @@ public abstract class SqlSessionDaoSupport extends DaoSupport {
    *          a template of SqlSession
    * @see #setSqlSessionFactory
    */
-  public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+  public void setSqlSessionATemplate(SqlSessionTemplate sqlSessionTemplate) {
     this.sqlSessionTemplate = sqlSessionTemplate;
   }
 
