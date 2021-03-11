@@ -41,6 +41,17 @@ public abstract class SqlSessionDaoSupport extends DaoSupport {
   private SqlSessionTemplate sqlSessionTemplate;
 
   /**
+   * Set the SqlSessionTemplate for this DAO explicitly, as an alternative to specifying a SqlSessionFactory.
+   *
+   * @param sqlSessionTemplate
+   *          a template of SqlSession
+   * @see #setSqlSessionFactory
+   */
+  public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+    this.sqlSessionTemplate = sqlSessionTemplate;
+  }
+
+  /**
    * Set MyBatis SqlSessionFactory to be used by this DAO. Will automatically create SqlSessionTemplate for the given
    * SqlSessionFactory.
    *
@@ -78,18 +89,7 @@ public abstract class SqlSessionDaoSupport extends DaoSupport {
   public final SqlSessionFactory getSqlSessionFactory() {
     return (this.sqlSessionTemplate != null ? this.sqlSessionTemplate.getSqlSessionFactory() : null);
   }
-
-  /**
-   * Set the SqlSessionTemplate for this DAO explicitly, as an alternative to specifying a SqlSessionFactory.
-   *
-   * @param sqlSessionTemplate
-   *          a template of SqlSession
-   * @see #setSqlSessionFactory
-   */
-  public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-    this.sqlSessionTemplate = sqlSessionTemplate;
-  }
-
+  
   /**
    * Users should use this method to get a SqlSession to call its statement methods This is SqlSession is managed by
    * spring. Users should not commit/rollback/close it because it will be automatically done.
