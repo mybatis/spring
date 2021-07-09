@@ -23,30 +23,30 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   @Autowired
-  private UserMapper userMapperMaster;
+  private UserMapper userMapperPrimary;
   @Autowired
-  private UserMapper userMapperSlave;
+  private UserMapper userMapperReplica;
 
   @Override
   @Transactional
   public void saveWithNoFailure(User user) {
-    userMapperMaster.save(user);
-    userMapperSlave.save(user);
+    userMapperPrimary.save(user);
+    userMapperReplica.save(user);
   }
 
   @Override
   @Transactional
   public void saveWithFailure(User user) {
-    userMapperMaster.save(user);
-    userMapperSlave.save(user);
+    userMapperPrimary.save(user);
+    userMapperReplica.save(user);
     throw new RuntimeException("failed!");
   }
 
   @Override
   public boolean checkUserExists(int id) {
-    if (userMapperMaster.select(id) != null)
+    if (userMapperPrimary.select(id) != null)
       return true;
-    if (userMapperSlave.select(id) != null)
+    if (userMapperReplica.select(id) != null)
       return true;
     return false;
   }
