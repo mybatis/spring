@@ -16,7 +16,13 @@
 
 name: Spring/Spring Batch Support
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '!compatibility-check-spring6'
+  pull_request:
+    branches:
+      - '!compatibility-check-spring6'
 
 jobs:
   test:

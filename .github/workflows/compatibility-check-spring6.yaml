@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-name: Java CI
+name: Compatibility check for Spring 6/Spring Batch 5 support
 
 on:
   push:
-    branches:
-      - '!compatibility-check-spring6'
-  pull_request:
-    branches:
-      - '!compatibility-check-spring6'
+    branches: [master, compatibility-check-spring6]
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   test:
@@ -30,18 +28,24 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        java: [8, 11, 16, 17-ea]
-        distribution: ['adopt']
+        java: [17, 18-ea]
+        distribution: ['zulu']
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.distribution }}
-      - name: Test with Maven
-        run: ./mvnw test -B -D"license.skip=true"
+      - name: Checkout compatibility check brach
+        run: git checkout compatibility-check-spring6
+      - name: Rebase
+        run: git rebase origin/master
+      - name: Test with Spring 6 / Spring Batch 5 support
+        run: ./mvnw -U test -D"license.skip=true" -D"animal.sniffer.skip=true" -D"spring.version=6.0.0-SNAPSHOT" -D"spring-batch.version=5.0.0-SNAPSHOT"
