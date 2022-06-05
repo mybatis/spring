@@ -30,7 +30,6 @@ public class FooServiceImpl implements FooService {
 注意代码中并没有任何的对 `SqlSession` 或 MyBatis 的引用。你也不需要担心创建、打开、关闭 session，MyBatis-Spring 将为你打理好一切。
 
 <a name="register"></a>
-
 ## 注册映射器
 
 注册映射器的方法根据你的配置方法，即经典的 XML 配置或新的 3.0 以上版本的 Java 配置（也就是常说的 `@Configuration`），而有所不同。
