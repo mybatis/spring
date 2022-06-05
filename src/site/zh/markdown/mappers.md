@@ -1,4 +1,5 @@
 <a name="注入映射器"></a>
+
 # 注入映射器
 
 与其在数据访问对象（DAO）中手工编写使用 `SqlSessionDaoSupport` 或 `SqlSessionTemplate` 的代码，还不如让 Mybatis-Spring 为你创建一个线程安全的映射器，这样你就可以直接注入到其它的 bean 中了：
@@ -68,7 +69,6 @@ public class MyBatisConfig {
 ## 发现映射器
 
 不需要一个个地注册你的所有映射器。你可以让 MyBatis-Spring 对类路径进行扫描来发现它们。
-
 
 有几种办法来发现映射器：
 
