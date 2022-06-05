@@ -66,7 +66,6 @@ public class MyBatisConfig {
 ```
 
 <a name="scan"></a>
-
 ## 发现映射器
 
 不需要一个个地注册你的所有映射器。你可以让 MyBatis-Spring 对类路径进行扫描来发现它们。
