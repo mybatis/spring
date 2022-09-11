@@ -54,4 +54,4 @@ jobs:
       - name: Merge to compatibility check brach
         run: git merge --no-edit compatibility-check-spring6-head
       - name: Test with Spring 6 / Spring Batch 5 support
-        run: ./mvnw -U test -D"license.skip=true" -D"animal.sniffer.skip=true" -D"spring.version=6.0.0-SNAPSHOT" -D"spring-batch.version=5.0.0-SNAPSHOT"
+        run: ./mvnw -U test -D"license.skip=true" -D"animal.sniffer.skip=true" -D"enforcer.skip=true" -D"spring.version=6.0.0-SNAPSHOT" -D"spring-batch.version=5.0.0-SNAPSHOT"
