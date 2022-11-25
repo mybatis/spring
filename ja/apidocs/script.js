@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2020, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2021, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -45,50 +45,54 @@ function createElem(doc, tag, path) {
     scriptElement.parentNode.insertBefore(script, scriptElement);
 }
 
-function show(type) {
-    count = 0;
-    for (var key in data) {
-        var row = document.getElementById(key);
-        if ((data[key] &  type) !== 0) {
-            row.style.display = '';
-            row.className = (count++ % 2) ? rowColor : altColor;
-        }
-        else
-            row.style.display = 'none';
+function show(tableId, selected, columns) {
+    if (tableId !== selected) {
+        document.querySelectorAll('div.' + tableId + ':not(.' + selected + ')')
+            .forEach(function(elem) {
+                elem.style.display = 'none';
+            });
     }
-    updateTabs(type);
+    document.querySelectorAll('div.' + selected)
+        .forEach(function(elem, index) {
+            elem.style.display = '';
+            var isEvenRow = index % (columns * 2) < columns;
+            elem.classList.remove(isEvenRow ? oddRowColor : evenRowColor);
+            elem.classList.add(isEvenRow ? evenRowColor : oddRowColor);
+        });
+    updateTabs(tableId, selected);
 }
 
-function updateTabs(type) {
-    var firstRow = document.getElementById(Object.keys(data)[0]);
-    var table = firstRow.closest('table');
-    for (var value in tabs) {
-        var tab = document.getElementById(tabs[value][0]);
-        if (value == type) {
-            tab.className = activeTableTab;
-            tab.innerHTML = tabs[value][1];
-            tab.setAttribute('aria-selected', true);
-            tab.setAttribute('tabindex',0);
-            table.setAttribute('aria-labelledby', tabs[value][0]);
-        }
-        else {
-            tab.className = tableTab;
-            tab.setAttribute('aria-selected', false);
-            tab.setAttribute('tabindex',-1);
-            tab.setAttribute('onclick', "show("+ value + ")");
-            tab.innerHTML = tabs[value][1];
-        }
-    }
+function updateTabs(tableId, selected) {
+    document.querySelector('div#' + tableId +' .summary-table')
+        .setAttribute('aria-labelledby', selected);
+    document.querySelectorAll('button[id^="' + tableId + '"]')
+        .forEach(function(tab, index) {
+            if (selected === tab.id || (tableId === selected && index === 0)) {
+                tab.className = activeTableTab;
+                tab.setAttribute('aria-selected', true);
+                tab.setAttribute('tabindex',0);
+            } else {
+                tab.className = tableTab;
+                tab.setAttribute('aria-selected', false);
+                tab.setAttribute('tabindex',-1);
+            }
+        });
 }
 
 function switchTab(e) {
-    if (e.keyCode == 37 || e.keyCode == 38) {
-        $("[aria-selected=true]").prev().click().focus();
-        e.preventDefault();
-    }
-    if (e.keyCode == 39 || e.keyCode == 40) {
-        $("[aria-selected=true]").next().click().focus();
-        e.preventDefault();
+    var selected = document.querySelector('[aria-selected=true]');
+    if (selected) {
+        if ((e.keyCode === 37 || e.keyCode === 38) && selected.previousSibling) {
+            // left or up arrow key pressed: move focus to previous tab
+            selected.previousSibling.click();
+            selected.previousSibling.focus();
+            e.preventDefault();
+        } else if ((e.keyCode === 39 || e.keyCode === 40) && selected.nextSibling) {
+            // right or down arrow key pressed: move focus to next tab
+            selected.nextSibling.click();
+            selected.nextSibling.focus();
+            e.preventDefault();
+        }
     }
 }
 
@@ -101,3 +105,48 @@ function indexFilesLoaded() {
         && memberSearchIndex
         && tagSearchIndex;
 }
+
+function copySnippet(button) {
+    var textarea = document.createElement("textarea");
+    textarea.style.height = 0;
+    document.body.appendChild(textarea);
+    textarea.value = button.nextElementSibling.innerText;
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    var span = button.firstElementChild;
+    var copied = span.getAttribute("data-copied");
+    if (span.innerHTML !== copied) {
+        var initialLabel = span.innerHTML;
+        span.innerHTML = copied;
+        var parent = button.parentElement;
+        parent.onmouseleave = parent.ontouchend = function() {
+            span.innerHTML = initialLabel;
+        };
+    }
+}
+
+// Workaround for scroll position not being included in browser history (8249133)
+document.addEventListener("DOMContentLoaded", function(e) {
+    var contentDiv = document.querySelector("div.flex-content");
+    window.addEventListener("popstate", function(e) {
+        if (e.state !== null) {
+            contentDiv.scrollTop = e.state;
+        }
+    });
+    window.addEventListener("hashchange", function(e) {
+        history.replaceState(contentDiv.scrollTop, document.title);
+    });
+    contentDiv.addEventListener("scroll", function(e) {
+        var timeoutID;
+        if (!timeoutID) {
+            timeoutID = setTimeout(function() {
+                history.replaceState(contentDiv.scrollTop, document.title);
+                timeoutID = null;
+            }, 100);
+        }
+    });
+    if (!location.hash) {
+        history.replaceState(contentDiv.scrollTop, document.title);
+    }
+});
