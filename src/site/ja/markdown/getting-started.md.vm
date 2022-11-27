@@ -3,7 +3,7 @@
  
 この章では、MyBatis-Spring のインストール・設定手順と、トランザクション処理を含むシンプルなアプリケーションの構築する方法について説明します。
 
-## インストール
+#[[##]]# インストール
 
 MyBatis-Spring を使うためには、 `mybatis-spring-${project.version}.jar` と依存するライブラリをクラスパスに追加するだけで OK です。
 
@@ -17,7 +17,7 @@ Maven をお使いの場合は、 pom.xml に次の dependency を追加して�
 </dependency>
 ```
 
-## クイックセットアップ
+#[[##]]# クイックセットアップ
 
 MyBatis と Spring を組み合わせて使う場合、Spring の Application Context 内に少なくとも `SqlSessionFactory` と一つ以上の Mapper インターフェイスを定義する必要があります。
 

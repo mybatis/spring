@@ -4,7 +4,7 @@
 Este capítulo te mostrará en pocos pasos cómo instalar y configurar MyBatis-Spring y cómo construir
 una pequeña aplicación transaccional.
 
-## Instalación
+#[[##]]# Instalación
 
 Para usar el módulo MyBatis-Spring, debes incluir el fichero `mybatis-spring-${project.version}.jar` y sus dependencias en el classpath.
 
@@ -18,7 +18,7 @@ Si usas Maven simplemente añade la siguiente dependencia a tu pom.xml:
 </dependency>
 ```
 
-## Configuración rápida
+#[[##]]# Configuración rápida
 
 Para usar MyBatis con Spring necesitas definir al menos dos cosas en tu contexto Spring: una `SqlSessionFactory` y al menos un mapper interface.
 
