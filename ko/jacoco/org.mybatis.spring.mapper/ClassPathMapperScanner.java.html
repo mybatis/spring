@@ -1,61 +1,73 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassPathMapperScanner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">ClassPathMapperScanner.java</span></div><h1>ClassPathMapperScanner.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2017 the original author or authors.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassPathMapperScanner.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">ClassPathMapperScanner.java</span></div><h1>ClassPathMapperScanner.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2022 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *    https://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.spring.mapper;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.aop.scope.ScopedProxyFactoryBean;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.core.NativeDetector;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.Set;
-
 /**
- * A {@link ClassPathBeanDefinitionScanner} that registers Mappers by
- * {@code basePackage}, {@code annotationClass}, or {@code markerInterface}. If
- * an {@code annotationClass} and/or {@code markerInterface} is specified, only
- * the specified types will be searched (searching for all interfaces will be
- * disabled).
+ * A {@link ClassPathBeanDefinitionScanner} that registers Mappers by {@code basePackage}, {@code annotationClass}, or
+ * {@code markerInterface}. If an {@code annotationClass} and/or {@code markerInterface} is specified, only the
+ * specified types will be searched (searching for all interfaces will be disabled).
  * &lt;p&gt;
- * This functionality was previously a private class of
- * {@link MapperScannerConfigurer}, but was broken out in version 1.2.0.
+ * This functionality was previously a private class of {@link MapperScannerConfigurer}, but was broken out in version
+ * 1.2.0.
  *
  * @author Hunter Presnall
  * @author Eduardo Macarron
- * 
+ *
  * @see MapperFactoryBean
+ *
  * @since 1.2.0
  */
 public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
-<span class="fc" id="L56">  private static final Logger LOGGER = LoggerFactory.getLogger(ClassPathMapperScanner.class);</span>
+<span class="fc" id="L61">  private static final Logger LOGGER = LoggerFactory.getLogger(ClassPathMapperScanner.class);</span>
 
-<span class="fc" id="L58">  private boolean addToConfig = true;</span>
+  // Copy of FactoryBean#OBJECT_TYPE_ATTRIBUTE which was added in Spring 5.2
+  static final String FACTORY_BEAN_OBJECT_TYPE = &quot;factoryBeanObjectType&quot;;
+
+<span class="fc" id="L66">  private boolean addToConfig = true;</span>
+
+  private boolean lazyInitialization;
+
+<span class="fc" id="L70">  private boolean printWarnLogIfNotFoundMappers = true;</span>
 
   private SqlSessionFactory sqlSessionFactory;
 
@@ -69,151 +81,259 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
   private Class&lt;?&gt; markerInterface;
 
-<span class="fc" id="L72">  private MapperFactoryBean&lt;?&gt; mapperFactoryBean = new MapperFactoryBean&lt;&gt;();</span>
+<span class="fc" id="L84">  private Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass = MapperFactoryBean.class;</span>
+
+  private String defaultScope;
 
   public ClassPathMapperScanner(BeanDefinitionRegistry registry) {
-<span class="fc" id="L75">    super(registry, false);</span>
-<span class="fc" id="L76">  }</span>
-
-  public void setAddToConfig(boolean addToConfig) {
-<span class="fc" id="L79">    this.addToConfig = addToConfig;</span>
-<span class="fc" id="L80">  }</span>
-
-  public void setAnnotationClass(Class&lt;? extends Annotation&gt; annotationClass) {
-<span class="fc" id="L83">    this.annotationClass = annotationClass;</span>
-<span class="fc" id="L84">  }</span>
-
-  public void setMarkerInterface(Class&lt;?&gt; markerInterface) {
-<span class="fc" id="L87">    this.markerInterface = markerInterface;</span>
-<span class="fc" id="L88">  }</span>
-
-  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-<span class="fc" id="L91">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="fc" id="L89">    super(registry, false);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">    setIncludeAnnotationConfig(!NativeDetector.inNativeImage());</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">    setPrintWarnLogIfNotFoundMappers(!NativeDetector.inNativeImage());</span>
 <span class="fc" id="L92">  }</span>
 
-  public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-<span class="fc" id="L95">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
+  public void setAddToConfig(boolean addToConfig) {
+<span class="fc" id="L95">    this.addToConfig = addToConfig;</span>
 <span class="fc" id="L96">  }</span>
 
-  public void setSqlSessionTemplateBeanName(String sqlSessionTemplateBeanName) {
-<span class="fc" id="L99">    this.sqlSessionTemplateBeanName = sqlSessionTemplateBeanName;</span>
+  public void setAnnotationClass(Class&lt;? extends Annotation&gt; annotationClass) {
+<span class="fc" id="L99">    this.annotationClass = annotationClass;</span>
 <span class="fc" id="L100">  }</span>
 
-  public void setSqlSessionFactoryBeanName(String sqlSessionFactoryBeanName) {
-<span class="fc" id="L103">    this.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;</span>
-<span class="fc" id="L104">  }</span>
-
-  public void setMapperFactoryBean(MapperFactoryBean&lt;?&gt; mapperFactoryBean) {
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">    this.mapperFactoryBean = mapperFactoryBean != null ? mapperFactoryBean : new MapperFactoryBean&lt;&gt;();</span>
-<span class="fc" id="L108">  }</span>
-
+  /**
+   * Set whether enable lazy initialization for mapper bean.
+   * &lt;p&gt;
+   * Default is {@code false}.
+   * &lt;/p&gt;
+   *
+   * @param lazyInitialization
+   *          Set the @{code true} to enable
+   *
+   * @since 2.0.2
+   */
+  public void setLazyInitialization(boolean lazyInitialization) {
+<span class="fc" id="L114">    this.lazyInitialization = lazyInitialization;</span>
+<span class="fc" id="L115">  }</span>
 
   /**
-   * Configures parent scanner to search for the right interfaces. It can search
-   * for all interfaces or just for those that extends a markerInterface or/and
-   * those annotated with the annotationClass
+   * Set whether print warning log if not found mappers that matches conditions.
+   * &lt;p&gt;
+   * Default is {@code true}. But {@code false} when running in native image.
+   * &lt;/p&gt;
+   *
+   * @param printWarnLogIfNotFoundMappers
+   *          Set the @{code true} to print
+   *
+   * @since 3.0.1
+   */
+  public void setPrintWarnLogIfNotFoundMappers(boolean printWarnLogIfNotFoundMappers) {
+<span class="fc" id="L129">    this.printWarnLogIfNotFoundMappers = printWarnLogIfNotFoundMappers;</span>
+<span class="fc" id="L130">  }</span>
+
+  public void setMarkerInterface(Class&lt;?&gt; markerInterface) {
+<span class="fc" id="L133">    this.markerInterface = markerInterface;</span>
+<span class="fc" id="L134">  }</span>
+
+  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+<span class="fc" id="L137">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="fc" id="L138">  }</span>
+
+  public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+<span class="fc" id="L141">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
+<span class="fc" id="L142">  }</span>
+
+  public void setSqlSessionTemplateBeanName(String sqlSessionTemplateBeanName) {
+<span class="fc" id="L145">    this.sqlSessionTemplateBeanName = sqlSessionTemplateBeanName;</span>
+<span class="fc" id="L146">  }</span>
+
+  public void setSqlSessionFactoryBeanName(String sqlSessionFactoryBeanName) {
+<span class="fc" id="L149">    this.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;</span>
+<span class="fc" id="L150">  }</span>
+
+  /**
+   * @deprecated Since 2.0.1, Please use the {@link #setMapperFactoryBeanClass(Class)}.
+   */
+  @Deprecated
+  public void setMapperFactoryBean(MapperFactoryBean&lt;?&gt; mapperFactoryBean) {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">    this.mapperFactoryBeanClass = mapperFactoryBean == null ? MapperFactoryBean.class : mapperFactoryBean.getClass();</span>
+<span class="nc" id="L158">  }</span>
+
+  /**
+   * Set the {@code MapperFactoryBean} class.
+   *
+   * @param mapperFactoryBeanClass
+   *          the {@code MapperFactoryBean} class
+   *
+   * @since 2.0.1
+   */
+  public void setMapperFactoryBeanClass(Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass) {
+<span class="fc bfc" id="L169" title="All 2 branches covered.">    this.mapperFactoryBeanClass = mapperFactoryBeanClass == null ? MapperFactoryBean.class : mapperFactoryBeanClass;</span>
+<span class="fc" id="L170">  }</span>
+
+  /**
+   * Set the default scope of scanned mappers.
+   * &lt;p&gt;
+   * Default is {@code null} (equiv to singleton).
+   * &lt;/p&gt;
+   *
+   * @param defaultScope
+   *          the scope
+   *
+   * @since 2.0.6
+   */
+  public void setDefaultScope(String defaultScope) {
+<span class="fc" id="L184">    this.defaultScope = defaultScope;</span>
+<span class="fc" id="L185">  }</span>
+
+  /**
+   * Configures parent scanner to search for the right interfaces. It can search for all interfaces or just for those
+   * that extends a markerInterface or/and those annotated with the annotationClass
    */
   public void registerFilters() {
-<span class="fc" id="L117">    boolean acceptAllInterfaces = true;</span>
+<span class="fc" id="L192">    boolean acceptAllInterfaces = true;</span>
 
     // if specified, use the given annotation and / or marker interface
-<span class="fc bfc" id="L120" title="All 2 branches covered.">    if (this.annotationClass != null) {</span>
-<span class="fc" id="L121">      addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));</span>
-<span class="fc" id="L122">      acceptAllInterfaces = false;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">    if (this.annotationClass != null) {</span>
+<span class="fc" id="L196">      addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));</span>
+<span class="fc" id="L197">      acceptAllInterfaces = false;</span>
     }
 
     // override AssignableTypeFilter to ignore matches on the actual marker interface
-<span class="fc bfc" id="L126" title="All 2 branches covered.">    if (this.markerInterface != null) {</span>
-<span class="fc" id="L127">      addIncludeFilter(new AssignableTypeFilter(this.markerInterface) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">    if (this.markerInterface != null) {</span>
+<span class="fc" id="L202">      addIncludeFilter(new AssignableTypeFilter(this.markerInterface) {</span>
         @Override
         protected boolean matchClassName(String className) {
-<span class="fc" id="L130">          return false;</span>
+<span class="fc" id="L205">          return false;</span>
         }
       });
-<span class="fc" id="L133">      acceptAllInterfaces = false;</span>
+<span class="fc" id="L208">      acceptAllInterfaces = false;</span>
     }
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">    if (acceptAllInterfaces) {</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">    if (acceptAllInterfaces) {</span>
       // default include filter that accepts all classes
-<span class="fc" id="L138">      addIncludeFilter((metadataReader, metadataReaderFactory) -&gt; true);</span>
+<span class="fc" id="L213">      addIncludeFilter((metadataReader, metadataReaderFactory) -&gt; true);</span>
     }
 
     // exclude package-info.java
-<span class="fc" id="L142">    addExcludeFilter((metadataReader, metadataReaderFactory) -&gt; {</span>
-<span class="fc" id="L143">      String className = metadataReader.getClassMetadata().getClassName();</span>
-<span class="fc" id="L144">      return className.endsWith(&quot;package-info&quot;);</span>
+<span class="fc" id="L217">    addExcludeFilter((metadataReader, metadataReaderFactory) -&gt; {</span>
+<span class="fc" id="L218">      String className = metadataReader.getClassMetadata().getClassName();</span>
+<span class="fc" id="L219">      return className.endsWith(&quot;package-info&quot;);</span>
     });
-<span class="fc" id="L146">  }</span>
+<span class="fc" id="L221">  }</span>
 
   /**
-   * Calls the parent search that will search and register all the candidates.
-   * Then the registered objects are post processed to set them as
-   * MapperFactoryBeans
+   * Calls the parent search that will search and register all the candidates. Then the registered objects are post
+   * processed to set them as MapperFactoryBeans
    */
   @Override
   public Set&lt;BeanDefinitionHolder&gt; doScan(String... basePackages) {
-<span class="fc" id="L155">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = super.doScan(basePackages);</span>
+<span class="fc" id="L229">    Set&lt;BeanDefinitionHolder&gt; beanDefinitions = super.doScan(basePackages);</span>
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">    if (beanDefinitions.isEmpty()) {</span>
-<span class="nc" id="L158">      LOGGER.warn(() -&gt; &quot;No MyBatis mapper was found in '&quot; + Arrays.toString(basePackages) + &quot;' package. Please check your configuration.&quot;);</span>
-<span class="nc" id="L159">    } else {</span>
-<span class="fc" id="L160">      processBeanDefinitions(beanDefinitions);</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">    if (beanDefinitions.isEmpty()) {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">      if (printWarnLogIfNotFoundMappers) {</span>
+<span class="nc" id="L233">        LOGGER.warn(() -&gt; &quot;No MyBatis mapper was found in '&quot; + Arrays.toString(basePackages)</span>
+            + &quot;' package. Please check your configuration.&quot;);
+      }
+    } else {
+<span class="fc" id="L237">      processBeanDefinitions(beanDefinitions);</span>
     }
 
-<span class="fc" id="L163">    return beanDefinitions;</span>
+<span class="fc" id="L240">    return beanDefinitions;</span>
   }
 
   private void processBeanDefinitions(Set&lt;BeanDefinitionHolder&gt; beanDefinitions) {
-    GenericBeanDefinition definition;
-<span class="fc bfc" id="L168" title="All 2 branches covered.">    for (BeanDefinitionHolder holder : beanDefinitions) {</span>
-<span class="fc" id="L169">      definition = (GenericBeanDefinition) holder.getBeanDefinition();</span>
-<span class="fc" id="L170">      String beanClassName = definition.getBeanClassName();</span>
-<span class="pc" id="L171">      LOGGER.debug(() -&gt; &quot;Creating MapperFactoryBean with name '&quot; + holder.getBeanName()</span>
-<span class="nc" id="L172">          + &quot;' and '&quot; + beanClassName + &quot;' mapperInterface&quot;);</span>
+    AbstractBeanDefinition definition;
+<span class="fc" id="L245">    BeanDefinitionRegistry registry = getRegistry();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">    for (BeanDefinitionHolder holder : beanDefinitions) {</span>
+<span class="fc" id="L247">      definition = (AbstractBeanDefinition) holder.getBeanDefinition();</span>
+<span class="fc" id="L248">      boolean scopedProxy = false;</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">      if (ScopedProxyFactoryBean.class.getName().equals(definition.getBeanClassName())) {</span>
+<span class="fc" id="L250">        definition = (AbstractBeanDefinition) Optional</span>
+<span class="fc" id="L251">            .ofNullable(((RootBeanDefinition) definition).getDecoratedDefinition())</span>
+<span class="pc" id="L252">            .map(BeanDefinitionHolder::getBeanDefinition).orElseThrow(() -&gt; new IllegalStateException(</span>
+                &quot;The target bean definition of scoped proxy bean not found. Root bean definition[&quot; + holder + &quot;]&quot;));
+<span class="fc" id="L254">        scopedProxy = true;</span>
+      }
+<span class="fc" id="L256">      String beanClassName = definition.getBeanClassName();</span>
+<span class="pc" id="L257">      LOGGER.debug(() -&gt; &quot;Creating MapperFactoryBean with name '&quot; + holder.getBeanName() + &quot;' and '&quot; + beanClassName</span>
+          + &quot;' mapperInterface&quot;);
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
-<span class="fc" id="L176">      definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59</span>
-<span class="fc" id="L177">      definition.setBeanClass(this.mapperFactoryBean.getClass());</span>
+<span class="fc" id="L262">      definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59</span>
+      try {
+        // for spring-native
+<span class="fc" id="L265">        definition.getPropertyValues().add(&quot;mapperInterface&quot;, Resources.classForName(beanClassName));</span>
+<span class="nc" id="L266">      } catch (ClassNotFoundException ignore) {</span>
+        // ignore
+<span class="fc" id="L268">      }</span>
 
-<span class="fc" id="L179">      definition.getPropertyValues().add(&quot;addToConfig&quot;, this.addToConfig);</span>
+<span class="fc" id="L270">      definition.setBeanClass(this.mapperFactoryBeanClass);</span>
 
-<span class="fc" id="L181">      boolean explicitFactoryUsed = false;</span>
-<span class="fc bfc" id="L182" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {</span>
-<span class="fc" id="L183">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, new RuntimeBeanReference(this.sqlSessionFactoryBeanName));</span>
-<span class="fc" id="L184">        explicitFactoryUsed = true;</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">      } else if (this.sqlSessionFactory != null) {</span>
-<span class="nc" id="L186">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, this.sqlSessionFactory);</span>
-<span class="nc" id="L187">        explicitFactoryUsed = true;</span>
+<span class="fc" id="L272">      definition.getPropertyValues().add(&quot;addToConfig&quot;, this.addToConfig);</span>
+
+      // Attribute for MockitoPostProcessor
+      // https://github.com/mybatis/spring-boot-starter/issues/475
+<span class="fc" id="L276">      definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClassName);</span>
+
+<span class="fc" id="L278">      boolean explicitFactoryUsed = false;</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {</span>
+<span class="fc" id="L280">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;,</span>
+            new RuntimeBeanReference(this.sqlSessionFactoryBeanName));
+<span class="fc" id="L282">        explicitFactoryUsed = true;</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">      } else if (this.sqlSessionFactory != null) {</span>
+<span class="nc" id="L284">        definition.getPropertyValues().add(&quot;sqlSessionFactory&quot;, this.sqlSessionFactory);</span>
+<span class="nc" id="L285">        explicitFactoryUsed = true;</span>
       }
 
-<span class="fc bfc" id="L190" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {</span>
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        if (explicitFactoryUsed) {</span>
-<span class="nc" id="L192">          LOGGER.warn(() -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">      if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {</span>
+<span class="pc bpc" id="L289" title="1 of 2 branches missed.">        if (explicitFactoryUsed) {</span>
+<span class="nc" id="L290">          LOGGER.warn(</span>
+<span class="nc" id="L291">              () -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
         }
-<span class="fc" id="L194">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, new RuntimeBeanReference(this.sqlSessionTemplateBeanName));</span>
-<span class="fc" id="L195">        explicitFactoryUsed = true;</span>
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">      } else if (this.sqlSessionTemplate != null) {</span>
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (explicitFactoryUsed) {</span>
-<span class="nc" id="L198">          LOGGER.warn(() -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
+<span class="fc" id="L293">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;,</span>
+            new RuntimeBeanReference(this.sqlSessionTemplateBeanName));
+<span class="fc" id="L295">        explicitFactoryUsed = true;</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">      } else if (this.sqlSessionTemplate != null) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (explicitFactoryUsed) {</span>
+<span class="nc" id="L298">          LOGGER.warn(</span>
+<span class="nc" id="L299">              () -&gt; &quot;Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.&quot;);</span>
         }
-<span class="nc" id="L200">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, this.sqlSessionTemplate);</span>
-<span class="nc" id="L201">        explicitFactoryUsed = true;</span>
+<span class="nc" id="L301">        definition.getPropertyValues().add(&quot;sqlSessionTemplate&quot;, this.sqlSessionTemplate);</span>
+<span class="nc" id="L302">        explicitFactoryUsed = true;</span>
       }
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">      if (!explicitFactoryUsed) {</span>
-<span class="pc" id="L205">        LOGGER.debug(() -&gt; &quot;Enabling autowire by type for MapperFactoryBean with name '&quot; + holder.getBeanName() + &quot;'.&quot;);</span>
-<span class="fc" id="L206">        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">      if (!explicitFactoryUsed) {</span>
+<span class="pc" id="L306">        LOGGER.debug(() -&gt; &quot;Enabling autowire by type for MapperFactoryBean with name '&quot; + holder.getBeanName() + &quot;'.&quot;);</span>
+<span class="fc" id="L307">        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);</span>
       }
-    }
-<span class="fc" id="L209">  }</span>
+
+<span class="fc" id="L310">      definition.setLazyInit(lazyInitialization);</span>
+
+<span class="fc bfc" id="L312" title="All 2 branches covered.">      if (scopedProxy) {</span>
+<span class="fc" id="L313">        continue;</span>
+      }
+
+<span class="fc bfc" id="L316" title="All 4 branches covered.">      if (ConfigurableBeanFactory.SCOPE_SINGLETON.equals(definition.getScope()) &amp;&amp; defaultScope != null) {</span>
+<span class="fc" id="L317">        definition.setScope(defaultScope);</span>
+      }
+
+<span class="fc bfc" id="L320" title="All 2 branches covered.">      if (!definition.isSingleton()) {</span>
+<span class="fc" id="L321">        BeanDefinitionHolder proxyHolder = ScopedProxyUtils.createScopedProxy(holder, registry, true);</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        if (registry.containsBeanDefinition(proxyHolder.getBeanName())) {</span>
+<span class="fc" id="L323">          registry.removeBeanDefinition(proxyHolder.getBeanName());</span>
+        }
+<span class="fc" id="L325">        registry.registerBeanDefinition(proxyHolder.getBeanName(), proxyHolder.getBeanDefinition());</span>
+      }
+
+<span class="fc" id="L328">    }</span>
+<span class="fc" id="L329">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-<span class="pc bpc" id="L216" title="1 of 4 branches missed.">    return beanDefinition.getMetadata().isInterface() &amp;&amp; beanDefinition.getMetadata().isIndependent();</span>
+<span class="pc bpc" id="L336" title="1 of 4 branches missed.">    return beanDefinition.getMetadata().isInterface() &amp;&amp; beanDefinition.getMetadata().isIndependent();</span>
   }
 
   /**
@@ -221,15 +341,14 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    */
   @Override
   protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) {
-<span class="fc bfc" id="L224" title="All 2 branches covered.">    if (super.checkCandidate(beanName, beanDefinition)) {</span>
-<span class="fc" id="L225">      return true;</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">    if (super.checkCandidate(beanName, beanDefinition)) {</span>
+<span class="fc" id="L345">      return true;</span>
     } else {
-<span class="fc" id="L227">      LOGGER.warn(() -&gt; &quot;Skipping MapperFactoryBean with name '&quot; + beanName</span>
-<span class="fc" id="L228">          + &quot;' and '&quot; + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot;</span>
-<span class="fc" id="L229">          + &quot;. Bean already defined with the same name!&quot;);</span>
-<span class="fc" id="L230">      return false;</span>
+<span class="fc" id="L347">      LOGGER.warn(() -&gt; &quot;Skipping MapperFactoryBean with name '&quot; + beanName + &quot;' and '&quot;</span>
+<span class="fc" id="L348">          + beanDefinition.getBeanClassName() + &quot;' mapperInterface&quot; + &quot;. Bean already defined with the same name!&quot;);</span>
+<span class="fc" id="L349">      return false;</span>
     }
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

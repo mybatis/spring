@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionUtils.java</span></div><h1>SqlSessionUtils.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2018 the original author or authors.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionUtils.java</span></div><h1>SqlSessionUtils.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2022 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *    https://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.spring;
 
@@ -33,10 +33,10 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
- * Handles MyBatis SqlSession life cycle. It can register and get SqlSessions from
- * Spring {@code TransactionSynchronizationManager}. Also works if no transaction is active.
+ * Handles MyBatis SqlSession life cycle. It can register and get SqlSessions from Spring
+ * {@code TransactionSynchronizationManager}. Also works if no transaction is active.
  *
- * @author Hunter Presnall 
+ * @author Hunter Presnall
  * @author Eduardo Macarron
  */
 public final class SqlSessionUtils {
@@ -45,7 +45,7 @@ public final class SqlSessionUtils {
 
   private static final String NO_EXECUTOR_TYPE_SPECIFIED = &quot;No ExecutorType specified&quot;;
   private static final String NO_SQL_SESSION_FACTORY_SPECIFIED = &quot;No SqlSessionFactory specified&quot;;
-<span class="fc" id="L48">  private static final String NO_SQL_SESSION_SPECIFIED = &quot;No SqlSession specified&quot;;</span>
+  private static final String NO_SQL_SESSION_SPECIFIED = &quot;No SqlSession specified&quot;;
 
   /**
    * This class can't be instantiated, exposes static utility methods only.
@@ -55,151 +55,174 @@ public final class SqlSessionUtils {
   }
 
   /**
-   * Creates a new MyBatis {@code SqlSession} from the {@code SqlSessionFactory}
-   * provided as a parameter and using its {@code DataSource} and {@code ExecutorType}
+   * Creates a new MyBatis {@code SqlSession} from the {@code SqlSessionFactory} provided as a parameter and using its
+   * {@code DataSource} and {@code ExecutorType}
    *
-   * @param sessionFactory a MyBatis {@code SqlSessionFactory} to create new sessions
+   * @param sessionFactory
+   *          a MyBatis {@code SqlSessionFactory} to create new sessions
+   *
    * @return a MyBatis {@code SqlSession}
-   * @throws TransientDataAccessResourceException if a transaction is active and the
-   *             {@code SqlSessionFactory} is not using a {@code SpringManagedTransactionFactory}
+   *
+   * @throws TransientDataAccessResourceException
+   *           if a transaction is active and the {@code SqlSessionFactory} is not using a
+   *           {@code SpringManagedTransactionFactory}
    */
   public static SqlSession getSqlSession(SqlSessionFactory sessionFactory) {
-<span class="fc" id="L67">    ExecutorType executorType = sessionFactory.getConfiguration().getDefaultExecutorType();</span>
-<span class="fc" id="L68">    return getSqlSession(sessionFactory, executorType, null);</span>
+<span class="fc" id="L71">    ExecutorType executorType = sessionFactory.getConfiguration().getDefaultExecutorType();</span>
+<span class="fc" id="L72">    return getSqlSession(sessionFactory, executorType, null);</span>
   }
 
   /**
-   * Gets an SqlSession from Spring Transaction Manager or creates a new one if needed.
-   * Tries to get a SqlSession out of current transaction. If there is not any, it creates a new one.
-   * Then, it synchronizes the SqlSession with the transaction if Spring TX is active and
-   * &lt;code&gt;SpringManagedTransactionFactory&lt;/code&gt; is configured as a transaction manager.
+   * Gets an SqlSession from Spring Transaction Manager or creates a new one if needed. Tries to get a SqlSession out of
+   * current transaction. If there is not any, it creates a new one. Then, it synchronizes the SqlSession with the
+   * transaction if Spring TX is active and &lt;code&gt;SpringManagedTransactionFactory&lt;/code&gt; is configured as a transaction
+   * manager.
    *
-   * @param sessionFactory a MyBatis {@code SqlSessionFactory} to create new sessions
-   * @param executorType The executor type of the SqlSession to create
-   * @param exceptionTranslator Optional. Translates SqlSession.commit() exceptions to Spring exceptions.
+   * @param sessionFactory
+   *          a MyBatis {@code SqlSessionFactory} to create new sessions
+   * @param executorType
+   *          The executor type of the SqlSession to create
+   * @param exceptionTranslator
+   *          Optional. Translates SqlSession.commit() exceptions to Spring exceptions.
+   *
    * @return an SqlSession managed by Spring Transaction Manager
-   * @throws TransientDataAccessResourceException if a transaction is active and the
-   *             {@code SqlSessionFactory} is not using a {@code SpringManagedTransactionFactory}
+   *
+   * @throws TransientDataAccessResourceException
+   *           if a transaction is active and the {@code SqlSessionFactory} is not using a
+   *           {@code SpringManagedTransactionFactory}
+   *
    * @see SpringManagedTransactionFactory
    */
-  public static SqlSession getSqlSession(SqlSessionFactory sessionFactory, ExecutorType executorType, PersistenceExceptionTranslator exceptionTranslator) {
+  public static SqlSession getSqlSession(SqlSessionFactory sessionFactory, ExecutorType executorType,
+      PersistenceExceptionTranslator exceptionTranslator) {
 
-<span class="fc" id="L87">    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span>
-<span class="fc" id="L88">    notNull(executorType, NO_EXECUTOR_TYPE_SPECIFIED);</span>
+<span class="fc" id="L99">    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span>
+<span class="fc" id="L100">    notNull(executorType, NO_EXECUTOR_TYPE_SPECIFIED);</span>
 
-<span class="fc" id="L90">    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span>
+<span class="fc" id="L102">    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span>
 
-<span class="fc" id="L92">    SqlSession session = sessionHolder(executorType, holder);</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">    if (session != null) {</span>
-<span class="fc" id="L94">      return session;</span>
+<span class="fc" id="L104">    SqlSession session = sessionHolder(executorType, holder);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    if (session != null) {</span>
+<span class="fc" id="L106">      return session;</span>
     }
 
-<span class="pc" id="L97">    LOGGER.debug(() -&gt; &quot;Creating a new SqlSession&quot;);</span>
-<span class="fc" id="L98">    session = sessionFactory.openSession(executorType);</span>
+<span class="pc" id="L109">    LOGGER.debug(() -&gt; &quot;Creating a new SqlSession&quot;);</span>
+<span class="fc" id="L110">    session = sessionFactory.openSession(executorType);</span>
 
-<span class="fc" id="L100">    registerSessionHolder(sessionFactory, executorType, exceptionTranslator, session);</span>
+<span class="fc" id="L112">    registerSessionHolder(sessionFactory, executorType, exceptionTranslator, session);</span>
 
-<span class="fc" id="L102">    return session;</span>
+<span class="fc" id="L114">    return session;</span>
   }
 
   /**
    * Register session holder if synchronization is active (i.e. a Spring TX is active).
+   * &lt;p&gt;
+   * Note: The DataSource used by the Environment should be synchronized with the transaction either through
+   * DataSourceTxMgr or another tx synchronization. Further assume that if an exception is thrown, whatever started the
+   * transaction will handle closing / rolling back the Connection associated with the SqlSession.
    *
-   * Note: The DataSource used by the Environment should be synchronized with the
-   * transaction either through DataSourceTxMgr or another tx synchronization.
-   * Further assume that if an exception is thrown, whatever started the transaction will
-   * handle closing / rolling back the Connection associated with the SqlSession.
-   * 
-   * @param sessionFactory sqlSessionFactory used for registration.
-   * @param executorType executorType used for registration.
-   * @param exceptionTranslator persistenceExceptionTranslator used for registration.
-   * @param session sqlSession used for registration.
+   * @param sessionFactory
+   *          sqlSessionFactory used for registration.
+   * @param executorType
+   *          executorType used for registration.
+   * @param exceptionTranslator
+   *          persistenceExceptionTranslator used for registration.
+   * @param session
+   *          sqlSession used for registration.
    */
   private static void registerSessionHolder(SqlSessionFactory sessionFactory, ExecutorType executorType,
       PersistenceExceptionTranslator exceptionTranslator, SqlSession session) {
     SqlSessionHolder holder;
-<span class="fc bfc" id="L121" title="All 2 branches covered.">    if (TransactionSynchronizationManager.isSynchronizationActive()) {</span>
-<span class="fc" id="L122">      Environment environment = sessionFactory.getConfiguration().getEnvironment();</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">    if (TransactionSynchronizationManager.isSynchronizationActive()) {</span>
+<span class="fc" id="L137">      Environment environment = sessionFactory.getConfiguration().getEnvironment();</span>
 
-<span class="fc bfc" id="L124" title="All 2 branches covered.">      if (environment.getTransactionFactory() instanceof SpringManagedTransactionFactory) {</span>
-<span class="pc" id="L125">        LOGGER.debug(() -&gt; &quot;Registering transaction synchronization for SqlSession [&quot; + session + &quot;]&quot;);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">      if (environment.getTransactionFactory() instanceof SpringManagedTransactionFactory) {</span>
+<span class="pc" id="L140">        LOGGER.debug(() -&gt; &quot;Registering transaction synchronization for SqlSession [&quot; + session + &quot;]&quot;);</span>
 
-<span class="fc" id="L127">        holder = new SqlSessionHolder(session, executorType, exceptionTranslator);</span>
-<span class="fc" id="L128">        TransactionSynchronizationManager.bindResource(sessionFactory, holder);</span>
-<span class="fc" id="L129">        TransactionSynchronizationManager.registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));</span>
-<span class="fc" id="L130">        holder.setSynchronizedWithTransaction(true);</span>
-<span class="fc" id="L131">        holder.requested();</span>
-<span class="fc" id="L132">      } else {</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {</span>
-<span class="pc" id="L134">          LOGGER.debug(() -&gt; &quot;SqlSession [&quot; + session + &quot;] was not registered for synchronization because DataSource is not transactional&quot;);</span>
-<span class="fc" id="L135">        } else {</span>
-<span class="fc" id="L136">          throw new TransientDataAccessResourceException(</span>
-<span class="fc" id="L137">              &quot;SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization&quot;);</span>
+<span class="fc" id="L142">        holder = new SqlSessionHolder(session, executorType, exceptionTranslator);</span>
+<span class="fc" id="L143">        TransactionSynchronizationManager.bindResource(sessionFactory, holder);</span>
+<span class="fc" id="L144">        TransactionSynchronizationManager</span>
+<span class="fc" id="L145">            .registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));</span>
+<span class="fc" id="L146">        holder.setSynchronizedWithTransaction(true);</span>
+<span class="fc" id="L147">        holder.requested();</span>
+      } else {
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {</span>
+<span class="pc" id="L150">          LOGGER.debug(() -&gt; &quot;SqlSession [&quot; + session</span>
+              + &quot;] was not registered for synchronization because DataSource is not transactional&quot;);
+        } else {
+<span class="fc" id="L153">          throw new TransientDataAccessResourceException(</span>
+              &quot;SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization&quot;);
         }
       }
-    } else {
-<span class="pc" id="L141">      LOGGER.debug(() -&gt; &quot;SqlSession [&quot; + session + &quot;] was not registered for synchronization because synchronization is not active&quot;);</span>
+<span class="fc" id="L157">    } else {</span>
+<span class="pc" id="L158">      LOGGER.debug(() -&gt; &quot;SqlSession [&quot; + session</span>
+          + &quot;] was not registered for synchronization because synchronization is not active&quot;);
     }
 
-<span class="fc" id="L144">}</span>
+<span class="fc" id="L162">  }</span>
 
   private static SqlSession sessionHolder(ExecutorType executorType, SqlSessionHolder holder) {
-<span class="fc" id="L147">    SqlSession session = null;</span>
-<span class="pc bpc" id="L148" title="1 of 4 branches missed.">    if (holder != null &amp;&amp; holder.isSynchronizedWithTransaction()) {</span>
-<span class="fc bfc" id="L149" title="All 2 branches covered.">      if (holder.getExecutorType() != executorType) {</span>
-<span class="fc" id="L150">        throw new TransientDataAccessResourceException(&quot;Cannot change the ExecutorType when there is an existing transaction&quot;);</span>
+<span class="fc" id="L165">    SqlSession session = null;</span>
+<span class="pc bpc" id="L166" title="1 of 4 branches missed.">    if (holder != null &amp;&amp; holder.isSynchronizedWithTransaction()) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">      if (holder.getExecutorType() != executorType) {</span>
+<span class="fc" id="L168">        throw new TransientDataAccessResourceException(</span>
+            &quot;Cannot change the ExecutorType when there is an existing transaction&quot;);
       }
 
-<span class="fc" id="L153">      holder.requested();</span>
+<span class="fc" id="L172">      holder.requested();</span>
 
-<span class="pc" id="L155">      LOGGER.debug(() -&gt; &quot;Fetched SqlSession [&quot; + holder.getSqlSession() + &quot;] from current transaction&quot;);</span>
-<span class="fc" id="L156">      session = holder.getSqlSession();</span>
+<span class="pc" id="L174">      LOGGER.debug(() -&gt; &quot;Fetched SqlSession [&quot; + holder.getSqlSession() + &quot;] from current transaction&quot;);</span>
+<span class="fc" id="L175">      session = holder.getSqlSession();</span>
     }
-<span class="fc" id="L158">    return session;</span>
+<span class="fc" id="L177">    return session;</span>
   }
 
   /**
    * Checks if {@code SqlSession} passed as an argument is managed by Spring {@code TransactionSynchronizationManager}
-   * If it is not, it closes it, otherwise it just updates the reference counter and
-   * lets Spring call the close callback when the managed transaction ends
+   * If it is not, it closes it, otherwise it just updates the reference counter and lets Spring call the close callback
+   * when the managed transaction ends
    *
-   * @param session a target SqlSession
-   * @param sessionFactory a factory of SqlSession
+   * @param session
+   *          a target SqlSession
+   * @param sessionFactory
+   *          a factory of SqlSession
    */
   public static void closeSqlSession(SqlSession session, SqlSessionFactory sessionFactory) {
-<span class="fc" id="L170">    notNull(session, NO_SQL_SESSION_SPECIFIED);</span>
-<span class="fc" id="L171">    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span>
-
-<span class="fc" id="L173">    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span>
-<span class="pc bpc" id="L174" title="1 of 4 branches missed.">    if ((holder != null) &amp;&amp; (holder.getSqlSession() == session)) {</span>
-<span class="pc" id="L175">      LOGGER.debug(() -&gt; &quot;Releasing transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
-<span class="fc" id="L176">      holder.released();</span>
-<span class="fc" id="L177">    } else {</span>
-<span class="pc" id="L178">      LOGGER.debug(() -&gt; &quot;Closing non transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
-<span class="fc" id="L179">      session.close();</span>
-    }
-<span class="fc" id="L181">  }</span>
-
-  /**
-   * Returns if the {@code SqlSession} passed as an argument is being managed by Spring
-   *
-   * @param session a MyBatis SqlSession to check
-   * @param sessionFactory the SqlSessionFactory which the SqlSession was built with
-   * @return true if session is transactional, otherwise false
-   */
-  public static boolean isSqlSessionTransactional(SqlSession session, SqlSessionFactory sessionFactory) {
 <span class="fc" id="L191">    notNull(session, NO_SQL_SESSION_SPECIFIED);</span>
 <span class="fc" id="L192">    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span>
 
 <span class="fc" id="L194">    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span>
+<span class="pc bpc" id="L195" title="1 of 4 branches missed.">    if ((holder != null) &amp;&amp; (holder.getSqlSession() == session)) {</span>
+<span class="pc" id="L196">      LOGGER.debug(() -&gt; &quot;Releasing transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
+<span class="fc" id="L197">      holder.released();</span>
+    } else {
+<span class="pc" id="L199">      LOGGER.debug(() -&gt; &quot;Closing non transactional SqlSession [&quot; + session + &quot;]&quot;);</span>
+<span class="fc" id="L200">      session.close();</span>
+    }
+<span class="fc" id="L202">  }</span>
 
-<span class="pc bpc" id="L196" title="1 of 4 branches missed.">    return (holder != null) &amp;&amp; (holder.getSqlSession() == session);</span>
+  /**
+   * Returns if the {@code SqlSession} passed as an argument is being managed by Spring
+   *
+   * @param session
+   *          a MyBatis SqlSession to check
+   * @param sessionFactory
+   *          the SqlSessionFactory which the SqlSession was built with
+   *
+   * @return true if session is transactional, otherwise false
+   */
+  public static boolean isSqlSessionTransactional(SqlSession session, SqlSessionFactory sessionFactory) {
+<span class="fc" id="L215">    notNull(session, NO_SQL_SESSION_SPECIFIED);</span>
+<span class="fc" id="L216">    notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span>
+
+<span class="fc" id="L218">    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span>
+
+<span class="pc bpc" id="L220" title="1 of 4 branches missed.">    return (holder != null) &amp;&amp; (holder.getSqlSession() == session);</span>
   }
 
   /**
-   * Callback for cleaning up resources. It cleans TransactionSynchronizationManager and
-   * also commits and closes the {@code SqlSession}.
-   * It assumes that {@code Connection} life cycle will be managed by
+   * Callback for cleaning up resources. It cleans TransactionSynchronizationManager and also commits and closes the
+   * {@code SqlSession}. It assumes that {@code Connection} life cycle will be managed by
    * {@code DataSourceTransactionManager} or {@code JtaTransactionManager}
    */
   private static final class SqlSessionSynchronization extends TransactionSynchronizationAdapter {
@@ -208,15 +231,15 @@ public final class SqlSessionUtils {
 
     private final SqlSessionFactory sessionFactory;
 
-<span class="fc" id="L211">    private boolean holderActive = true;</span>
+<span class="fc" id="L234">    private boolean holderActive = true;</span>
 
-<span class="fc" id="L213">    public SqlSessionSynchronization(SqlSessionHolder holder, SqlSessionFactory sessionFactory) {</span>
-<span class="fc" id="L214">      notNull(holder, &quot;Parameter 'holder' must be not null&quot;);</span>
-<span class="fc" id="L215">      notNull(sessionFactory, &quot;Parameter 'sessionFactory' must be not null&quot;);</span>
+<span class="fc" id="L236">    public SqlSessionSynchronization(SqlSessionHolder holder, SqlSessionFactory sessionFactory) {</span>
+<span class="fc" id="L237">      notNull(holder, &quot;Parameter 'holder' must be not null&quot;);</span>
+<span class="fc" id="L238">      notNull(sessionFactory, &quot;Parameter 'sessionFactory' must be not null&quot;);</span>
 
-<span class="fc" id="L217">      this.holder = holder;</span>
-<span class="fc" id="L218">      this.sessionFactory = sessionFactory;</span>
-<span class="fc" id="L219">    }</span>
+<span class="fc" id="L240">      this.holder = holder;</span>
+<span class="fc" id="L241">      this.sessionFactory = sessionFactory;</span>
+<span class="fc" id="L242">    }</span>
 
     /**
      * {@inheritDoc}
@@ -224,7 +247,7 @@ public final class SqlSessionUtils {
     @Override
     public int getOrder() {
       // order right before any Connection synchronization
-<span class="fc" id="L227">      return DataSourceUtils.CONNECTION_SYNCHRONIZATION_ORDER - 1;</span>
+<span class="fc" id="L250">      return DataSourceUtils.CONNECTION_SYNCHRONIZATION_ORDER - 1;</span>
     }
 
     /**
@@ -232,22 +255,22 @@ public final class SqlSessionUtils {
      */
     @Override
     public void suspend() {
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
-<span class="pc" id="L236">        LOGGER.debug(() -&gt; &quot;Transaction synchronization suspending SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="fc" id="L237">        TransactionSynchronizationManager.unbindResource(this.sessionFactory);</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
+<span class="pc" id="L259">        LOGGER.debug(() -&gt; &quot;Transaction synchronization suspending SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="fc" id="L260">        TransactionSynchronizationManager.unbindResource(this.sessionFactory);</span>
       }
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void resume() {
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
-<span class="pc" id="L247">        LOGGER.debug(() -&gt; &quot;Transaction synchronization resuming SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="fc" id="L248">        TransactionSynchronizationManager.bindResource(this.sessionFactory, this.holder);</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
+<span class="pc" id="L270">        LOGGER.debug(() -&gt; &quot;Transaction synchronization resuming SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="fc" id="L271">        TransactionSynchronizationManager.bindResource(this.sessionFactory, this.holder);</span>
       }
-<span class="fc" id="L250">    }</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * {@inheritDoc}
@@ -259,24 +282,23 @@ public final class SqlSessionUtils {
       // But, do cleanup the SqlSession / Executor, including flushing BATCH statements so
       // they are actually executed.
       // SpringManagedTransaction will no-op the commit over the jdbc connection
-      // TODO This updates 2nd level caches but the tx may be rolledback later on! 
-<span class="fc bfc" id="L263" title="All 2 branches covered.">      if (TransactionSynchronizationManager.isActualTransactionActive()) {</span>
+      // TODO This updates 2nd level caches but the tx may be rolledback later on!
+<span class="fc bfc" id="L286" title="All 2 branches covered.">      if (TransactionSynchronizationManager.isActualTransactionActive()) {</span>
         try {
-<span class="pc" id="L265">          LOGGER.debug(() -&gt; &quot;Transaction synchronization committing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="fc" id="L266">          this.holder.getSqlSession().commit();</span>
-<span class="fc" id="L267">        } catch (PersistenceException p) {</span>
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">          if (this.holder.getPersistenceExceptionTranslator() != null) {</span>
-<span class="fc" id="L269">            DataAccessException translated = this.holder</span>
-<span class="fc" id="L270">                .getPersistenceExceptionTranslator()</span>
-<span class="fc" id="L271">                .translateExceptionIfPossible(p);</span>
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            if (translated != null) {</span>
-<span class="fc" id="L273">              throw translated;</span>
+<span class="pc" id="L288">          LOGGER.debug(() -&gt; &quot;Transaction synchronization committing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="fc" id="L289">          this.holder.getSqlSession().commit();</span>
+<span class="fc" id="L290">        } catch (PersistenceException p) {</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">          if (this.holder.getPersistenceExceptionTranslator() != null) {</span>
+<span class="fc" id="L292">            DataAccessException translated = this.holder.getPersistenceExceptionTranslator()</span>
+<span class="fc" id="L293">                .translateExceptionIfPossible(p);</span>
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">            if (translated != null) {</span>
+<span class="fc" id="L295">              throw translated;</span>
             }
           }
-<span class="nc" id="L276">          throw p;</span>
-        }
+<span class="nc" id="L298">          throw p;</span>
+<span class="fc" id="L299">        }</span>
       }
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L301">    }</span>
 
     /**
      * {@inheritDoc}
@@ -285,32 +307,34 @@ public final class SqlSessionUtils {
     public void beforeCompletion() {
       // Issue #18 Close SqlSession and deregister it now
       // because afterCompletion may be called from a different thread
-<span class="pc bpc" id="L288" title="1 of 2 branches missed.">      if (!this.holder.isOpen()) {</span>
-<span class="pc" id="L289">        LOGGER.debug(() -&gt; &quot;Transaction synchronization deregistering SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="fc" id="L290">        TransactionSynchronizationManager.unbindResource(sessionFactory);</span>
-<span class="fc" id="L291">        this.holderActive = false;</span>
-<span class="pc" id="L292">        LOGGER.debug(() -&gt; &quot;Transaction synchronization closing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="fc" id="L293">        this.holder.getSqlSession().close();</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">      if (!this.holder.isOpen()) {</span>
+<span class="fc" id="L311">        LOGGER</span>
+<span class="pc" id="L312">            .debug(() -&gt; &quot;Transaction synchronization deregistering SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="fc" id="L313">        TransactionSynchronizationManager.unbindResource(sessionFactory);</span>
+<span class="fc" id="L314">        this.holderActive = false;</span>
+<span class="pc" id="L315">        LOGGER.debug(() -&gt; &quot;Transaction synchronization closing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="fc" id="L316">        this.holder.getSqlSession().close();</span>
       }
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L318">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void afterCompletion(int status) {
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">      if (this.holderActive) {</span>
         // afterCompletion may have been called from a different thread
         // so avoid failing if there is nothing in this one
-<span class="nc" id="L305">        LOGGER.debug(() -&gt; &quot;Transaction synchronization deregistering SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="nc" id="L306">        TransactionSynchronizationManager.unbindResourceIfPossible(sessionFactory);</span>
-<span class="nc" id="L307">        this.holderActive = false;</span>
-<span class="nc" id="L308">        LOGGER.debug(() -&gt; &quot;Transaction synchronization closing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
-<span class="nc" id="L309">        this.holder.getSqlSession().close();</span>
+<span class="nc" id="L328">        LOGGER</span>
+<span class="nc" id="L329">            .debug(() -&gt; &quot;Transaction synchronization deregistering SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="nc" id="L330">        TransactionSynchronizationManager.unbindResourceIfPossible(sessionFactory);</span>
+<span class="nc" id="L331">        this.holderActive = false;</span>
+<span class="nc" id="L332">        LOGGER.debug(() -&gt; &quot;Transaction synchronization closing SqlSession [&quot; + this.holder.getSqlSession() + &quot;]&quot;);</span>
+<span class="nc" id="L333">        this.holder.getSqlSession().close();</span>
       }
-<span class="fc" id="L311">      this.holder.reset();</span>
-<span class="fc" id="L312">    }</span>
+<span class="fc" id="L335">      this.holder.reset();</span>
+<span class="fc" id="L336">    }</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

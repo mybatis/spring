@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperScannerRegistrar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.annotation</a> &gt; <span class="el_source">MapperScannerRegistrar.java</span></div><h1>MapperScannerRegistrar.java</h1><pre class="source lang-java linenums">/**
- *    Copyright 2010-2019 the original author or authors.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperScannerRegistrar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.annotation</a> &gt; <span class="el_source">MapperScannerRegistrar.java</span></div><h1>MapperScannerRegistrar.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2022 the original author or authors.
  *
- *    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *    https://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.spring.annotation;
 
@@ -19,12 +19,15 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.ResourceLoaderAware;
@@ -36,9 +39,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * A {@link ImportBeanDefinitionRegistrar} to allow annotation configuration of
- * MyBatis mapper scanning. Using an @Enable annotation allows beans to be
- * registered via @Component configuration, whereas implementing
+ * A {@link ImportBeanDefinitionRegistrar} to allow annotation configuration of MyBatis mapper scanning. Using
+ * an @Enable annotation allows beans to be registered via @Component configuration, whereas implementing
  * {@code BeanDefinitionRegistryPostProcessor} will work for XML configuration.
  *
  * @author Michael Lanyon
@@ -47,101 +49,132 @@ import org.springframework.util.StringUtils;
  *
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
+ *
  * @since 1.2.0
  */
-<span class="fc" id="L52">public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {</span>
-
-  private ResourceLoader resourceLoader;
+<span class="fc" id="L55">public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {</span>
 
   /**
    * {@inheritDoc}
+   *
+   * @deprecated Since 2.0.2, this method not used never.
    */
   @Override
+  @Deprecated
   public void setResourceLoader(ResourceLoader resourceLoader) {
-<span class="fc" id="L61">    this.resourceLoader = resourceLoader;</span>
-<span class="fc" id="L62">  }</span>
+    // NOP
+<span class="fc" id="L66">  }</span>
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-<span class="fc" id="L69">    AnnotationAttributes mapperScanAttrs = AnnotationAttributes</span>
-<span class="fc" id="L70">        .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">    if (mapperScanAttrs != null) {</span>
-<span class="fc" id="L72">      registerBeanDefinitions(mapperScanAttrs, registry);</span>
+<span class="fc" id="L73">    AnnotationAttributes mapperScanAttrs = AnnotationAttributes</span>
+<span class="fc" id="L74">        .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    if (mapperScanAttrs != null) {</span>
+<span class="fc" id="L76">      registerBeanDefinitions(importingClassMetadata, mapperScanAttrs, registry,</span>
+<span class="fc" id="L77">          generateBaseBeanName(importingClassMetadata, 0));</span>
     }
-<span class="fc" id="L74">  }</span>
+<span class="fc" id="L79">  }</span>
 
-  void registerBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
+  void registerBeanDefinitions(AnnotationMetadata annoMeta, AnnotationAttributes annoAttrs,
+      BeanDefinitionRegistry registry, String beanName) {
 
-<span class="fc" id="L78">    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);</span>
+<span class="fc" id="L84">    BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);</span>
+<span class="fc" id="L85">    builder.addPropertyValue(&quot;processPropertyPlaceHolders&quot;, true);</span>
 
-    // this check is needed in Spring 3.1
-<span class="fc" id="L81">    Optional.ofNullable(resourceLoader).ifPresent(scanner::setResourceLoader);</span>
-
-<span class="fc" id="L83">    Class&lt;? extends Annotation&gt; annotationClass = annoAttrs.getClass(&quot;annotationClass&quot;);</span>
-<span class="fc bfc" id="L84" title="All 2 branches covered.">    if (!Annotation.class.equals(annotationClass)) {</span>
-<span class="fc" id="L85">      scanner.setAnnotationClass(annotationClass);</span>
-    }
-
-<span class="fc" id="L88">    Class&lt;?&gt; markerInterface = annoAttrs.getClass(&quot;markerInterface&quot;);</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">    if (!Class.class.equals(markerInterface)) {</span>
-<span class="fc" id="L90">      scanner.setMarkerInterface(markerInterface);</span>
+<span class="fc" id="L87">    Class&lt;? extends Annotation&gt; annotationClass = annoAttrs.getClass(&quot;annotationClass&quot;);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    if (!Annotation.class.equals(annotationClass)) {</span>
+<span class="fc" id="L89">      builder.addPropertyValue(&quot;annotationClass&quot;, annotationClass);</span>
     }
 
-<span class="fc" id="L93">    Class&lt;? extends BeanNameGenerator&gt; generatorClass = annoAttrs.getClass(&quot;nameGenerator&quot;);</span>
-<span class="fc bfc" id="L94" title="All 2 branches covered.">    if (!BeanNameGenerator.class.equals(generatorClass)) {</span>
-<span class="fc" id="L95">      scanner.setBeanNameGenerator(BeanUtils.instantiateClass(generatorClass));</span>
+<span class="fc" id="L92">    Class&lt;?&gt; markerInterface = annoAttrs.getClass(&quot;markerInterface&quot;);</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">    if (!Class.class.equals(markerInterface)) {</span>
+<span class="fc" id="L94">      builder.addPropertyValue(&quot;markerInterface&quot;, markerInterface);</span>
     }
 
-<span class="fc" id="L98">    Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass = annoAttrs.getClass(&quot;factoryBean&quot;);</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">    if (!MapperFactoryBean.class.equals(mapperFactoryBeanClass)) {</span>
-<span class="fc" id="L100">      scanner.setMapperFactoryBean(BeanUtils.instantiateClass(mapperFactoryBeanClass));</span>
+<span class="fc" id="L97">    Class&lt;? extends BeanNameGenerator&gt; generatorClass = annoAttrs.getClass(&quot;nameGenerator&quot;);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">    if (!BeanNameGenerator.class.equals(generatorClass)) {</span>
+<span class="fc" id="L99">      builder.addPropertyValue(&quot;nameGenerator&quot;, BeanUtils.instantiateClass(generatorClass));</span>
     }
 
-<span class="fc" id="L103">    scanner.setSqlSessionTemplateBeanName(annoAttrs.getString(&quot;sqlSessionTemplateRef&quot;));</span>
-<span class="fc" id="L104">    scanner.setSqlSessionFactoryBeanName(annoAttrs.getString(&quot;sqlSessionFactoryRef&quot;));</span>
+<span class="fc" id="L102">    Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass = annoAttrs.getClass(&quot;factoryBean&quot;);</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">    if (!MapperFactoryBean.class.equals(mapperFactoryBeanClass)) {</span>
+<span class="fc" id="L104">      builder.addPropertyValue(&quot;mapperFactoryBeanClass&quot;, mapperFactoryBeanClass);</span>
+    }
 
-<span class="fc" id="L106">    List&lt;String&gt; basePackages = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L107">    basePackages.addAll(</span>
-<span class="fc" id="L108">        Arrays.stream(annoAttrs.getStringArray(&quot;value&quot;))</span>
-<span class="fc" id="L109">            .filter(StringUtils::hasText)</span>
-<span class="fc" id="L110">            .collect(Collectors.toList()));</span>
+<span class="fc" id="L107">    String sqlSessionTemplateRef = annoAttrs.getString(&quot;sqlSessionTemplateRef&quot;);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">    if (StringUtils.hasText(sqlSessionTemplateRef)) {</span>
+<span class="fc" id="L109">      builder.addPropertyValue(&quot;sqlSessionTemplateBeanName&quot;, annoAttrs.getString(&quot;sqlSessionTemplateRef&quot;));</span>
+    }
 
-<span class="fc" id="L112">    basePackages.addAll(</span>
-<span class="fc" id="L113">        Arrays.stream(annoAttrs.getStringArray(&quot;basePackages&quot;))</span>
-<span class="fc" id="L114">            .filter(StringUtils::hasText)</span>
-<span class="fc" id="L115">            .collect(Collectors.toList()));</span>
+<span class="fc" id="L112">    String sqlSessionFactoryRef = annoAttrs.getString(&quot;sqlSessionFactoryRef&quot;);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">    if (StringUtils.hasText(sqlSessionFactoryRef)) {</span>
+<span class="fc" id="L114">      builder.addPropertyValue(&quot;sqlSessionFactoryBeanName&quot;, annoAttrs.getString(&quot;sqlSessionFactoryRef&quot;));</span>
+    }
 
-<span class="fc" id="L117">    basePackages.addAll(</span>
-<span class="fc" id="L118">        Arrays.stream(annoAttrs.getClassArray(&quot;basePackageClasses&quot;))</span>
-<span class="fc" id="L119">            .map(ClassUtils::getPackageName)</span>
-<span class="fc" id="L120">            .collect(Collectors.toList()));</span>
+<span class="fc" id="L117">    List&lt;String&gt; basePackages = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L122">    scanner.registerFilters();</span>
-<span class="fc" id="L123">    scanner.doScan(StringUtils.toStringArray(basePackages));</span>
-<span class="fc" id="L124">  }</span>
+<span class="fc" id="L119">    basePackages.addAll(Arrays.stream(annoAttrs.getStringArray(&quot;basePackages&quot;)).filter(StringUtils::hasText)</span>
+<span class="fc" id="L120">        .collect(Collectors.toList()));</span>
+
+<span class="fc" id="L122">    basePackages.addAll(Arrays.stream(annoAttrs.getClassArray(&quot;basePackageClasses&quot;)).map(ClassUtils::getPackageName)</span>
+<span class="fc" id="L123">        .collect(Collectors.toList()));</span>
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">    if (basePackages.isEmpty()) {</span>
+<span class="fc" id="L126">      basePackages.add(getDefaultBasePackage(annoMeta));</span>
+    }
+
+<span class="fc" id="L129">    String lazyInitialization = annoAttrs.getString(&quot;lazyInitialization&quot;);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">    if (StringUtils.hasText(lazyInitialization)) {</span>
+<span class="fc" id="L131">      builder.addPropertyValue(&quot;lazyInitialization&quot;, lazyInitialization);</span>
+    }
+
+<span class="fc" id="L134">    String defaultScope = annoAttrs.getString(&quot;defaultScope&quot;);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">    if (!AbstractBeanDefinition.SCOPE_DEFAULT.equals(defaultScope)) {</span>
+<span class="fc" id="L136">      builder.addPropertyValue(&quot;defaultScope&quot;, defaultScope);</span>
+    }
+
+<span class="fc" id="L139">    builder.addPropertyValue(&quot;basePackage&quot;, StringUtils.collectionToCommaDelimitedString(basePackages));</span>
+
+    // for spring-native
+<span class="fc" id="L142">    builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);</span>
+
+<span class="fc" id="L144">    registry.registerBeanDefinition(beanName, builder.getBeanDefinition());</span>
+
+<span class="fc" id="L146">  }</span>
+
+  private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
+<span class="fc" id="L149">    return importingClassMetadata.getClassName() + &quot;#&quot; + MapperScannerRegistrar.class.getSimpleName() + &quot;#&quot; + index;</span>
+  }
+
+  private static String getDefaultBasePackage(AnnotationMetadata importingClassMetadata) {
+<span class="fc" id="L153">    return ClassUtils.getPackageName(importingClassMetadata.getClassName());</span>
+  }
 
   /**
    * A {@link MapperScannerRegistrar} for {@link MapperScans}.
+   *
    * @since 2.0.0
    */
-<span class="fc" id="L130">  static class RepeatingRegistrar extends MapperScannerRegistrar {</span>
+<span class="fc" id="L161">  static class RepeatingRegistrar extends MapperScannerRegistrar {</span>
     /**
      * {@inheritDoc}
      */
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-        BeanDefinitionRegistry registry) {
-<span class="fc" id="L137">      AnnotationAttributes mapperScansAttrs = AnnotationAttributes</span>
-<span class="fc" id="L138">          .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScans.class.getName()));</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">      if (mapperScansAttrs != null) {</span>
-<span class="fc" id="L140">        Arrays.stream(mapperScansAttrs.getAnnotationArray(&quot;value&quot;))</span>
-<span class="fc" id="L141">            .forEach(mapperScanAttrs -&gt; registerBeanDefinitions(mapperScanAttrs, registry));</span>
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+<span class="fc" id="L167">      AnnotationAttributes mapperScansAttrs = AnnotationAttributes</span>
+<span class="fc" id="L168">          .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScans.class.getName()));</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">      if (mapperScansAttrs != null) {</span>
+<span class="fc" id="L170">        AnnotationAttributes[] annotations = mapperScansAttrs.getAnnotationArray(&quot;value&quot;);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        for (int i = 0; i &lt; annotations.length; i++) {</span>
+<span class="fc" id="L172">          registerBeanDefinitions(importingClassMetadata, annotations[i], registry,</span>
+<span class="fc" id="L173">              generateBaseBeanName(importingClassMetadata, i));</span>
+        }
       }
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L176">    }</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
