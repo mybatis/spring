@@ -366,6 +366,10 @@ public class SqlSessionFactoryBean
    *
    * @param mapperLocations
    *          location of MyBatis mapper files
+   * @throws IOException
+   * 		  in case of  I/O errors.
+   * 		  Class.getResource() returns null when trying to get mapperLocations from newly generated files or JAR files,
+   * 		  ClassLoader.getResources() is advisable.
    */
   public void setMapperLocations(Resource... mapperLocations) {
     this.mapperLocations = mapperLocations;
