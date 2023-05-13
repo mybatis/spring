@@ -495,7 +495,7 @@ public class SqlSessionFactoryBean
    *
    * @see #setMapperLocations(Resource...)
    *
-   * @since 3.0.2
+   * @since 2.1.1
    */
   public void addMapperLocations(Resource... mapperLocations) {
     setMapperLocations(appendArrays(this.mapperLocations, mapperLocations, Resource[]::new));
@@ -507,7 +507,7 @@ public class SqlSessionFactoryBean
    * @param typeHandlers
    *          Type handler list
    *
-   * @since 3.0.2
+   * @since 2.1.1
    */
   public void addTypeHandlers(TypeHandler<?>... typeHandlers) {
     setTypeHandlers(appendArrays(this.typeHandlers, typeHandlers, TypeHandler[]::new));
@@ -519,7 +519,7 @@ public class SqlSessionFactoryBean
    * @param scriptingLanguageDrivers
    *          scripting language drivers
    *
-   * @since 3.0.2
+   * @since 2.1.1
    */
   public void addScriptingLanguageDrivers(LanguageDriver... scriptingLanguageDrivers) {
     setScriptingLanguageDrivers(
@@ -532,7 +532,7 @@ public class SqlSessionFactoryBean
    * @param plugins
    *          list of plugins
    *
-   * @since 3.0.2
+   * @since 2.1.1
    */
   public void addPlugins(Interceptor... plugins) {
     setPlugins(appendArrays(this.plugins, plugins, Interceptor[]::new));
@@ -544,7 +544,7 @@ public class SqlSessionFactoryBean
    * @param typeAliases
    *          Type aliases list
    *
-   * @since 3.0.2
+   * @since 2.1.1
    */
   public void addTypeAliases(Class<?>... typeAliases) {
     setTypeAliases(appendArrays(this.typeAliases, typeAliases, Class[]::new));
