@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2010-2022 the original author or authors.
+    Copyright 2010-2023 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@
     <osgi.import>org.springframework.batch.*;resolution:=optional,*</osgi.import>
     <osgi.dynamicImport>*</osgi.dynamicImport>
 
-    <mybatis.version>3.5.11</mybatis.version>
+    <mybatis.version>3.5.13</mybatis.version>
     <spring.version>5.3.24</spring.version>
     <spring-batch.version>4.3.7</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
