@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"org.mybatis.spring"}];updateSearchResults();
+moduleSearchIndex = [];updateSearchResults();

@@ -1,4 +1,3 @@
-module:org.mybatis.spring
 org.mybatis.logging
 org.mybatis.spring
 org.mybatis.spring.annotation
