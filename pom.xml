@@ -106,7 +106,7 @@
     <osgi.dynamicImport>*</osgi.dynamicImport>
 
     <mybatis.version>3.5.13</mybatis.version>
-    <spring.version>5.3.27</spring.version>
+    <spring.version>5.3.28</spring.version>
     <spring-batch.version>4.3.8</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
