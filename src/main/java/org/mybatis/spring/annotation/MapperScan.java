@@ -190,7 +190,7 @@ public @interface MapperScan {
    * <p>
    * The default is {@literal true}. This means that a property placeholder processing execute.
    *
-   * @since 3.0.3
+   * @since 2.1.2
    *
    * @return a flag that whether execute a property placeholder processing or not
    */

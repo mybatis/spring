@@ -152,7 +152,7 @@
         <xsd:annotation>
           <xsd:documentation>
             <![CDATA[
-              Specifies a flag that whether execute a property placeholder processing or not. (Since 3.0.3)
+              Specifies a flag that whether execute a property placeholder processing or not. (Since 2.1.2)
               The default is true. This means that a property placeholder processing execute.
             ]]>
           </xsd:documentation>
