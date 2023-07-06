@@ -27,6 +27,7 @@ import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
@@ -184,5 +185,11 @@ public @interface MapperScan {
    * @return the default scope
    */
   String defaultScope() default AbstractBeanDefinition.SCOPE_DEFAULT;
+
+  /**
+   * Specifies which types are not eligible for mapper scanning.
+   */
+  ComponentScan.Filter[] excludeFilters() default {};
+
 
 }

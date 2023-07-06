@@ -18,6 +18,7 @@ package org.mybatis.spring.mapper;
 import static org.springframework.util.Assert.notNull;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
@@ -108,6 +110,9 @@ public class MapperScannerConfigurer
   private Class<? extends Annotation> annotationClass;
 
   private Class<?> markerInterface;
+
+
+  private List<TypeFilter> excludeFilters;
 
   private Class<? extends MapperFactoryBean> mapperFactoryBeanClass;
 
@@ -189,6 +194,10 @@ public class MapperScannerConfigurer
    */
   public void setMarkerInterface(Class<?> superClass) {
     this.markerInterface = superClass;
+  }
+
+  public void setExcludeFilters(List<TypeFilter> excludeFilters) {
+    this.excludeFilters = excludeFilters;
   }
 
   /**
@@ -364,6 +373,7 @@ public class MapperScannerConfigurer
     scanner.setAddToConfig(this.addToConfig);
     scanner.setAnnotationClass(this.annotationClass);
     scanner.setMarkerInterface(this.markerInterface);
+    scanner.setExcludeFilters(this.excludeFilters);
     scanner.setSqlSessionFactory(this.sqlSessionFactory);
     scanner.setSqlSessionTemplate(this.sqlSessionTemplate);
     scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);

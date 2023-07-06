@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
@@ -31,10 +32,13 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.filter.*;
+import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -54,6 +58,7 @@ import org.springframework.util.StringUtils;
  */
 public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
+  private ResourceLoader resourceLoader;
   /**
    * {@inheritDoc}
    *
@@ -63,6 +68,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
   @Deprecated
   public void setResourceLoader(ResourceLoader resourceLoader) {
     // NOP
+    this.resourceLoader = resourceLoader;
   }
 
   /**
@@ -126,6 +132,11 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       basePackages.add(getDefaultBasePackage(annoMeta));
     }
 
+    AnnotationAttributes[] excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
+    for (AnnotationAttributes excludeFilters : excludeFilterArray) {
+      builder.addPropertyValue("excludeFilters", typeFiltersFor(excludeFilters));
+    }
+
     String lazyInitialization = annoAttrs.getString("lazyInitialization");
     if (StringUtils.hasText(lazyInitialization)) {
       builder.addPropertyValue("lazyInitialization", lazyInitialization);
@@ -144,6 +155,48 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
 
   }
+
+  private List<TypeFilter> typeFiltersFor(AnnotationAttributes filterAttributes) {
+
+    List<TypeFilter> typeFilters = new ArrayList<>();
+    FilterType filterType = filterAttributes.getEnum("type");
+
+    for (Class<?> filterClass : filterAttributes.getClassArray("value")) {
+      switch (filterType) {
+        case ANNOTATION:
+          Assert.isAssignable(Annotation.class, filterClass,
+            "An error occured when processing a @ComponentScan " + "ANNOTATION type filter: ");
+          @SuppressWarnings("unchecked")
+          Class<Annotation> annoClass = (Class<Annotation>) filterClass;
+          typeFilters.add(new AnnotationTypeFilter(annoClass));
+          break;
+        case ASSIGNABLE_TYPE:
+          typeFilters.add(new AssignableTypeFilter(filterClass));
+          break;
+        case CUSTOM:
+          Assert.isAssignable(TypeFilter.class, filterClass,
+            "An error occured when processing a @ComponentScan " + "CUSTOM type filter: ");
+          typeFilters.add(BeanUtils.instantiateClass(filterClass, TypeFilter.class));
+          break;
+        default:
+          throw new IllegalArgumentException("Unknown filter type " + filterType);
+      }
+    }
+
+    String[] expressionArray = filterAttributes.getStringArray("pattern");
+    for (String expression : expressionArray) {
+      String rawName = filterType.toString();
+      if ("REGEX".equals(rawName)) {
+        typeFilters.add(new RegexPatternTypeFilter(Pattern.compile(expression)));
+      } else if ("ASPECTJ".equals(rawName)) {
+        typeFilters.add(new AspectJTypeFilter(expression, this.resourceLoader.getClassLoader()));
+      } else {
+        throw new IllegalArgumentException("Unknown filter type " + filterType);
+      }
+    }
+    return typeFilters;
+  }
+
 
   private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
     return importingClassMetadata.getClassName() + "#" + MapperScannerRegistrar.class.getSimpleName() + "#" + index;
