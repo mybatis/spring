@@ -19,12 +19,12 @@ This document does not attempt to provide background information or basic setup 
 
 MyBatis-Spring requires following versions:
 
-| MyBatis-Spring | MyBatis | Spring Framework | Spring Batch | Java     |
-|----------------| --- |------------------|--------------|----------|
-| **3.0**        | 3.5+ | 6.0+             | 5.0+         | Java 17+ |
-| **2.1**        | 3.5+ | 5.x              | 4.x          | Java 8+  |
-| **2.0**        | 3.5+ | 5.x              | 4.x          | Java 8+  |
-| **1.3**        | 3.4+ | 3.2.2+           | 2.1+         | Java 6+  |
+| MyBatis-Spring | MyBatis | Spring Framework | Spring Batch | Java        |
+|----------------| --- |------------------|--------------|-------------|
+| **3.0**        | 3.5+ | 6.0+             | 5.0+         | Java 17+    |
+| **2.1**        | 3.5+ | 5.x              | 4.x          | Java 8+     |
+| ~~**2.0**~~      | ~~3.5+~~ | ~~5.x~~              | ~~4.x~~         | ~~Java 8+~~ |
+| ~~**1.3**~~      | ~~3.4+~~ | ~~3.2.2+~~           | ~~2.1+~~        | ~~Java 6+~~ |
 
 ## Acknowledgements
 
@@ -53,4 +53,4 @@ Users can read about MyBatis-Spring in the following translations:
 </ul>
 
 Do you want to read about MyBatis in your own native language? Fill an issue providing patches with your mother tongue documentation!
-        
+

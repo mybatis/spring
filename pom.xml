@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2010-2022 the original author or authors.
+    Copyright 2010-2023 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>37</version>
+    <version>38</version>
     <relativePath />
   </parent>
 
   <artifactId>mybatis-spring</artifactId>
-  <version>3.0.2-SNAPSHOT</version>
+  <version>3.0.3-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>mybatis-spring</name>
@@ -99,7 +99,7 @@
   </distributionManagement>
 
   <properties>
-    <clirr.comparisonVersion>1.3.2</clirr.comparisonVersion>
+    <clirr.comparisonVersion>2.1.0</clirr.comparisonVersion>
     <findbugs.onlyAnalyze>org.mybatis.spring.*,org.mybatis.spring.mapper.*,org.mybatis.spring.support.*,org.mybatis.spring.transaction.*</findbugs.onlyAnalyze>
     <gcu.product>Spring</gcu.product>
     <osgi.import>org.springframework.batch.*;resolution:=optional,*</osgi.import>
@@ -109,18 +109,21 @@
     <java.version>17</java.version>
     <java.release.version>17</java.release.version>
 
-    <mybatis.version>3.5.12</mybatis.version>
-    <spring.version>6.0.6</spring.version>
-    <spring-batch.version>5.0.1</spring-batch.version>
+    <mybatis.version>3.5.13</mybatis.version>
+    <spring.version>6.0.10</spring.version>
+    <spring-batch.version>5.0.2</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
-    <junit.version>5.9.2</junit.version>
-
-    <!-- Keep this setting until mybatis-parent 37 official released -->
-    <maven.compiler.parameters>true</maven.compiler.parameters>
+    <junit.version>5.9.3</junit.version>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1670546764</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1684514485</project.build.outputTimestamp>
+
+    <!-- TODO: Remove this after mybatis-parent 38 -->
+    <jacoco.plugin>0.8.9</jacoco.plugin>
+
+    <!-- Set byte buddy to experimental -->
+    <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
   </properties>
 
   <dependencies>
@@ -157,7 +160,7 @@
     <dependency>
       <groupId>com.atomikos</groupId>
       <artifactId>transactions-jdbc</artifactId>
-      <version>5.0.9</version>
+      <version>6.0.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -178,7 +181,7 @@
     <dependency>
       <groupId>org.jboss.byteman</groupId>
       <artifactId>byteman-bmunit</artifactId>
-      <version>4.0.20</version>
+      <version>4.0.21</version>
       <scope>test</scope>
     </dependency>
 
@@ -219,21 +222,21 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.7.1</version>
+      <version>2.7.2</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.6</version>
+      <version>2.0.7</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.9.0</version>
+      <version>5.4.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -267,8 +270,8 @@
           <artifactId>nekohtml</artifactId>
         </exclusion>
         <exclusion>
-             <groupId>junit</groupId>
-             <artifactId>junit</artifactId>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -320,6 +323,18 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.5</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

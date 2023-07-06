@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,14 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 import javax.sql.DataSource;
@@ -54,7 +58,6 @@ import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -87,7 +90,7 @@ import org.springframework.util.ClassUtils;
  * @see #setDataSource
  */
 public class SqlSessionFactoryBean
-    implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ApplicationEvent> {
+    implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ContextRefreshedEvent> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SqlSessionFactoryBean.class);
 
@@ -480,6 +483,88 @@ public class SqlSessionFactoryBean
   }
 
   /**
+   * Add locations of MyBatis mapper files that are going to be merged into the {@code SqlSessionFactory} configuration
+   * at runtime.
+   * <p>
+   * This is an alternative to specifying "&lt;sqlmapper&gt;" entries in an MyBatis config file. This property being
+   * based on Spring's resource abstraction also allows for specifying resource patterns here: e.g.
+   * "classpath*:sqlmap/*-mapper.xml".
+   *
+   * @param mapperLocations
+   *          location of MyBatis mapper files
+   *
+   * @see #setMapperLocations(Resource...)
+   *
+   * @since 3.0.2
+   */
+  public void addMapperLocations(Resource... mapperLocations) {
+    setMapperLocations(appendArrays(this.mapperLocations, mapperLocations, Resource[]::new));
+  }
+
+  /**
+   * Add type handlers.
+   *
+   * @param typeHandlers
+   *          Type handler list
+   *
+   * @since 3.0.2
+   */
+  public void addTypeHandlers(TypeHandler<?>... typeHandlers) {
+    setTypeHandlers(appendArrays(this.typeHandlers, typeHandlers, TypeHandler[]::new));
+  }
+
+  /**
+   * Add scripting language drivers.
+   *
+   * @param scriptingLanguageDrivers
+   *          scripting language drivers
+   *
+   * @since 3.0.2
+   */
+  public void addScriptingLanguageDrivers(LanguageDriver... scriptingLanguageDrivers) {
+    setScriptingLanguageDrivers(
+        appendArrays(this.scriptingLanguageDrivers, scriptingLanguageDrivers, LanguageDriver[]::new));
+  }
+
+  /**
+   * Add Mybatis plugins.
+   *
+   * @param plugins
+   *          list of plugins
+   *
+   * @since 3.0.2
+   */
+  public void addPlugins(Interceptor... plugins) {
+    setPlugins(appendArrays(this.plugins, plugins, Interceptor[]::new));
+  }
+
+  /**
+   * Add type aliases.
+   *
+   * @param typeAliases
+   *          Type aliases list
+   *
+   * @since 3.0.2
+   */
+  public void addTypeAliases(Class<?>... typeAliases) {
+    setTypeAliases(appendArrays(this.typeAliases, typeAliases, Class[]::new));
+  }
+
+  private <T> T[] appendArrays(T[] oldArrays, T[] newArrays, IntFunction<T[]> generator) {
+    if (oldArrays == null) {
+      return newArrays;
+    } else {
+      if (newArrays == null) {
+        return oldArrays;
+      } else {
+        List<T> newList = new ArrayList<>(Arrays.asList(oldArrays));
+        newList.addAll(Arrays.asList(newArrays));
+        return newList.toArray(generator.apply(0));
+      }
+    }
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -658,8 +743,8 @@ public class SqlSessionFactoryBean
    * {@inheritDoc}
    */
   @Override
-  public void onApplicationEvent(ApplicationEvent event) {
-    if (failFast && event instanceof ContextRefreshedEvent) {
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    if (failFast) {
       // fail-fast -> check all statements are completed
       this.sqlSessionFactory.getConfiguration().getMappedStatementNames();
     }
