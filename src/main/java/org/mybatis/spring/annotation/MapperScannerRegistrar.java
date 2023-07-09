@@ -61,13 +61,9 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
   private ResourceLoader resourceLoader;
   /**
    * {@inheritDoc}
-   *
-   * @deprecated Since 2.0.2, this method not used never.
    */
   @Override
-  @Deprecated
   public void setResourceLoader(ResourceLoader resourceLoader) {
-    // NOP
     this.resourceLoader = resourceLoader;
   }
 

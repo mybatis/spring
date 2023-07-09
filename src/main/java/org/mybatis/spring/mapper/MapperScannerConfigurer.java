@@ -111,7 +111,6 @@ public class MapperScannerConfigurer
 
   private Class<?> markerInterface;
 
-
   private List<TypeFilter> excludeFilters;
 
   private Class<? extends MapperFactoryBean> mapperFactoryBeanClass;
@@ -196,6 +195,14 @@ public class MapperScannerConfigurer
     this.markerInterface = superClass;
   }
 
+  /**
+   * Specifies which types are not eligible for the mapper scanner.
+   * <p>
+   * The scanner will exclude types that define with excludeFilters.
+   *
+   * @param excludeFilters
+   *          list of TypeFilter
+   */
   public void setExcludeFilters(List<TypeFilter> excludeFilters) {
     this.excludeFilters = excludeFilters;
   }
