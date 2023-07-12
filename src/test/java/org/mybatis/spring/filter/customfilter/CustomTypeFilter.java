@@ -13,9 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mybatis.spring.scan.filter.datasource.commonsource;
+package org.mybatis.spring.filter.customfilter;
 
-import org.mybatis.spring.scan.filter.customfilter.ExcludeMaker;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.filter.TypeFilter;
 
-public interface AssignableMapper extends ExcludeMaker {
+import java.io.IOException;
+
+public class CustomTypeFilter implements TypeFilter {
+  @Override
+  public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
+    return metadataReader.getClassMetadata().getClassName().contains("datasource2");
+  }
 }

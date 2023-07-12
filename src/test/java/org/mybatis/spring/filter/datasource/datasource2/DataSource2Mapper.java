@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mybatis.spring.scan.filter.datasource.commonsource;
+package org.mybatis.spring.filter.datasource.datasource2;
 
-
-public interface CommonDataSourceMapper {
+public interface DataSource2Mapper {
 }

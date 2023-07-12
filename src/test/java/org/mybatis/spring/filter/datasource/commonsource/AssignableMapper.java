@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mybatis.spring.scan.filter.datasource.commonsource;
+package org.mybatis.spring.filter.datasource.commonsource;
 
-import org.mybatis.spring.scan.filter.customfilter.AnnoTypeFilter;
+import org.mybatis.spring.filter.customfilter.ExcludeMaker;
 
-@AnnoTypeFilter
-public interface AnnoExcludeMapper {
+public interface AssignableMapper extends ExcludeMaker {
 }

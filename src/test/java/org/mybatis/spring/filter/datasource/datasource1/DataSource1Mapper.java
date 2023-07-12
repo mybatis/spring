@@ -13,17 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mybatis.spring.scan.filter.customfilter;
+package org.mybatis.spring.filter.datasource.datasource1;
 
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.TypeFilter;
-
-import java.io.IOException;
-
-public class CustomTypeFilter implements TypeFilter {
-  @Override
-  public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
-    return metadataReader.getClassMetadata().getClassName().contains("datasource2");
-  }
+public interface DataSource1Mapper {
 }
