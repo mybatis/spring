@@ -97,6 +97,52 @@ public class ScanFilterTest {
   }
 
 
+  @Test
+  void combinedScanFilter() {
+    // combined filter with Custom and Annotation
+    startContext(AppConfig.CombinedFilterConfig.class);
+
+    // exclude datasource2.DataSource2Mapper by CustomTypeFilter
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+    // exclude datasource1.MapperWithAnnoFilter by AnnoTypeFilter
+    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isEqualTo(false);
+
+    // other mapper could be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(true);
+  }
+
+
+  @Test
+  void multiPatternRegexScanFilter() {
+    // multi pattern regex filter
+    startContext(AppConfig.MultiPatternRegexFilterConfig.class);
+
+    // exclude datasource1 by pattern[0]
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    // exclude datasource2 by pattern[1]
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+
+    // other mapper could be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
+  }
+
+  @Test
+  void multiPatternAspectJScanFilter() {
+    // multi pattern regex filter
+    startContext(AppConfig.MultiPatternAspectJFilterConfig.class);
+
+    // exclude datasource1 by pattern[0]
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    // exclude datasource2 by pattern[1]
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+
+    // other mapper could be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("dataSource2Mapper1")).isEqualTo(true);
+  }
+
+
   private void startContext(Class<?> config) {
     applicationContext = new AnnotationConfigApplicationContext();
     // use @MapperScan with excludeFilters in AppConfig.class

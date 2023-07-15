@@ -57,5 +57,30 @@ public class AppConfig {
   public static class AspectJFilterConfig {
 
   }
+
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class),
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class)})
+  public static class CombinedFilterConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX,
+      pattern = {"org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*",
+        "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource2\\..*"})})
+  public static class MultiPatternRegexFilterConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.ASPECTJ,
+      pattern = {"*..DataSource1Mapper",
+        "*..DataSource2Mapper"})})
+  public static class MultiPatternAspectJFilterConfig {
+
+  }
+
 }
 

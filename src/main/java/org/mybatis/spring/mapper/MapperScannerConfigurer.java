@@ -200,6 +200,8 @@ public class MapperScannerConfigurer
    * <p>
    * The scanner will exclude types that define with excludeFilters.
    *
+   * @since 3.0.3
+   *
    * @param excludeFilters
    *          list of TypeFilter
    */

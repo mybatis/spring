@@ -196,9 +196,11 @@ public @interface MapperScan {
    * @return a flag that whether execute a property placeholder processing or not
    */
   boolean processPropertyPlaceHolders() default true;
-  
+
   /**
    * Specifies which types are not eligible for mapper scanning.
+   *
+   * @since 3.0.3
    */
   ComponentScan.Filter[] excludeFilters() default {};
 

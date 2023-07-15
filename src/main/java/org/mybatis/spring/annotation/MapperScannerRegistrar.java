@@ -134,8 +134,12 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     }
 
     AnnotationAttributes[] excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
-    for (AnnotationAttributes excludeFilters : excludeFilterArray) {
-      builder.addPropertyValue("excludeFilters", typeFiltersFor(excludeFilters));
+    if (excludeFilterArray.length > 0) {
+      List<TypeFilter> typeFilters = new ArrayList<>();
+      for (AnnotationAttributes excludeFilters : excludeFilterArray) {
+        typeFilters.addAll(typeFiltersFor(excludeFilters));
+      }
+      builder.addPropertyValue("excludeFilters", typeFilters);
     }
 
     String lazyInitialization = annoAttrs.getString("lazyInitialization");
