@@ -15,6 +15,5 @@
  */
 package org.mybatis.spring.filter.customfilter;
 
-
 public interface ExcludeMaker {
 }

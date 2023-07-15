@@ -170,7 +170,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       switch (filterType) {
         case ANNOTATION:
           Assert.isAssignable(Annotation.class, filterClass,
-            "Specified an unsupported type in 'ANNOTATION' exclude filter of @MapperScan");
+              "Specified an unsupported type in 'ANNOTATION' exclude filter of @MapperScan");
           @SuppressWarnings("unchecked")
           Class<Annotation> annoClass = (Class<Annotation>) filterClass;
           typeFilters.add(new AnnotationTypeFilter(annoClass));
@@ -180,11 +180,12 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
           break;
         case CUSTOM:
           Assert.isAssignable(TypeFilter.class, filterClass,
-            "An error occured when processing a @ComponentScan " + "CUSTOM type filter: ");
+              "An error occured when processing a @ComponentScan " + "CUSTOM type filter: ");
           typeFilters.add(BeanUtils.instantiateClass(filterClass, TypeFilter.class));
           break;
         default:
-          throw new IllegalArgumentException("Cannot specify the 'value' or 'classes' attribute if use the " + filterType + " FilterType in exclude filter of @MapperScan");
+          throw new IllegalArgumentException("Cannot specify the 'value' or 'classes' attribute if use the "
+              + filterType + " FilterType in exclude filter of @MapperScan");
       }
     }
 
@@ -198,12 +199,12 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
           typeFilters.add(new AspectJTypeFilter(expression, this.resourceLoader.getClassLoader()));
           break;
         default:
-          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType + " FilterType in exclude filter of @MapperScan");
+          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType
+              + " FilterType in exclude filter of @MapperScan");
       }
     }
     return typeFilters;
   }
-
 
   private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
     return importingClassMetadata.getClassName() + "#" + MapperScannerRegistrar.class.getSimpleName() + "#" + index;

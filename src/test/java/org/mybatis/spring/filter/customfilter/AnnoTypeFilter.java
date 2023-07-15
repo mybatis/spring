@@ -18,7 +18,7 @@ package org.mybatis.spring.filter.customfilter;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Documented
 public @interface AnnoTypeFilter {
 }

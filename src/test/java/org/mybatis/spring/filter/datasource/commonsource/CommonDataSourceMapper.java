@@ -15,6 +15,5 @@
  */
 package org.mybatis.spring.filter.datasource.commonsource;
 
-
 public interface CommonDataSourceMapper {
 }

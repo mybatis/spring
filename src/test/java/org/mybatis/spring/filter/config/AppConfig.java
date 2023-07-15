@@ -16,89 +16,81 @@
 package org.mybatis.spring.filter.config;
 
 import org.mybatis.spring.annotation.MapperScan;
-import org.mybatis.spring.filter.customfilter.ExcludeMaker;
 import org.mybatis.spring.filter.customfilter.AnnoTypeFilter;
 import org.mybatis.spring.filter.customfilter.CustomTypeFilter;
+import org.mybatis.spring.filter.customfilter.ExcludeMaker;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
-
 public class AppConfig {
 
-
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class) })
   public static class CustomFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class) })
   public static class AnnoFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ExcludeMaker.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ExcludeMaker.class) })
   public static class AssignableFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX,
-      pattern = "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*")})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*") })
   public static class RegexFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ASPECTJ,
-      pattern = "*..DataSource1Mapper")})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ASPECTJ, pattern = "*..DataSource1Mapper") })
   public static class AspectJFilterConfig {
 
   }
 
-
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class),
-      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class),
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class) })
   public static class CombinedFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX,
-      pattern = {"org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*",
-        "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource2\\..*"})})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, pattern = {
+          "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*",
+          "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource2\\..*" }) })
   public static class MultiPatternRegexFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ASPECTJ,
-      pattern = {"*..DataSource1Mapper",
-        "*..DataSource2Mapper"})})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ASPECTJ, pattern = { "*..DataSource1Mapper", "*..DataSource2Mapper" }) })
   public static class MultiPatternAspectJFilterConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = ExcludeMaker.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, value = ExcludeMaker.class) })
   public static class InvalidFilterTypeConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,
-      pattern = {"org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*"})})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, pattern = {
+          "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*" }) })
   public static class AnnoTypeWithPatternPropertyConfig {
 
   }
 
-  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
-    excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, value = AnnoTypeFilter.class)})
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, value = AnnoTypeFilter.class) })
   public static class RegexTypeWithClassesPropertyConfig {
 
   }
 }
-

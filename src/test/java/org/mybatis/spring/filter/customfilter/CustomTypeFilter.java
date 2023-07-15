@@ -15,11 +15,11 @@
  */
 package org.mybatis.spring.filter.customfilter;
 
+import java.io.IOException;
+
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
-
-import java.io.IOException;
 
 public class CustomTypeFilter implements TypeFilter {
   @Override
