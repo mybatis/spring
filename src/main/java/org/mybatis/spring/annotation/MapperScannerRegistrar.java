@@ -170,7 +170,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       switch (filterType) {
         case ANNOTATION:
           Assert.isAssignable(Annotation.class, filterClass,
-            "An error occured when processing a @ComponentScan " + "ANNOTATION type filter: ");
+            "Specified an unsupported type in 'ANNOTATION' exclude filter of @MapperScan");
           @SuppressWarnings("unchecked")
           Class<Annotation> annoClass = (Class<Annotation>) filterClass;
           typeFilters.add(new AnnotationTypeFilter(annoClass));
@@ -184,19 +184,21 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
           typeFilters.add(BeanUtils.instantiateClass(filterClass, TypeFilter.class));
           break;
         default:
-          throw new IllegalArgumentException("Unknown filter type " + filterType);
+          throw new IllegalArgumentException("Cannot specify the 'value' or 'classes' attribute if use the " + filterType + " FilterType in exclude filter of @MapperScan");
       }
     }
 
     String[] expressionArray = filterAttributes.getStringArray("pattern");
     for (String expression : expressionArray) {
-      String rawName = filterType.toString();
-      if ("REGEX".equals(rawName)) {
-        typeFilters.add(new RegexPatternTypeFilter(Pattern.compile(expression)));
-      } else if ("ASPECTJ".equals(rawName)) {
-        typeFilters.add(new AspectJTypeFilter(expression, this.resourceLoader.getClassLoader()));
-      } else {
-        throw new IllegalArgumentException("Unknown filter type " + filterType);
+      switch (filterType) {
+        case REGEX:
+          typeFilters.add(new RegexPatternTypeFilter(Pattern.compile(expression)));
+          break;
+        case ASPECTJ:
+          typeFilters.add(new AspectJTypeFilter(expression, this.resourceLoader.getClassLoader()));
+          break;
+        default:
+          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType + " FilterType in exclude filter of @MapperScan");
       }
     }
     return typeFilters;

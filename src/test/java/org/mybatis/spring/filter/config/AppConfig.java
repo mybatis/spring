@@ -82,5 +82,23 @@ public class AppConfig {
 
   }
 
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = ExcludeMaker.class)})
+  public static class InvalidFilterTypeConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,
+      pattern = {"org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*"})})
+  public static class AnnoTypeWithPatternPropertyConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource",
+    excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, value = AnnoTypeFilter.class)})
+  public static class RegexTypeWithClassesPropertyConfig {
+
+  }
 }
 

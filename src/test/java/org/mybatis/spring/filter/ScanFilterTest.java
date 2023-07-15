@@ -23,6 +23,7 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * test the function of excludeFilters in @MapperScan
@@ -140,6 +141,26 @@ public class ScanFilterTest {
     // other mapper could be registered to beanFactory correctly.
     assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
     assertThat(applicationContext.containsBean("dataSource2Mapper1")).isEqualTo(true);
+  }
+
+
+  @Test
+  void invalidTypeFilter() {
+    // invalid value using Annotation type filter
+    assertThrows(IllegalArgumentException.class,
+      () -> startContext(AppConfig.InvalidFilterTypeConfig.class));
+  }
+
+  @Test
+  void invalidPropertyPattern() {
+    assertThrows(IllegalArgumentException.class,
+      () -> startContext(AppConfig.AnnoTypeWithPatternPropertyConfig.class));
+  }
+
+  @Test
+  void invalidPropertyClasses() {
+    assertThrows(IllegalArgumentException.class,
+      () -> startContext(AppConfig.RegexTypeWithClassesPropertyConfig.class));
   }
 
 
