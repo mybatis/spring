@@ -50,6 +50,17 @@ public class XmlScanFilterTest {
   }
 
   @Test
+  void testAnnoScanWithPlaceHolderFilter() {
+    // exclude mappers which has @AnnoTypeFilter
+    System.getProperties().put("annoFilter","org.mybatis.spring.filter.customfilter.AnnoTypeFilter");
+    startContext("org/mybatis/spring/filter/xml/appContextPlaceHolder.xml");
+    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    closeContext();
+  }
+
+  @Test
   void testAssignScanFilter() {
     // exclude mappers which can assignable to ExcludeMaker
     startContext("org/mybatis/spring/filter/xml/appContextAssignFilter.xml");
