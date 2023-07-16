@@ -15,15 +15,16 @@
  */
 package org.mybatis.spring.filter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.mockrunner.mock.jdbc.MockDataSource;
+
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.filter.config.AppConfig;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * test the function of excludeFilters in @MapperScan
@@ -32,17 +33,17 @@ public class ScanFilterTest {
 
   private AnnotationConfigApplicationContext applicationContext;
 
-
   @Test
   void testCustomScanFilter() {
     startContext(AppConfig.CustomFilterConfig.class);
-    // use org.mybatis.spring.scan.filter.datasource as basePackages and exclude package datasource2 by MapperScan.excludeFilters
+    // use org.mybatis.spring.scan.filter.datasource as basePackages and exclude package datasource2 by
+    // MapperScan.excludeFilters
     // mapper in package datasource2 will not be registered to beanFactory
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
 
     // mapper in package datasource except datasource2 will be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
   }
 
   @Test
@@ -50,26 +51,25 @@ public class ScanFilterTest {
     startContext(AppConfig.AnnoFilterConfig.class);
 
     // use @AnnoTypeFilter to exclude mapper
-    assertThat(applicationContext.containsBean("annoExcludeMapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("annoExcludeMapper")).isFalse();
 
     // mapper in package datasource except datasource2 will be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
   }
-
 
   @Test
   void testAssignableScanFilter() {
     startContext(AppConfig.AssignableFilterConfig.class);
 
     // exclude AssignableMapper by AssignableFilter
-    assertThat(applicationContext.containsBean("assignableMapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("assignableMapper")).isFalse();
 
     // mapper in package datasource except datasource2 will be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
   }
 
   @Test
@@ -77,11 +77,11 @@ public class ScanFilterTest {
     startContext(AppConfig.RegexFilterConfig.class);
 
     // exclude package datasource1 by Regex
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
 
     // mapper in package datasource except datasource1 will be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
   }
 
   @Test
@@ -90,13 +90,12 @@ public class ScanFilterTest {
     startContext(AppConfig.AspectJFilterConfig.class);
 
     // exclude dataSource1Mapper by AspectJ
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
 
     // mapper in package datasource except datasource1 will be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
   }
-
 
   @Test
   void combinedScanFilter() {
@@ -104,15 +103,14 @@ public class ScanFilterTest {
     startContext(AppConfig.CombinedFilterConfig.class);
 
     // exclude datasource2.DataSource2Mapper by CustomTypeFilter
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
     // exclude datasource1.MapperWithAnnoFilter by AnnoTypeFilter
-    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
 
     // other mapper could be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
   }
-
 
   @Test
   void multiPatternRegexScanFilter() {
@@ -120,12 +118,12 @@ public class ScanFilterTest {
     startContext(AppConfig.MultiPatternRegexFilterConfig.class);
 
     // exclude datasource1 by pattern[0]
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
     // exclude datasource2 by pattern[1]
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
 
     // other mapper could be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
   }
 
   @Test
@@ -134,35 +132,31 @@ public class ScanFilterTest {
     startContext(AppConfig.MultiPatternAspectJFilterConfig.class);
 
     // exclude datasource1 by pattern[0]
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
     // exclude datasource2 by pattern[1]
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isEqualTo(false);
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
 
     // other mapper could be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isEqualTo(true);
-    assertThat(applicationContext.containsBean("dataSource2Mapper1")).isEqualTo(true);
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper1")).isTrue();
   }
-
 
   @Test
   void invalidTypeFilter() {
     // invalid value using Annotation type filter
-    assertThrows(IllegalArgumentException.class,
-      () -> startContext(AppConfig.InvalidFilterTypeConfig.class));
+    assertThrows(IllegalArgumentException.class, () -> startContext(AppConfig.InvalidFilterTypeConfig.class));
   }
 
   @Test
   void invalidPropertyPattern() {
-    assertThrows(IllegalArgumentException.class,
-      () -> startContext(AppConfig.AnnoTypeWithPatternPropertyConfig.class));
+    assertThrows(IllegalArgumentException.class, () -> startContext(AppConfig.AnnoTypeWithPatternPropertyConfig.class));
   }
 
   @Test
   void invalidPropertyClasses() {
     assertThrows(IllegalArgumentException.class,
-      () -> startContext(AppConfig.RegexTypeWithClassesPropertyConfig.class));
+        () -> startContext(AppConfig.RegexTypeWithClassesPropertyConfig.class));
   }
-
 
   private void startContext(Class<?> config) {
     applicationContext = new AnnotationConfigApplicationContext();
@@ -172,7 +166,6 @@ public class ScanFilterTest {
     applicationContext.refresh();
     applicationContext.start();
   }
-
 
   private void setupSqlSessionFactory(String name) {
     GenericBeanDefinition definition = new GenericBeanDefinition();

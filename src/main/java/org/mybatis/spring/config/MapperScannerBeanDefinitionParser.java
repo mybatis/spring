@@ -16,6 +16,9 @@
 package org.mybatis.spring.config;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.mybatis.spring.mapper.MapperFactoryBean;
@@ -28,9 +31,17 @@ import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.beans.factory.xml.XmlReaderContext;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.AspectJTypeFilter;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.RegexPatternTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * A {#code BeanDefinitionParser} that handles the element scan of the MyBatis. namespace
@@ -57,6 +68,7 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
   private static final String ATTRIBUTE_LAZY_INITIALIZATION = "lazy-initialization";
   private static final String ATTRIBUTE_DEFAULT_SCOPE = "default-scope";
   private static final String ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS = "process-property-placeholders";
+  private static final String ATTRIBUTE_EXCLUDE_FILTER = "exclude-filter";
 
   /**
    * {@inheritDoc}
@@ -98,6 +110,12 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
             .loadClass(mapperFactoryBeanClassName);
         builder.addPropertyValue("mapperFactoryBeanClass", mapperFactoryBeanClass);
       }
+
+      // parse exclude-filter
+      List<TypeFilter> typeFilters = parseTypeFilters(element, parserContext, classLoader);
+      if (!typeFilters.isEmpty()) {
+        builder.addPropertyValue("excludeFilters", typeFilters);
+      }
     } catch (Exception ex) {
       XmlReaderContext readerContext = parserContext.getReaderContext();
       readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());
@@ -113,6 +131,62 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
     builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 
     return builder.getBeanDefinition();
+  }
+
+  private List<TypeFilter> parseTypeFilters(Element element, ParserContext parserContext, ClassLoader classLoader) {
+    // Parse exclude filter elements.
+    List<TypeFilter> typeFilters = new ArrayList<>();
+    NodeList nodeList = element.getChildNodes();
+    for (int i = 0; i < nodeList.getLength(); i++) {
+      Node node = nodeList.item(i);
+      if (Node.ELEMENT_NODE == node.getNodeType()) {
+        String localName = parserContext.getDelegate().getLocalName(node);
+        try {
+          if (ATTRIBUTE_EXCLUDE_FILTER.equals(localName)) {
+            TypeFilter typeFilter = createTypeFilter((Element) node, classLoader, parserContext);
+            typeFilters.add(typeFilter);
+          }
+        } catch (ClassNotFoundException ex) {
+          parserContext.getReaderContext().warning("Ignoring non-present type filter class: " + ex,
+              parserContext.extractSource(element));
+        } catch (Exception ex) {
+          parserContext.getReaderContext().error(ex.getMessage(), parserContext.extractSource(element), ex.getCause());
+        }
+      }
+    }
+    return typeFilters;
+  }
+
+  @SuppressWarnings("unchecked")
+  private TypeFilter createTypeFilter(Element element, @Nullable ClassLoader classLoader, ParserContext parserContext)
+      throws ClassNotFoundException {
+    String filterType = element.getAttribute("type");
+    String expression = element.getAttribute("expression");
+    expression = parserContext.getReaderContext().getEnvironment().resolvePlaceholders(expression);
+    switch (filterType) {
+      case "annotation":
+        Class<?> filterAnno = ClassUtils.forName(expression, classLoader);
+        if(!Annotation.class.isAssignableFrom(filterAnno)){
+          throw new IllegalArgumentException(
+              "Class is not assignable to [" + Annotation.class.getName() + "]: " + expression);
+        }
+        return new AnnotationTypeFilter((Class<Annotation>) filterAnno);
+      case "custom":
+        Class<?> filterClass = ClassUtils.forName(expression, classLoader);
+        if (!TypeFilter.class.isAssignableFrom(filterClass)) {
+          throw new IllegalArgumentException(
+              "Class is not assignable to [" + TypeFilter.class.getName() + "]: " + expression);
+        }
+        return (TypeFilter) BeanUtils.instantiateClass(filterClass);
+      case "assignable":
+        return new AssignableTypeFilter(ClassUtils.forName(expression, classLoader));
+      case "regex":
+        return new RegexPatternTypeFilter(Pattern.compile(expression));
+      case "aspectj":
+        return new AspectJTypeFilter(expression, classLoader);
+      default:
+        throw new IllegalArgumentException("Unsupported filter type: " + filterType);
+    }
   }
 
   /**
