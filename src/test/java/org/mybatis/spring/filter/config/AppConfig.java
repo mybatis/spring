@@ -19,8 +19,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.filter.customfilter.AnnoTypeFilter;
 import org.mybatis.spring.filter.customfilter.CustomTypeFilter;
 import org.mybatis.spring.filter.customfilter.ExcludeMaker;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 
 public class AppConfig {
 
@@ -56,9 +59,16 @@ public class AppConfig {
 
   @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
       @ComponentScan.Filter(type = FilterType.CUSTOM, classes = CustomTypeFilter.class),
-      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class) })
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class),
+      @ComponentScan.Filter(type = FilterType.ASPECTJ, pattern = { "*..DataSource1Mapper",
+          "${exclude-filters.aspectj}" }) })
   public static class CombinedFilterConfig {
-
+    @Bean
+    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      configurer.setLocation(new ClassPathResource("/org/mybatis/spring/filter/config/application.properties"));
+      return configurer;
+    }
   }
 
   @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
@@ -91,6 +101,24 @@ public class AppConfig {
   @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
       @ComponentScan.Filter(type = FilterType.REGEX, value = AnnoTypeFilter.class) })
   public static class RegexTypeWithClassesPropertyConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, pattern = "${excludeFilter.regex}") })
+  public static class RegexFilterWithPlaceHolderConfig {
+
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, pattern = "${exclude-filters.regex}") })
+  public static class RegexFilterWithPlaceHolderConfig1 {
+    @Bean
+    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      configurer.setLocation(new ClassPathResource("/org/mybatis/spring/filter/config/application.properties"));
+      return configurer;
+    }
 
   }
 }

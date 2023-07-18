@@ -201,6 +201,8 @@ public @interface MapperScan {
    * Specifies which types are not eligible for mapper scanning.
    *
    * @since 3.0.3
+   *
+   * @return array of customized mapper excludeFilter
    */
   ComponentScan.Filter[] excludeFilters() default {};
 

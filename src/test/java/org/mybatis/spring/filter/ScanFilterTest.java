@@ -85,6 +85,32 @@ public class ScanFilterTest {
   }
 
   @Test
+  void testRegexWithPlaceHolderScanFilter() {
+    System.getProperties().put("excludeFilter.regex",
+        "org\\.mybatis\\.spring\\.filter\\.datasource\\.datasource1\\..*");
+    startContext(AppConfig.RegexFilterWithPlaceHolderConfig.class);
+
+    // exclude package datasource1 by Regex with placeHolder resolver
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
+
+    // mapper in package datasource except datasource1 will be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
+  }
+
+  @Test
+  void testRegexWithPlaceHolderScanFilter1() {
+    startContext(AppConfig.RegexFilterWithPlaceHolderConfig1.class);
+
+    // exclude package datasource1 by Regex with placeHolder resolver
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
+
+    // mapper in package datasource except datasource1 will be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
+  }
+
+  @Test
   void testAspectJScanFilter() {
 
     startContext(AppConfig.AspectJFilterConfig.class);
@@ -95,21 +121,6 @@ public class ScanFilterTest {
     // mapper in package datasource except datasource1 will be registered to beanFactory correctly.
     assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
     assertThat(applicationContext.containsBean("dataSource2Mapper")).isTrue();
-  }
-
-  @Test
-  void combinedScanFilter() {
-    // combined filter with Custom and Annotation
-    startContext(AppConfig.CombinedFilterConfig.class);
-
-    // exclude datasource2.DataSource2Mapper by CustomTypeFilter
-    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
-    // exclude datasource1.MapperWithAnnoFilter by AnnoTypeFilter
-    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
-
-    // other mapper could be registered to beanFactory correctly.
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
-    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
   }
 
   @Test
@@ -142,18 +153,38 @@ public class ScanFilterTest {
   }
 
   @Test
+  void combinedScanFilter() {
+    // combined filter with Custom Annotation and multi AspectJ
+    startContext(AppConfig.CombinedFilterConfig.class);
+
+    // exclude datasource2 by CustomTypeFilter
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
+    // exclude datasource1.MapperWithAnnoFilter by AnnoTypeFilter
+    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
+    // exclude commonDataSourceMapper by AspectJ
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isFalse();
+    // exclude dataSource1Mapper by AspectJ expression with placeholder
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isFalse();
+
+    // other mapper could be registered to beanFactory correctly.
+    assertThat(applicationContext.containsBean("assignableMapper")).isTrue();
+  }
+
+  @Test
   void invalidTypeFilter() {
-    // invalid value using Annotation type filter
+    // illegal value using type Annotation filter
     assertThrows(IllegalArgumentException.class, () -> startContext(AppConfig.InvalidFilterTypeConfig.class));
   }
 
   @Test
   void invalidPropertyPattern() {
+    // illegal mixed use type Annotation and pattern
     assertThrows(IllegalArgumentException.class, () -> startContext(AppConfig.AnnoTypeWithPatternPropertyConfig.class));
   }
 
   @Test
   void invalidPropertyClasses() {
+    // illegal mixed use type REGEX and value
     assertThrows(IllegalArgumentException.class,
         () -> startContext(AppConfig.RegexTypeWithClassesPropertyConfig.class));
   }

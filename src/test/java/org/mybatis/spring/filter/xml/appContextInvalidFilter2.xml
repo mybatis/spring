@@ -22,9 +22,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
   <!-- in-memory database and a datasource -->
   <jdbc:embedded-database id="dataSource">
@@ -38,17 +37,9 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
-  <context:property-placeholder location="classpath:/org/mybatis/spring/filter/xml/default.properties"/>
-
   <mybatis:scan base-package="org.mybatis.spring.filter.datasource">
-    <mybatis:exclude-filter type="annotation"
-                            expression="org.mybatis.spring.filter.customfilter.AnnoTypeFilter"/>
     <mybatis:exclude-filter type="custom"
-                            expression="org.mybatis.spring.filter.customfilter.CustomTypeFilter"/>
-    <mybatis:exclude-filter type="assignable"
-                            expression="org.mybatis.spring.filter.customfilter.ExcludeMaker"/>
-    <mybatis:exclude-filter type="aspectj"
-                            expression="${filter.aspectj}"/>
+                            expression="org.mybatis.spring.filter.customfilter.ExcludeMaker1"/>
   </mybatis:scan>
 
 </beans>

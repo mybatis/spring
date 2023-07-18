@@ -18,8 +18,9 @@ package org.mybatis.spring.annotation;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
@@ -38,9 +39,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.core.type.filter.AspectJTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
-import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -136,10 +135,17 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     AnnotationAttributes[] excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
     if (excludeFilterArray.length > 0) {
       List<TypeFilter> typeFilters = new ArrayList<>();
+      List<Map<String, String>> rawTypeFilters = new ArrayList<>();
       for (AnnotationAttributes excludeFilters : excludeFilterArray) {
-        typeFilters.addAll(typeFiltersFor(excludeFilters));
+        if (excludeFilters.getStringArray("pattern").length > 0) {
+          // in oder to apply placeholder resolver
+          rawTypeFilters.addAll(parseFiltersHasPatterns(excludeFilters));
+        } else {
+          typeFilters.addAll(typeFiltersFor(excludeFilters));
+        }
       }
       builder.addPropertyValue("excludeFilters", typeFilters);
+      builder.addPropertyValue("rawExcludeFilters", rawTypeFilters);
     }
 
     String lazyInitialization = annoAttrs.getString("lazyInitialization");
@@ -161,6 +167,44 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
   }
 
+  /**
+   * Parse excludeFilters which FilterType is REGEX or ASPECTJ
+   *
+   * @param filterAttributes
+   *          AnnotationAttributes of excludeFilters
+   *
+   * @since 3.0.3
+   */
+  private List<Map<String, String>> parseFiltersHasPatterns(AnnotationAttributes filterAttributes) {
+
+    List<Map<String, String>> rawTypeFilters = new ArrayList<>();
+    FilterType filterType = filterAttributes.getEnum("type");
+    String[] expressionArray = filterAttributes.getStringArray("pattern");
+    for (String expression : expressionArray) {
+      switch (filterType) {
+        case REGEX:
+        case ASPECTJ:
+          Map<String, String> typeFilter = new HashMap<>(16);
+          typeFilter.put("type", filterType.name().toLowerCase());
+          typeFilter.put("expression", expression);
+          rawTypeFilters.add(typeFilter);
+          break;
+        default:
+          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType
+              + " FilterType in exclude filter of @MapperScan");
+      }
+    }
+    return rawTypeFilters;
+  }
+
+  /**
+   * Parse excludeFilters which FilterType is ANNOTATION ASSIGNABLE or CUSTOM
+   *
+   * @param filterAttributes
+   *          AnnotationAttributes of excludeFilters
+   *
+   * @since 3.0.3
+   */
   private List<TypeFilter> typeFiltersFor(AnnotationAttributes filterAttributes) {
 
     List<TypeFilter> typeFilters = new ArrayList<>();
@@ -186,21 +230,6 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
         default:
           throw new IllegalArgumentException("Cannot specify the 'value' or 'classes' attribute if use the "
               + filterType + " FilterType in exclude filter of @MapperScan");
-      }
-    }
-
-    String[] expressionArray = filterAttributes.getStringArray("pattern");
-    for (String expression : expressionArray) {
-      switch (filterType) {
-        case REGEX:
-          typeFilters.add(new RegexPatternTypeFilter(Pattern.compile(expression)));
-          break;
-        case ASPECTJ:
-          typeFilters.add(new AspectJTypeFilter(expression, this.resourceLoader.getClassLoader()));
-          break;
-        default:
-          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType
-              + " FilterType in exclude filter of @MapperScan");
       }
     }
     return typeFilters;

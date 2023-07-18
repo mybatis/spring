@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -50,11 +49,23 @@ public class XmlScanFilterTest {
   }
 
   @Test
-  void testAnnoScanWithPlaceHolderFilter() {
+  void testScanWithPlaceHolderFilter() {
     // exclude mappers which has @AnnoTypeFilter
-    System.getProperties().put("annoFilter","org.mybatis.spring.filter.customfilter.AnnoTypeFilter");
+    System.getProperties().put("annoFilter", "org.mybatis.spring.filter.customfilter.AnnoTypeFilter");
     startContext("org/mybatis/spring/filter/xml/appContextPlaceHolder.xml");
     assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
+    assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
+    closeContext();
+  }
+
+  @Test
+  void testScanWithPlaceHolderFilter1() {
+    // exclude datasource2 mappers by CustomTypeFilter
+    startContext("org/mybatis/spring/filter/xml/appContextPlaceHolder1.xml");
+    assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
+    assertThat(applicationContext.containsBean("dataSource2Mapper1")).isFalse();
+    assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isTrue();
     assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
     assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
     closeContext();
@@ -95,34 +106,37 @@ public class XmlScanFilterTest {
 
   @Test
   void testCombinedScanFilter() {
-    // exclude filters combined with Annotation Custom and Assignable
+    // exclude filters combined with Annotation Custom Assignable and aspectj expression
     startContext("org/mybatis/spring/filter/xml/appContextCombinedFilter.xml");
     assertThat(applicationContext.containsBean("mapperWithAnnoFilter")).isFalse();
     assertThat(applicationContext.containsBean("dataSource2Mapper")).isFalse();
     assertThat(applicationContext.containsBean("assignableMapper")).isFalse();
+    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isFalse();
+
     assertThat(applicationContext.containsBean("dataSource1Mapper")).isTrue();
-    assertThat(applicationContext.containsBean("commonDataSourceMapper")).isTrue();
     closeContext();
   }
 
   @Test
   void invalidPatternFilter() {
-    try {
-      startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter.xml");
-    } catch (BeanDefinitionParsingException ex) {
-      assertThat(ex.getMessage()).contains("Class is not assignable to [java.lang.annotation.Annotation]");
-    } finally {
-      closeContext();
-    }
+    assertThrows(IllegalArgumentException.class,
+        () -> startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter.xml"));
+    closeContext();
   }
 
   @Test
   void invalidPropertyPattern() {
-    assertThrows(BeanDefinitionParsingException.class,
-      () -> startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter1.xml"));
+    assertThrows(IllegalArgumentException.class,
+        () -> startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter1.xml"));
     closeContext();
   }
 
+  @Test
+  void warpedClassNotFoundException() {
+    assertThrows(RuntimeException.class,
+        () -> startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter2.xml"));
+    closeContext();
+  }
 
   private void startContext(String config) {
     applicationContext = new ClassPathXmlApplicationContext(config);

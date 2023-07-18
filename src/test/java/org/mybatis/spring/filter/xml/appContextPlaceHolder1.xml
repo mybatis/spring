@@ -40,15 +40,10 @@
 
   <context:property-placeholder location="classpath:/org/mybatis/spring/filter/xml/default.properties"/>
 
+
   <mybatis:scan base-package="org.mybatis.spring.filter.datasource">
-    <mybatis:exclude-filter type="annotation"
-                            expression="org.mybatis.spring.filter.customfilter.AnnoTypeFilter"/>
     <mybatis:exclude-filter type="custom"
-                            expression="org.mybatis.spring.filter.customfilter.CustomTypeFilter"/>
-    <mybatis:exclude-filter type="assignable"
-                            expression="org.mybatis.spring.filter.customfilter.ExcludeMaker"/>
-    <mybatis:exclude-filter type="aspectj"
-                            expression="${filter.aspectj}"/>
+                            expression="${filter.custom}"/>
   </mybatis:scan>
 
 </beans>

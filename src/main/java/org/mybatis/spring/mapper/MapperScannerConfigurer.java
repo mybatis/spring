@@ -18,12 +18,15 @@ package org.mybatis.spring.mapper;
 import static org.springframework.util.Assert.notNull;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
@@ -40,7 +43,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.AspectJTypeFilter;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -112,6 +121,8 @@ public class MapperScannerConfigurer
   private Class<?> markerInterface;
 
   private List<TypeFilter> excludeFilters;
+
+  private List<Map<String, String>> rawExcludeFilters;
 
   private Class<? extends MapperFactoryBean> mapperFactoryBeanClass;
 
@@ -207,6 +218,20 @@ public class MapperScannerConfigurer
    */
   public void setExcludeFilters(List<TypeFilter> excludeFilters) {
     this.excludeFilters = excludeFilters;
+  }
+
+  /**
+   * In order to support process PropertyPlaceHolders.
+   * <p>
+   * After parsed, it will be added to excludeFilters.
+   *
+   * @since 3.0.3
+   *
+   * @param rawExcludeFilters
+   *          list of rawExcludeFilter
+   */
+  public void setRawExcludeFilters(List<Map<String, String>> rawExcludeFilters) {
+    this.rawExcludeFilters = rawExcludeFilters;
   }
 
   /**
@@ -432,6 +457,7 @@ public class MapperScannerConfigurer
       this.sqlSessionTemplateBeanName = getPropertyValue("sqlSessionTemplateBeanName", values);
       this.lazyInitialization = getPropertyValue("lazyInitialization", values);
       this.defaultScope = getPropertyValue("defaultScope", values);
+      this.rawExcludeFilters = getPropertyValueForTypeFilter("rawExcludeFilters", values);
     }
     this.basePackage = Optional.ofNullable(this.basePackage).map(getEnvironment()::resolvePlaceholders).orElse(null);
     this.sqlSessionFactoryBeanName = Optional.ofNullable(this.sqlSessionFactoryBeanName)
@@ -441,6 +467,7 @@ public class MapperScannerConfigurer
     this.lazyInitialization = Optional.ofNullable(this.lazyInitialization).map(getEnvironment()::resolvePlaceholders)
         .orElse(null);
     this.defaultScope = Optional.ofNullable(this.defaultScope).map(getEnvironment()::resolvePlaceholders).orElse(null);
+    this.excludeFilters = mergeExcludeFilters();
   }
 
   private Environment getEnvironment() {
@@ -464,6 +491,68 @@ public class MapperScannerConfigurer
       return ((TypedStringValue) value).getValue();
     } else {
       return null;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Map<String, String>> getPropertyValueForTypeFilter(String propertyName, PropertyValues values) {
+    PropertyValue property = values.getPropertyValue(propertyName);
+    Object value;
+    if (property == null || (value = property.getValue()) == null || !(value instanceof List<?>)) {
+      return null;
+    }
+    return (List<Map<String, String>>) value;
+  }
+
+  private List<TypeFilter> mergeExcludeFilters() {
+    List<TypeFilter> typeFilters = new ArrayList<>();
+    if (this.rawExcludeFilters == null || this.rawExcludeFilters.isEmpty()) {
+      return this.excludeFilters;
+    }
+    if (this.excludeFilters != null && !this.excludeFilters.isEmpty()) {
+      typeFilters.addAll(this.excludeFilters);
+    }
+    try {
+      for (Map<String, String> typeFilter : this.rawExcludeFilters) {
+        typeFilters.add(
+            createTypeFilter(typeFilter.get("type"), typeFilter.get("expression"), this.getClass().getClassLoader()));
+      }
+    } catch (ClassNotFoundException exception) {
+      throw new RuntimeException("ClassNotFoundException occur when to load the Specified excludeFilter classes.",
+          exception);
+    }
+    return typeFilters;
+  }
+
+  @SuppressWarnings("unchecked")
+  private TypeFilter createTypeFilter(String filterType, String expression, @Nullable ClassLoader classLoader)
+      throws ClassNotFoundException {
+
+    expression = this.getEnvironment().resolvePlaceholders(expression);
+
+    switch (filterType) {
+      case "annotation":
+        Class<?> filterAnno = ClassUtils.forName(expression, classLoader);
+        if (!Annotation.class.isAssignableFrom(filterAnno)) {
+          throw new IllegalArgumentException(
+              "Class is not assignable to [" + Annotation.class.getName() + "]: " + expression);
+        }
+        return new AnnotationTypeFilter((Class<Annotation>) filterAnno);
+      case "custom":
+        Class<?> filterClass = ClassUtils.forName(expression, classLoader);
+        if (!TypeFilter.class.isAssignableFrom(filterClass)) {
+          throw new IllegalArgumentException(
+              "Class is not assignable to [" + TypeFilter.class.getName() + "]: " + expression);
+        }
+        return (TypeFilter) BeanUtils.instantiateClass(filterClass);
+      case "assignable":
+        return new AssignableTypeFilter(ClassUtils.forName(expression, classLoader));
+      case "regex":
+        return new RegexPatternTypeFilter(Pattern.compile(expression));
+      case "aspectj":
+        return new AspectJTypeFilter(expression, classLoader);
+      default:
+        throw new IllegalArgumentException("Unsupported filter type: " + filterType);
     }
   }
 
