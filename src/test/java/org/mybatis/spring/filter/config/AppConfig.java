@@ -121,4 +121,21 @@ public class AppConfig {
     }
 
   }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", processPropertyPlaceHolders = false, excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.REGEX, pattern = "${exclude-filters.regex}") })
+  public static class ProcessPropertyPlaceHoldersOffConfig {
+    @Bean
+    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      configurer.setLocation(new ClassPathResource("/org/mybatis/spring/filter/config/application.properties"));
+      return configurer;
+    }
+  }
+
+  @MapperScan(basePackages = "org.mybatis.spring.filter.datasource", processPropertyPlaceHolders = false, excludeFilters = {
+      @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = AnnoTypeFilter.class) })
+  public static class AnnoFilterWithProcessPlaceHolderOffConfig {
+
+  }
 }

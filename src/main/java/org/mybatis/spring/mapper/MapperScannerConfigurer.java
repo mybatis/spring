@@ -407,7 +407,7 @@ public class MapperScannerConfigurer
     scanner.setAddToConfig(this.addToConfig);
     scanner.setAnnotationClass(this.annotationClass);
     scanner.setMarkerInterface(this.markerInterface);
-    scanner.setExcludeFilters(this.excludeFilters);
+    scanner.setExcludeFilters(this.excludeFilters = mergeExcludeFilters());
     scanner.setSqlSessionFactory(this.sqlSessionFactory);
     scanner.setSqlSessionTemplate(this.sqlSessionTemplate);
     scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);
@@ -467,7 +467,6 @@ public class MapperScannerConfigurer
     this.lazyInitialization = Optional.ofNullable(this.lazyInitialization).map(getEnvironment()::resolvePlaceholders)
         .orElse(null);
     this.defaultScope = Optional.ofNullable(this.defaultScope).map(getEnvironment()::resolvePlaceholders).orElse(null);
-    this.excludeFilters = mergeExcludeFilters();
   }
 
   private Environment getEnvironment() {
@@ -528,7 +527,9 @@ public class MapperScannerConfigurer
   private TypeFilter createTypeFilter(String filterType, String expression, @Nullable ClassLoader classLoader)
       throws ClassNotFoundException {
 
-    expression = this.getEnvironment().resolvePlaceholders(expression);
+    if (this.processPropertyPlaceHolders) {
+      expression = this.getEnvironment().resolvePlaceholders(expression);
+    }
 
     switch (filterType) {
       case "annotation":

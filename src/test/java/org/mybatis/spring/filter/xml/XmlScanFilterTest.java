@@ -18,6 +18,8 @@ package org.mybatis.spring.filter.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.regex.PatternSyntaxException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -135,6 +137,14 @@ public class XmlScanFilterTest {
   void warpedClassNotFoundException() {
     assertThrows(RuntimeException.class,
         () -> startContext("org/mybatis/spring/filter/xml/appContextInvalidFilter2.xml"));
+    closeContext();
+  }
+
+  @Test
+  void processPropertyPlaceHoldersSwitchTest() {
+    // if processPropertyPlaceHolders turn off regex compile will fail
+    assertThrows(PatternSyntaxException.class,
+        () -> startContext("org/mybatis/spring/filter/xml/appContextProcessPlaceHolderOff.xml"));
     closeContext();
   }
 

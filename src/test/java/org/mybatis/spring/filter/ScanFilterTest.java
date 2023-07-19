@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.mockrunner.mock.jdbc.MockDataSource;
 
+import java.util.regex.PatternSyntaxException;
+
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.filter.config.AppConfig;
@@ -187,6 +189,19 @@ public class ScanFilterTest {
     // illegal mixed use type REGEX and value
     assertThrows(IllegalArgumentException.class,
         () -> startContext(AppConfig.RegexTypeWithClassesPropertyConfig.class));
+  }
+
+  @Test
+  void processPropertyPlaceHoldersSwitchTest() {
+    // if processPropertyPlaceHolders turn off regex compile will fail
+    assertThrows(PatternSyntaxException.class,
+        () -> startContext(AppConfig.ProcessPropertyPlaceHoldersOffConfig.class));
+  }
+
+  @Test
+  void processPropertyPlaceHoldersSwitchTest1() {
+    // processPropertyPlaceHolders turn off has no effect to FilterType which don't use pattern property
+    startContext(AppConfig.AnnoFilterWithProcessPlaceHolderOffConfig.class);
   }
 
   private void startContext(Class<?> config) {
