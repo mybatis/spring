@@ -262,8 +262,12 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       // but, the actual class of the bean is MapperFactoryBean
       definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
       try {
+        Class<?> beanClass = Resources.classForName(beanClassName);
+        // Attribute for MockitoPostProcessor
+        // https://github.com/mybatis/spring-boot-starter/issues/475
+        definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClass);
         // for spring-native
-        definition.getPropertyValues().add("mapperInterface", Resources.classForName(beanClassName));
+        definition.getPropertyValues().add("mapperInterface", beanClass);
       } catch (ClassNotFoundException ignore) {
         // ignore
       }
@@ -271,10 +275,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       definition.setBeanClass(this.mapperFactoryBeanClass);
 
       definition.getPropertyValues().add("addToConfig", this.addToConfig);
-
-      // Attribute for MockitoPostProcessor
-      // https://github.com/mybatis/spring-boot-starter/issues/475
-      definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClassName);
 
       boolean explicitFactoryUsed = false;
       if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {
