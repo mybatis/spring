@@ -112,6 +112,8 @@
 
     <junit.version>5.9.1</junit.version>
 
+    <jacoco.plugin>0.8.11</jacoco.plugin>
+
     <!-- Reproducible Builds -->
     <project.build.outputTimestamp>1684481211</project.build.outputTimestamp>
   </properties>
