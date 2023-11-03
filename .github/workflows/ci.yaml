@@ -28,8 +28,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        java: [11, 17, 20, 21-ea]
-        distribution: ['zulu']
+        java: [11, 17, 21, 22-ea]
+        distribution: ['temurin']
       fail-fast: false
       max-parallel: 5
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
