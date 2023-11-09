@@ -78,7 +78,7 @@
 
   <scm>
     <url>http://github.com/mybatis/spring</url>
-    <connection>scm:git:ssh://github.com/mybatis/spring.git</connection>
+    <connection>scm:git:ssh://git@github.com/mybatis/spring.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/spring.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
@@ -92,9 +92,9 @@
   </ciManagement>
   <distributionManagement>
     <site>
-      <id>gh-pages</id>
+      <id>gh-pages-scm</id>
       <name>Mybatis GitHub Pages</name>
-      <url>git:ssh://git@github.com/mybatis/spring.git?gh-pages#</url>
+      <url>scm:git:ssh://git@github.com/mybatis/spring.git</url>
     </site>
   </distributionManagement>
 
