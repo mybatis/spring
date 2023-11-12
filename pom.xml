@@ -120,9 +120,6 @@
     <!-- Reproducible Builds -->
     <project.build.outputTimestamp>1684514485</project.build.outputTimestamp>
 
-    <!-- TODO: Remove this after mybatis-parent 40 -->
-    <jacoco.plugin>0.8.11</jacoco.plugin>
-
     <!-- Set byte buddy to experimental -->
     <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
   </properties>
