@@ -109,6 +109,7 @@
     <java.version>17</java.version>
     <java.release.version>17</java.release.version>
 
+    <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.14</mybatis.version>
     <spring.version>6.0.13</spring.version>
     <spring-batch.version>5.0.3</spring-batch.version>
@@ -167,7 +168,7 @@
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
-      <version>10.16.1.1</version>
+      <version>${derby.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -460,4 +461,34 @@
       </plugin>
     </plugins>
   </build>
+
+ <profiles>
+    <profile>
+      <id>pre16</id>
+      <activation>
+        <jdk>(,16)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.15.2.0</derby.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>17</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.16.1.1</derby.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>19</id>
+      <activation>
+        <jdk>[19,)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.17.1.0</derby.version>
+      </properties>
+    </profile>
+  </profiles>
 </project>
