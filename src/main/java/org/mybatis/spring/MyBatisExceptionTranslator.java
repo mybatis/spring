@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,8 +82,12 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
     if (e instanceof PersistenceException) {
       // Batch exceptions come inside another PersistenceException
       // recursion has a risk of infinite loop so better make another if
+      String msg = e.getMessage();
       if (e.getCause() instanceof PersistenceException) {
         e = (PersistenceException) e.getCause();
+        if (msg == null) {
+          msg = e.getMessage();
+        }
       }
       if (e.getCause() instanceof SQLException) {
         this.initExceptionTranslator();
@@ -94,7 +98,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
       } else if (e.getCause() instanceof TransactionException) {
         throw (TransactionException) e.getCause();
       }
-      return new MyBatisSystemException(e);
+      return new MyBatisSystemException(msg, e);
     }
     return null;
   }
