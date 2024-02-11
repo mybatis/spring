@@ -17,6 +17,7 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,13 +27,13 @@
     <relativePath />
   </parent>
 
+  <groupId>org.mybatis</groupId>
   <artifactId>mybatis-spring</artifactId>
   <version>3.0.4-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>mybatis-spring</name>
   <description>An easy-to-use Spring bridge for MyBatis sql mapping framework.</description>
-  <url>http://www.mybatis.org/spring/</url>
+  <url>https://www.mybatis.org/spring/</url>
 
   <contributors>
     <contributor>
@@ -80,7 +81,7 @@
     <connection>scm:git:ssh://git@github.com/mybatis/spring.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/spring.git</developerConnection>
     <tag>HEAD</tag>
-    <url>http://github.com/mybatis/spring</url>
+    <url>https://github.com/mybatis/spring/</url>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
