@@ -270,19 +270,19 @@
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>       <em class="jxr_comment">// but, the actual class of the bean is MapperFactoryBean</em>
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>       definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); <em class="jxr_comment">// issue #59</em>
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>         <em class="jxr_comment">// for spring-native</em>
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         definition.getPropertyValues().add(<span class="jxr_string">"mapperInterface"</span>, Resources.classForName(beanClassName));
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>       } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException ignore) {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <em class="jxr_comment">// ignore</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>       }
-<a class="jxr_linenumber" name="L270" href="#L270">270</a> 
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>       definition.setBeanClass(<strong class="jxr_keyword">this</strong>.mapperFactoryBeanClass);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>       definition.getPropertyValues().add(<span class="jxr_string">"addToConfig"</span>, <strong class="jxr_keyword">this</strong>.addToConfig);
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         Class&lt;?&gt; beanClass = Resources.classForName(beanClassName);
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <em class="jxr_comment">// Attribute for MockitoPostProcessor</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <em class="jxr_comment">// https://github.com/mybatis/spring-boot-starter/issues/475</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClass);
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">// for spring-native</em>
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         definition.getPropertyValues().add(<span class="jxr_string">"mapperInterface"</span>, beanClass);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>       } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException ignore) {
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         <em class="jxr_comment">// ignore</em>
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>       }
 <a class="jxr_linenumber" name="L274" href="#L274">274</a> 
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>       <em class="jxr_comment">// Attribute for MockitoPostProcessor</em>
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>       <em class="jxr_comment">// https://github.com/mybatis/spring-boot-starter/issues/475</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>       definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClassName);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>       definition.setBeanClass(<strong class="jxr_keyword">this</strong>.mapperFactoryBeanClass);
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> 
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>       definition.getPropertyValues().add(<span class="jxr_string">"addToConfig"</span>, <strong class="jxr_keyword">this</strong>.addToConfig);
 <a class="jxr_linenumber" name="L278" href="#L278">278</a> 
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>       <strong class="jxr_keyword">boolean</strong> explicitFactoryUsed = false;
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>       <strong class="jxr_keyword">if</strong> (StringUtils.hasText(<strong class="jxr_keyword">this</strong>.sqlSessionFactoryBeanName)) {
@@ -362,6 +362,6 @@
 <a class="jxr_linenumber" name="L354" href="#L354">354</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2010&#x2013;2023 <a href="https://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2010&#x2013;2024 <a href="https://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>
 </body>
 </html>
