@@ -16,6 +16,10 @@
 package org.mybatis.spring.config;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.mybatis.spring.mapper.MapperFactoryBean;
@@ -31,6 +35,8 @@ import org.springframework.beans.factory.xml.XmlReaderContext;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * A {#code BeanDefinitionParser} that handles the element scan of the MyBatis. namespace
@@ -57,6 +63,7 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
   private static final String ATTRIBUTE_LAZY_INITIALIZATION = "lazy-initialization";
   private static final String ATTRIBUTE_DEFAULT_SCOPE = "default-scope";
   private static final String ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS = "process-property-placeholders";
+  private static final String ATTRIBUTE_EXCLUDE_FILTER = "exclude-filter";
 
   /**
    * {@inheritDoc}
@@ -98,6 +105,13 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
             .loadClass(mapperFactoryBeanClassName);
         builder.addPropertyValue("mapperFactoryBeanClass", mapperFactoryBeanClass);
       }
+
+      // parse raw exclude-filter in <mybatis:scan>
+      List<Map<String, String>> rawExcludeFilters = parseScanTypeFilters(element, parserContext);
+      if (!rawExcludeFilters.isEmpty()) {
+        builder.addPropertyValue("rawExcludeFilters", rawExcludeFilters);
+      }
+
     } catch (Exception ex) {
       XmlReaderContext readerContext = parserContext.getReaderContext();
       readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());
@@ -113,6 +127,24 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
     builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 
     return builder.getBeanDefinition();
+  }
+
+  private List<Map<String, String>> parseScanTypeFilters(Element element, ParserContext parserContext) {
+    List<Map<String, String>> typeFilters = new ArrayList<>();
+    NodeList nodeList = element.getChildNodes();
+    for (int i = 0; i < nodeList.getLength(); i++) {
+      Node node = nodeList.item(i);
+      if (Node.ELEMENT_NODE == node.getNodeType()) {
+        String localName = parserContext.getDelegate().getLocalName(node);
+        if (ATTRIBUTE_EXCLUDE_FILTER.equals(localName)) {
+          Map<String, String> filter = new HashMap<>(16);
+          filter.put("type", ((Element) node).getAttribute("type"));
+          filter.put("expression", ((Element) node).getAttribute("expression"));
+          typeFilters.add(filter);
+        }
+      }
+    }
+    return typeFilters;
   }
 
   /**

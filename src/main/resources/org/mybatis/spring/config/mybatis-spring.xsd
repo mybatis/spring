@@ -33,6 +33,16 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
+      <xsd:sequence>
+          <xsd:element name="exclude-filter" type="filterType"
+                         minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                  <xsd:documentation><![CDATA[
+	Controls which eligible types to exclude for component scanning.
+						]]></xsd:documentation>
+              </xsd:annotation>
+          </xsd:element>
+      </xsd:sequence>
       <xsd:attribute name="base-package" type="xsd:string"
         use="required">
         <xsd:annotation>
@@ -160,4 +170,39 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
+
+  <xsd:complexType name="filterType">
+    <xsd:attribute name="type" use="required">
+      <xsd:annotation>
+        <xsd:documentation><![CDATA[
+    Controls the type of filtering to apply to the expression.
+
+    "annotation" indicates an annotation to be present or meta-present at the type level in target mappers;
+    "assignable" indicates a class (or interface) that the target mappers are assignable to (extend/implement);
+    "aspectj" indicates an AspectJ type pattern expression to be matched by the target mappers;
+    "regex" indicates a regex pattern to be matched by the target mappers' class names;
+    "custom" indicates a custom implementation of the org.springframework.core.type.TypeFilter interface.
+
+    Note: This attribute will not be inherited by child bean definitions.
+    Hence, it needs to be specified per concrete bean definition.
+                ]]></xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="annotation"/>
+          <xsd:enumeration value="assignable"/>
+          <xsd:enumeration value="aspectj"/>
+          <xsd:enumeration value="regex"/>
+          <xsd:enumeration value="custom"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="expression" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation><![CDATA[
+    Indicates the filter expression, the type of which is indicated by "type".
+                ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
 </xsd:schema>
