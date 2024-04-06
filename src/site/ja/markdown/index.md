@@ -48,7 +48,7 @@ MyBatis-Spring は以下の言語の翻訳を用意しています。
   <li class="es"><a href="./../es/index.html">Español</a></li>
   <li class="ja"><a href="./getting-started.html">日本語</a></li>
   <li class="ko"><a href="./../ko/index.html">한국어</a></li>
-  <li class="zh"><a href="./../zh/index.html">简体中文</a></li>
+  <li class="zh"><a href="./../zh_CN/index.html">简体中文</a></li>
 </ul>
 
 母国語でMyBatis Springのリファレンスを読んでみませんか？ ぜひドキュメントを母国語へ翻訳するためのIssue(パッチ)を作成してください！
