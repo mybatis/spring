@@ -48,7 +48,7 @@ MyBatis-Spring requires following versions:
 <ul class="i18n">
   <li class="en"><a href="./../index.html">English</a></li>
   <li class="es"><a href="./../es/index.html">Español</a></li>
-  <li class="zh"><a href="./../zh/index.html">简体中文</a></li>
+  <li class="zh"><a href="./../zh_CN/index.html">简体中文</a></li>
   <li class="ja"><a href="./../ja/index.html">日本語</a></li>
   <li class="ko"><a href="./getting-started.html">한국어</a></li>
 </ul>
