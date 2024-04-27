@@ -113,6 +113,7 @@
     <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.16</mybatis.version>
     <spring.version>6.1.6</spring.version>
+    <spring-boot.version>3.2.5</spring-boot.version>
     <spring-batch.version>5.1.1</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
@@ -216,6 +217,13 @@
           <artifactId>junit</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>${spring-boot.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
