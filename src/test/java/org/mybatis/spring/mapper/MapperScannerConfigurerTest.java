@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,8 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.mock.env.MockPropertySource;
 import org.springframework.stereotype.Component;
 
 class MapperScannerConfigurerTest {
@@ -399,7 +401,19 @@ class MapperScannerConfigurerTest {
     startContext();
 
     assertThat(applicationContext.getBeanDefinition("annotatedMapper")
-        .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE)).isEqualTo(AnnotatedMapper.class.getName());
+        .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE)).isEqualTo(AnnotatedMapper.class);
+  }
+
+  @Test
+  void testMapperBeanOnConditionalProperties() {
+    MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
+    propertySources.addLast(new MockPropertySource().withProperty("mapper.condition", "true"));
+
+    startContext();
+
+    assertThat(applicationContext.getBeanDefinition("annotatedMapperOnPropertyCondition")
+        .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE))
+            .isEqualTo(AnnotatedMapperOnPropertyCondition.class);
   }
 
   private void setupSqlSessionFactory(String name) {

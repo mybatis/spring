@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.NativeDetector;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
@@ -89,6 +90,16 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   private String defaultScope;
   private List<TypeFilter> excludeFilters;
 
+  public ClassPathMapperScanner(BeanDefinitionRegistry registry, Environment environment) {
+    super(registry, false, environment);
+    setIncludeAnnotationConfig(!AotDetector.useGeneratedArtifacts());
+    setPrintWarnLogIfNotFoundMappers(!NativeDetector.inNativeImage());
+  }
+
+  /**
+   * @deprecated Please use the {@link #ClassPathMapperScanner(BeanDefinitionRegistry, Environment)}.
+   */
+  @Deprecated(since = "3.0.4", forRemoval = true)
   public ClassPathMapperScanner(BeanDefinitionRegistry registry) {
     super(registry, false);
     setIncludeAnnotationConfig(!AotDetector.useGeneratedArtifacts());
@@ -276,8 +287,12 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       // but, the actual class of the bean is MapperFactoryBean
       definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
       try {
+        Class<?> beanClass = Resources.classForName(beanClassName);
+        // Attribute for MockitoPostProcessor
+        // https://github.com/mybatis/spring-boot-starter/issues/475
+        definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClass);
         // for spring-native
-        definition.getPropertyValues().add("mapperInterface", Resources.classForName(beanClassName));
+        definition.getPropertyValues().add("mapperInterface", beanClass);
       } catch (ClassNotFoundException ignore) {
         // ignore
       }
@@ -285,10 +300,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       definition.setBeanClass(this.mapperFactoryBeanClass);
 
       definition.getPropertyValues().add("addToConfig", this.addToConfig);
-
-      // Attribute for MockitoPostProcessor
-      // https://github.com/mybatis/spring-boot-starter/issues/475
-      definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClassName);
 
       boolean explicitFactoryUsed = false;
       if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {

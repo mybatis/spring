@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2010-2023 the original author or authors.
+    Copyright 2010-2024 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -17,22 +17,23 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>38</version>
+    <version>43</version>
     <relativePath />
   </parent>
 
+  <groupId>org.mybatis</groupId>
   <artifactId>mybatis-spring</artifactId>
-  <version>3.0.3-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <version>3.0.4-SNAPSHOT</version>
 
   <name>mybatis-spring</name>
   <description>An easy-to-use Spring bridge for MyBatis sql mapping framework.</description>
-  <url>http://www.mybatis.org/spring/</url>
+  <url>https://www.mybatis.org/spring/</url>
 
   <contributors>
     <contributor>
@@ -77,10 +78,10 @@
   </contributors>
 
   <scm>
-    <url>http://github.com/mybatis/spring</url>
-    <connection>scm:git:ssh://github.com/mybatis/spring.git</connection>
+    <connection>scm:git:ssh://git@github.com/mybatis/spring.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/spring.git</developerConnection>
     <tag>HEAD</tag>
+    <url>https://github.com/mybatis/spring/</url>
   </scm>
   <issueManagement>
     <system>GitHub Issue Management</system>
@@ -92,9 +93,9 @@
   </ciManagement>
   <distributionManagement>
     <site>
-      <id>gh-pages</id>
+      <id>gh-pages-scm</id>
       <name>Mybatis GitHub Pages</name>
-      <url>git:ssh://git@github.com/mybatis/spring.git?gh-pages#</url>
+      <url>scm:git:ssh://git@github.com/mybatis/spring.git</url>
     </site>
   </distributionManagement>
 
@@ -109,18 +110,17 @@
     <java.version>17</java.version>
     <java.release.version>17</java.release.version>
 
-    <mybatis.version>3.5.13</mybatis.version>
-    <spring.version>6.0.10</spring.version>
-    <spring-batch.version>5.0.2</spring-batch.version>
+    <derby.version>10.17.1.0</derby.version>
+    <mybatis.version>3.5.16</mybatis.version>
+    <spring.version>6.1.6</spring.version>
+    <spring-boot.version>3.2.5</spring-boot.version>
+    <spring-batch.version>5.1.1</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
-    <junit.version>5.9.3</junit.version>
+    <junit.version>5.10.2</junit.version>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1684514485</project.build.outputTimestamp>
-
-    <!-- TODO: Remove this after mybatis-parent 38 -->
-    <jacoco.plugin>0.8.9</jacoco.plugin>
+    <project.build.outputTimestamp>1700476361</project.build.outputTimestamp>
 
     <!-- Set byte buddy to experimental -->
     <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
@@ -167,7 +167,7 @@
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
-      <version>10.16.1.1</version>
+      <version>${derby.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -181,7 +181,7 @@
     <dependency>
       <groupId>org.jboss.byteman</groupId>
       <artifactId>byteman-bmunit</artifactId>
-      <version>4.0.21</version>
+      <version>4.0.22</version>
       <scope>test</scope>
     </dependency>
 
@@ -212,11 +212,18 @@
       <version>${spring-batch.version}</version>
       <scope>test</scope>
       <exclusions>
-           <exclusion>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-           </exclusion>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>${spring-boot.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -229,28 +236,28 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.7</version>
+      <version>2.0.13</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.4.0</version>
+      <version>5.11.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.24.2</version>
+      <version>3.25.3</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.mockrunner</groupId>
       <artifactId>mockrunner-core</artifactId>
-      <version>2.0.6</version>
+      <version>2.0.7</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -278,7 +285,7 @@
     <dependency>
       <groupId>com.mockrunner</groupId>
       <artifactId>mockrunner-ejb</artifactId>
-      <version>2.0.6</version>
+      <version>2.0.7</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -294,7 +301,7 @@
     <dependency>
       <groupId>com.mockrunner</groupId>
       <artifactId>mockrunner-jdbc</artifactId>
-      <version>2.0.6</version>
+      <version>2.0.7</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -326,18 +333,83 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.5</version>
+      <version>1.14.14</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.5</version>
+      <version>1.14.14</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>sonatype-oss-snapshots</id>
+      <name>Sonatype OSS Snapshots Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>spring-snapshot</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>spring-milestone</id>
+      <name>Spring Milestone</name>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>spring-snapshot</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>spring-milestone</id>
+      <name>Spring Milestone</name>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <build>
+
+    <resources>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>LICENSE</include>
+          <include>NOTICE</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>${project.build.testSourceDirectory}</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -362,10 +434,10 @@
           <!-- prepare site content by filtering ${project.*} values-->
           <execution>
             <id>filter-site</id>
-            <phase>pre-site</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
+            <phase>pre-site</phase>
             <configuration>
               <outputDirectory>${project.build.directory}/site-src</outputDirectory>
               <resources>
@@ -382,9 +454,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <configuration>
-          <locales>en,es,zh_CN,ja,ko</locales>
+          <locales>default,es,zh_CN,ja,ko</locales>
           <siteDirectory>${project.build.directory}/site-src</siteDirectory>
-       </configuration>
+        </configuration>
       </plugin>
       <!-- We are not modular yet but use automatic module names, javadoc plugin has well known incorrect determination of modular, patch it -->
       <plugin>
@@ -400,70 +472,35 @@
         </configuration>
       </plugin>
     </plugins>
-
-    <resources>
-      <resource>
-        <directory>${project.basedir}</directory>
-        <targetPath>META-INF</targetPath>
-        <includes>
-          <include>LICENSE</include>
-          <include>NOTICE</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>${project.basedir}/src/main/resources</directory>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>${project.build.testSourceDirectory}</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </testResource>
-    </testResources>
   </build>
 
-  <repositories>
-    <repository>
-      <id>sonatype-oss-snapshots</id>
-      <name>Sonatype OSS Snapshots Repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-    <repository>
-      <id>spring-snapshot</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>spring-milestone</id>
-      <name>Spring Milestone</name>
-      <url>https://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>spring-snapshot</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>spring-milestone</id>
-      <name>Spring Milestone</name>
-      <url>https://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
+ <profiles>
+    <profile>
+      <id>pre16</id>
+      <activation>
+        <jdk>(,16)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.15.2.0</derby.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>17</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.16.1.1</derby.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>19</id>
+      <activation>
+        <jdk>[19,)</jdk>
+      </activation>
+      <properties>
+          <derby.version>10.17.1.0</derby.version>
+      </properties>
+    </profile>
+  </profiles>
 </project>
