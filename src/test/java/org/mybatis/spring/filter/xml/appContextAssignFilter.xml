@@ -27,8 +27,8 @@
 
   <!-- in-memory database and a datasource -->
   <jdbc:embedded-database id="dataSource">
-    <jdbc:script location="classpath:org/mybatis/spring/batch/db/database-schema.sql"/>
-    <jdbc:script location="classpath:org/mybatis/spring/batch/db/database-test-data.sql"/>
+    <jdbc:script location="classpath:org/mybatis/spring/sample/db/database-schema.sql"/>
+    <jdbc:script location="classpath:org/mybatis/spring/sample/db/database-test-data.sql"/>
   </jdbc:embedded-database>
 
 
