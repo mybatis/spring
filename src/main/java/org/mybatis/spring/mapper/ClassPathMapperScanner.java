@@ -17,6 +17,7 @@ package org.mybatis.spring.mapper;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ import org.springframework.core.NativeDetector;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.StringUtils;
 
 /**
@@ -86,6 +88,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   private Class<? extends MapperFactoryBean> mapperFactoryBeanClass = MapperFactoryBean.class;
 
   private String defaultScope;
+  private List<TypeFilter> excludeFilters;
 
   public ClassPathMapperScanner(BeanDefinitionRegistry registry, Environment environment) {
     super(registry, false, environment);
@@ -143,6 +146,10 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
   public void setMarkerInterface(Class<?> markerInterface) {
     this.markerInterface = markerInterface;
+  }
+
+  public void setExcludeFilters(List<TypeFilter> excludeFilters) {
+    this.excludeFilters = excludeFilters;
   }
 
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
@@ -230,6 +237,13 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       String className = metadataReader.getClassMetadata().getClassName();
       return className.endsWith("package-info");
     });
+
+    // exclude types declared by MapperScan.excludeFilters
+    if (excludeFilters != null && excludeFilters.size() > 0) {
+      for (TypeFilter excludeFilter : excludeFilters) {
+        addExcludeFilter(excludeFilter);
+      }
+    }
   }
 
   /**

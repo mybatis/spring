@@ -323,6 +323,12 @@
       <version>6.0.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.9.19</version>
+      <optional>true</optional>
+    </dependency>
 
     <dependency>
       <groupId>net.bytebuddy</groupId>

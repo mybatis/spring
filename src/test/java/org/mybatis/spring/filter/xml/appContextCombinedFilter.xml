@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010-2023 the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+    <mybatis:scan> with new property exclude-filter
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!-- in-memory database and a datasource -->
+  <jdbc:embedded-database id="dataSource">
+    <jdbc:script location="classpath:org/mybatis/spring/sample/db/database-schema.sql"/>
+    <jdbc:script location="classpath:org/mybatis/spring/sample/db/database-test-data.sql"/>
+  </jdbc:embedded-database>
+
+
+  <!-- simplest possible SqlSessionFactory configuration -->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+  <context:property-placeholder location="classpath:/org/mybatis/spring/filter/xml/default.properties"/>
+
+  <mybatis:scan base-package="org.mybatis.spring.filter.datasource">
+    <mybatis:exclude-filter type="annotation"
+                            expression="org.mybatis.spring.filter.customfilter.AnnoTypeFilter"/>
+    <mybatis:exclude-filter type="custom"
+                            expression="org.mybatis.spring.filter.customfilter.CustomTypeFilter"/>
+    <mybatis:exclude-filter type="assignable"
+                            expression="org.mybatis.spring.filter.customfilter.ExcludeMaker"/>
+    <mybatis:exclude-filter type="aspectj"
+                            expression="${filter.aspectj}"/>
+  </mybatis:scan>
+
+</beans>

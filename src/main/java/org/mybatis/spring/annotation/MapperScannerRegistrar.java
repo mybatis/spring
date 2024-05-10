@@ -18,7 +18,9 @@ package org.mybatis.spring.annotation;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
@@ -31,10 +33,15 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -54,15 +61,14 @@ import org.springframework.util.StringUtils;
  */
 public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
+  private ResourceLoader resourceLoader;
+
   /**
    * {@inheritDoc}
-   *
-   * @deprecated Since 2.0.2, this method not used never.
    */
   @Override
-  @Deprecated
   public void setResourceLoader(ResourceLoader resourceLoader) {
-    // NOP
+    this.resourceLoader = resourceLoader;
   }
 
   /**
@@ -126,6 +132,22 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       basePackages.add(getDefaultBasePackage(annoMeta));
     }
 
+    AnnotationAttributes[] excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
+    if (excludeFilterArray.length > 0) {
+      List<TypeFilter> typeFilters = new ArrayList<>();
+      List<Map<String, String>> rawTypeFilters = new ArrayList<>();
+      for (AnnotationAttributes excludeFilters : excludeFilterArray) {
+        if (excludeFilters.getStringArray("pattern").length > 0) {
+          // in oder to apply placeholder resolver
+          rawTypeFilters.addAll(parseFiltersHasPatterns(excludeFilters));
+        } else {
+          typeFilters.addAll(typeFiltersFor(excludeFilters));
+        }
+      }
+      builder.addPropertyValue("excludeFilters", typeFilters);
+      builder.addPropertyValue("rawExcludeFilters", rawTypeFilters);
+    }
+
     String lazyInitialization = annoAttrs.getString("lazyInitialization");
     if (StringUtils.hasText(lazyInitialization)) {
       builder.addPropertyValue("lazyInitialization", lazyInitialization);
@@ -143,6 +165,74 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
 
+  }
+
+  /**
+   * Parse excludeFilters which FilterType is REGEX or ASPECTJ
+   *
+   * @param filterAttributes
+   *          AnnotationAttributes of excludeFilters
+   *
+   * @since 3.0.3
+   */
+  private List<Map<String, String>> parseFiltersHasPatterns(AnnotationAttributes filterAttributes) {
+
+    List<Map<String, String>> rawTypeFilters = new ArrayList<>();
+    FilterType filterType = filterAttributes.getEnum("type");
+    String[] expressionArray = filterAttributes.getStringArray("pattern");
+    for (String expression : expressionArray) {
+      switch (filterType) {
+        case REGEX:
+        case ASPECTJ:
+          Map<String, String> typeFilter = new HashMap<>(16);
+          typeFilter.put("type", filterType.name().toLowerCase());
+          typeFilter.put("expression", expression);
+          rawTypeFilters.add(typeFilter);
+          break;
+        default:
+          throw new IllegalArgumentException("Cannot specify the 'pattern' attribute if use the " + filterType
+              + " FilterType in exclude filter of @MapperScan");
+      }
+    }
+    return rawTypeFilters;
+  }
+
+  /**
+   * Parse excludeFilters which FilterType is ANNOTATION ASSIGNABLE or CUSTOM
+   *
+   * @param filterAttributes
+   *          AnnotationAttributes of excludeFilters
+   *
+   * @since 3.0.3
+   */
+  private List<TypeFilter> typeFiltersFor(AnnotationAttributes filterAttributes) {
+
+    List<TypeFilter> typeFilters = new ArrayList<>();
+    FilterType filterType = filterAttributes.getEnum("type");
+
+    for (Class<?> filterClass : filterAttributes.getClassArray("value")) {
+      switch (filterType) {
+        case ANNOTATION:
+          Assert.isAssignable(Annotation.class, filterClass,
+              "Specified an unsupported type in 'ANNOTATION' exclude filter of @MapperScan");
+          @SuppressWarnings("unchecked")
+          Class<Annotation> annoClass = (Class<Annotation>) filterClass;
+          typeFilters.add(new AnnotationTypeFilter(annoClass));
+          break;
+        case ASSIGNABLE_TYPE:
+          typeFilters.add(new AssignableTypeFilter(filterClass));
+          break;
+        case CUSTOM:
+          Assert.isAssignable(TypeFilter.class, filterClass,
+              "An error occured when processing a @ComponentScan " + "CUSTOM type filter: ");
+          typeFilters.add(BeanUtils.instantiateClass(filterClass, TypeFilter.class));
+          break;
+        default:
+          throw new IllegalArgumentException("Cannot specify the 'value' or 'classes' attribute if use the "
+              + filterType + " FilterType in exclude filter of @MapperScan");
+      }
+    }
+    return typeFilters;
   }
 
   private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
