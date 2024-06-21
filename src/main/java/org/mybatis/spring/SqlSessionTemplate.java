@@ -28,7 +28,9 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.executor.BatchResult;
@@ -419,8 +421,22 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
   private class SqlSessionInterceptor implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+      ExecutorType executorType = null;
+
+      if (args != null && args.length > 1 && args[1] instanceof MapperMethod.ParamMap) {
+        MapperMethod.ParamMap params = (MapperMethod.ParamMap) args[1];
+        Set<Map.Entry> set = params.entrySet();
+        for (Map.Entry it : set) {
+          if (it.getValue() instanceof ExecutorType) {
+            executorType = (ExecutorType) it.getValue();
+          }
+        }
+      }
+      
       SqlSession sqlSession = getSqlSession(SqlSessionTemplate.this.sqlSessionFactory,
-          SqlSessionTemplate.this.executorType, SqlSessionTemplate.this.exceptionTranslator);
+          executorType == null ? SqlSessionTemplate.this.executorType : executorType,
+          SqlSessionTemplate.this.exceptionTranslator);
+      
       try {
         Object result = method.invoke(sqlSession, args);
         if (!isSqlSessionTransactional(sqlSession, SqlSessionTemplate.this.sqlSessionFactory)) {
