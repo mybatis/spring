@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.mockrunner.mock.jdbc.MockDataSource;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.CallableStatement;
@@ -67,6 +68,8 @@ import org.mybatis.spring.type.DummyTypeHandler;
 import org.mybatis.spring.type.SuperType;
 import org.mybatis.spring.type.TypeHandlerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 class SqlSessionFactoryBeanTest {
 
@@ -347,6 +350,30 @@ class SqlSessionFactoryBeanTest {
     factoryBean.setMapperLocations(new org.springframework.core.io.Resource[] { null });
 
     assertDefaultConfig(factoryBean.getObject());
+  }
+
+  @Test
+  void testSingleResourceWildcardMapperLocationsShouldThrowException() {
+    setupFactoryBean();
+
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    Resource resource = resolver.getResource("classpath*:org/mybatis/spring/*Mapper.xml");
+
+    factoryBean.setMapperLocations(resource);
+
+    assertThrows(IOException.class, () -> factoryBean.getObject());
+  }
+
+  @Test
+  void testMultiResourceMapperLocations() throws Exception {
+    setupFactoryBean();
+
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    Resource[] resource = resolver.getResources("classpath*:org/mybatis/spring/*Mapper.xml");
+
+    factoryBean.setMapperLocations(resource);
+
+    assertNotNull(factoryBean.getObject());
   }
 
   @Test
