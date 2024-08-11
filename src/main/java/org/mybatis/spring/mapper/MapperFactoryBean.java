@@ -18,7 +18,6 @@ package org.mybatis.spring.mapper;
 import static org.springframework.util.Assert.notNull;
 
 import org.apache.ibatis.executor.ErrorContext;
-import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.FactoryBean;
@@ -71,7 +70,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
 
     notNull(this.mapperInterface, "Property 'mapperInterface' is required");
 
-    Configuration configuration = getSqlSession().getConfiguration();
+    var configuration = getSqlSession().getConfiguration();
     if (this.addToConfig && !configuration.hasMapper(this.mapperInterface)) {
       try {
         configuration.addMapper(this.mapperInterface);

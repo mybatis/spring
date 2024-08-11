@@ -79,7 +79,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
     if (e instanceof PersistenceException) {
       // Batch exceptions come inside another PersistenceException
       // recursion has a risk of infinite loop so better make another if
-      String msg = e.getMessage();
+      var msg = e.getMessage();
       if (e.getCause() instanceof PersistenceException) {
         e = (PersistenceException) e.getCause();
         if (msg == null) {
@@ -88,11 +88,12 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
       }
       if (e.getCause() instanceof SQLException) {
         this.initExceptionTranslator();
-        String task = e.getMessage() + "\n";
-        SQLException se = (SQLException) e.getCause();
-        DataAccessException dae = this.exceptionTranslator.translate(task, null, se);
+        var task = e.getMessage() + "\n";
+        var se = (SQLException) e.getCause();
+        var dae = this.exceptionTranslator.translate(task, null, se);
         return dae != null ? dae : new UncategorizedSQLException(task, null, se);
-      } else if (e.getCause() instanceof TransactionException) {
+      }
+      if (e.getCause() instanceof TransactionException) {
         throw (TransactionException) e.getCause();
       }
       return new MyBatisSystemException(msg, e);

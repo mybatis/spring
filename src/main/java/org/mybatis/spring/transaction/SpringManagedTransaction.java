@@ -105,7 +105,7 @@ public class SpringManagedTransaction implements Transaction {
 
   @Override
   public Integer getTimeout() throws SQLException {
-    ConnectionHolder holder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
+    var holder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
     if (holder != null && holder.hasTimeout()) {
       return holder.getTimeToLiveInSeconds();
     }

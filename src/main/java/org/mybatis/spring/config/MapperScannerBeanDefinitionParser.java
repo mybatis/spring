@@ -31,12 +31,10 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
-import org.springframework.beans.factory.xml.XmlReaderContext;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * A {#code BeanDefinitionParser} that handles the element scan of the MyBatis. namespace
@@ -66,33 +64,33 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
 
   @Override
   protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
-    BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
+    var builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
 
-    ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+    var classLoader = ClassUtils.getDefaultClassLoader();
 
-    String processPropertyPlaceHolders = element.getAttribute(ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS);
+    var processPropertyPlaceHolders = element.getAttribute(ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS);
     builder.addPropertyValue("processPropertyPlaceHolders",
         !StringUtils.hasText(processPropertyPlaceHolders) || Boolean.parseBoolean(processPropertyPlaceHolders));
     try {
-      String annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);
+      var annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);
       if (StringUtils.hasText(annotationClassName)) {
         @SuppressWarnings("unchecked")
         Class<? extends Annotation> annotationClass = (Class<? extends Annotation>) classLoader
             .loadClass(annotationClassName);
         builder.addPropertyValue("annotationClass", annotationClass);
       }
-      String markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);
+      var markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);
       if (StringUtils.hasText(markerInterfaceClassName)) {
         Class<?> markerInterface = classLoader.loadClass(markerInterfaceClassName);
         builder.addPropertyValue("markerInterface", markerInterface);
       }
-      String nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
+      var nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);
       if (StringUtils.hasText(nameGeneratorClassName)) {
         Class<?> nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);
-        BeanNameGenerator nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.class);
+        var nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.class);
         builder.addPropertyValue("nameGenerator", nameGenerator);
       }
-      String mapperFactoryBeanClassName = element.getAttribute(ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS);
+      var mapperFactoryBeanClassName = element.getAttribute(ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS);
       if (StringUtils.hasText(mapperFactoryBeanClassName)) {
         @SuppressWarnings("unchecked")
         Class<? extends MapperFactoryBean> mapperFactoryBeanClass = (Class<? extends MapperFactoryBean>) classLoader
@@ -101,13 +99,13 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
       }
 
       // parse raw exclude-filter in <mybatis:scan>
-      List<Map<String, String>> rawExcludeFilters = parseScanTypeFilters(element, parserContext);
+      var rawExcludeFilters = parseScanTypeFilters(element, parserContext);
       if (!rawExcludeFilters.isEmpty()) {
         builder.addPropertyValue("rawExcludeFilters", rawExcludeFilters);
       }
 
     } catch (Exception ex) {
-      XmlReaderContext readerContext = parserContext.getReaderContext();
+      var readerContext = parserContext.getReaderContext();
       readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());
     }
 
@@ -125,11 +123,11 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
 
   private List<Map<String, String>> parseScanTypeFilters(Element element, ParserContext parserContext) {
     List<Map<String, String>> typeFilters = new ArrayList<>();
-    NodeList nodeList = element.getChildNodes();
-    for (int i = 0; i < nodeList.getLength(); i++) {
-      Node node = nodeList.item(i);
+    var nodeList = element.getChildNodes();
+    for (var i = 0; i < nodeList.getLength(); i++) {
+      var node = nodeList.item(i);
       if (Node.ELEMENT_NODE == node.getNodeType()) {
-        String localName = parserContext.getDelegate().getLocalName(node);
+        var localName = parserContext.getDelegate().getLocalName(node);
         if (ATTRIBUTE_EXCLUDE_FILTER.equals(localName)) {
           Map<String, String> filter = new HashMap<>(16);
           filter.put("type", ((Element) node).getAttribute("type"));

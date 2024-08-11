@@ -27,11 +27,9 @@ import java.util.regex.Pattern;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.beans.factory.config.TypedStringValue;
@@ -386,7 +384,7 @@ public class MapperScannerConfigurer
       processPropertyPlaceHolders();
     }
 
-    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry, getEnvironment());
+    var scanner = new ClassPathMapperScanner(registry, getEnvironment());
     scanner.setAddToConfig(this.addToConfig);
     scanner.setAnnotationClass(this.annotationClass);
     scanner.setMarkerInterface(this.markerInterface);
@@ -399,7 +397,7 @@ public class MapperScannerConfigurer
     scanner.setBeanNameGenerator(this.nameGenerator);
     scanner.setMapperFactoryBeanClass(this.mapperFactoryBeanClass);
     if (StringUtils.hasText(lazyInitialization)) {
-      scanner.setLazyInitialization(Boolean.valueOf(lazyInitialization));
+      scanner.setLazyInitialization(Boolean.parseBoolean(lazyInitialization));
     }
     if (StringUtils.hasText(defaultScope)) {
       scanner.setDefaultScope(defaultScope);
@@ -420,13 +418,13 @@ public class MapperScannerConfigurer
         false, false);
 
     if (!prcs.isEmpty() && applicationContext instanceof ConfigurableApplicationContext) {
-      BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) applicationContext).getBeanFactory()
+      var mapperScannerBean = ((ConfigurableApplicationContext) applicationContext).getBeanFactory()
           .getBeanDefinition(beanName);
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
       // property placeholder substitution. Instead, create a BeanFactory that just
       // contains this mapper scanner and post process the factory.
-      DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+      var factory = new DefaultListableBeanFactory();
       factory.registerBeanDefinition(beanName, mapperScannerBean);
 
       for (PropertyResourceConfigurer prc : prcs.values()) {
@@ -457,17 +455,18 @@ public class MapperScannerConfigurer
   }
 
   private String getPropertyValue(String propertyName, PropertyValues values) {
-    PropertyValue property = values.getPropertyValue(propertyName);
+    var property = values.getPropertyValue(propertyName);
 
     if (property == null) {
       return null;
     }
 
-    Object value = property.getValue();
+    var value = property.getValue();
 
     if (value == null) {
       return null;
-    } else if (value instanceof String) {
+    }
+    if (value instanceof String) {
       return value.toString();
     } else if (value instanceof TypedStringValue) {
       return ((TypedStringValue) value).getValue();
@@ -478,7 +477,7 @@ public class MapperScannerConfigurer
 
   @SuppressWarnings("unchecked")
   private List<Map<String, String>> getPropertyValueForTypeFilter(String propertyName, PropertyValues values) {
-    PropertyValue property = values.getPropertyValue(propertyName);
+    var property = values.getPropertyValue(propertyName);
     Object value;
     if (property == null || (value = property.getValue()) == null || !(value instanceof List<?>)) {
       return null;

@@ -78,7 +78,7 @@ public abstract class SqlSessionDaoSupport extends DaoSupport {
    * @return a factory of SqlSession
    */
   public final SqlSessionFactory getSqlSessionFactory() {
-    return (this.sqlSessionTemplate != null ? this.sqlSessionTemplate.getSqlSessionFactory() : null);
+    return this.sqlSessionTemplate != null ? this.sqlSessionTemplate.getSqlSessionFactory() : null;
   }
 
   /**
