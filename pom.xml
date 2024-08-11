@@ -434,7 +434,7 @@
               <outputDirectory>${project.build.directory}/site-src</outputDirectory>
               <resources>
                 <resource>
-                  <directory>src/site</directory>
+                  <directory>${project.basedir}/src/site</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
