@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import org.mybatis.spring.mapper.MapperFactoryBean;
 public class DummyMapperFactoryBean<T> extends MapperFactoryBean<T> {
 
   public DummyMapperFactoryBean() {
-    super();
   }
 
   public DummyMapperFactoryBean(Class<T> mapperInterface) {
@@ -48,11 +47,11 @@ public class DummyMapperFactoryBean<T> extends MapperFactoryBean<T> {
 
   @Override
   public T getObject() throws Exception {
-    MapperFactoryBean<T> mapperFactoryBean = new MapperFactoryBean<>();
+    var mapperFactoryBean = new MapperFactoryBean<T>();
     mapperFactoryBean.setMapperInterface(getMapperInterface());
     mapperFactoryBean.setAddToConfig(isAddToConfig());
     mapperFactoryBean.setSqlSessionFactory(getCustomSessionFactoryForClass());
-    T object = mapperFactoryBean.getObject();
+    var object = mapperFactoryBean.getObject();
     mapperInstanceCount.incrementAndGet();
     return object;
   }

@@ -53,7 +53,7 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testGetConnection() throws java.sql.SQLException {
-    java.sql.Connection conn = sqlSessionTemplate.getConnection();
+    var conn = sqlSessionTemplate.getConnection();
 
     // outside of an explicit tx, getConnection() will start a tx, get an open connection then
     // end the tx, which closes the connection
@@ -67,7 +67,7 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
     try {
       status = txManager.getTransaction(new DefaultTransactionDefinition());
 
-      java.sql.Connection conn = sqlSessionTemplate.getConnection();
+      var conn = sqlSessionTemplate.getConnection();
 
       assertThat(conn.isClosed()).isFalse();
 
@@ -95,10 +95,10 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
   @Test
   void testExecutorType() {
     // Do not close this, spring will close it
-    SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
+    var template = new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
     assertThat(template.getExecutorType()).isEqualTo(ExecutorType.BATCH);
 
-    DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource);
+    var manager = new DataSourceTransactionManager(dataSource);
 
     TransactionStatus status = null;
 
@@ -108,7 +108,7 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
       // will synchronize the template with the current tx
       template.getConnection();
 
-      SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sqlSessionFactory);
+      var holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sqlSessionFactory);
 
       assertThat(holder.getExecutorType()).isEqualTo(ExecutorType.BATCH);
     } finally {
@@ -168,10 +168,10 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithTxRequired() {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     sqlSessionTemplate.getMapper(TestMapper.class).findTest();
 

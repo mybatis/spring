@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.mockrunner.mock.jdbc.MockConnection;
 import com.mockrunner.mock.jdbc.MockDataSource;
 
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -59,13 +58,13 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   void testAddToConfigTrue() throws Exception {
     // the default SqlSessionFactory in AbstractMyBatisSpringTest is created with an explicitly set
     // MapperLocations list, so create a new factory here that tests auto-loading the config
-    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    var factoryBean = new SqlSessionFactoryBean();
     factoryBean.setDatabaseIdProvider(null);
     // mapperLocations properties defaults to null
     factoryBean.setDataSource(dataSource);
     factoryBean.setPlugins(executorInterceptor);
 
-    SqlSessionFactory sqlSessionFactory = factoryBean.getObject();
+    var sqlSessionFactory = factoryBean.getObject();
 
     find(new SqlSessionTemplate(sqlSessionFactory), true);
     assertCommit(); // SqlSesssionTemplate autocommits
@@ -80,11 +79,11 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
       // the default SqlSessionFactory in AbstractMyBatisSpringTest is created with an explicitly
       // set MapperLocations list, so create a new factory here that tests auto-loading the
       // config
-      SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+      var factoryBean = new SqlSessionFactoryBean();
       // mapperLocations properties defaults to null
       factoryBean.setDataSource(dataSource);
 
-      SqlSessionFactory sqlSessionFactory = factoryBean.getObject();
+      var sqlSessionFactory = factoryBean.getObject();
 
       assertThrows(org.apache.ibatis.binding.BindingException.class,
           () -> find(new SqlSessionTemplate(sqlSessionFactory), false));
@@ -100,7 +99,7 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithTx() throws Exception {
-    TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+    var status = txManager.getTransaction(new DefaultTransactionDefinition());
 
     find();
 
@@ -115,8 +114,8 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   // transaction
   @Test
   void testWithNonSpringTransactionFactory() throws Exception {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
     try {
@@ -135,8 +134,8 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   // this should error
   @Test
   void testNonSpringTxMgrWithTx() throws Exception {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
     TransactionStatus status = null;
@@ -162,15 +161,15 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   // similar to testNonSpringTxFactoryNonSpringDSWithTx() in MyBatisSpringTest
   @Test
   void testNonSpringWithTx() throws Exception {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
 
-    MockDataSource mockDataSource = new MockDataSource();
+    var mockDataSource = new MockDataSource();
     mockDataSource.setupConnection(createMockConnection());
 
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), mockDataSource);
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), mockDataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
-    SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
+    var sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
 
     TransactionStatus status;
 
@@ -186,7 +185,7 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
       assertSingleConnection();
 
       // SqlSessionTemplate uses its own connection
-      MockConnection mockConnection = (MockConnection) mockDataSource.getConnection();
+      var mockConnection = (MockConnection) mockDataSource.getConnection();
       assertThat(mockConnection.getNumberCommits()).as("should call commit on Connection").isEqualTo(1);
       assertThat(mockConnection.getNumberRollbacks()).as("should not call rollback on Connection").isEqualTo(0);
       assertCommitSession();
@@ -207,7 +206,7 @@ class MapperFactoryBeanTest extends AbstractMyBatisSpringTest {
   private void find(SqlSessionTemplate sqlSessionTemplate, boolean addToConfig) throws Exception {
     // recreate the mapper for each test since sqlSessionTemplate or the underlying
     // SqlSessionFactory could change for each test
-    MapperFactoryBean<TestMapper> mapper = new MapperFactoryBean<>();
+    var mapper = new MapperFactoryBean<TestMapper>();
     mapper.setMapperInterface(TestMapper.class);
     mapper.setSqlSessionTemplate(sqlSessionTemplate);
     mapper.setAddToConfig(addToConfig);

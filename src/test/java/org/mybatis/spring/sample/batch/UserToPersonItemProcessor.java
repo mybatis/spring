@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ public class UserToPersonItemProcessor implements ItemProcessor<User, Person> {
 
   @Override
   public Person process(final User user) throws Exception {
-    final String[] names = user.getName().split(" ");
+    final var names = user.getName().split(" ");
     if (names.length == 1) {
       return new Person(names[0], null);
-    } else {
-      return new Person(names[0], names[1]);
     }
+    return new Person(names[0], names[1]);
   }
 
 }

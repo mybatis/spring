@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,11 @@
  */
 package org.mybatis.spring.sample;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,17 +38,17 @@ abstract class AbstractSampleJobTest {
   @Test
   void testJob() throws Exception {
 
-    JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+    var jobExecution = jobLauncherTestUtils.launchJob();
 
     Assertions.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 
-    List<Map<String, Object>> persons = jdbcTemplate.queryForList("SELECT * FROM persons ORDER BY person_id",
+    var persons = jdbcTemplate.queryForList("SELECT * FROM persons ORDER BY person_id",
         EmptySqlParameterSource.INSTANCE);
     Assertions.assertEquals(5, persons.size());
-    Object operationBy = persons.get(0).get("OPERATION_BY");
-    Object operationAt = persons.get(0).get("OPERATION_AT");
+    var operationBy = persons.get(0).get("OPERATION_BY");
+    var operationAt = persons.get(0).get("OPERATION_AT");
     {
-      Map<String, Object> person = persons.get(0);
+      var person = persons.get(0);
       Assertions.assertEquals(0, person.get("PERSON_ID"));
       Assertions.assertEquals("Pocoyo", person.get("FIRST_NAME"));
       Assertions.assertNull(person.get("LAST_NAME"));
@@ -60,7 +56,7 @@ abstract class AbstractSampleJobTest {
       Assertions.assertNotNull(operationAt);
     }
     {
-      Map<String, Object> person = persons.get(1);
+      var person = persons.get(1);
       Assertions.assertEquals(1, person.get("PERSON_ID"));
       Assertions.assertEquals("Pato", person.get("FIRST_NAME"));
       Assertions.assertNull(person.get("LAST_NAME"));
@@ -68,7 +64,7 @@ abstract class AbstractSampleJobTest {
       Assertions.assertEquals(operationAt, person.get("OPERATION_AT"));
     }
     {
-      Map<String, Object> person = persons.get(2);
+      var person = persons.get(2);
       Assertions.assertEquals(2, person.get("PERSON_ID"));
       Assertions.assertEquals("Eli", person.get("FIRST_NAME"));
       Assertions.assertNull(person.get("LAST_NAME"));
@@ -76,7 +72,7 @@ abstract class AbstractSampleJobTest {
       Assertions.assertEquals(operationAt, person.get("OPERATION_AT"));
     }
     {
-      Map<String, Object> person = persons.get(3);
+      var person = persons.get(3);
       Assertions.assertEquals(3, person.get("PERSON_ID"));
       Assertions.assertEquals("Valentina", person.get("FIRST_NAME"));
       Assertions.assertNull(person.get("LAST_NAME"));
@@ -84,7 +80,7 @@ abstract class AbstractSampleJobTest {
       Assertions.assertEquals(operationAt, person.get("OPERATION_AT"));
     }
     {
-      Map<String, Object> person = persons.get(4);
+      var person = persons.get(4);
       Assertions.assertEquals(4, person.get("PERSON_ID"));
       Assertions.assertEquals("Taro", person.get("FIRST_NAME"));
       Assertions.assertEquals("Yamada", person.get("LAST_NAME"));
@@ -99,7 +95,7 @@ abstract class AbstractSampleJobTest {
   static class LocalContext {
     @Bean
     JobLauncherTestUtils jobLauncherTestUtils(Job job) {
-      JobLauncherTestUtils utils = new JobLauncherTestUtils();
+      var utils = new JobLauncherTestUtils();
       utils.setJob(job);
       return utils;
     }

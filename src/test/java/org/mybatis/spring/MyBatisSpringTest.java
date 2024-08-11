@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   @AfterEach
   void validateSessionClose() {
     // assume if the Executor is closed, the Session is too
-    if ((session != null) && !executorInterceptor.isExecutorClosed()) {
+    if (session != null && !executorInterceptor.isExecutorClosed()) {
       session = null;
       fail("SqlSession is not closed");
     } else {
@@ -140,8 +140,8 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   // Spring API should work with a MyBatis TransactionFactories
   @Test
   void testWithNonSpringTransactionFactory() {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
     try {
@@ -162,8 +162,8 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   // this should not work since the DS will be out of sync with MyBatis
   @Test
   void testNonSpringTxFactoryWithTx() throws Exception {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), dataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
     TransactionStatus status = null;
@@ -186,12 +186,12 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   // this should work since the DS is managed MyBatis
   @Test
   void testNonSpringTxFactoryNonSpringDSWithTx() throws java.sql.SQLException {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
 
-    MockDataSource mockDataSource = new MockDataSource();
+    var mockDataSource = new MockDataSource();
     mockDataSource.setupConnection(createMockConnection());
 
-    Environment nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), mockDataSource);
+    var nonSpring = new Environment("non-spring", new JdbcTransactionFactory(), mockDataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
     TransactionStatus status;
@@ -211,7 +211,7 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
       // SqlSession uses its own connection
       // that connection will not have committed since no SQL was executed by the session
-      MockConnection mockConnection = (MockConnection) mockDataSource.getConnection();
+      var mockConnection = (MockConnection) mockDataSource.getConnection();
       assertThat(mockConnection.getNumberCommits()).as("should call commit on Connection").isEqualTo(0);
       assertThat(mockConnection.getNumberRollbacks()).as("should not call rollback on Connection").isEqualTo(0);
       assertCommitSession();
@@ -248,16 +248,16 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
     try {
       txManager.setDataSource(dataSource);
-      TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+      var status = txManager.getTransaction(new DefaultTransactionDefinition());
 
       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 
       // start a new tx while the other is in progress
-      DefaultTransactionDefinition txRequiresNew = new DefaultTransactionDefinition();
+      var txRequiresNew = new DefaultTransactionDefinition();
       txRequiresNew.setPropagationBehaviorName("PROPAGATION_REQUIRES_NEW");
-      TransactionStatus status2 = txManager.getTransaction(txRequiresNew);
+      var status2 = txManager.getTransaction(txRequiresNew);
 
-      SqlSession session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
+      var session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 
       SqlSessionUtils.closeSqlSession(session2, sqlSessionFactory);
       txManager.rollback(status2);
@@ -277,12 +277,12 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithJtaTxManager() {
-    JtaTransactionManager jtaManager = new JtaTransactionManager(Mockito.mock(UserTransaction.class));
+    var jtaManager = new JtaTransactionManager(Mockito.mock(UserTransaction.class));
 
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = jtaManager.getTransaction(txDef);
+    var status = jtaManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
     session.getMapper(TestMapper.class).findTest();
@@ -298,20 +298,20 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithJtaTxManagerAndNonSpringTxManager() throws java.sql.SQLException {
-    Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
+    var original = sqlSessionFactory.getConfiguration().getEnvironment();
 
-    MockDataSource mockDataSource = new MockDataSource();
+    var mockDataSource = new MockDataSource();
     mockDataSource.setupConnection(createMockConnection());
 
-    Environment nonSpring = new Environment("non-spring", new ManagedTransactionFactory(), mockDataSource);
+    var nonSpring = new Environment("non-spring", new ManagedTransactionFactory(), mockDataSource);
     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 
-    JtaTransactionManager jtaManager = new JtaTransactionManager(Mockito.mock(UserTransaction.class));
+    var jtaManager = new JtaTransactionManager(Mockito.mock(UserTransaction.class));
 
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = jtaManager.getTransaction(txDef);
+    var status = jtaManager.getTransaction(txDef);
 
     try {
       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
@@ -326,7 +326,7 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
       assertNoCommitJdbc();
       assertCommitSession();
 
-      MockConnection mockConnection = (MockConnection) mockDataSource.getConnection();
+      var mockConnection = (MockConnection) mockDataSource.getConnection();
       assertThat(mockConnection.getNumberCommits()).as("should call commit on Connection").isEqualTo(0);
       assertThat(mockConnection.getNumberRollbacks()).as("should not call rollback on Connection").isEqualTo(0);
 
@@ -345,10 +345,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithTxSupports() {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_SUPPORTS");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
     session.getMapper(TestMapper.class).findTest();
@@ -363,10 +363,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testRollbackWithTxSupports() {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_SUPPORTS");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
     session.getMapper(TestMapper.class).findTest();
@@ -381,10 +381,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithTxRequired() {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
     session.getMapper(TestMapper.class).findTest();
@@ -399,10 +399,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testSqlSessionCommitWithTx() {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
     session.getMapper(TestMapper.class).findTest();
@@ -429,7 +429,7 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
     session.getMapper(TestMapper.class).findTest();
 
     // this transaction should use another Connection
-    TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+    var status = txManager.getTransaction(new DefaultTransactionDefinition());
 
     // session continues using original connection
     session.getMapper(TestMapper.class).insertTest("test2");
@@ -463,16 +463,16 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
 
     try {
       txManager.setDataSource(dataSource);
-      TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+      var status = txManager.getTransaction(new DefaultTransactionDefinition());
 
       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 
       // start a new tx while the other is in progress
-      DefaultTransactionDefinition txRequiresNew = new DefaultTransactionDefinition();
+      var txRequiresNew = new DefaultTransactionDefinition();
       txRequiresNew.setPropagationBehaviorName("PROPAGATION_REQUIRES_NEW");
-      TransactionStatus status2 = txManager.getTransaction(txRequiresNew);
+      var status2 = txManager.getTransaction(txRequiresNew);
 
-      SqlSession session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory);
+      var session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 
       assertThat(session).as("getSqlSession() should not return suspended SqlSession").isNotSameAs(session2);
 
@@ -535,10 +535,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   void testBatchInTx() {
     setupBatchStatements();
 
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 
@@ -577,10 +577,10 @@ class MyBatisSpringTest extends AbstractMyBatisSpringTest {
   void testBatchInTxWithError() {
     setupBatchStatements();
 
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
 
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
     session = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean checkUserExists(int id) {
-    if (userMapperMaster.select(id) != null)
+    if ((userMapperMaster.select(id) != null) || (userMapperSlave.select(id) != null)) {
       return true;
-    if (userMapperSlave.select(id) != null)
-      return true;
+    }
     return false;
   }
 }

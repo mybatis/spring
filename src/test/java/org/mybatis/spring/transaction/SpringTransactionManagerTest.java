@@ -19,20 +19,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.AbstractMyBatisSpringTest;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldNoOpWithTx() throws Exception {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     transaction.getConnection();
     transaction.commit();
     transaction.close();
@@ -63,9 +61,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldManageWithNoTx() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     transaction.getConnection();
     transaction.commit();
     transaction.close();
@@ -75,9 +72,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldNotCommitWithNoTxAndAutocommitIsOn() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     connection.setAutoCommit(true);
     transaction.getConnection();
     transaction.commit();
@@ -88,9 +84,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldIgnoreAutocommit() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, true);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, true);
     transaction.getConnection();
     transaction.commit();
     transaction.close();

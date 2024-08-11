@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class SampleConfig {
 
   @Bean
   public SqlSessionFactory sqlSessionFactory() throws Exception {
-    SqlSessionFactoryBean ss = new SqlSessionFactoryBean();
+    var ss = new SqlSessionFactoryBean();
     ss.setDataSource(dataSource());
     ss.setMapperLocations(new ClassPathResource("org/mybatis/spring/sample/mapper/UserMapper.xml"));
     return ss.getObject();
@@ -56,13 +56,13 @@ public class SampleConfig {
   @Bean
   public UserMapper userMapper() throws Exception {
     // when using javaconfig a template requires less lines than a MapperFactoryBean
-    SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory());
+    var sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory());
     return sqlSessionTemplate.getMapper(UserMapper.class);
   }
 
   @Bean
   public UserMapper userMapperWithFactory() throws Exception {
-    MapperFactoryBean<UserMapper> mapperFactoryBean = new MapperFactoryBean<>();
+    var mapperFactoryBean = new MapperFactoryBean<UserMapper>();
     mapperFactoryBean.setMapperInterface(UserMapper.class);
     mapperFactoryBean.setSqlSessionFactory(sqlSessionFactory());
     mapperFactoryBean.afterPropertiesSet();

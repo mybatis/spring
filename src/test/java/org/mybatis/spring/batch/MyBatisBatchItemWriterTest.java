@@ -71,7 +71,7 @@ class MyBatisBatchItemWriterTest {
   void testZeroUpdateCountShouldThrowException() {
     Chunk<Employee> employees = Chunk.of(new Employee(), new Employee());
 
-    BatchResult batchResult = new BatchResult(null, null);
+    var batchResult = new BatchResult(null, null);
     batchResult.setUpdateCounts(new int[] { 1, 0 });
     List<BatchResult> batchResults = Collections.singletonList(batchResult);
 
@@ -85,7 +85,7 @@ class MyBatisBatchItemWriterTest {
     this.writer.setAssertUpdates(false);
     this.writer.setStatementId("updateEmployee");
 
-    Employee employee = new Employee();
+    var employee = new Employee();
     Chunk<Employee> employees = Chunk.of(employee);
     writer.write(employees);
 
@@ -103,7 +103,7 @@ class MyBatisBatchItemWriterTest {
       return parameter;
     });
 
-    Employee employee = new Employee();
+    var employee = new Employee();
     Chunk<Employee> employees = Chunk.of(employee);
     writer.write(employees);
 

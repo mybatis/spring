@@ -61,13 +61,13 @@ class MyBatisCursorItemReaderTest {
     Mockito.when(this.sqlSession.selectCursor("selectFoo", Collections.singletonMap("id", 1)))
         .thenThrow(new RuntimeException("error."));
 
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReader<>();
+    var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.setSqlSessionFactory(this.sqlSessionFactory);
     itemReader.setQueryId("selectFoo");
     itemReader.setParameterValues(Collections.singletonMap("id", 1));
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     try {
       itemReader.open(executionContext);
       fail();
@@ -82,7 +82,7 @@ class MyBatisCursorItemReaderTest {
 
   @Test
   void testCloseBeforeOpen() {
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReader<>();
+    var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.close();
   }
 
@@ -95,10 +95,6 @@ class MyBatisCursorItemReaderTest {
 
     Foo(String name) {
       this.name = name;
-    }
-
-    public String getName() {
-      return this.name;
     }
   }
 

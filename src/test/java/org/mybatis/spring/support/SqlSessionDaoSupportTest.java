@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class SqlSessionDaoSupportTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithSqlSessionTemplate() {
-    SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
+    var sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
     sqlSessionDaoSupport.setSqlSessionTemplate(sessionTemplate);
     sqlSessionDaoSupport.afterPropertiesSet();
 
@@ -66,7 +66,7 @@ class SqlSessionDaoSupportTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testWithBothFactoryAndTemplate() {
-    SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
+    var sessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
     sqlSessionDaoSupport.setSqlSessionTemplate(sessionTemplate);
     sqlSessionDaoSupport.setSqlSessionFactory(sqlSessionFactory);
     sqlSessionDaoSupport.afterPropertiesSet();
@@ -98,7 +98,7 @@ class SqlSessionDaoSupportTest extends AbstractMyBatisSpringTest {
   private void setupContext() {
     applicationContext = new GenericApplicationContext();
 
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(MockSqlSessionDao.class);
     applicationContext.registerBeanDefinition("dao", definition);
 
@@ -114,7 +114,7 @@ class SqlSessionDaoSupportTest extends AbstractMyBatisSpringTest {
   }
 
   private void setupSqlSessionFactory(String name) {
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(SqlSessionFactoryBean.class);
     definition.getPropertyValues().add("dataSource", dataSource);
 
