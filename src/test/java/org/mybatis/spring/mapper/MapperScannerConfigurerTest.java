@@ -40,11 +40,11 @@ import org.mybatis.spring.type.DummyMapperFactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.mock.env.MockPropertySource;
@@ -305,7 +305,7 @@ class MapperScannerConfigurerTest {
     props.put("sqlSessionFactoryBeanNameProperty", "sqlSessionFactory2");
 
     GenericBeanDefinition propertyDefinition = new GenericBeanDefinition();
-    propertyDefinition.setBeanClass(PropertyPlaceholderConfigurer.class);
+    propertyDefinition.setBeanClass(PropertySourcesPlaceholderConfigurer.class);
     propertyDefinition.getPropertyValues().add("properties", props);
 
     applicationContext.registerBeanDefinition("propertiesPlaceholder", propertyDefinition);
@@ -355,7 +355,7 @@ class MapperScannerConfigurerTest {
     props.put("mybatis.lazy-initialization", "true");
 
     GenericBeanDefinition propertyDefinition = new GenericBeanDefinition();
-    propertyDefinition.setBeanClass(PropertyPlaceholderConfigurer.class);
+    propertyDefinition.setBeanClass(PropertySourcesPlaceholderConfigurer.class);
     propertyDefinition.getPropertyValues().add("properties", props);
 
     applicationContext.registerBeanDefinition("propertiesPlaceholder", propertyDefinition);
