@@ -407,7 +407,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <systemProperties>
+          <systemPropertyVariables>
             <property>
               <name>derby.stream.error.file</name>
               <value>${project.build.directory}/derby.log</value>
@@ -416,7 +416,7 @@
               <name>com.atomikos.icatch.log_base_dir</name>
               <value>${project.build.directory}</value>
             </property>
-          </systemProperties>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>
