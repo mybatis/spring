@@ -61,6 +61,7 @@ import org.springframework.util.StringUtils;
  */
 public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
+  // Note: Do not move resourceLoader via cleanup
   private ResourceLoader resourceLoader;
 
   @Override
