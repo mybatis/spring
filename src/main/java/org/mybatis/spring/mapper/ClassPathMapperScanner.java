@@ -208,7 +208,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * that extends a markerInterface or/and those annotated with the annotationClass
    */
   public void registerFilters() {
-    boolean acceptAllInterfaces = true;
+    var acceptAllInterfaces = true;
 
     // if specified, use the given annotation and / or marker interface
     if (this.annotationClass != null) {
@@ -234,7 +234,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
     // exclude package-info.java
     addExcludeFilter((metadataReader, metadataReaderFactory) -> {
-      String className = metadataReader.getClassMetadata().getClassName();
+      var className = metadataReader.getClassMetadata().getClassName();
       return className.endsWith("package-info");
     });
 
@@ -252,7 +252,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    */
   @Override
   public Set<BeanDefinitionHolder> doScan(String... basePackages) {
-    Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
+    var beanDefinitions = super.doScan(basePackages);
 
     if (beanDefinitions.isEmpty()) {
       if (printWarnLogIfNotFoundMappers) {
@@ -268,10 +268,10 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
   private void processBeanDefinitions(Set<BeanDefinitionHolder> beanDefinitions) {
     AbstractBeanDefinition definition;
-    BeanDefinitionRegistry registry = getRegistry();
+    var registry = getRegistry();
     for (BeanDefinitionHolder holder : beanDefinitions) {
       definition = (AbstractBeanDefinition) holder.getBeanDefinition();
-      boolean scopedProxy = false;
+      var scopedProxy = false;
       if (ScopedProxyFactoryBean.class.getName().equals(definition.getBeanClassName())) {
         definition = (AbstractBeanDefinition) Optional
             .ofNullable(((RootBeanDefinition) definition).getDecoratedDefinition())
@@ -279,7 +279,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
                 "The target bean definition of scoped proxy bean not found. Root bean definition[" + holder + "]"));
         scopedProxy = true;
       }
-      String beanClassName = definition.getBeanClassName();
+      var beanClassName = definition.getBeanClassName();
       LOGGER.debug(() -> "Creating MapperFactoryBean with name '" + holder.getBeanName() + "' and '" + beanClassName
           + "' mapperInterface");
 
@@ -301,7 +301,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
       definition.getPropertyValues().add("addToConfig", this.addToConfig);
 
-      boolean explicitFactoryUsed = false;
+      var explicitFactoryUsed = false;
       if (StringUtils.hasText(this.sqlSessionFactoryBeanName)) {
         definition.getPropertyValues().add("sqlSessionFactory",
             new RuntimeBeanReference(this.sqlSessionFactoryBeanName));
@@ -344,7 +344,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       }
 
       if (!definition.isSingleton()) {
-        BeanDefinitionHolder proxyHolder = ScopedProxyUtils.createScopedProxy(holder, registry, true);
+        var proxyHolder = ScopedProxyUtils.createScopedProxy(holder, registry, true);
         if (registry.containsBeanDefinition(proxyHolder.getBeanName())) {
           registry.removeBeanDefinition(proxyHolder.getBeanName());
         }
@@ -363,11 +363,10 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) {
     if (super.checkCandidate(beanName, beanDefinition)) {
       return true;
-    } else {
-      LOGGER.warn(() -> "Skipping MapperFactoryBean with name '" + beanName + "' and '"
-          + beanDefinition.getBeanClassName() + "' mapperInterface" + ". Bean already defined with the same name!");
-      return false;
     }
+    LOGGER.warn(() -> "Skipping MapperFactoryBean with name '" + beanName + "' and '"
+        + beanDefinition.getBeanClassName() + "' mapperInterface" + ". Bean already defined with the same name!");
+    return false;
   }
 
 }

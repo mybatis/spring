@@ -70,7 +70,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-    AnnotationAttributes mapperScanAttrs = AnnotationAttributes
+    var mapperScanAttrs = AnnotationAttributes
         .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));
     if (mapperScanAttrs != null) {
       registerBeanDefinitions(importingClassMetadata, mapperScanAttrs, registry,
@@ -81,7 +81,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
   void registerBeanDefinitions(AnnotationMetadata annoMeta, AnnotationAttributes annoAttrs,
       BeanDefinitionRegistry registry, String beanName) {
 
-    BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
+    var builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
     builder.addPropertyValue("processPropertyPlaceHolders", annoAttrs.getBoolean("processPropertyPlaceHolders"));
 
     Class<? extends Annotation> annotationClass = annoAttrs.getClass("annotationClass");
@@ -104,20 +104,18 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       builder.addPropertyValue("mapperFactoryBeanClass", mapperFactoryBeanClass);
     }
 
-    String sqlSessionTemplateRef = annoAttrs.getString("sqlSessionTemplateRef");
+    var sqlSessionTemplateRef = annoAttrs.getString("sqlSessionTemplateRef");
     if (StringUtils.hasText(sqlSessionTemplateRef)) {
       builder.addPropertyValue("sqlSessionTemplateBeanName", annoAttrs.getString("sqlSessionTemplateRef"));
     }
 
-    String sqlSessionFactoryRef = annoAttrs.getString("sqlSessionFactoryRef");
+    var sqlSessionFactoryRef = annoAttrs.getString("sqlSessionFactoryRef");
     if (StringUtils.hasText(sqlSessionFactoryRef)) {
       builder.addPropertyValue("sqlSessionFactoryBeanName", annoAttrs.getString("sqlSessionFactoryRef"));
     }
 
-    List<String> basePackages = new ArrayList<>();
-
-    basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText)
-        .collect(Collectors.toList()));
+    List<String> basePackages = new ArrayList<>(Arrays.stream(annoAttrs.getStringArray("basePackages"))
+        .filter(StringUtils::hasText).collect(Collectors.toList()));
 
     basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName)
         .collect(Collectors.toList()));
@@ -126,7 +124,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       basePackages.add(getDefaultBasePackage(annoMeta));
     }
 
-    AnnotationAttributes[] excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
+    var excludeFilterArray = annoAttrs.getAnnotationArray("excludeFilters");
     if (excludeFilterArray.length > 0) {
       List<TypeFilter> typeFilters = new ArrayList<>();
       List<Map<String, String>> rawTypeFilters = new ArrayList<>();
@@ -142,12 +140,12 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
       builder.addPropertyValue("rawExcludeFilters", rawTypeFilters);
     }
 
-    String lazyInitialization = annoAttrs.getString("lazyInitialization");
+    var lazyInitialization = annoAttrs.getString("lazyInitialization");
     if (StringUtils.hasText(lazyInitialization)) {
       builder.addPropertyValue("lazyInitialization", lazyInitialization);
     }
 
-    String defaultScope = annoAttrs.getString("defaultScope");
+    var defaultScope = annoAttrs.getString("defaultScope");
     if (!AbstractBeanDefinition.SCOPE_DEFAULT.equals(defaultScope)) {
       builder.addPropertyValue("defaultScope", defaultScope);
     }
@@ -173,7 +171,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     List<Map<String, String>> rawTypeFilters = new ArrayList<>();
     FilterType filterType = filterAttributes.getEnum("type");
-    String[] expressionArray = filterAttributes.getStringArray("pattern");
+    var expressionArray = filterAttributes.getStringArray("pattern");
     for (String expression : expressionArray) {
       switch (filterType) {
         case REGEX:
@@ -210,7 +208,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
           Assert.isAssignable(Annotation.class, filterClass,
               "Specified an unsupported type in 'ANNOTATION' exclude filter of @MapperScan");
           @SuppressWarnings("unchecked")
-          Class<Annotation> annoClass = (Class<Annotation>) filterClass;
+          var annoClass = (Class<Annotation>) filterClass;
           typeFilters.add(new AnnotationTypeFilter(annoClass));
           break;
         case ASSIGNABLE_TYPE:
@@ -245,11 +243,11 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
   static class RepeatingRegistrar extends MapperScannerRegistrar {
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-      AnnotationAttributes mapperScansAttrs = AnnotationAttributes
+      var mapperScansAttrs = AnnotationAttributes
           .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScans.class.getName()));
       if (mapperScansAttrs != null) {
-        AnnotationAttributes[] annotations = mapperScansAttrs.getAnnotationArray("value");
-        for (int i = 0; i < annotations.length; i++) {
+        var annotations = mapperScansAttrs.getAnnotationArray("value");
+        for (var i = 0; i < annotations.length; i++) {
           registerBeanDefinitions(importingClassMetadata, annotations[i], registry,
               generateBaseBeanName(importingClassMetadata, i));
         }

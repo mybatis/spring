@@ -64,7 +64,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
@@ -553,14 +552,13 @@ public class SqlSessionFactoryBean
   private <T> T[] appendArrays(T[] oldArrays, T[] newArrays, IntFunction<T[]> generator) {
     if (oldArrays == null) {
       return newArrays;
+    }
+    if (newArrays == null) {
+      return oldArrays;
     } else {
-      if (newArrays == null) {
-        return oldArrays;
-      } else {
-        List<T> newList = new ArrayList<>(Arrays.asList(oldArrays));
-        newList.addAll(Arrays.asList(newArrays));
-        return newList.toArray(generator.apply(0));
-      }
+      List<T> newList = new ArrayList<>(Arrays.asList(oldArrays));
+      newList.addAll(Arrays.asList(newArrays));
+      return newList.toArray(generator.apply(0));
     }
   }
 
@@ -690,8 +688,8 @@ public class SqlSessionFactoryBean
             continue;
           }
           try {
-            XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),
-                targetConfiguration, mapperLocation.toString(), targetConfiguration.getSqlFragments());
+            var xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,
+                mapperLocation.toString(), targetConfiguration.getSqlFragments());
             xmlMapperBuilder.parse();
           } catch (Exception e) {
             throw new IOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
@@ -737,14 +735,14 @@ public class SqlSessionFactoryBean
 
   private Set<Class<?>> scanClasses(String packagePatterns, Class<?> assignableType) throws IOException {
     Set<Class<?>> classes = new HashSet<>();
-    String[] packagePatternArray = tokenizeToStringArray(packagePatterns,
+    var packagePatternArray = tokenizeToStringArray(packagePatterns,
         ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
     for (String packagePattern : packagePatternArray) {
-      Resource[] resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+      var resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
           + ClassUtils.convertClassNameToResourcePath(packagePattern) + "/**/*.class");
       for (Resource resource : resources) {
         try {
-          ClassMetadata classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
+          var classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
           Class<?> clazz = Resources.classForName(classMetadata.getClassName());
           if (assignableType == null || assignableType.isAssignableFrom(clazz)) {
             classes.add(clazz);

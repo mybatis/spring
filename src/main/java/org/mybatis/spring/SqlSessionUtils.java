@@ -18,14 +18,12 @@ package org.mybatis.spring;
 import static org.springframework.util.Assert.notNull;
 
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -68,7 +66,7 @@ public final class SqlSessionUtils {
    *           {@code SpringManagedTransactionFactory}
    */
   public static SqlSession getSqlSession(SqlSessionFactory sessionFactory) {
-    ExecutorType executorType = sessionFactory.getConfiguration().getDefaultExecutorType();
+    var executorType = sessionFactory.getConfiguration().getDefaultExecutorType();
     return getSqlSession(sessionFactory, executorType, null);
   }
 
@@ -99,9 +97,9 @@ public final class SqlSessionUtils {
     notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
     notNull(executorType, NO_EXECUTOR_TYPE_SPECIFIED);
 
-    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
+    var holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 
-    SqlSession session = sessionHolder(executorType, holder);
+    var session = sessionHolder(executorType, holder);
     if (session != null) {
       return session;
     }
@@ -134,7 +132,7 @@ public final class SqlSessionUtils {
       PersistenceExceptionTranslator exceptionTranslator, SqlSession session) {
     SqlSessionHolder holder;
     if (TransactionSynchronizationManager.isSynchronizationActive()) {
-      Environment environment = sessionFactory.getConfiguration().getEnvironment();
+      var environment = sessionFactory.getConfiguration().getEnvironment();
 
       if (environment.getTransactionFactory() instanceof SpringManagedTransactionFactory) {
         LOGGER.debug(() -> "Registering transaction synchronization for SqlSession [" + session + "]");
@@ -145,14 +143,12 @@ public final class SqlSessionUtils {
             .registerSynchronization(new SqlSessionSynchronization(holder, sessionFactory));
         holder.setSynchronizedWithTransaction(true);
         holder.requested();
+      } else if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {
+        LOGGER.debug(() -> "SqlSession [" + session
+            + "] was not registered for synchronization because DataSource is not transactional");
       } else {
-        if (TransactionSynchronizationManager.getResource(environment.getDataSource()) == null) {
-          LOGGER.debug(() -> "SqlSession [" + session
-              + "] was not registered for synchronization because DataSource is not transactional");
-        } else {
-          throw new TransientDataAccessResourceException(
-              "SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization");
-        }
+        throw new TransientDataAccessResourceException(
+            "SqlSessionFactory must be using a SpringManagedTransactionFactory in order to use Spring transaction synchronization");
       }
     } else {
       LOGGER.debug(() -> "SqlSession [" + session
@@ -191,8 +187,8 @@ public final class SqlSessionUtils {
     notNull(session, NO_SQL_SESSION_SPECIFIED);
     notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
 
-    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
-    if ((holder != null) && (holder.getSqlSession() == session)) {
+    var holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
+    if (holder != null && holder.getSqlSession() == session) {
       LOGGER.debug(() -> "Releasing transactional SqlSession [" + session + "]");
       holder.released();
     } else {
@@ -215,9 +211,9 @@ public final class SqlSessionUtils {
     notNull(session, NO_SQL_SESSION_SPECIFIED);
     notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);
 
-    SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
+    var holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 
-    return (holder != null) && (holder.getSqlSession() == session);
+    return holder != null && holder.getSqlSession() == session;
   }
 
   /**
@@ -277,8 +273,7 @@ public final class SqlSessionUtils {
           this.holder.getSqlSession().commit();
         } catch (PersistenceException p) {
           if (this.holder.getPersistenceExceptionTranslator() != null) {
-            DataAccessException translated = this.holder.getPersistenceExceptionTranslator()
-                .translateExceptionIfPossible(p);
+            var translated = this.holder.getPersistenceExceptionTranslator().translateExceptionIfPossible(p);
             if (translated != null) {
               throw translated;
             }
