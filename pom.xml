@@ -474,14 +474,14 @@
     </plugins>
   </build>
 
- <profiles>
+  <profiles>
     <profile>
       <id>pre16</id>
       <activation>
         <jdk>(,16)</jdk>
       </activation>
       <properties>
-          <derby.version>10.15.2.0</derby.version>
+        <derby.version>10.15.2.0</derby.version>
       </properties>
     </profile>
     <profile>
@@ -490,7 +490,7 @@
         <jdk>[17,)</jdk>
       </activation>
       <properties>
-          <derby.version>10.16.1.1</derby.version>
+        <derby.version>10.16.1.1</derby.version>
       </properties>
     </profile>
     <profile>
@@ -499,7 +499,7 @@
         <jdk>[19,)</jdk>
       </activation>
       <properties>
-          <derby.version>10.17.1.0</derby.version>
+        <derby.version>10.17.1.0</derby.version>
       </properties>
     </profile>
   </profiles>
