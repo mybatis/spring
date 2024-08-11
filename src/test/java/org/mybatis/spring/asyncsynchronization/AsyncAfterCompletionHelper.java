@@ -87,7 +87,6 @@ public class AsyncAfterCompletionHelper {
     Class<?>[] interfaces = { TransactionSynchronization.class };
     return (TransactionSynchronization) Proxy.newProxyInstance(synchronization.getClass().getClassLoader(), interfaces,
         new AsyncAfterCompletionInvocationHandler(synchronization));
-
   }
 
 }
