@@ -157,6 +157,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.9.22.1</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+
     <!-- Test dependencies -->
 
     <dependency>
@@ -324,12 +332,6 @@
       <artifactId>jakarta.servlet-api</artifactId>
       <version>6.1.0</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-      <version>1.9.22.1</version>
-      <optional>true</optional>
     </dependency>
 
     <dependency>
