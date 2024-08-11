@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,17 +63,11 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
   private ResourceLoader resourceLoader;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setResourceLoader(ResourceLoader resourceLoader) {
     this.resourceLoader = resourceLoader;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
     AnnotationAttributes mapperScanAttrs = AnnotationAttributes
@@ -249,9 +243,6 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    * @since 2.0.0
    */
   static class RepeatingRegistrar extends MapperScannerRegistrar {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
       AnnotationAttributes mapperScansAttrs = AnnotationAttributes

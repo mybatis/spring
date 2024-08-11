@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,6 @@ import org.w3c.dom.NodeList;
  * @see ClassPathMapperScanner
  * @see MapperScannerConfigurer
  */
-
 public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
   private static final String ATTRIBUTE_BASE_PACKAGE = "base-package";
@@ -65,11 +64,6 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
   private static final String ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS = "process-property-placeholders";
   private static final String ATTRIBUTE_EXCLUDE_FILTER = "exclude-filter";
 
-  /**
-   * {@inheritDoc}
-   *
-   * @since 2.0.2
-   */
   @Override
   protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
     BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
@@ -147,11 +141,6 @@ public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionPar
     return typeFilters;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @since 2.0.2
-   */
   @Override
   protected boolean shouldGenerateIdAsFallback() {
     return true;

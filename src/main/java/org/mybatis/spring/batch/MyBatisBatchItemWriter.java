@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,9 +133,6 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
     notNull(itemToParameterConverter, "A itemToParameterConverter is required.");
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void write(final Chunk<? extends T> items) {
 

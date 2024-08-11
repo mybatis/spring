@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,9 +58,6 @@ public class SpringManagedTransaction implements Transaction {
     this.dataSource = dataSource;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Connection getConnection() throws SQLException {
     if (this.connection == null) {
@@ -85,9 +82,6 @@ public class SpringManagedTransaction implements Transaction {
         + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void commit() throws SQLException {
     if (this.connection != null && !this.isConnectionTransactional && !this.autoCommit) {
@@ -96,9 +90,6 @@ public class SpringManagedTransaction implements Transaction {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void rollback() throws SQLException {
     if (this.connection != null && !this.isConnectionTransactional && !this.autoCommit) {
@@ -107,17 +98,11 @@ public class SpringManagedTransaction implements Transaction {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void close() throws SQLException {
     DataSourceUtils.releaseConnection(this.connection, this.dataSource);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Integer getTimeout() throws SQLException {
     ConnectionHolder holder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
