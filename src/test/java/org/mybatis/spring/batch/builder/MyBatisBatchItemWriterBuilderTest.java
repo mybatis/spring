@@ -176,11 +176,16 @@ class MyBatisBatchItemWriterBuilderTest {
     return Chunk.of(new Foo("foo1"), new Foo("foo2"), new Foo("foo3"));
   }
 
+  // Note: Do not cleanup this 'foo' class
   private static class Foo {
     private final String name;
 
     Foo(String name) {
       this.name = name;
+    }
+
+    public String getName() {
+      return this.name;
     }
   }
 
