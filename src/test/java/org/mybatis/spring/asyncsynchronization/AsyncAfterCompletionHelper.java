@@ -66,9 +66,8 @@ public class AsyncAfterCompletionHelper {
       thread.join();
       if (exceptionSet.isEmpty()) {
         return retValSet.iterator().next();
-      } else {
-        throw exceptionSet.iterator().next();
       }
+      throw exceptionSet.iterator().next();
     }
 
   }
