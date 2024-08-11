@@ -135,7 +135,7 @@ By default, these two properties are null, so all interfaces in the given base p
 
 Discovered mappers will be named using Spring default naming strategy for autodetected components (see [the Spring reference document(Core Technologies -Naming autodetected components-)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator)).
 That is, if no annotation is found, it will use the uncapitalized non-qualified class name of the mapper. But if either a `@Component` or a JSR-330 `@Named` annotation is found it will get the name from the annotation.
-Notice that you can set the `annotation` attribute to `org.springframework.stereotype.Component`, `javax.inject.Named` (if you have JSE 6) or to your own annotation (that must be itself annotated) so the annotation will work both as a marker and as a name provider.
+Notice that you can set the `annotation` attribute to `org.springframework.stereotype.Component`, `jakarta.inject.Named` (if you have JakartaEE) or to your own annotation (that must be itself annotated) so the annotation will work both as a marker and as a name provider.
 
 <span class="label important">NOTE</span>
 `<context:component-scan/>` won't be able to scan and register mappers. Mappers are interfaces and, in order to register them to Spring, the scanner must know how to create a `MapperFactoryBean` for each interface it finds.

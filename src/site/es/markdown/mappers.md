@@ -141,7 +141,7 @@ Si se indican ambas se añadirán todos los mappers que cumplan **cualquier** cr
 
 Los mappers descubiertos serán nombrados usando la estratégia de nombres por defecto de Spring para los componentes autodetectados (see [the Spring reference document(Core Technologies -Naming autodetected components-](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator)).
 Es decir, si no se encuentra ninguna anotación, se usará el nombre no cualificado sin capitalizar del mapper. Pero si se encuentra una anotación `@Component` o JSR-330 `@Named` se obtendrá el nombre de dicha anotación.
-Fíjate que puedes usar como valor de la `annotation` el valor `org.springframework.stereotype.Component`, `javax.inject.Named` (if you have JSE 6) o una anotación propia (que debe ser a su vez anotada) de forma que la anotación hará las veces de localizador y de proveedor de nombre.
+Fíjate que puedes usar como valor de la `annotation` el valor `org.springframework.stereotype.Component`, `jakarta.inject.Named` (if you have Jakarta EE) o una anotación propia (que debe ser a su vez anotada) de forma que la anotación hará las veces de localizador y de proveedor de nombre.
 
 <span class="label important">NOTE</span>
 `<context:component-scan/>` no puede encontrar y registrar mappers. Los mappers son interfaces y, para poderlos registrar en Spring, el scanner deben conocer cómo crear un `MapperFactoryBean` para cada interfaz encontrado.
