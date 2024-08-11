@@ -137,7 +137,7 @@ public interface GoodsMapper {
 
 被发现的映射器会按照 Spring 对自动发现组件的默认命名策略进行命名（参考 [the Spring reference document(Core Technologies -Naming autodetected components-)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator) ）。
 也就是说，如果没有使用注解显式指定名称，将会使用映射器的首字母小写非全限定类名作为名称。但如果发现映射器具有 `@Component` 或 JSR-330 标准中 `@Named` 注解，会使用注解中的名称作为名称。
-提醒一下，你可以设置 `annotation` 属性为你自定义的注解，然后在你的注解上设置 `org.springframework.stereotype.Component` 或 `javax.inject.Named`（需要使用 Java SE 6 以上）注解，这样你的注解既可以作为标记，也可以作为一个名字提供器来使用了。
+提醒一下，你可以设置 `annotation` 属性为你自定义的注解，然后在你的注解上设置 `org.springframework.stereotype.Component` 或 `jakarta.inject.Named`（需要使用 Jakarta EE 以上）注解，这样你的注解既可以作为标记，也可以作为一个名字提供器来使用了。
 
 <span class="label important">提示</span>
 `<context:component-scan/>` 无法发现并注册映射器。映射器的本质是接口，为了将它们注册到 Spring 中，发现器必须知道如何为找到的每个接口创建一个 `MapperFactoryBean`。

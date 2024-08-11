@@ -136,7 +136,7 @@ The `default-scope` apply to the mapper bean(`MapperFactoryBean`) when scope of 
 
 발견된 매퍼는 자동검색된 컴포넌트를 위한 스프링의 디폴트 명명규칙 전략(see [the Spring reference document(Core Technologies -Naming autodetected components-)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator) 을 사용해서 빈이름이 명명된다.
 빈 이름을 정하는 애노테이션이 없다면 매퍼의 이름에서 첫글자를 소문자로 변환한 형태로 빈 이름을 사용할 것이다. `@Component` 나 JSR-330의 `@Named` 애노테이션이 있다면 애노테이션에 정의한 이름을 그대로 사용할 것이다.
-`annotation` 프로퍼티를 `org.springframework.stereotype.Component`, `javax.inject.Named`(자바SE 1.6을 사용한다면) 또는 개발자가 스스로 작성한 애노테이션으로 셋팅할 수 있다.
+`annotation` 프로퍼티를 `org.springframework.stereotype.Component`, `jakarta.inject.Named`(Jakarta EE을 사용한다면) 또는 개발자가 스스로 작성한 애노테이션으로 셋팅할 수 있다.
 그러면 애노테이션은 마커와 이름을 제공하는 역할로 동작할 것이다.
 
 <span class="label important">중요</span>

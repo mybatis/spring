@@ -139,7 +139,7 @@ XML 設定の例：
 
 検出された Mapper は、Spring の自動検出コンポーネントに対するデフォルト命名規則によって Bean 名が決められます[the Spring reference document(Core Technologies -Naming autodetected components-](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-name-generator) を参照してください。
 アノテーションによる指定がない場合はクラス名の先頭を小文字にした文字列が Bean 名となりますが、`@Component` あるいは JSR-330 の `@Named` アノテーションを使って Bean 名を明示的に指定することもできます。
-先に説明した `annotation` 属性で `org.springframework.stereotype.Component` や `javax.inject.Named` （Java 6 以降を利用している場合のみ）を指定すれば、検出時のマーカーと Bean 名の指定を１つのアノテーションで兼ねることができます。
+先に説明した `annotation` 属性で `org.springframework.stereotype.Component` や `jakarta.inject.Named` （Jakarta EE 以降を利用している場合のみ）を指定すれば、検出時のマーカーと Bean 名の指定を１つのアノテーションで兼ねることができます。
 同じ目的で独自に定義したアノテーションを使うこともできますが、このアノテーション自体に `@Component` か `@Named` を付加しておく必要があります。
 
 <span class="label important">NOTE</span>

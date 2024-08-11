@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,6 +67,7 @@ import org.mybatis.spring.type.DummyTypeHandler;
 import org.mybatis.spring.type.SuperType;
 import org.mybatis.spring.type.TypeHandlerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 class SqlSessionFactoryBeanTest {
 
@@ -274,8 +275,7 @@ class SqlSessionFactoryBeanTest {
   void testSetConfigLocation() throws Exception {
     setupFactoryBean();
 
-    factoryBean
-        .setConfigLocation(new org.springframework.core.io.ClassPathResource("org/mybatis/spring/mybatis-config.xml"));
+    factoryBean.setConfigLocation(new ClassPathResource("org/mybatis/spring/mybatis-config.xml"));
 
     SqlSessionFactory factory = factoryBean.getObject();
 
@@ -304,8 +304,7 @@ class SqlSessionFactoryBeanTest {
     setupFactoryBean();
 
     factoryBean.setConfiguration(new Configuration());
-    factoryBean
-        .setConfigLocation(new org.springframework.core.io.ClassPathResource("org/mybatis/spring/mybatis-config.xml"));
+    factoryBean.setConfigLocation(new ClassPathResource("org/mybatis/spring/mybatis-config.xml"));
 
     Throwable e = assertThrows(IllegalStateException.class, factoryBean::getObject);
     assertThat(e.getMessage())
@@ -344,7 +343,7 @@ class SqlSessionFactoryBeanTest {
   @Test
   void testMapperLocationsWithNullEntry() throws Exception {
     setupFactoryBean();
-    factoryBean.setMapperLocations(new org.springframework.core.io.Resource[] { null });
+    factoryBean.setMapperLocations(new Resource[] { null });
 
     assertDefaultConfig(factoryBean.getObject());
   }
