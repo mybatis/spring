@@ -109,6 +109,8 @@
     <!-- Maven compiler options -->
     <java.version>17</java.version>
     <java.release.version>17</java.release.version>
+    <java.test.version>17</java.test.version>
+    <java.test.release.version>17</java.test.release.version>
 
     <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.16</mybatis.version>
@@ -475,15 +477,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>pre16</id>
-      <activation>
-        <jdk>(,16)</jdk>
-      </activation>
-      <properties>
-        <derby.version>10.15.2.0</derby.version>
-      </properties>
-    </profile>
     <profile>
       <id>17</id>
       <activation>
