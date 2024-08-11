@@ -468,11 +468,11 @@ public class MapperScannerConfigurer
     }
     if (value instanceof String) {
       return value.toString();
-    } else if (value instanceof TypedStringValue) {
-      return ((TypedStringValue) value).getValue();
-    } else {
-      return null;
     }
+    if (value instanceof TypedStringValue) {
+      return ((TypedStringValue) value).getValue();
+    }
+    return null;
   }
 
   @SuppressWarnings("unchecked")

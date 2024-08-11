@@ -555,11 +555,10 @@ public class SqlSessionFactoryBean
     }
     if (newArrays == null) {
       return oldArrays;
-    } else {
-      List<T> newList = new ArrayList<>(Arrays.asList(oldArrays));
-      newList.addAll(Arrays.asList(newArrays));
-      return newList.toArray(generator.apply(0));
     }
+    List<T> newList = new ArrayList<>(Arrays.asList(oldArrays));
+    newList.addAll(Arrays.asList(newArrays));
+    return newList.toArray(generator.apply(0));
   }
 
   @Override
