@@ -200,7 +200,7 @@ public @interface MapperScan {
   /**
    * Specifies which types are not eligible for mapper scanning.
    *
-   * @since 3.0.3
+   * @since 3.0.4
    *
    * @return array of customized mapper excludeFilter
    */

@@ -166,7 +166,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    * @param filterAttributes
    *          AnnotationAttributes of excludeFilters
    *
-   * @since 3.0.3
+   * @since 3.0.4
    */
   private List<Map<String, String>> parseFiltersHasPatterns(AnnotationAttributes filterAttributes) {
 
@@ -196,7 +196,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    * @param filterAttributes
    *          AnnotationAttributes of excludeFilters
    *
-   * @since 3.0.3
+   * @since 3.0.4
    */
   private List<TypeFilter> typeFiltersFor(AnnotationAttributes filterAttributes) {
 
