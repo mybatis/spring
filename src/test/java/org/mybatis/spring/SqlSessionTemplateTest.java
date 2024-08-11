@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,7 @@ public class SqlSessionTemplateTest extends AbstractMyBatisSpringTest {
 
   @Test
   void testExecutorType() {
+    // Do not close this, spring will close it
     SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
     assertThat(template.getExecutorType()).isEqualTo(ExecutorType.BATCH);
 
