@@ -63,17 +63,11 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
   private ResourceLoader resourceLoader;
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setResourceLoader(ResourceLoader resourceLoader) {
     this.resourceLoader = resourceLoader;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
     AnnotationAttributes mapperScanAttrs = AnnotationAttributes
@@ -249,9 +243,6 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    * @since 2.0.0
    */
   static class RepeatingRegistrar extends MapperScannerRegistrar {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
       AnnotationAttributes mapperScansAttrs = AnnotationAttributes

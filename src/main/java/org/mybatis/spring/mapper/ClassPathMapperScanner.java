@@ -354,17 +354,11 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
     return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) {
     if (super.checkCandidate(beanName, beanDefinition)) {

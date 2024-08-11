@@ -74,9 +74,6 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public DataAccessException translateExceptionIfPossible(RuntimeException e) {
     if (e instanceof PersistenceException) {

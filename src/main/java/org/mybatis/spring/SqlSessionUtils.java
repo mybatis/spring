@@ -241,18 +241,12 @@ public final class SqlSessionUtils {
       this.sessionFactory = sessionFactory;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getOrder() {
       // order right before any Connection synchronization
       return DataSourceUtils.CONNECTION_SYNCHRONIZATION_ORDER - 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void suspend() {
       if (this.holderActive) {
@@ -261,9 +255,6 @@ public final class SqlSessionUtils {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resume() {
       if (this.holderActive) {
@@ -272,9 +263,6 @@ public final class SqlSessionUtils {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void beforeCommit(boolean readOnly) {
       // Connection commit or rollback will be handled by ConnectionSynchronization or
@@ -300,9 +288,6 @@ public final class SqlSessionUtils {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void beforeCompletion() {
       // Issue #18 Close SqlSession and deregister it now
@@ -317,9 +302,6 @@ public final class SqlSessionUtils {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void afterCompletion(int status) {
       if (this.holderActive) {

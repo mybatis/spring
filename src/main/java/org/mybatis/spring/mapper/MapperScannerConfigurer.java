@@ -322,17 +322,11 @@ public class MapperScannerConfigurer
     this.mapperFactoryBeanClass = mapperFactoryBeanClass;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setBeanName(String name) {
     this.beanName = name;
@@ -376,27 +370,16 @@ public class MapperScannerConfigurer
     this.defaultScope = defaultScope;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void afterPropertiesSet() throws Exception {
     notNull(this.basePackage, "Property 'basePackage' is required");
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
     // left intentionally blank
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @since 1.0.2
-   */
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
     if (this.processPropertyPlaceHolders) {

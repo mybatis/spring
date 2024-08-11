@@ -564,9 +564,6 @@ public class SqlSessionFactoryBean
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void afterPropertiesSet() throws Exception {
     notNull(dataSource, "Property 'dataSource' is required");
@@ -711,9 +708,6 @@ public class SqlSessionFactoryBean
     return this.sqlSessionFactoryBuilder.build(targetConfiguration);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public SqlSessionFactory getObject() throws Exception {
     if (this.sqlSessionFactory == null) {
@@ -723,25 +717,16 @@ public class SqlSessionFactoryBean
     return this.sqlSessionFactory;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Class<? extends SqlSessionFactory> getObjectType() {
     return this.sqlSessionFactory == null ? SqlSessionFactory.class : this.sqlSessionFactory.getClass();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isSingleton() {
     return true;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     if (failFast) {

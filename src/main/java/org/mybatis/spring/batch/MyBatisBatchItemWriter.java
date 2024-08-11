@@ -133,9 +133,6 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
     notNull(itemToParameterConverter, "A itemToParameterConverter is required.");
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void write(final Chunk<? extends T> items) {
 

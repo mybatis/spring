@@ -65,9 +65,6 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
     this.mapperInterface = mapperInterface;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected void checkDaoConfig() {
     super.checkDaoConfig();
@@ -87,25 +84,16 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public T getObject() throws Exception {
     return getSqlSession().getMapper(this.mapperInterface);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Class<T> getObjectType() {
     return this.mapperInterface;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean isSingleton() {
     return true;
