@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ class UserServiceTest {
 
   @Test
   void testCommit() {
-    User user = new User(1, "Pocoyo");
+    var user = new User(1, "Pocoyo");
     userService.saveWithNoFailure(user);
     assertThat(userService.checkUserExists(user.getId())).isTrue();
   }
 
   @Test
   void testRollback() {
-    User user = new User(2, "Pocoyo");
+    var user = new User(2, "Pocoyo");
     try {
       userService.saveWithFailure(user);
     } catch (RuntimeException ignore) {
@@ -58,7 +58,7 @@ class UserServiceTest {
   @Test
   void testCommitWithExistingTx() throws Exception {
     userTransaction.begin();
-    User user = new User(3, "Pocoyo");
+    var user = new User(3, "Pocoyo");
     userService.saveWithNoFailure(user);
     userTransaction.commit();
     assertThat(userService.checkUserExists(user.getId())).isTrue();
@@ -71,7 +71,7 @@ class UserServiceTest {
   @Test
   void testRollbackWithExistingTx() throws Exception {
     userTransaction.begin();
-    User user = new User(5, "Pocoyo");
+    var user = new User(5, "Pocoyo");
     userService.saveWithNoFailure(user);
     userTransaction.rollback();
     assertThat(userService.checkUserExists(user.getId())).isFalse();

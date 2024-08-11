@@ -41,7 +41,7 @@ class WebappPlaceholderTest {
   @Test
   void testName() {
     Assertions.assertEquals(0, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
-    Mapper mapper = applicationContext.getBean(Mapper.class);
+    var mapper = applicationContext.getBean(Mapper.class);
     assertThat(mapper).isNotNull();
     Assertions.assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
   }

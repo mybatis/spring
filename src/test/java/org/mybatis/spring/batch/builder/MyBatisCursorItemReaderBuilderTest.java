@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.springframework.batch.item.ExecutionContext;
 
 /**
@@ -54,7 +53,7 @@ class MyBatisCursorItemReaderBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
     Mockito.when(this.cursor.iterator()).thenReturn(getFoos().iterator());
@@ -68,16 +67,16 @@ class MyBatisCursorItemReaderBuilderTest {
   void testConfiguration() throws Exception {
 
     // @formatter:off
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");
@@ -95,17 +94,17 @@ class MyBatisCursorItemReaderBuilderTest {
   void testConfigurationSaveStateIsFalse() throws Exception {
 
     // @formatter:off
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .saveState(false)
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .saveState(false)
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");
@@ -121,17 +120,17 @@ class MyBatisCursorItemReaderBuilderTest {
   void testConfigurationMaxItemCount() throws Exception {
 
     // @formatter:off
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .maxItemCount(2)
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisCursorItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .maxItemCount(2)
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");

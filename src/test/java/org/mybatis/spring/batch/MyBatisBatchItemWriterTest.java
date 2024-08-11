@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ class MyBatisBatchItemWriterTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
@@ -71,7 +71,7 @@ class MyBatisBatchItemWriterTest {
   void testZeroUpdateCountShouldThrowException() {
     Chunk<Employee> employees = Chunk.of(new Employee(), new Employee());
 
-    BatchResult batchResult = new BatchResult(null, null);
+    var batchResult = new BatchResult(null, null);
     batchResult.setUpdateCounts(new int[] { 1, 0 });
     List<BatchResult> batchResults = Collections.singletonList(batchResult);
 
@@ -85,7 +85,7 @@ class MyBatisBatchItemWriterTest {
     this.writer.setAssertUpdates(false);
     this.writer.setStatementId("updateEmployee");
 
-    Employee employee = new Employee();
+    var employee = new Employee();
     Chunk<Employee> employees = Chunk.of(employee);
     writer.write(employees);
 
@@ -103,7 +103,7 @@ class MyBatisBatchItemWriterTest {
       return parameter;
     });
 
-    Employee employee = new Employee();
+    var employee = new Employee();
     Chunk<Employee> employees = Chunk.of(employee);
     writer.write(employees);
 

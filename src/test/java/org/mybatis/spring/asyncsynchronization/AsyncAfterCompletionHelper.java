@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,29 +46,28 @@ public class AsyncAfterCompletionHelper {
 
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-      if ("afterCompletion".equals(method.getName())) {
-        final Set<Object> retValSet = new HashSet<>();
-        final Set<Throwable> exceptionSet = new HashSet<>();
-        Thread thread = new Thread(() -> {
-          try {
-            retValSet.add(method.invoke(target, args));
-          } catch (InvocationTargetException ite) {
-            exceptionSet.add(ite.getCause());
-
-          } catch (IllegalArgumentException | IllegalAccessException e) {
-            exceptionSet.add(e);
-
-          }
-        });
-        thread.start();
-        thread.join();
-        if (exceptionSet.isEmpty()) {
-          return retValSet.iterator().next();
-        } else {
-          throw exceptionSet.iterator().next();
-        }
-      } else {
+      if (!"afterCompletion".equals(method.getName())) {
         return method.invoke(target, args);
+      }
+      final Set<Object> retValSet = new HashSet<>();
+      final Set<Throwable> exceptionSet = new HashSet<>();
+      var thread = new Thread(() -> {
+        try {
+          retValSet.add(method.invoke(target, args));
+        } catch (InvocationTargetException ite) {
+          exceptionSet.add(ite.getCause());
+
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+          exceptionSet.add(e);
+
+        }
+      });
+      thread.start();
+      thread.join();
+      if (exceptionSet.isEmpty()) {
+        return retValSet.iterator().next();
+      } else {
+        throw exceptionSet.iterator().next();
       }
     }
 

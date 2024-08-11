@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -220,7 +220,7 @@ class MapperScanTest {
 
   @Test
   void testScanWithNameConflict() {
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(Object.class);
     applicationContext.registerBeanDefinition("mapperInterface", definition);
 
@@ -233,7 +233,7 @@ class MapperScanTest {
   }
 
   private void setupSqlSessionFactory() {
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(SqlSessionFactoryBean.class);
     definition.getPropertyValues().add("dataSource", new MockDataSource());
     applicationContext.registerBeanDefinition("sqlSessionFactory", definition);
@@ -263,9 +263,9 @@ class MapperScanTest {
 
   @Test
   void testScanWithExplicitSqlSessionTemplate() {
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(SqlSessionTemplate.class);
-    ConstructorArgumentValues constructorArgs = new ConstructorArgumentValues();
+    var constructorArgs = new ConstructorArgumentValues();
     constructorArgs.addGenericArgumentValue(new RuntimeBeanReference("sqlSessionFactory"));
     definition.setConstructorArgumentValues(constructorArgs);
     applicationContext.registerBeanDefinition("sqlSessionTemplate", definition);
@@ -298,7 +298,7 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(2, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 
     applicationContext.getBean("ds1Mapper");
@@ -311,7 +311,7 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(2, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 
     applicationContext.getBean("ds1Mapper");
@@ -324,7 +324,7 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(2, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 
     applicationContext.getBean("ds1Mapper");
@@ -337,7 +337,7 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(0, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
     applicationContext.getBean(Ds1Mapper.class);
     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
@@ -350,7 +350,7 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(0, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
     applicationContext.getBean(Ds1Mapper.class);
     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
@@ -369,25 +369,25 @@ class MapperScanTest {
 
     for (String scopedProxyTargetBean : scopedProxyTargetBeans) {
       {
-        BeanDefinition definition = applicationContext.getBeanDefinition(scopedProxyTargetBean);
+        var definition = applicationContext.getBeanDefinition(scopedProxyTargetBean);
         assertThat(definition.getBeanClassName()).isEqualTo("org.mybatis.spring.mapper.MapperFactoryBean");
         assertThat(definition.getScope()).isEqualTo("thread");
       }
       {
-        BeanDefinition definition = applicationContext.getBeanDefinition(scopedProxyTargetBean.substring(13));
+        var definition = applicationContext.getBeanDefinition(scopedProxyTargetBean.substring(13));
         assertThat(definition.getBeanClassName()).isEqualTo("org.springframework.aop.scope.ScopedProxyFactoryBean");
         assertThat(definition.getScope()).isEqualTo("");
       }
     }
     {
-      Ds1Mapper mapper = applicationContext.getBean(Ds1Mapper.class);
+      var mapper = applicationContext.getBean(Ds1Mapper.class);
       assertThat(mapper.test()).isEqualTo("ds1");
     }
     {
-      Ds2Mapper mapper = applicationContext.getBean(Ds2Mapper.class);
+      var mapper = applicationContext.getBean(Ds2Mapper.class);
       assertThat(mapper.test()).isEqualTo("ds2");
     }
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(2, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
   }
 
@@ -397,10 +397,10 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 
-    MyBean myBean = applicationContext.getBean(MyBean.class);
+    var myBean = applicationContext.getBean(MyBean.class);
     assertThat(myBean.getName()).isEqualTo("MyBean!!");
   }
 
@@ -410,10 +410,10 @@ class MapperScanTest {
 
     startContext();
 
-    SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+    var sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 
-    MyBean myBean = applicationContext.getBean(MyBean.class);
+    var myBean = applicationContext.getBean(MyBean.class);
     assertThat(myBean.getName()).isEqualTo("MyBean!!");
   }
 
@@ -479,7 +479,7 @@ class MapperScanTest {
   public static class LazyConfigWithPropertySourcesPlaceholderConfigurer {
     @Bean
     static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      var configurer = new PropertySourcesPlaceholderConfigurer();
       configurer.setLocation(new ClassPathResource("/org/mybatis/spring/annotation/scan.properties"));
       return configurer;
     }
@@ -491,14 +491,14 @@ class MapperScanTest {
   public static class ProcessPropertyPlaceHoldersTrueConfiguration {
     @Bean
     static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      var configurer = new PropertySourcesPlaceholderConfigurer();
       configurer.setLocation(new ClassPathResource("/org/mybatis/spring/annotation/placeholders.properties"));
       return configurer;
     }
 
     @Bean
     static PropertyOverrideConfigurer propertyOverrideConfigurer() {
-      PropertyOverrideConfigurer configurer = new PropertyOverrideConfigurer();
+      var configurer = new PropertyOverrideConfigurer();
       configurer.setLocation(new ClassPathResource("/org/mybatis/spring/annotation/override.properties"));
       configurer.setIgnoreInvalidKeys(true);
       return configurer;
@@ -515,14 +515,14 @@ class MapperScanTest {
   public static class ProcessPropertyPlaceHoldersFalseConfiguration {
     @Bean
     static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-      PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+      var configurer = new PropertySourcesPlaceholderConfigurer();
       configurer.setLocation(new ClassPathResource("/org/mybatis/spring/annotation/placeholders.properties"));
       return configurer;
     }
 
     @Bean
     static PropertyOverrideConfigurer propertyOverrideConfigurer() {
-      PropertyOverrideConfigurer configurer = new PropertyOverrideConfigurer();
+      var configurer = new PropertyOverrideConfigurer();
       configurer.setLocation(new ClassPathResource("/org/mybatis/spring/annotation/override.properties"));
       return configurer;
     }

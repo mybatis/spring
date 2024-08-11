@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.mybatis.spring.sample;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.sample.domain.User;
 import org.mybatis.spring.sample.service.BarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -37,7 +36,7 @@ class SampleSqlSessionTest {
 
   @Test
   void testFooService() {
-    User user = this.barService.doSomeBusinessStuff("u1");
+    var user = this.barService.doSomeBusinessStuff("u1");
     assertThat(user).isNotNull();
     assertThat(user.getName()).isEqualTo("Pocoyo");
   }

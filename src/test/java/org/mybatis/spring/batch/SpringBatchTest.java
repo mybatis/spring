@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ class SpringBatchTest {
   @Test
   @Transactional
   void shouldDuplicateSalaryOfAllEmployees() throws Exception {
-    Chunk<Employee> employees = new Chunk<>();
-    Employee employee = pagingNoNestedItemReader.read();
+    var employees = new Chunk<Employee>();
+    var employee = pagingNoNestedItemReader.read();
     while (employee != null) {
       employee.setSalary(employee.getSalary() * 2);
       employees.add(employee);
@@ -71,8 +71,8 @@ class SpringBatchTest {
   @Transactional
   void checkPagingReadingWithNestedInResultMap() throws Exception {
     // This test is here to show that PagingReader can return wrong result in case of nested result maps
-    Chunk<Employee> employees = new Chunk<>();
-    Employee employee = pagingNestedItemReader.read();
+    var employees = new Chunk<Employee>();
+    var employee = pagingNestedItemReader.read();
     while (employee != null) {
       employee.setSalary(employee.getSalary() * 2);
       employees.add(employee);
@@ -89,8 +89,8 @@ class SpringBatchTest {
   void checkCursorReadingWithoutNestedInResultMap() throws Exception {
     cursorNoNestedItemReader.doOpen();
     try {
-      Chunk<Employee> employees = new Chunk<>();
-      Employee employee = cursorNoNestedItemReader.read();
+      var employees = new Chunk<Employee>();
+      var employee = cursorNoNestedItemReader.read();
       while (employee != null) {
         employee.setSalary(employee.getSalary() * 2);
         employees.add(employee);
@@ -110,8 +110,8 @@ class SpringBatchTest {
   void checkCursorReadingWithNestedInResultMap() throws Exception {
     cursorNestedItemReader.doOpen();
     try {
-      Chunk<Employee> employees = new Chunk<>();
-      Employee employee = cursorNestedItemReader.read();
+      var employees = new Chunk<Employee>();
+      var employee = cursorNestedItemReader.read();
       while (employee != null) {
         employee.setSalary(employee.getSalary() * 2);
         employees.add(employee);

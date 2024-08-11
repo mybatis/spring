@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.apache.ibatis.type.TypeHandler;
 public interface TypeHandlerFactory {
 
   static TypeHandler<String> handler1() {
-    return new TypeHandler<String>() {
+    return new TypeHandler<>() {
       @Override
       public void setParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) {
 

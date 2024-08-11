@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class MyBatisCursorItemReaderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
@@ -61,13 +61,13 @@ class MyBatisCursorItemReaderTest {
     Mockito.when(this.sqlSession.selectCursor("selectFoo", Collections.singletonMap("id", 1)))
         .thenThrow(new RuntimeException("error."));
 
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReader<>();
+    var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.setSqlSessionFactory(this.sqlSessionFactory);
     itemReader.setQueryId("selectFoo");
     itemReader.setParameterValues(Collections.singletonMap("id", 1));
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     try {
       itemReader.open(executionContext);
       fail();
@@ -82,7 +82,7 @@ class MyBatisCursorItemReaderTest {
 
   @Test
   void testCloseBeforeOpen() {
-    MyBatisCursorItemReader<Foo> itemReader = new MyBatisCursorItemReader<>();
+    var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.close();
   }
 
@@ -95,10 +95,6 @@ class MyBatisCursorItemReaderTest {
 
     Foo(String name) {
       this.name = name;
-    }
-
-    public String getName() {
-      return this.name;
     }
   }
 

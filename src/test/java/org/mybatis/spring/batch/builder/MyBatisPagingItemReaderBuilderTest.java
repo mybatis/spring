@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mybatis.spring.batch.MyBatisPagingItemReader;
 import org.springframework.batch.item.ExecutionContext;
 
 /**
@@ -58,10 +57,10 @@ class MyBatisPagingItemReaderBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
-    Configuration configuration = new Configuration();
-    Environment environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
+    var configuration = new Configuration();
+    var environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
     configuration.setEnvironment(environment);
     Mockito.when(this.sqlSessionFactory.getConfiguration()).thenReturn(configuration);
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.BATCH)).thenReturn(this.sqlSession);
@@ -77,16 +76,16 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfiguration() throws Exception {
     // @formatter:off
-    MyBatisPagingItemReader<Foo> itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");
@@ -103,17 +102,17 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationSaveStateIsFalse() throws Exception {
     // @formatter:off
-    MyBatisPagingItemReader<Foo> itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .saveState(false)
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .saveState(false)
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");
@@ -127,17 +126,17 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationMaxItemCount() throws Exception {
     // @formatter:off
-    MyBatisPagingItemReader<Foo> itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .maxItemCount(2)
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .maxItemCount(2)
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");
@@ -152,14 +151,14 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationPageSize() throws Exception {
     // @formatter:off
-    MyBatisPagingItemReader<Foo> itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-            .pageSize(2)
-            .build();
-    // @formatter:on
+        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .queryId("selectFoo")
+                .parameterValues(Collections.singletonMap("id", 1))
+                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+                .pageSize(2)
+                .build();
+        // @formatter:on
     itemReader.afterPropertiesSet();
 
     Map<String, Object> parameters = new HashMap<>();
@@ -170,7 +169,7 @@ class MyBatisPagingItemReaderBuilderTest {
     parameters.put("_skiprows", 0);
     Mockito.when(this.sqlSession.selectList("selectFoo", parameters)).thenReturn(getFoos());
 
-    ExecutionContext executionContext = new ExecutionContext();
+    var executionContext = new ExecutionContext();
     itemReader.open(executionContext);
 
     Assertions.assertThat(itemReader.read()).extracting(Foo::getName).isEqualTo("foo1");

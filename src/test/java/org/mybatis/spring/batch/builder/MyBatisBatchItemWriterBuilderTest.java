@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 import org.springframework.batch.item.Chunk;
 
 /**
@@ -61,16 +60,16 @@ class MyBatisBatchItemWriterBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     {
-      Configuration configuration = new Configuration();
-      Environment environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
+      var configuration = new Configuration();
+      var environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
       configuration.setEnvironment(environment);
       Mockito.when(this.sqlSessionFactory.getConfiguration()).thenReturn(configuration);
       Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.BATCH)).thenReturn(this.sqlSession);
     }
     {
-      BatchResult result = new BatchResult(null, null);
+      var result = new BatchResult(null, null);
       result.setUpdateCounts(new int[] { 1 });
       Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.singletonList(result));
     }
@@ -80,14 +79,14 @@ class MyBatisBatchItemWriterBuilderTest {
   void testConfigurationUsingSqlSessionFactory() {
 
     // @formatter:off
-    MyBatisBatchItemWriter<Foo> itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .statementId("updateFoo")
-            .build();
-    // @formatter:on
+        var itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .statementId("updateFoo")
+                .build();
+        // @formatter:on
     itemWriter.afterPropertiesSet();
 
-    Chunk<Foo> foos = getFoos();
+    var foos = getFoos();
 
     itemWriter.write(foos);
 
@@ -101,14 +100,14 @@ class MyBatisBatchItemWriterBuilderTest {
   void testConfigurationUsingSqlSessionTemplate() {
 
     // @formatter:off
-    MyBatisBatchItemWriter<Foo> itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
-            .sqlSessionTemplate(new SqlSessionTemplate(this.sqlSessionFactory, ExecutorType.BATCH))
-            .statementId("updateFoo")
-            .build();
-    // @formatter:on
+        var itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
+                .sqlSessionTemplate(new SqlSessionTemplate(this.sqlSessionFactory, ExecutorType.BATCH))
+                .statementId("updateFoo")
+                .build();
+        // @formatter:on
     itemWriter.afterPropertiesSet();
 
-    Chunk<Foo> foos = getFoos();
+    var foos = getFoos();
 
     itemWriter.write(foos);
 
@@ -124,15 +123,15 @@ class MyBatisBatchItemWriterBuilderTest {
     Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.emptyList());
 
     // @formatter:off
-    MyBatisBatchItemWriter<Foo> itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
-            .sqlSessionTemplate(new SqlSessionTemplate(this.sqlSessionFactory, ExecutorType.BATCH))
-            .statementId("updateFoo")
-            .assertUpdates(false)
-            .build();
-    // @formatter:on
+        var itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
+                .sqlSessionTemplate(new SqlSessionTemplate(this.sqlSessionFactory, ExecutorType.BATCH))
+                .statementId("updateFoo")
+                .assertUpdates(false)
+                .build();
+        // @formatter:on
     itemWriter.afterPropertiesSet();
 
-    Chunk<Foo> foos = getFoos();
+    var foos = getFoos();
 
     itemWriter.write(foos);
 
@@ -146,20 +145,20 @@ class MyBatisBatchItemWriterBuilderTest {
   void testConfigurationSetItemToParameterConverter() {
 
     // @formatter:off
-    MyBatisBatchItemWriter<Foo> itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
-            .sqlSessionFactory(this.sqlSessionFactory)
-            .statementId("updateFoo")
-            .itemToParameterConverter(item -> {
-                Map<String, Object> parameter = new HashMap<>();
-                parameter.put("item", item);
-                parameter.put("now", LocalDateTime.now(Clock.fixed(Instant.ofEpochMilli(0), ZoneId.systemDefault())));
-                return parameter;
-            })
-            .build();
-    // @formatter:on
+        var itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()
+                .sqlSessionFactory(this.sqlSessionFactory)
+                .statementId("updateFoo")
+                .itemToParameterConverter(item -> {
+                    Map<String, Object> parameter = new HashMap<>();
+                    parameter.put("item", item);
+                    parameter.put("now", LocalDateTime.now(Clock.fixed(Instant.ofEpochMilli(0), ZoneId.systemDefault())));
+                    return parameter;
+                })
+                .build();
+        // @formatter:on
     itemWriter.afterPropertiesSet();
 
-    Chunk<Foo> foos = getFoos();
+    var foos = getFoos();
 
     itemWriter.write(foos);
 
@@ -182,10 +181,6 @@ class MyBatisBatchItemWriterBuilderTest {
 
     Foo(String name) {
       this.name = name;
-    }
-
-    public String getName() {
-      return this.name;
     }
   }
 

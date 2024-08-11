@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public abstract class AbstractMyBatisSpringTest {
   @BeforeAll
   public static void setupBase() throws Exception {
     // create an SqlSessionFactory that will use SpringManagedTransactions
-    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    var factoryBean = new SqlSessionFactoryBean();
     factoryBean.setMapperLocations(new ClassPathResource("org/mybatis/spring/TestMapper.xml"));
     // note running without SqlSessionFactoryBean.configLocation set => default configuration
     factoryBean.setDataSource(dataSource);
@@ -111,7 +111,7 @@ public abstract class AbstractMyBatisSpringTest {
 
   protected void assertConnectionClosed(MockConnection connection) {
     try {
-      if ((connection != null) && !connection.isClosed()) {
+      if (connection != null && !connection.isClosed()) {
         fail("Connection is not closed");
       }
     } catch (SQLException sqle) {
@@ -121,10 +121,10 @@ public abstract class AbstractMyBatisSpringTest {
 
   protected MockConnection createMockConnection() {
     // this query must be the same as the query in TestMapper.xml
-    MockResultSet rs = new MockResultSet("SELECT 1");
+    var rs = new MockResultSet("SELECT 1");
     rs.addRow(new Object[] { 1 });
 
-    MockConnection con = new MockConnection();
+    var con = new MockConnection();
     con.getPreparedStatementResultSetHandler().prepareResultSet("SELECT 1", rs);
 
     return con;

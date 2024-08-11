@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2023 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,7 +214,7 @@ public class ScanFilterTest {
   }
 
   private void setupSqlSessionFactory(String name) {
-    GenericBeanDefinition definition = new GenericBeanDefinition();
+    var definition = new GenericBeanDefinition();
     definition.setBeanClass(SqlSessionFactoryBean.class);
     definition.getPropertyValues().add("dataSource", new MockDataSource());
     applicationContext.registerBeanDefinition(name, definition);

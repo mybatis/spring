@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.AbstractMyBatisSpringTest;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldNoOpWithTx() throws Exception {
-    DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
+    var txDef = new DefaultTransactionDefinition();
     txDef.setPropagationBehaviorName("PROPAGATION_REQUIRED");
-    TransactionStatus status = txManager.getTransaction(txDef);
+    var status = txManager.getTransaction(txDef);
 
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     transaction.getConnection();
     transaction.commit();
     transaction.close();
@@ -42,6 +40,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
     txManager.commit(status);
   }
 
+  // TODO Test does not compile
+  // @Disabled
   // @Test
   // public void shouldManageWithOtherDatasource() throws Exception {
   // DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
@@ -53,17 +53,16 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
   // false);
   // transaction.commit();
   // transaction.close();
-  // assertEquals("should call commit on Connection", 1, connection.getNumberCommits());
-  // assertTrue("should close the Connection", connection.isClosed());
+  // assertEquals(1, connection.getNumberCommits(), "should call commit on Connection");
+  // assertTrue(connection.isClosed(), "should close the Connection");
   //
   // txManager.commit(status);
   // }
 
   @Test
   void shouldManageWithNoTx() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     transaction.getConnection();
     transaction.commit();
     transaction.close();
@@ -73,9 +72,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldNotCommitWithNoTxAndAutocommitIsOn() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, false);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, false);
     connection.setAutoCommit(true);
     transaction.getConnection();
     transaction.commit();
@@ -86,9 +84,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
 
   @Test
   void shouldIgnoreAutocommit() throws Exception {
-    SpringManagedTransactionFactory transactionFactory = new SpringManagedTransactionFactory();
-    SpringManagedTransaction transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource,
-        null, true);
+    var transactionFactory = new SpringManagedTransactionFactory();
+    var transaction = (SpringManagedTransaction) transactionFactory.newTransaction(dataSource, null, true);
     transaction.getConnection();
     transaction.commit();
     transaction.close();
