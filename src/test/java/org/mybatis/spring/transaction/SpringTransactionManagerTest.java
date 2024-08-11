@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
     txManager.commit(status);
   }
 
+  // TODO Test does not compile
+  // @Disabled
   // @Test
   // public void shouldManageWithOtherDatasource() throws Exception {
   // DefaultTransactionDefinition txDef = new DefaultTransactionDefinition();
@@ -53,8 +55,8 @@ class SpringTransactionManagerTest extends AbstractMyBatisSpringTest {
   // false);
   // transaction.commit();
   // transaction.close();
-  // assertEquals("should call commit on Connection", 1, connection.getNumberCommits());
-  // assertTrue("should close the Connection", connection.isClosed());
+  // assertEquals(1, connection.getNumberCommits(), "should call commit on Connection");
+  // assertTrue(connection.isClosed(), "should close the Connection");
   //
   // txManager.commit(status);
   // }
