@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../testapidocs/org/mybatis/spring/MyBatisSpringTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2023 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2024 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>    @AfterEach
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">void</strong> validateSessionClose() {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <em class="jxr_comment">// assume if the Executor is closed, the Session is too</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">if</strong> ((session != <strong class="jxr_keyword">null</strong>) &amp;&amp; !executorInterceptor.isExecutorClosed()) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">if</strong> (session != <strong class="jxr_keyword">null</strong> &amp;&amp; !executorInterceptor.isExecutorClosed()) {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>        session = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>        fail(<span class="jxr_string">"SqlSession is not closed"</span>);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      } <strong class="jxr_keyword">else</strong> {
@@ -148,8 +148,8 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>   <em class="jxr_comment">// Spring API should work with a MyBatis TransactionFactories</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>   @Test
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>   <strong class="jxr_keyword">void</strong> testWithNonSpringTransactionFactory() {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>     Environment nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), dataSource);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">var</strong> original = sqlSessionFactory.getConfiguration().getEnvironment();
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>     <strong class="jxr_keyword">var</strong> nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), dataSource);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">try</strong> {
@@ -170,8 +170,8 @@
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>   <em class="jxr_comment">// this should not work since the DS will be out of sync with MyBatis</em>
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>   @Test
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>   <strong class="jxr_keyword">void</strong> testNonSpringTxFactoryWithTx() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>     Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>     Environment nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), dataSource);
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     <strong class="jxr_keyword">var</strong> original = sqlSessionFactory.getConfiguration().getEnvironment();
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">var</strong> nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), dataSource);
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> 
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>     TransactionStatus status = <strong class="jxr_keyword">null</strong>;
@@ -194,12 +194,12 @@
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>   <em class="jxr_comment">// this should work since the DS is managed MyBatis</em>
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>   @Test
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>   <strong class="jxr_keyword">void</strong> testNonSpringTxFactoryNonSpringDSWithTx() <strong class="jxr_keyword">throws</strong> java.sql.SQLException {
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>     Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">var</strong> original = sqlSessionFactory.getConfiguration().getEnvironment();
 <a class="jxr_linenumber" name="L190" href="#L190">190</a> 
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>     MockDataSource mockDataSource = <strong class="jxr_keyword">new</strong> MockDataSource();
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>     <strong class="jxr_keyword">var</strong> mockDataSource = <strong class="jxr_keyword">new</strong> MockDataSource();
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     mockDataSource.setupConnection(createMockConnection());
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> 
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     Environment nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), mockDataSource);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">var</strong> nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> JdbcTransactionFactory(), mockDataSource);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     TransactionStatus status;
@@ -219,7 +219,7 @@
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> 
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>       <em class="jxr_comment">// SqlSession uses its own connection</em>
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>       <em class="jxr_comment">// that connection will not have committed since no SQL was executed by the session</em>
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>       MockConnection mockConnection = (MockConnection) mockDataSource.getConnection();
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>       <strong class="jxr_keyword">var</strong> mockConnection = (MockConnection) mockDataSource.getConnection();
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>       assertThat(mockConnection.getNumberCommits()).as(<span class="jxr_string">"should call commit on Connection"</span>).isEqualTo(0);
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>       assertThat(mockConnection.getNumberRollbacks()).as(<span class="jxr_string">"should not call rollback on Connection"</span>).isEqualTo(0);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>       assertCommitSession();
@@ -256,16 +256,16 @@
 <a class="jxr_linenumber" name="L248" href="#L248">248</a> 
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>       txManager.setDataSource(dataSource);
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>       TransactionStatus status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>       <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>       <em class="jxr_comment">// start a new tx while the other is in progress</em>
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>       DefaultTransactionDefinition txRequiresNew = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>       <strong class="jxr_keyword">var</strong> txRequiresNew = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>       txRequiresNew.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRES_NEW"</span>);
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>       TransactionStatus status2 = txManager.getTransaction(txRequiresNew);
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>       <strong class="jxr_keyword">var</strong> status2 = txManager.getTransaction(txRequiresNew);
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> 
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>       SqlSession session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>       <strong class="jxr_keyword">var</strong> session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 <a class="jxr_linenumber" name="L261" href="#L261">261</a> 
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>       SqlSessionUtils.closeSqlSession(session2, sqlSessionFactory);
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>       txManager.rollback(status2);
@@ -285,12 +285,12 @@
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> 
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>   @Test
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>   <strong class="jxr_keyword">void</strong> testWithJtaTxManager() {
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>     JtaTransactionManager jtaManager = <strong class="jxr_keyword">new</strong> JtaTransactionManager(Mockito.mock(UserTransaction.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>     <strong class="jxr_keyword">var</strong> jtaManager = <strong class="jxr_keyword">new</strong> JtaTransactionManager(Mockito.mock(UserTransaction.<strong class="jxr_keyword">class</strong>));
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>     TransactionStatus status = jtaManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">var</strong> status = jtaManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L286" href="#L286">286</a> 
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
@@ -306,20 +306,20 @@
 <a class="jxr_linenumber" name="L298" href="#L298">298</a> 
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>   @Test
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>   <strong class="jxr_keyword">void</strong> testWithJtaTxManagerAndNonSpringTxManager() <strong class="jxr_keyword">throws</strong> java.sql.SQLException {
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>     Environment original = sqlSessionFactory.getConfiguration().getEnvironment();
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>     <strong class="jxr_keyword">var</strong> original = sqlSessionFactory.getConfiguration().getEnvironment();
 <a class="jxr_linenumber" name="L302" href="#L302">302</a> 
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     MockDataSource mockDataSource = <strong class="jxr_keyword">new</strong> MockDataSource();
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>     <strong class="jxr_keyword">var</strong> mockDataSource = <strong class="jxr_keyword">new</strong> MockDataSource();
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>     mockDataSource.setupConnection(createMockConnection());
 <a class="jxr_linenumber" name="L305" href="#L305">305</a> 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     Environment nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> ManagedTransactionFactory(), mockDataSource);
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>     <strong class="jxr_keyword">var</strong> nonSpring = <strong class="jxr_keyword">new</strong> Environment(<span class="jxr_string">"non-spring"</span>, <strong class="jxr_keyword">new</strong> ManagedTransactionFactory(), mockDataSource);
 <a class="jxr_linenumber" name="L307" href="#L307">307</a>     sqlSessionFactory.getConfiguration().setEnvironment(nonSpring);
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> 
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>     JtaTransactionManager jtaManager = <strong class="jxr_keyword">new</strong> JtaTransactionManager(Mockito.mock(UserTransaction.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>     <strong class="jxr_keyword">var</strong> jtaManager = <strong class="jxr_keyword">new</strong> JtaTransactionManager(Mockito.mock(UserTransaction.<strong class="jxr_keyword">class</strong>));
 <a class="jxr_linenumber" name="L310" href="#L310">310</a> 
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L312" href="#L312">312</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L313" href="#L313">313</a> 
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>     TransactionStatus status = jtaManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>     <strong class="jxr_keyword">var</strong> status = jtaManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> 
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
@@ -334,7 +334,7 @@
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>       assertNoCommitJdbc();
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>       assertCommitSession();
 <a class="jxr_linenumber" name="L328" href="#L328">328</a> 
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>       MockConnection mockConnection = (MockConnection) mockDataSource.getConnection();
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>       <strong class="jxr_keyword">var</strong> mockConnection = (MockConnection) mockDataSource.getConnection();
 <a class="jxr_linenumber" name="L330" href="#L330">330</a>       assertThat(mockConnection.getNumberCommits()).as(<span class="jxr_string">"should call commit on Connection"</span>).isEqualTo(0);
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>       assertThat(mockConnection.getNumberRollbacks()).as(<span class="jxr_string">"should not call rollback on Connection"</span>).isEqualTo(0);
 <a class="jxr_linenumber" name="L332" href="#L332">332</a> 
@@ -353,10 +353,10 @@
 <a class="jxr_linenumber" name="L345" href="#L345">345</a> 
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>   @Test
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>   <strong class="jxr_keyword">void</strong> testWithTxSupports() {
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L348" href="#L348">348</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_SUPPORTS"</span>);
 <a class="jxr_linenumber" name="L350" href="#L350">350</a> 
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L352" href="#L352">352</a> 
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
@@ -371,10 +371,10 @@
 <a class="jxr_linenumber" name="L363" href="#L363">363</a> 
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>   @Test
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>   <strong class="jxr_keyword">void</strong> testRollbackWithTxSupports() {
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_SUPPORTS"</span>);
 <a class="jxr_linenumber" name="L368" href="#L368">368</a> 
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L370" href="#L370">370</a> 
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
@@ -389,10 +389,10 @@
 <a class="jxr_linenumber" name="L381" href="#L381">381</a> 
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>   @Test
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>   <strong class="jxr_keyword">void</strong> testWithTxRequired() {
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L386" href="#L386">386</a> 
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L388" href="#L388">388</a> 
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
@@ -407,10 +407,10 @@
 <a class="jxr_linenumber" name="L399" href="#L399">399</a> 
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>   @Test
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>   <strong class="jxr_keyword">void</strong> testSqlSessionCommitWithTx() {
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> 
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L406" href="#L406">406</a> 
 <a class="jxr_linenumber" name="L407" href="#L407">407</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
@@ -437,7 +437,7 @@
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).findTest();
 <a class="jxr_linenumber" name="L430" href="#L430">430</a> 
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>     <em class="jxr_comment">// this transaction should use another Connection</em>
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     TransactionStatus status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
 <a class="jxr_linenumber" name="L433" href="#L433">433</a> 
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>     <em class="jxr_comment">// session continues using original connection</em>
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>     session.getMapper(TestMapper.<strong class="jxr_keyword">class</strong>).insertTest(<span class="jxr_string">"test2"</span>);
@@ -471,16 +471,16 @@
 <a class="jxr_linenumber" name="L463" href="#L463">463</a> 
 <a class="jxr_linenumber" name="L464" href="#L464">464</a>     <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L465" href="#L465">465</a>       txManager.setDataSource(dataSource);
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>       TransactionStatus status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>       <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(<strong class="jxr_keyword">new</strong> DefaultTransactionDefinition());
 <a class="jxr_linenumber" name="L467" href="#L467">467</a> 
 <a class="jxr_linenumber" name="L468" href="#L468">468</a>       session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L469" href="#L469">469</a> 
 <a class="jxr_linenumber" name="L470" href="#L470">470</a>       <em class="jxr_comment">// start a new tx while the other is in progress</em>
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>       DefaultTransactionDefinition txRequiresNew = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>       <strong class="jxr_keyword">var</strong> txRequiresNew = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>       txRequiresNew.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRES_NEW"</span>);
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>       TransactionStatus status2 = txManager.getTransaction(txRequiresNew);
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>       <strong class="jxr_keyword">var</strong> status2 = txManager.getTransaction(txRequiresNew);
 <a class="jxr_linenumber" name="L474" href="#L474">474</a> 
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>       SqlSession session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory);
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>       <strong class="jxr_keyword">var</strong> session2 = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 <a class="jxr_linenumber" name="L476" href="#L476">476</a> 
 <a class="jxr_linenumber" name="L477" href="#L477">477</a>       assertThat(session).as(<span class="jxr_string">"getSqlSession() should not return suspended SqlSession"</span>).isNotSameAs(session2);
 <a class="jxr_linenumber" name="L478" href="#L478">478</a> 
@@ -543,10 +543,10 @@
 <a class="jxr_linenumber" name="L535" href="#L535">535</a>   <strong class="jxr_keyword">void</strong> testBatchInTx() {
 <a class="jxr_linenumber" name="L536" href="#L536">536</a>     setupBatchStatements();
 <a class="jxr_linenumber" name="L537" href="#L537">537</a> 
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L539" href="#L539">539</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L540" href="#L540">540</a> 
-<a class="jxr_linenumber" name="L541" href="#L541">541</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L542" href="#L542">542</a> 
 <a class="jxr_linenumber" name="L543" href="#L543">543</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 <a class="jxr_linenumber" name="L544" href="#L544">544</a> 
@@ -585,10 +585,10 @@
 <a class="jxr_linenumber" name="L577" href="#L577">577</a>   <strong class="jxr_keyword">void</strong> testBatchInTxWithError() {
 <a class="jxr_linenumber" name="L578" href="#L578">578</a>     setupBatchStatements();
 <a class="jxr_linenumber" name="L579" href="#L579">579</a> 
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>     DefaultTransactionDefinition txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>     <strong class="jxr_keyword">var</strong> txDef = <strong class="jxr_keyword">new</strong> DefaultTransactionDefinition();
 <a class="jxr_linenumber" name="L581" href="#L581">581</a>     txDef.setPropagationBehaviorName(<span class="jxr_string">"PROPAGATION_REQUIRED"</span>);
 <a class="jxr_linenumber" name="L582" href="#L582">582</a> 
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>     TransactionStatus status = txManager.getTransaction(txDef);
+<a class="jxr_linenumber" name="L583" href="#L583">583</a>     <strong class="jxr_keyword">var</strong> status = txManager.getTransaction(txDef);
 <a class="jxr_linenumber" name="L584" href="#L584">584</a> 
 <a class="jxr_linenumber" name="L585" href="#L585">585</a>     session = SqlSessionUtils.getSqlSession(sqlSessionFactory, ExecutorType.BATCH, exceptionTranslator);
 <a class="jxr_linenumber" name="L586" href="#L586">586</a> 

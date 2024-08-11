@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../../testapidocs/org/mybatis/spring/mapper/MapperScannerConfigurerTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2023 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2024 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
@@ -31,29 +31,29 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> com.mockrunner.mock.jdbc.MockDataSource;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Collectors;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Stream;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.annotations.Mapper;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.ExecutorType;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSessionFactory;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.AfterEach;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.BeforeEach;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionFactoryBean;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionTemplate;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.mapper.child.MapperChildInterface;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.type.DummyMapperFactoryBean;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.NoSuchBeanDefinitionException;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.BeanDefinition;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.ConstructorArgumentValues;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.RuntimeBeanReference;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.support.BeanDefinitionRegistry;
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.support.GenericBeanDefinition;
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.support.GenericApplicationContext;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.support.SimpleThreadScope;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Collectors;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Stream;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.annotations.Mapper;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.ExecutorType;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.ibatis.session.SqlSessionFactory;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.AfterEach;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.BeforeEach;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionFactoryBean;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.SqlSessionTemplate;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.mapper.child.MapperChildInterface;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.mybatis.spring.type.DummyMapperFactoryBean;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.NoSuchBeanDefinitionException;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.BeanDefinition;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.ConstructorArgumentValues;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.config.RuntimeBeanReference;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.support.BeanDefinitionRegistry;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.support.GenericBeanDefinition;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.support.GenericApplicationContext;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.support.SimpleThreadScope;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> org.springframework.mock.env.MockPropertySource;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> org.springframework.stereotype.Component;
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">class</strong> <a name="MapperScannerConfigurerTest" href="../../../../org/mybatis/spring/mapper/MapperScannerConfigurerTest.html#MapperScannerConfigurerTest">MapperScannerConfigurerTest</a> {
@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      <em class="jxr_comment">// add the mapper scanner as a bean definition rather than explicitly setting a</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <em class="jxr_comment">// postProcessor on the context so initialization follows the same code path as reading from</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      <em class="jxr_comment">// an XML config file</em>
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      GenericBeanDefinition definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">var</strong> definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      definition.setBeanClass(MapperScannerConfigurer.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      definition.getPropertyValues().add(<span class="jxr_string">"basePackage"</span>, <span class="jxr_string">"org.mybatis.spring.mapper"</span>);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      applicationContext.registerBeanDefinition(<span class="jxr_string">"mapperScanner"</span>, definition);
@@ -104,7 +104,7 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>    <strong class="jxr_keyword">void</strong> testInterfaceScan() {
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      startContext();
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>      SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">var</strong> sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     assertEquals(5, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
@@ -132,7 +132,7 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> 
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>   @Test
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>   <strong class="jxr_keyword">void</strong> testNameGenerator() {
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>     GenericBeanDefinition definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">var</strong> definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>     definition.setBeanClass(BeanNameGenerator.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>     applicationContext.registerBeanDefinition(<span class="jxr_string">"beanNameGenerator"</span>, definition);
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
@@ -199,29 +199,29 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     startContext();
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>     {
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>       BeanDefinition definition = applicationContext.getBeanDefinition(<span class="jxr_string">"scopedProxyMapper"</span>);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>       <strong class="jxr_keyword">var</strong> definition = applicationContext.getBeanDefinition(<span class="jxr_string">"scopedProxyMapper"</span>);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>       assertThat(definition.getBeanClassName()).isEqualTo(<span class="jxr_string">"org.springframework.aop.scope.ScopedProxyFactoryBean"</span>);
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>       assertThat(definition.getScope()).isEqualTo(<span class="jxr_string">""</span>);
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     }
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     {
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>       BeanDefinition definition = applicationContext.getBeanDefinition(<span class="jxr_string">"scopedTarget.scopedProxyMapper"</span>);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>       <strong class="jxr_keyword">var</strong> definition = applicationContext.getBeanDefinition(<span class="jxr_string">"scopedTarget.scopedProxyMapper"</span>);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>       assertThat(definition.getBeanClassName()).isEqualTo(<span class="jxr_string">"org.mybatis.spring.mapper.MapperFactoryBean"</span>);
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>       assertThat(definition.getScope()).isEqualTo(<span class="jxr_string">"thread"</span>);
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     }
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>     {
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>       <a name="ScopedProxyMapper" href="../../../../org/mybatis/spring/mapper/ScopedProxyMapper.html#ScopedProxyMapper">ScopedProxyMapper</a> mapper = applicationContext.getBean(ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>       <strong class="jxr_keyword">var</strong> mapper = applicationContext.getBean(ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>       assertThat(mapper.test()).isEqualTo(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>     }
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>     {
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>       <a name="ScopedProxyMapper" href="../../../../org/mybatis/spring/mapper/ScopedProxyMapper.html#ScopedProxyMapper">ScopedProxyMapper</a> mapper = applicationContext.getBean(<span class="jxr_string">"scopedTarget.scopedProxyMapper"</span>, ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>       <strong class="jxr_keyword">var</strong> mapper = applicationContext.getBean(<span class="jxr_string">"scopedTarget.scopedProxyMapper"</span>, ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>       assertThat(mapper.test()).isEqualTo(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>     }
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>       <a name="ScopedProxyMapper" href="../../../../org/mybatis/spring/mapper/ScopedProxyMapper.html#ScopedProxyMapper">ScopedProxyMapper</a> mapper = applicationContext.getBean(<span class="jxr_string">"scopedProxyMapper"</span>, ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>       <strong class="jxr_keyword">var</strong> mapper = applicationContext.getBean(<span class="jxr_string">"scopedProxyMapper"</span>, ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>       assertThat(mapper.test()).isEqualTo(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     }
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>     SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">var</strong> sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>   }
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> 
@@ -239,26 +239,26 @@
 <a class="jxr_linenumber" name="L231" href="#L231">231</a> 
 <a class="jxr_linenumber" name="L232" href="#L232">232</a>     <strong class="jxr_keyword">for</strong> (String scopedProxyTargetBean : scopedProxyTargetBeans) {
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>       {
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         BeanDefinition definition = applicationContext.getBeanDefinition(scopedProxyTargetBean);
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>         <strong class="jxr_keyword">var</strong> definition = applicationContext.getBeanDefinition(scopedProxyTargetBean);
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>         assertThat(definition.getBeanClassName()).isEqualTo(<span class="jxr_string">"org.mybatis.spring.mapper.MapperFactoryBean"</span>);
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>         assertThat(definition.getScope()).isEqualTo(<span class="jxr_string">"thread"</span>);
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>       }
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>       {
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         BeanDefinition definition = applicationContext.getBeanDefinition(scopedProxyTargetBean.substring(13));
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">var</strong> definition = applicationContext.getBeanDefinition(scopedProxyTargetBean.substring(13));
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         assertThat(definition.getBeanClassName()).isEqualTo(<span class="jxr_string">"org.springframework.aop.scope.ScopedProxyFactoryBean"</span>);
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         assertThat(definition.getScope()).isEqualTo(<span class="jxr_string">""</span>);
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>       }
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>     {
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>       <a name="ScopedProxyMapper" href="../../../../org/mybatis/spring/mapper/ScopedProxyMapper.html#ScopedProxyMapper">ScopedProxyMapper</a> mapper = applicationContext.getBean(ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>       <strong class="jxr_keyword">var</strong> mapper = applicationContext.getBean(ScopedProxyMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>       assertThat(mapper.test()).isEqualTo(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>     }
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>     {
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>       <a name="AnnotatedMapper" href="../../../../org/mybatis/spring/mapper/AnnotatedMapper.html#AnnotatedMapper">AnnotatedMapper</a> mapper = applicationContext.getBean(AnnotatedMapper.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>       <strong class="jxr_keyword">var</strong> mapper = applicationContext.getBean(AnnotatedMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>       assertThat(mapper.test()).isEqualTo(<span class="jxr_string">"main"</span>);
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     }
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>     SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>     <strong class="jxr_keyword">var</strong> sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>     assertEquals(2, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>   }
 <a class="jxr_linenumber" name="L256" href="#L256">256</a> 
@@ -280,9 +280,9 @@
 <a class="jxr_linenumber" name="L272" href="#L272">272</a> 
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>   @Test
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>   <strong class="jxr_keyword">void</strong> testScanWithExplicitSqlSessionTemplate() {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>     GenericBeanDefinition definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <strong class="jxr_keyword">var</strong> definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>     definition.setBeanClass(SqlSessionTemplate.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>     ConstructorArgumentValues constructorArgs = <strong class="jxr_keyword">new</strong> ConstructorArgumentValues();
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <strong class="jxr_keyword">var</strong> constructorArgs = <strong class="jxr_keyword">new</strong> ConstructorArgumentValues();
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>     constructorArgs.addGenericArgumentValue(<strong class="jxr_keyword">new</strong> RuntimeBeanReference(<span class="jxr_string">"sqlSessionFactory"</span>));
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>     definition.setConstructorArgumentValues(constructorArgs);
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>     applicationContext.registerBeanDefinition(<span class="jxr_string">"sqlSessionTemplate"</span>, definition);
@@ -307,11 +307,11 @@
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     applicationContext.getBeanDefinition(<span class="jxr_string">"mapperScanner"</span>).getPropertyValues().add(<span class="jxr_string">"sqlSessionFactoryBeanName"</span>,
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>         <span class="jxr_string">"${sqlSessionFactoryBeanNameProperty}"</span>);
 <a class="jxr_linenumber" name="L301" href="#L301">301</a> 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     Properties props = <strong class="jxr_keyword">new</strong> java.util.Properties();
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     <strong class="jxr_keyword">var</strong> props = <strong class="jxr_keyword">new</strong> java.util.Properties();
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>     props.put(<span class="jxr_string">"sqlSessionFactoryBeanNameProperty"</span>, <span class="jxr_string">"sqlSessionFactory2"</span>);
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> 
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>     GenericBeanDefinition propertyDefinition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     propertyDefinition.setBeanClass(PropertyPlaceholderConfigurer.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">var</strong> propertyDefinition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>     propertyDefinition.setBeanClass(PropertySourcesPlaceholderConfigurer.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L307" href="#L307">307</a>     propertyDefinition.getPropertyValues().add(<span class="jxr_string">"properties"</span>, props);
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> 
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>     applicationContext.registerBeanDefinition(<span class="jxr_string">"propertiesPlaceholder"</span>, propertyDefinition);
@@ -327,7 +327,7 @@
 <a class="jxr_linenumber" name="L319" href="#L319">319</a> 
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>   @Test
 <a class="jxr_linenumber" name="L321" href="#L321">321</a>   <strong class="jxr_keyword">void</strong> testScanWithNameConflict() {
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>     GenericBeanDefinition definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>     <strong class="jxr_keyword">var</strong> definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     definition.setBeanClass(Object.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     applicationContext.registerBeanDefinition(<span class="jxr_string">"mapperInterface"</span>, definition);
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> 
@@ -339,7 +339,7 @@
 <a class="jxr_linenumber" name="L331" href="#L331">331</a> 
 <a class="jxr_linenumber" name="L332" href="#L332">332</a>   @Test
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>   <strong class="jxr_keyword">void</strong> testScanWithPropertyPlaceholders() {
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>     GenericBeanDefinition definition = (GenericBeanDefinition) applicationContext.getBeanDefinition(<span class="jxr_string">"mapperScanner"</span>);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>     <strong class="jxr_keyword">var</strong> definition = (GenericBeanDefinition) applicationContext.getBeanDefinition(<span class="jxr_string">"mapperScanner"</span>);
 <a class="jxr_linenumber" name="L335" href="#L335">335</a> 
 <a class="jxr_linenumber" name="L336" href="#L336">336</a>     <em class="jxr_comment">// use a property placeholder for basePackage</em>
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>     definition.getPropertyValues().removePropertyValue(<span class="jxr_string">"basePackage"</span>);
@@ -355,20 +355,20 @@
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>     definition.getPropertyValues().removePropertyValue(<span class="jxr_string">"configLocation"</span>);
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>     definition.getPropertyValues().add(<span class="jxr_string">"configLocation"</span>, <span class="jxr_string">"${configLocationProperty}"</span>);
 <a class="jxr_linenumber" name="L349" href="#L349">349</a> 
-<a class="jxr_linenumber" name="L350" href="#L350">350</a>     Properties props = <strong class="jxr_keyword">new</strong> java.util.Properties();
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>     <strong class="jxr_keyword">var</strong> props = <strong class="jxr_keyword">new</strong> java.util.Properties();
 <a class="jxr_linenumber" name="L351" href="#L351">351</a>     props.put(<span class="jxr_string">"basePackageProperty"</span>, <span class="jxr_string">"org.mybatis.spring.mapper"</span>);
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>     props.put(<span class="jxr_string">"configLocationProperty"</span>, <span class="jxr_string">"classpath:org/mybatis/spring/mybatis-config.xml"</span>);
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>     props.put(<span class="jxr_string">"mybatis.lazy-initialization"</span>, <span class="jxr_string">"true"</span>);
 <a class="jxr_linenumber" name="L354" href="#L354">354</a> 
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>     GenericBeanDefinition propertyDefinition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>     propertyDefinition.setBeanClass(PropertyPlaceholderConfigurer.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <strong class="jxr_keyword">var</strong> propertyDefinition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     propertyDefinition.setBeanClass(PropertySourcesPlaceholderConfigurer.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>     propertyDefinition.getPropertyValues().add(<span class="jxr_string">"properties"</span>, props);
 <a class="jxr_linenumber" name="L358" href="#L358">358</a> 
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>     applicationContext.registerBeanDefinition(<span class="jxr_string">"propertiesPlaceholder"</span>, propertyDefinition);
 <a class="jxr_linenumber" name="L360" href="#L360">360</a> 
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>     startContext();
 <a class="jxr_linenumber" name="L362" href="#L362">362</a> 
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <strong class="jxr_keyword">var</strong> sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>     System.out.println(sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers());
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>     assertEquals(1, sqlSessionFactory.getConfiguration().getMapperRegistry().getMappers().size());
 <a class="jxr_linenumber" name="L366" href="#L366">366</a> 
@@ -382,7 +382,7 @@
 <a class="jxr_linenumber" name="L374" href="#L374">374</a> 
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>     <em class="jxr_comment">// make sure the configLocation was setup correctly</em>
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>     <em class="jxr_comment">// mybatis-config.xml changes the executor from the default SIMPLE type</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>     SqlSessionFactory sessionFactory = (SqlSessionFactory) applicationContext.getBean(<span class="jxr_string">"sqlSessionFactory"</span>);
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>     <strong class="jxr_keyword">var</strong> sessionFactory = (SqlSessionFactory) applicationContext.getBean(<span class="jxr_string">"sqlSessionFactory"</span>);
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>     assertThat(sessionFactory.getConfiguration().getDefaultExecutorType()).isSameAs(ExecutorType.REUSE);
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>   }
 <a class="jxr_linenumber" name="L380" href="#L380">380</a> 
@@ -410,32 +410,44 @@
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>         .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE)).isEqualTo(AnnotatedMapper.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>   }
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> 
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> setupSqlSessionFactory(String name) {
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>     GenericBeanDefinition definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>     definition.setBeanClass(SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     definition.getPropertyValues().add(<span class="jxr_string">"dataSource"</span>, <strong class="jxr_keyword">new</strong> MockDataSource());
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>     applicationContext.registerBeanDefinition(name, definition);
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>   }
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>   @Test
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>   <strong class="jxr_keyword">void</strong> testMapperBeanOnConditionalProperties() {
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>     <strong class="jxr_keyword">var</strong> propertySources = applicationContext.getEnvironment().getPropertySources();
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>     propertySources.addLast(<strong class="jxr_keyword">new</strong> MockPropertySource().withProperty(<span class="jxr_string">"mapper.condition"</span>, <span class="jxr_string">"true"</span>));
+<a class="jxr_linenumber" name="L409" href="#L409">409</a> 
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>     startContext();
 <a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertBeanNotLoaded(String name) {
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>       applicationContext.getBean(name);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>       fail(<span class="jxr_string">"Spring bean should not be defined for class "</span> + name);
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     } <strong class="jxr_keyword">catch</strong> (NoSuchBeanDefinitionException nsbde) {
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>       <em class="jxr_comment">// success</em>
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>     }
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>   }
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> 
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> BeanNameGenerator <strong class="jxr_keyword">implements</strong> org.springframework.beans.factory.support.BeanNameGenerator {
-<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     @Override
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>     <strong class="jxr_keyword">public</strong> String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>       <strong class="jxr_keyword">return</strong> beanDefinition.getBeanClassName();
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>     }
-<a class="jxr_linenumber" name="L427" href="#L427">427</a> 
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>   }
-<a class="jxr_linenumber" name="L429" href="#L429">429</a> 
-<a class="jxr_linenumber" name="L430" href="#L430">430</a> }
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>     assertThat(applicationContext.getBeanDefinition(<span class="jxr_string">"annotatedMapperOnPropertyCondition"</span>)
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>         .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE))
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>             .isEqualTo(AnnotatedMapperOnPropertyCondition.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>   }
+<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> setupSqlSessionFactory(String name) {
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>     <strong class="jxr_keyword">var</strong> definition = <strong class="jxr_keyword">new</strong> GenericBeanDefinition();
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     definition.setBeanClass(SqlSessionFactoryBean.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     definition.getPropertyValues().add(<span class="jxr_string">"dataSource"</span>, <strong class="jxr_keyword">new</strong> MockDataSource());
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>     applicationContext.registerBeanDefinition(name, definition);
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>   }
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> 
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertBeanNotLoaded(String name) {
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>       applicationContext.getBean(name);
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>       fail(<span class="jxr_string">"Spring bean should not be defined for class "</span> + name);
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     } <strong class="jxr_keyword">catch</strong> (NoSuchBeanDefinitionException nsbde) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>       <em class="jxr_comment">// success</em>
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>     }
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>   }
+<a class="jxr_linenumber" name="L432" href="#L432">432</a> 
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> BeanNameGenerator <strong class="jxr_keyword">implements</strong> org.springframework.beans.factory.support.BeanNameGenerator {
+<a class="jxr_linenumber" name="L434" href="#L434">434</a> 
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>     @Override
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <strong class="jxr_keyword">public</strong> String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>       <strong class="jxr_keyword">return</strong> beanDefinition.getBeanClassName();
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     }
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>   }
+<a class="jxr_linenumber" name="L441" href="#L441">441</a> 
+<a class="jxr_linenumber" name="L442" href="#L442">442</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2010&#x2013;2024 <a href="https://www.mybatis.org/">MyBatis.org</a>. All rights reserved.</div>

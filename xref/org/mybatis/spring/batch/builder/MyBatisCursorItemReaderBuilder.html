@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../../apidocs/org/mybatis/spring/batch/builder/MyBatisCursorItemReaderBuilder.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2022 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2024 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">   * @return the reader</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>   <strong class="jxr_keyword">public</strong> MyBatisCursorItemReader&lt;T&gt; build() {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     MyBatisCursorItemReader&lt;T&gt; reader = <strong class="jxr_keyword">new</strong> MyBatisCursorItemReader&lt;&gt;();
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">var</strong> reader = <strong class="jxr_keyword">new</strong> MyBatisCursorItemReader&lt;T&gt;();
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     reader.setSqlSessionFactory(<strong class="jxr_keyword">this</strong>.sqlSessionFactory);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     reader.setQueryId(<strong class="jxr_keyword">this</strong>.queryId);
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>     reader.setParameterValues(<strong class="jxr_keyword">this</strong>.parameterValues);

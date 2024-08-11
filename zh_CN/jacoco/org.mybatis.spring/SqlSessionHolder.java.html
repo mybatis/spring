@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionHolder.java</span></div><h1>SqlSessionHolder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mybatis.spring;
+
+import static org.springframework.util.Assert.notNull;
+
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.dao.support.PersistenceExceptionTranslator;
+import org.springframework.transaction.support.ResourceHolderSupport;
+
+/**
+ * Used to keep current {@code SqlSession} in {@code TransactionSynchronizationManager}. The {@code SqlSessionFactory}
+ * that created that {@code SqlSession} is used as a key. {@code ExecutorType} is also kept to be able to check if the
+ * user is trying to change it during a TX (that is not allowed) and throw a Exception in that case.
+ *
+ * @author Hunter Presnall
+ * @author Eduardo Macarron
+ */
+public final class SqlSessionHolder extends ResourceHolderSupport {
+
+  private final SqlSession sqlSession;
+
+  private final ExecutorType executorType;
+
+  private final PersistenceExceptionTranslator exceptionTranslator;
+
+  /**
+   * Creates a new holder instance.
+   *
+   * @param sqlSession
+   *          the {@code SqlSession} has to be hold.
+   * @param executorType
+   *          the {@code ExecutorType} has to be hold.
+   * @param exceptionTranslator
+   *          the {@code PersistenceExceptionTranslator} has to be hold.
+   */
+  public SqlSessionHolder(SqlSession sqlSession, ExecutorType executorType,
+<span class="fc" id="L52">      PersistenceExceptionTranslator exceptionTranslator) {</span>
+
+<span class="fc" id="L54">    notNull(sqlSession, &quot;SqlSession must not be null&quot;);</span>
+<span class="fc" id="L55">    notNull(executorType, &quot;ExecutorType must not be null&quot;);</span>
+
+<span class="fc" id="L57">    this.sqlSession = sqlSession;</span>
+<span class="fc" id="L58">    this.executorType = executorType;</span>
+<span class="fc" id="L59">    this.exceptionTranslator = exceptionTranslator;</span>
+<span class="fc" id="L60">  }</span>
+
+  public SqlSession getSqlSession() {
+<span class="fc" id="L63">    return sqlSession;</span>
+  }
+
+  public ExecutorType getExecutorType() {
+<span class="fc" id="L67">    return executorType;</span>
+  }
+
+  public PersistenceExceptionTranslator getPersistenceExceptionTranslator() {
+<span class="fc" id="L71">    return exceptionTranslator;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

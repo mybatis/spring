@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ja"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyBatisCursorItemReaderBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.batch.builder</a> &gt; <span class="el_source">MyBatisCursorItemReaderBuilder.java</span></div><h1>MyBatisCursorItemReaderBuilder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mybatis.spring.batch.builder;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.batch.MyBatisCursorItemReader;
+
+/**
+ * A builder for the {@link MyBatisCursorItemReader}.
+ *
+ * @author Kazuki Shimizu
+ *
+ * @since 2.0.0
+ *
+ * @see MyBatisCursorItemReader
+ */
+<span class="fc" id="L34">public class MyBatisCursorItemReaderBuilder&lt;T&gt; {</span>
+
+  private SqlSessionFactory sqlSessionFactory;
+  private String queryId;
+  private Map&lt;String, Object&gt; parameterValues;
+  private Supplier&lt;Map&lt;String, Object&gt;&gt; parameterValuesSupplier;
+  private Boolean saveState;
+  private Integer maxItemCount;
+
+  /**
+   * Set the {@link SqlSessionFactory} to be used by reader for database access.
+   *
+   * @param sqlSessionFactory
+   *          the {@link SqlSessionFactory} to be used by writer for database access
+   *
+   * @return this instance for method chaining
+   *
+   * @see MyBatisCursorItemReader#setSqlSessionFactory(SqlSessionFactory)
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; sqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+<span class="fc" id="L54">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="fc" id="L55">    return this;</span>
+  }
+
+  /**
+   * Set the query id identifying the statement in the SqlMap configuration file.
+   *
+   * @param queryId
+   *          the id for the query
+   *
+   * @return this instance for method chaining
+   *
+   * @see MyBatisCursorItemReader#setQueryId(String)
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; queryId(String queryId) {
+<span class="fc" id="L69">    this.queryId = queryId;</span>
+<span class="fc" id="L70">    return this;</span>
+  }
+
+  /**
+   * Set the parameter values to be used for the query execution.
+   *
+   * @param parameterValues
+   *          the parameter values to be used for the query execution
+   *
+   * @return this instance for method chaining
+   *
+   * @see MyBatisCursorItemReader#setParameterValues(Map)
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; parameterValues(Map&lt;String, Object&gt; parameterValues) {
+<span class="fc" id="L84">    this.parameterValues = parameterValues;</span>
+<span class="fc" id="L85">    return this;</span>
+  }
+
+  /**
+   * Set the parameter supplier to be used to get parameters for the query execution.
+   *
+   * @param parameterValuesSupplier
+   *          the parameter supplier to be used to get parameters for the query execution
+   *
+   * @return this instance for method chaining
+   *
+   * @see MyBatisCursorItemReader#setParameterValuesSupplier(Supplier)
+   *
+   * @since 2.1.0
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; parameterValuesSupplier(
+      Supplier&lt;Map&lt;String, Object&gt;&gt; parameterValuesSupplier) {
+<span class="fc" id="L102">    this.parameterValuesSupplier = parameterValuesSupplier;</span>
+<span class="fc" id="L103">    return this;</span>
+  }
+
+  /**
+   * Configure if the state of the {@link org.springframework.batch.item.ItemStreamSupport} should be persisted within
+   * the {@link org.springframework.batch.item.ExecutionContext} for restart purposes.
+   *
+   * @param saveState
+   *          defaults to true
+   *
+   * @return The current instance of the builder.
+   *
+   * @see org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader#setSaveState(boolean)
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; saveState(boolean saveState) {
+<span class="fc" id="L118">    this.saveState = saveState;</span>
+<span class="fc" id="L119">    return this;</span>
+  }
+
+  /**
+   * Configure the max number of items to be read.
+   *
+   * @param maxItemCount
+   *          the max items to be read
+   *
+   * @return The current instance of the builder.
+   *
+   * @see org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader#setMaxItemCount(int)
+   */
+  public MyBatisCursorItemReaderBuilder&lt;T&gt; maxItemCount(int maxItemCount) {
+<span class="fc" id="L133">    this.maxItemCount = maxItemCount;</span>
+<span class="fc" id="L134">    return this;</span>
+  }
+
+  /**
+   * Returns a fully built {@link MyBatisCursorItemReader}.
+   *
+   * @return the reader
+   */
+  public MyBatisCursorItemReader&lt;T&gt; build() {
+<span class="fc" id="L143">    var reader = new MyBatisCursorItemReader&lt;T&gt;();</span>
+<span class="fc" id="L144">    reader.setSqlSessionFactory(this.sqlSessionFactory);</span>
+<span class="fc" id="L145">    reader.setQueryId(this.queryId);</span>
+<span class="fc" id="L146">    reader.setParameterValues(this.parameterValues);</span>
+<span class="fc" id="L147">    reader.setParameterValuesSupplier(this.parameterValuesSupplier);</span>
+<span class="fc" id="L148">    Optional.ofNullable(this.saveState).ifPresent(reader::setSaveState);</span>
+<span class="fc" id="L149">    Optional.ofNullable(this.maxItemCount).ifPresent(reader::setMaxItemCount);</span>
+<span class="fc" id="L150">    return reader;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../../testapidocs/org/mybatis/spring/batch/SpringBatchTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2023 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2024 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
@@ -62,8 +62,8 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>    @Test
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>    @Transactional
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>    <strong class="jxr_keyword">void</strong> shouldDuplicateSalaryOfAllEmployees() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      Chunk&lt;Employee&gt; employees = <strong class="jxr_keyword">new</strong> Chunk&lt;&gt;();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <a name="Employee" href="../../../../org/mybatis/spring/batch/domain/Employee.html#Employee">Employee</a> employee = pagingNoNestedItemReader.read();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">var</strong> employees = <strong class="jxr_keyword">new</strong> Chunk&lt;Employee&gt;();
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">var</strong> employee = pagingNoNestedItemReader.read();
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">while</strong> (employee != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>        employee.setSalary(employee.getSalary() * 2);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>        employees.add(employee);
@@ -79,8 +79,8 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>    @Transactional
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>    <strong class="jxr_keyword">void</strong> checkPagingReadingWithNestedInResultMap() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      <em class="jxr_comment">// This test is here to show that PagingReader can return wrong result in case of nested result maps</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      Chunk&lt;Employee&gt; employees = <strong class="jxr_keyword">new</strong> Chunk&lt;&gt;();
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <a name="Employee" href="../../../../org/mybatis/spring/batch/domain/Employee.html#Employee">Employee</a> employee = pagingNestedItemReader.read();
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">var</strong> employees = <strong class="jxr_keyword">new</strong> Chunk&lt;Employee&gt;();
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">var</strong> employee = pagingNestedItemReader.read();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">while</strong> (employee != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>        employee.setSalary(employee.getSalary() * 2);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>        employees.add(employee);
@@ -97,8 +97,8 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>    <strong class="jxr_keyword">void</strong> checkCursorReadingWithoutNestedInResultMap() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      cursorNoNestedItemReader.doOpen();
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>        Chunk&lt;Employee&gt; employees = <strong class="jxr_keyword">new</strong> Chunk&lt;&gt;();
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>        <a name="Employee" href="../../../../org/mybatis/spring/batch/domain/Employee.html#Employee">Employee</a> employee = cursorNoNestedItemReader.read();
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>        <strong class="jxr_keyword">var</strong> employees = <strong class="jxr_keyword">new</strong> Chunk&lt;Employee&gt;();
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>        <strong class="jxr_keyword">var</strong> employee = cursorNoNestedItemReader.read();
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>        <strong class="jxr_keyword">while</strong> (employee != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          employee.setSalary(employee.getSalary() * 2);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          employees.add(employee);
@@ -118,8 +118,8 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>   <strong class="jxr_keyword">void</strong> checkCursorReadingWithNestedInResultMap() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     cursorNestedItemReader.doOpen();
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>       Chunk&lt;Employee&gt; employees = <strong class="jxr_keyword">new</strong> Chunk&lt;&gt;();
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>       <a name="Employee" href="../../../../org/mybatis/spring/batch/domain/Employee.html#Employee">Employee</a> employee = cursorNestedItemReader.read();
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>       <strong class="jxr_keyword">var</strong> employees = <strong class="jxr_keyword">new</strong> Chunk&lt;Employee&gt;();
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>       <strong class="jxr_keyword">var</strong> employee = cursorNestedItemReader.read();
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>       <strong class="jxr_keyword">while</strong> (employee != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         employee.setSalary(employee.getSalary() * 2);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>         employees.add(employee);
