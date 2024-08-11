@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean checkUserExists(int id) {
-    if ((userMapperMaster.select(id) != null) || (userMapperSlave.select(id) != null)) {
+    if (userMapperMaster.select(id) != null || userMapperSlave.select(id) != null) {
       return true;
     }
     return false;
