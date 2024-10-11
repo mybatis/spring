@@ -47,7 +47,7 @@ Andrius Juozapaitis, Giovanni Cuccu, Raj Nagappan 和 Tomas Pinos 的贡献；
    <li class="es"><a href="./../es/index.html">Español</a></li>
    <li class="ja"><a href="./../ja/index.html">日本語</a></li>
    <li class="ko"><a href="./../ko/index.html">한국어</a></li>
-   <li class="zh"><a href="./../zh/getting-started.html">简体中文</a></li>
+   <li class="zh"><a href="./../zh_CN/getting-started.html">简体中文</a></li>
  </ul>
 
 想用自己的母语阅读这篇文档吗？那就用你的母语翻译它吧！
