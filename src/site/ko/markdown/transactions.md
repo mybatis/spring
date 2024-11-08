@@ -1,13 +1,13 @@
 <a name="Transactions"></a>
 # Transactions
 
-마이바티스 스프링 연동모듈을 사용하는 중요한 이유중 하나는 마이바티스가 스프링 트랜잭션에 자연스럽게 연동될수 있다는 것이다.
+마이바티스 스프링 연동 모듈을 사용하는 중요한 이유 중 하나는 마이바티스가 스프링 트랜잭션에 자연스럽게 연동될 수 있다는 것이다.
 마이바티스에 종속되는 새로운 트랜잭션 관리를 만드는 것보다는 마이바티스 스프링 연동모듈이 스프링의 `DataSourceTransactionManager`과 융합되는 것이 좋다.
 
-스프링 트랜잭션 관리자를 한번 설정하면, 대개의 경우처럼 스프링에서 트랜잭션을 설정할 수 있다. `@Transactional` 애노테이션과 AOP스타일의 설정 모두 지원한다.
-하나의 `SqlSession`객체가 생성되고 트랜잭션이 동작하는 동안 지속적으로 사용될것이다. 세션은 트랜잭션이 완료되면 적절히 커밋이 되거나 롤백될것이다.
+스프링 트랜잭션 관리자를 한 번 설정하면, 대개의 경우처럼 스프링에서 트랜잭션을 설정할 수 있다. `@Transactional` 애노테이션과 AOP스타일의 설정 모두 지원한다.
+하나의 `SqlSession`객체가 생성되고 트랜잭션이 동작하는 동안 지속적으로 사용될 것이다. 세션은 트랜잭션이 완료되면 적절히 커밋이 되거나 롤백될것이다.
 
-마이바티스 스프링 연동모듈은 한번 셋업되면 트랜잭션을 투명하게 관리한다. DAO클래스에 어떠한 추가적인 코드를 넣을 필요가 없다.
+마이바티스 스프링 연동 모듈은 한 번 셋업되면 트랜잭션을 투명하게 관리한다. DAO클래스에 어떠한 추가적인 코드를 넣을 필요가 없다.
 
 <a name="configuration"></a>
 ## 표준 설정
@@ -30,9 +30,9 @@ public class DataSourceConfig {
 }
 ```
 
-명시된 `DataSource`는 스프링을 사용할때 일반적으로 사용한다면 어떠한 JDBC `DataSource`도 될수 있다. JNDI룩업을 통해 얻어진 `DataSource`뿐 아니라 커넥션 풀링 기능도 포함한다.
+명시된 `DataSource`는 스프링을 사용할 때 일반적으로 사용한다면 어떠한 JDBC `DataSource`도 될 수 있다. JNDI룩업을 통해 얻어진 `DataSource`뿐 아니라 커넥션 풀링 기능도 포함한다.
 
-트랜잭션 관리자에 명시된 `DataSource`가 `SqlSessionFactoryBean`을 생성할때 사용된 것과 **반드시** 동일한 것이어야 하는 것만 꼭 기억하자. 그렇지 않으면 트랜잭션 관리가 제대로 되지 않을것이다.
+트랜잭션 관리자에 명시된 `DataSource`가 `SqlSessionFactoryBean`을 생성할 때 사용된 것과 **반드시** 동일한 것이어야 하는 것만 꼭 기억하자. 그렇지 않으면 트랜잭션 관리가 제대로 되지 않을 것이다.
 
 <a name="container"></a>
 ## Container Managed Transactions
@@ -53,7 +53,7 @@ public class DataSourceConfig {
 }
 ```
 
-이 설정에서, 마이바티스는 CMT와 함께 설정된 스프링 트랜잭션 리소스처럼 동작할 것이다. 스프링은 이미 설정된 트랜잭션을 사용해서 `SqlSession`을 이미 동작중인 트랜잭션에 넣을 것이다.
+이 설정에서, 마이바티스는 CMT와 함께 설정된 스프링 트랜잭션 리소스처럼 동작할 것이다. 스프링은 이미 설정된 트랜잭션을 사용해서 `SqlSession`을 이미 동작 중인 트랜잭션에 넣을 것이다.
 시작된 트랜잭션이 없고 트랜잭션이 필요한 경우라면 스프링은 새로운 컨테이너 관리 트랜잭션을 시작할 것이다.
 
 CMT는 사용하지만 스프링 트랜잭션 관리를 원하지 **않는다면** 어떠한 스프링 트랜잭션 관리자를 설정해서도 **안되고** 마이바티스 `ManagedTransactionFactory`를 사용하기 위해 `SqlSessionFactoryBean`를 설정**해야만** 한다.
@@ -83,10 +83,10 @@ public class MyBatisConfig {
 <a name="programmatic"></a>
 ## Programmatic Transaction Management
 
-마이바티스 `SqlSession`은 트랜잭션을 제어하는 메서드를 제공한다. 하지만 마이바티스 스프링 연동모듈은 빈을 스프링이 관리하는 `SqlSession`이나 스프링이 관리하는 매퍼에 주입한다.
+마이바티스 `SqlSession`은 트랜잭션을 제어하는 메서드를 제공한다. 하지만 마이바티스 스프링 연동 모듈은 빈을 스프링이 관리하는 `SqlSession`이나 스프링이 관리하는 매퍼에 주입한다.
 이 말은 스프링이 **항상** 트랜잭션을 관리한다는 뜻이다.
 
-스프링이 관리하는 `SqlSession`에서는 `SqlSession.commit()`, `SqlSession.rollback()` 또는 `SqlSession.close()` 메서드를 호출할수가 없다.
+스프링이 관리하는 `SqlSession`에서는 `SqlSession.commit()`, `SqlSession.rollback()` 또는 `SqlSession.close()` 메서드를 호출할 수가 없다.
 그럼에도 불구하고 이 메서드들을 사용하면 `UnsupportedOperationException` 예외가 발생한다. 이러한 메서드는 주입된 매퍼 클래스에서는 사용할 수 없다.
 
 JDBC연결의 자동커밋 설정을 어떻게 하더라도 스프링 트랜잭션 밖의 `SqlSession` 데이터 메서드나 매퍼 메서드의 실행은 자동으로 커밋된다.
