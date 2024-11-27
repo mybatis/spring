@@ -113,7 +113,7 @@
     <java.test.release.version>17</java.test.release.version>
 
     <derby.version>10.17.1.0</derby.version>
-    <mybatis.version>3.5.16</mybatis.version>
+    <mybatis.version>3.5.17</mybatis.version>
     <spring.version>6.2.0</spring.version>
     <spring-boot.version>3.4.0</spring-boot.version>
     <spring-batch.version>5.2.0</spring-batch.version>
