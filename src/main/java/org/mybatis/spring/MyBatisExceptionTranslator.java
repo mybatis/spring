@@ -16,6 +16,7 @@
 package org.mybatis.spring;
 
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 import javax.sql.DataSource;
@@ -41,6 +42,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
 
   private final Supplier<SQLExceptionTranslator> exceptionTranslatorSupplier;
   private SQLExceptionTranslator exceptionTranslator;
+  private ReentrantLock lock = new ReentrantLock();
 
   /**
    * Creates a new {@code PersistenceExceptionTranslator} instance with {@code SQLErrorCodeSQLExceptionTranslator}.
@@ -104,9 +106,14 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   /**
    * Initializes the internal translator reference.
    */
-  private synchronized void initExceptionTranslator() {
-    if (this.exceptionTranslator == null) {
-      this.exceptionTranslator = exceptionTranslatorSupplier.get();
+  private void initExceptionTranslator() {
+    lock.lock();
+    try {
+      if (this.exceptionTranslator == null) {
+        this.exceptionTranslator = exceptionTranslatorSupplier.get();
+      }
+    } finally {
+      lock.unlock();
     }
   }
 
