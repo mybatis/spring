@@ -29,7 +29,7 @@
 
   <groupId>org.mybatis</groupId>
   <artifactId>mybatis-spring</artifactId>
-  <version>3.0.5-SNAPSHOT</version>
+  <version>3.0.5</version>
 
   <name>mybatis-spring</name>
   <description>An easy-to-use Spring bridge for MyBatis sql mapping framework.</description>
@@ -80,7 +80,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/mybatis/spring.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mybatis/spring.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>mybatis-spring-3.0.5</tag>
     <url>https://github.com/mybatis/spring/</url>
   </scm>
   <issueManagement>
@@ -122,7 +122,7 @@
     <junit.version>5.13.1</junit.version>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1723410271</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1749492532</project.build.outputTimestamp>
 
     <!-- Set byte buddy to experimental -->
     <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
