@@ -29,12 +29,12 @@ import java.util.Map;
 
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.ExecutorType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.batch.domain.Employee;
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -44,6 +44,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 /**
  * @author Putthiphong Boonphong
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisBatchItemWriterTest {
 
   @Mock
@@ -51,11 +52,6 @@ class MyBatisBatchItemWriterTest {
 
   @InjectMocks
   private MyBatisBatchItemWriter<Employee> writer;
-
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
 
   @Test
   void testZeroBatchResultShouldThrowException() {

@@ -26,17 +26,18 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;
 
 /**
  * Tests for {@link MyBatisCursorItemReader}.
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisCursorItemReaderTest {
 
   @Mock
@@ -48,16 +49,10 @@ class MyBatisCursorItemReaderTest {
   @Mock
   private Cursor<Object> cursor;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
-
   @Test
   void testCloseOnFailing() throws Exception {
 
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
-    Mockito.when(this.cursor.iterator()).thenReturn(getFoos().iterator());
     Mockito.when(this.sqlSession.selectCursor("selectFoo", Collections.singletonMap("id", 1)))
         .thenThrow(new RuntimeException("error."));
 
