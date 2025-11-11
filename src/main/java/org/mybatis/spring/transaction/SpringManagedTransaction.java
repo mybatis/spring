@@ -73,13 +73,18 @@ public class SpringManagedTransaction implements Transaction {
    * It also reads autocommit setting because when using Spring Transaction MyBatis thinks that autocommit is always
    * false and will always call commit/rollback so we need to no-op that calls.
    */
+
   private void openConnection() throws SQLException {
+
+    boolean existingTransaction = TransactionSynchronizationManager.isActualTransactionActive();
+
     this.connection = DataSourceUtils.getConnection(this.dataSource);
     this.autoCommit = this.connection.getAutoCommit();
-    this.isConnectionTransactional = DataSourceUtils.isConnectionTransactional(this.connection, this.dataSource);
+
+    this.isConnectionTransactional = existingTransaction;
 
     LOGGER.debug(() -> "JDBC Connection [" + this.connection + "] will"
-        + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
+      + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
   }
 
   @Override
