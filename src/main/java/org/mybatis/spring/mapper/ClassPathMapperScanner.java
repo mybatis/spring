@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ import java.util.Set;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.logging.Logger;
-import org.mybatis.logging.LoggerFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.scope.ScopedProxyFactoryBean;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.aot.AotDetector;
@@ -256,8 +256,8 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
     if (beanDefinitions.isEmpty()) {
       if (printWarnLogIfNotFoundMappers) {
-        LOGGER.warn(() -> "No MyBatis mapper was found in '" + Arrays.toString(basePackages)
-            + "' package. Please check your configuration.");
+        LOGGER.warn("No MyBatis mapper was found in '{}' package. Please check your configuration.",
+            Arrays.toString(basePackages));
       }
     } else {
       processBeanDefinitions(beanDefinitions);
@@ -280,8 +280,8 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
         scopedProxy = true;
       }
       var beanClassName = definition.getBeanClassName();
-      LOGGER.debug(() -> "Creating MapperFactoryBean with name '" + holder.getBeanName() + "' and '" + beanClassName
-          + "' mapperInterface");
+      LOGGER.debug("Creating MapperFactoryBean with name '{}' and '{}' mapperInterface", holder.getBeanName(),
+          beanClassName);
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
@@ -314,7 +314,7 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {
         if (explicitFactoryUsed) {
           LOGGER.warn(
-              () -> "Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.");
+              "Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.");
         }
         definition.getPropertyValues().add("sqlSessionTemplate",
             new RuntimeBeanReference(this.sqlSessionTemplateBeanName));
@@ -322,14 +322,14 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       } else if (this.sqlSessionTemplate != null) {
         if (explicitFactoryUsed) {
           LOGGER.warn(
-              () -> "Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.");
+              "Cannot use both: sqlSessionTemplate and sqlSessionFactory together. sqlSessionFactory is ignored.");
         }
         definition.getPropertyValues().add("sqlSessionTemplate", this.sqlSessionTemplate);
         explicitFactoryUsed = true;
       }
 
       if (!explicitFactoryUsed) {
-        LOGGER.debug(() -> "Enabling autowire by type for MapperFactoryBean with name '" + holder.getBeanName() + "'.");
+        LOGGER.debug("Enabling autowire by type for MapperFactoryBean with name '{}'.", holder.getBeanName());
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
       }
 
@@ -364,8 +364,9 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     if (super.checkCandidate(beanName, beanDefinition)) {
       return true;
     }
-    LOGGER.warn(() -> "Skipping MapperFactoryBean with name '" + beanName + "' and '"
-        + beanDefinition.getBeanClassName() + "' mapperInterface" + ". Bean already defined with the same name!");
+    LOGGER.warn(
+        "Skipping MapperFactoryBean with name '{}' and '{}' mapperInterface. Bean already defined with the same name!",
+        beanName, beanDefinition.getBeanClassName());
     return false;
   }
 

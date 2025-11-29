@@ -117,6 +117,7 @@
     <spring.version>7.0.1</spring.version>
     <spring-boot.version>4.0.0</spring-boot.version>
     <spring-batch.version>5.2.4</spring-batch.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <module.name>org.mybatis.spring</module.name>
 
     <junit.version>6.0.1</junit.version>
@@ -163,6 +164,13 @@
       <version>1.9.25</version>
       <scope>compile</scope>
       <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test dependencies -->
@@ -246,7 +254,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.17</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
 
