@@ -21,9 +21,9 @@ In Java, the equivalent code would be:
 @Configuration
 public class MyBatisConfig {
   @Bean
-  public SqlSessionFactory sqlSessionFactory() {
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-    factoryBean.setDataSource(dataSource());
+    factoryBean.setDataSource(dataSource);
     return factoryBean.getObject();
   }
 }
@@ -57,6 +57,18 @@ For example:
 </bean>
 ```
 
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+  return factoryBean.getObject();
+}
+```
+
 This will load all the MyBatis mapper XML files in the `sample.config.mappers` package and its sub-packages from the classpath.
 
 One property that may be required in an environment with container managed transactions is `transactionFactoryClass`. Please see the relevant section in the Transactions chapter.
@@ -83,6 +95,29 @@ In case you are using the multi-db feature you will need to set the `databaseIdP
 </bean>
 ```
 
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public VendorDatabaseIdProvider databaseIdProvider() {
+  VendorDatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
+  Properties properties = new Properties();
+  properties.setProperty("SQL Server", "sqlserver");
+  properties.setProperty("DB2", "db2");
+  properties.setProperty("Oracle", "oracle");
+  properties.setProperty("MySQL", "mysql");
+  databaseIdProvider.setProperties(properties);
+  return databaseIdProvider;
+}
+
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource, DatabaseIdProvider databaseIdProvider) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setDatabaseIdProvider(databaseIdProvider);
+  return factoryBean.getObject();
+}
+```
 <span class="label important">NOTE</span>
 Since 1.3.0, `configuration` property has been added. It can be specified a `Configuration` instance directly without MyBatis XML configuration file.
 
@@ -98,3 +133,48 @@ For example:
   </property>
 </bean>
 ```
+
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+
+  org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+  configuration.setMapUnderscoreToCamelCase(true);
+  factoryBean.setConfiguration(configuration);
+
+  return factoryBean.getObject();
+}
+```
+
+## Java Configuration Example
+
+Here is a complete example of a configuration class that combines the properties described above.
+
+```java
+@Configuration
+public class MyBatisConfig {
+
+  @Bean
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource);
+    
+    // Setting mapper locations
+    factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+
+    // Setting configuration property
+    org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+    configuration.setMapUnderscoreToCamelCase(true);
+    factoryBean.setConfiguration(configuration);
+
+    return factoryBean.getObject();
+  }
+}
+```
+
+<span class="label important">NOTE</span>
+This configuration class must be located within a package scanned by the Spring container (e.g., within the main application package). The class name itself (e.g., `MyBatisConfig`) is arbitrary; only the `@Configuration` annotation is required.
