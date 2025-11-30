@@ -13,13 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.mybatis.spring.mapper;
+package org.mybatis.spring.annotation;
 
-import org.mybatis.spring.annotation.Mapper;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-// annotated interface for MapperScannerPostProcessor tests
-// ensures annotated classes are loaded
-@Mapper
-public interface AnnotatedMapper {
-  public void method();
+import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+/**
+ * Marker interface for indicate the MyBatis mapper.
+ *
+ * @author Kazuki Shimizu
+ * @since 1.3.2
+ */
+@Documented
+@Inherited
+@Retention(RUNTIME)
+@Target(TYPE)
+public @interface Mapper {
 }
