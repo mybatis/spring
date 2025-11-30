@@ -31,7 +31,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.batch.infrastructure.item.database.AbstractPagingItemReader;
 
 /**
- * {@code org.springframework.batch.item.ItemReader} for reading database records using MyBatis in a paging fashion.
+ * {@code org.springframework.batch.infrastructure.item.ItemReader} for reading database records using MyBatis in a
+ * paging fashion.
  * <p>
  * Provided to facilitate the migration from Spring-Batch iBATIS 2 page item readers to MyBatis 3.
  *

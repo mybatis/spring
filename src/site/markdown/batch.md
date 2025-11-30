@@ -280,7 +280,7 @@ Then in the spring configuration there will be a `CompositeItemWriter` that will
 Note that as the *InteractionMetadata* is an association in the example it will need to be written first so that Interaction can have the updated key.
 
 ```xml
-<bean id="interactionsItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+<bean id="interactionsItemWriter" class="org.springframework.batch.infrastructure.item.support.CompositeItemWriter">
   <property name="delegates">
     <list>
       <ref bean="visitorInteractionsWriter"/>

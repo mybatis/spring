@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 /**
- * Contains classes to builder classes for {@link org.springframework.batch.item.ItemReader} and
- * {@link org.springframework.batch.item.ItemWriter}.
+ * Contains classes to builder classes for {@link org.springframework.batch.infrastructure.item.ItemReader} and
+ * {@link org.springframework.batch.infrastructure.item.ItemWriter}.
  *
  * @since 2.0.0
  */
