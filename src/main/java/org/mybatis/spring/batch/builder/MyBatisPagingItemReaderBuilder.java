@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,12 @@ import org.mybatis.spring.batch.MyBatisPagingItemReader;
  *
  * @author Kazuki Shimizu
  *
- * @since 2.0.0
+ * @param <T>
+ *          the generic type
  *
  * @see MyBatisPagingItemReader
+ *
+ * @since 2.0.0
  */
 public class MyBatisPagingItemReaderBuilder<T> {
 
@@ -112,7 +115,7 @@ public class MyBatisPagingItemReaderBuilder<T> {
    *
    * @return this instance for method chaining
    *
-   * @see org.springframework.batch.item.database.AbstractPagingItemReader#setPageSize(int)
+   * @see org.springframework.batch.infrastructure.item.database.AbstractPagingItemReader#setPageSize(int)
    */
   public MyBatisPagingItemReaderBuilder<T> pageSize(int pageSize) {
     this.pageSize = pageSize;
@@ -120,15 +123,15 @@ public class MyBatisPagingItemReaderBuilder<T> {
   }
 
   /**
-   * Configure if the state of the {@link org.springframework.batch.item.ItemStreamSupport} should be persisted within
-   * the {@link org.springframework.batch.item.ExecutionContext} for restart purposes.
+   * Configure if the state of the {@link org.springframework.batch.infrastructure.item.ItemStreamSupport} should be
+   * persisted within the {@link org.springframework.batch.infrastructure.item.ExecutionContext} for restart purposes.
    *
    * @param saveState
    *          defaults to true
    *
    * @return The current instance of the builder.
    *
-   * @see org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader#setSaveState(boolean)
+   * @see org.springframework.batch.infrastructure.item.support.AbstractItemCountingItemStreamItemReader#setSaveState(boolean)
    */
   public MyBatisPagingItemReaderBuilder<T> saveState(boolean saveState) {
     this.saveState = saveState;
@@ -143,7 +146,7 @@ public class MyBatisPagingItemReaderBuilder<T> {
    *
    * @return The current instance of the builder.
    *
-   * @see org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader#setMaxItemCount(int)
+   * @see org.springframework.batch.infrastructure.item.support.AbstractItemCountingItemStreamItemReader#setMaxItemCount(int)
    */
   public MyBatisPagingItemReaderBuilder<T> maxItemCount(int maxItemCount) {
     this.maxItemCount = maxItemCount;

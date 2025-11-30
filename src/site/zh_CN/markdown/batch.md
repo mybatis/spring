@@ -264,7 +264,7 @@ public class Interaction {
 在 Spring 配置中要配置一个 `CompositeItemWriter`，它将会将写入操作委托到特定种类的 writer 上面去。注意 *InteractionMetadata* 在例子里面是一个关联，它需要首先被写入，这样 Interaction 才能获得更新之后的键。
 
 ```xml
-<bean id="interactionsItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+<bean id="interactionsItemWriter" class="org.springframework.batch.infrastructure.item.support.CompositeItemWriter">
   <property name="delegates">
     <list>
       <ref bean="visitorInteractionsWriter"/>

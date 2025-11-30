@@ -274,7 +274,7 @@ public class Interaction {
 그리고 스프링 설정에는 각각의 레코드를 처리하기 위해 특별히 설정된 전용(delegates) writer를 사용하는 `CompositeItemWriter`가 있다.
 
 ```xml
-<bean id="interactionsItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+<bean id="interactionsItemWriter" class="org.springframework.batch.infrastructure.item.support.CompositeItemWriter">
   <property name="delegates">
     <list>
       <ref bean="visitorInteractionsWriter"/>

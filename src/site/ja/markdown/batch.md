@@ -267,7 +267,7 @@ public class Interaction {
 この例では *Interaction* をアップデートするためのキーを取得するため、*InteractionMetadata* を先に書き込む必要があります。
 
 ```xml
-<bean id="interactionsItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+<bean id="interactionsItemWriter" class="org.springframework.batch.infrastructure.item.support.CompositeItemWriter">
   <property name="delegates">
     <list>
       <ref bean="visitorInteractionsWriter"/>

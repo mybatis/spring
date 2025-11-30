@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,7 +164,6 @@ public class MapperScannerConfigurer
    * Set whether enable lazy initialization for mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @param lazyInitialization
    *          Set the @{code true} to enable
@@ -235,7 +234,6 @@ public class MapperScannerConfigurer
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
-   * <p>
    *
    * @deprecated Use {@link #setSqlSessionTemplateBeanName(String)} instead
    *
@@ -266,7 +264,6 @@ public class MapperScannerConfigurer
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
-   * <p>
    *
    * @deprecated Use {@link #setSqlSessionFactoryBeanName(String)} instead.
    *
@@ -357,7 +354,6 @@ public class MapperScannerConfigurer
    * Sets the default scope of scanned mappers.
    * <p>
    * Default is {@code null} (equiv to singleton).
-   * </p>
    *
    * @param defaultScope
    *          the default scope
