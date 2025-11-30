@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperScannerBeanDefinitionParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.config</a> &gt; <span class="el_source">MapperScannerBeanDefinitionParser.java</span></div><h1>MapperScannerBeanDefinitionParser.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mybatis.spring.config;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.mybatis.spring.mapper.ClassPathMapperScanner;
+import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
+import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+/**
+ * A {#code BeanDefinitionParser} that handles the element scan of the MyBatis. namespace
+ *
+ * @author Lishu Luo
+ * @author Eduardo Macarron
+ *
+ * @since 1.2.0
+ *
+ * @see MapperFactoryBean
+ * @see ClassPathMapperScanner
+ * @see MapperScannerConfigurer
+ */
+<span class="fc" id="L51">public class MapperScannerBeanDefinitionParser extends AbstractBeanDefinitionParser {</span>
+
+  private static final String ATTRIBUTE_BASE_PACKAGE = &quot;base-package&quot;;
+  private static final String ATTRIBUTE_ANNOTATION = &quot;annotation&quot;;
+  private static final String ATTRIBUTE_MARKER_INTERFACE = &quot;marker-interface&quot;;
+  private static final String ATTRIBUTE_NAME_GENERATOR = &quot;name-generator&quot;;
+  private static final String ATTRIBUTE_TEMPLATE_REF = &quot;template-ref&quot;;
+  private static final String ATTRIBUTE_FACTORY_REF = &quot;factory-ref&quot;;
+  private static final String ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS = &quot;mapper-factory-bean-class&quot;;
+  private static final String ATTRIBUTE_LAZY_INITIALIZATION = &quot;lazy-initialization&quot;;
+  private static final String ATTRIBUTE_DEFAULT_SCOPE = &quot;default-scope&quot;;
+  private static final String ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS = &quot;process-property-placeholders&quot;;
+  private static final String ATTRIBUTE_EXCLUDE_FILTER = &quot;exclude-filter&quot;;
+
+  @Override
+  protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+<span class="fc" id="L67">    var builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);</span>
+
+<span class="fc" id="L69">    var classLoader = ClassUtils.getDefaultClassLoader();</span>
+
+<span class="fc" id="L71">    var processPropertyPlaceHolders = element.getAttribute(ATTRIBUTE_PROCESS_PROPERTY_PLACEHOLDERS);</span>
+<span class="fc" id="L72">    builder.addPropertyValue(&quot;processPropertyPlaceHolders&quot;,</span>
+<span class="fc bfc" id="L73" title="All 4 branches covered.">        !StringUtils.hasText(processPropertyPlaceHolders) || Boolean.parseBoolean(processPropertyPlaceHolders));</span>
+    try {
+<span class="fc" id="L75">      var annotationClassName = element.getAttribute(ATTRIBUTE_ANNOTATION);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">      if (StringUtils.hasText(annotationClassName)) {</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L78">        Class&lt;? extends Annotation&gt; annotationClass = (Class&lt;? extends Annotation&gt;) classLoader</span>
+<span class="fc" id="L79">            .loadClass(annotationClassName);</span>
+<span class="fc" id="L80">        builder.addPropertyValue(&quot;annotationClass&quot;, annotationClass);</span>
+      }
+<span class="fc" id="L82">      var markerInterfaceClassName = element.getAttribute(ATTRIBUTE_MARKER_INTERFACE);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">      if (StringUtils.hasText(markerInterfaceClassName)) {</span>
+<span class="fc" id="L84">        Class&lt;?&gt; markerInterface = classLoader.loadClass(markerInterfaceClassName);</span>
+<span class="fc" id="L85">        builder.addPropertyValue(&quot;markerInterface&quot;, markerInterface);</span>
+      }
+<span class="fc" id="L87">      var nameGeneratorClassName = element.getAttribute(ATTRIBUTE_NAME_GENERATOR);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">      if (StringUtils.hasText(nameGeneratorClassName)) {</span>
+<span class="fc" id="L89">        Class&lt;?&gt; nameGeneratorClass = classLoader.loadClass(nameGeneratorClassName);</span>
+<span class="fc" id="L90">        var nameGenerator = BeanUtils.instantiateClass(nameGeneratorClass, BeanNameGenerator.class);</span>
+<span class="fc" id="L91">        builder.addPropertyValue(&quot;nameGenerator&quot;, nameGenerator);</span>
+      }
+<span class="fc" id="L93">      var mapperFactoryBeanClassName = element.getAttribute(ATTRIBUTE_MAPPER_FACTORY_BEAN_CLASS);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">      if (StringUtils.hasText(mapperFactoryBeanClassName)) {</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L96">        Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass = (Class&lt;? extends MapperFactoryBean&gt;) classLoader</span>
+<span class="fc" id="L97">            .loadClass(mapperFactoryBeanClassName);</span>
+<span class="fc" id="L98">        builder.addPropertyValue(&quot;mapperFactoryBeanClass&quot;, mapperFactoryBeanClass);</span>
+      }
+
+      // parse raw exclude-filter in &lt;mybatis:scan&gt;
+<span class="fc" id="L102">      var rawExcludeFilters = parseScanTypeFilters(element, parserContext);</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">      if (!rawExcludeFilters.isEmpty()) {</span>
+<span class="fc" id="L104">        builder.addPropertyValue(&quot;rawExcludeFilters&quot;, rawExcludeFilters);</span>
+      }
+
+<span class="nc" id="L107">    } catch (Exception ex) {</span>
+<span class="nc" id="L108">      var readerContext = parserContext.getReaderContext();</span>
+<span class="nc" id="L109">      readerContext.error(ex.getMessage(), readerContext.extractSource(element), ex.getCause());</span>
+<span class="fc" id="L110">    }</span>
+
+<span class="fc" id="L112">    builder.addPropertyValue(&quot;sqlSessionTemplateBeanName&quot;, element.getAttribute(ATTRIBUTE_TEMPLATE_REF));</span>
+<span class="fc" id="L113">    builder.addPropertyValue(&quot;sqlSessionFactoryBeanName&quot;, element.getAttribute(ATTRIBUTE_FACTORY_REF));</span>
+<span class="fc" id="L114">    builder.addPropertyValue(&quot;lazyInitialization&quot;, element.getAttribute(ATTRIBUTE_LAZY_INITIALIZATION));</span>
+<span class="fc" id="L115">    builder.addPropertyValue(&quot;defaultScope&quot;, element.getAttribute(ATTRIBUTE_DEFAULT_SCOPE));</span>
+<span class="fc" id="L116">    builder.addPropertyValue(&quot;basePackage&quot;, element.getAttribute(ATTRIBUTE_BASE_PACKAGE));</span>
+
+    // for spring-native
+<span class="fc" id="L119">    builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);</span>
+
+<span class="fc" id="L121">    return builder.getBeanDefinition();</span>
+  }
+
+  private List&lt;Map&lt;String, String&gt;&gt; parseScanTypeFilters(Element element, ParserContext parserContext) {
+<span class="fc" id="L125">    List&lt;Map&lt;String, String&gt;&gt; typeFilters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L126">    var nodeList = element.getChildNodes();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">    for (var i = 0; i &lt; nodeList.getLength(); i++) {</span>
+<span class="fc" id="L128">      var node = nodeList.item(i);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">      if (Node.ELEMENT_NODE == node.getNodeType()) {</span>
+<span class="fc" id="L130">        var localName = parserContext.getDelegate().getLocalName(node);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (ATTRIBUTE_EXCLUDE_FILTER.equals(localName)) {</span>
+<span class="fc" id="L132">          Map&lt;String, String&gt; filter = new HashMap&lt;&gt;(16);</span>
+<span class="fc" id="L133">          filter.put(&quot;type&quot;, ((Element) node).getAttribute(&quot;type&quot;));</span>
+<span class="fc" id="L134">          filter.put(&quot;expression&quot;, ((Element) node).getAttribute(&quot;expression&quot;));</span>
+<span class="fc" id="L135">          typeFilters.add(filter);</span>
+        }
+      }
+    }
+<span class="fc" id="L139">    return typeFilters;</span>
+  }
+
+  @Override
+  protected boolean shouldGenerateIdAsFallback() {
+<span class="fc" id="L144">    return true;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

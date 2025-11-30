@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperFactoryBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">MapperFactoryBean.java</span></div><h1>MapperFactoryBean.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2010-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.mybatis.spring.mapper;
+
+import static org.springframework.util.Assert.notNull;
+
+import org.apache.ibatis.executor.ErrorContext;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.FactoryBean;
+
+/**
+ * BeanFactory that enables injection of MyBatis mapper interfaces. It can be set up with a SqlSessionFactory or a
+ * pre-configured SqlSessionTemplate.
+ * &lt;p&gt;
+ * Sample configuration:
+ *
+ * &lt;pre class=&quot;code&quot;&gt;
+ * {@code
+ *   &lt;bean id=&quot;baseMapper&quot; class=&quot;org.mybatis.spring.mapper.MapperFactoryBean&quot; abstract=&quot;true&quot; lazy-init=&quot;true&quot;&gt;
+ *     &lt;property name=&quot;sqlSessionFactory&quot; ref=&quot;sqlSessionFactory&quot; /&gt;
+ *   &lt;/bean&gt;
+ *
+ *   &lt;bean id=&quot;oneMapper&quot; parent=&quot;baseMapper&quot;&gt;
+ *     &lt;property name=&quot;mapperInterface&quot; value=&quot;my.package.MyMapperInterface&quot; /&gt;
+ *   &lt;/bean&gt;
+ *
+ *   &lt;bean id=&quot;anotherMapper&quot; parent=&quot;baseMapper&quot;&gt;
+ *     &lt;property name=&quot;mapperInterface&quot; value=&quot;my.package.MyAnotherMapperInterface&quot; /&gt;
+ *   &lt;/bean&gt;
+ * }
+ * &lt;/pre&gt;
+ * &lt;p&gt;
+ * Note that this factory can only inject &lt;em&gt;interfaces&lt;/em&gt;, not concrete classes.
+ *
+ * @author Eduardo Macarron
+ *
+ * @param &lt;T&gt;
+ *          the generic type
+ *
+ * @see SqlSessionTemplate
+ */
+public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements FactoryBean&lt;T&gt; {
+
+  private Class&lt;T&gt; mapperInterface;
+
+<span class="fc" id="L60">  private boolean addToConfig = true;</span>
+
+  /**
+   * Instantiates a new mapper factory bean.
+   */
+<span class="fc" id="L65">  public MapperFactoryBean() {</span>
+    // intentionally empty
+<span class="fc" id="L67">  }</span>
+
+  /**
+   * Instantiates a new mapper factory bean.
+   *
+   * @param mapperInterface
+   *          the mapper interface
+   */
+<span class="fc" id="L75">  public MapperFactoryBean(Class&lt;T&gt; mapperInterface) {</span>
+<span class="fc" id="L76">    this.mapperInterface = mapperInterface;</span>
+<span class="fc" id="L77">  }</span>
+
+  @Override
+  protected void checkDaoConfig() {
+<span class="fc" id="L81">    super.checkDaoConfig();</span>
+
+<span class="fc" id="L83">    notNull(this.mapperInterface, &quot;Property 'mapperInterface' is required&quot;);</span>
+
+<span class="fc" id="L85">    var configuration = getSqlSession().getConfiguration();</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">    if (this.addToConfig &amp;&amp; !configuration.hasMapper(this.mapperInterface)) {</span>
+      try {
+<span class="fc" id="L88">        configuration.addMapper(this.mapperInterface);</span>
+<span class="nc" id="L89">      } catch (Exception e) {</span>
+<span class="nc" id="L90">        logger.error(&quot;Error while adding the mapper '&quot; + this.mapperInterface + &quot;' to configuration.&quot;, e);</span>
+<span class="nc" id="L91">        throw new IllegalArgumentException(e);</span>
+      } finally {
+<span class="fc" id="L93">        ErrorContext.instance().reset();</span>
+      }
+    }
+<span class="fc" id="L96">  }</span>
+
+  @Override
+  public T getObject() throws Exception {
+<span class="fc" id="L100">    return getSqlSession().getMapper(this.mapperInterface);</span>
+  }
+
+  @Override
+  public Class&lt;T&gt; getObjectType() {
+<span class="fc" id="L105">    return this.mapperInterface;</span>
+  }
+
+  @Override
+  public boolean isSingleton() {
+<span class="fc" id="L110">    return true;</span>
+  }
+
+  // ------------- mutators --------------
+
+  /**
+   * Sets the mapper interface of the MyBatis mapper
+   *
+   * @param mapperInterface
+   *          class of the interface
+   */
+  public void setMapperInterface(Class&lt;T&gt; mapperInterface) {
+<span class="fc" id="L122">    this.mapperInterface = mapperInterface;</span>
+<span class="fc" id="L123">  }</span>
+
+  /**
+   * Return the mapper interface of the MyBatis mapper
+   *
+   * @return class of the interface
+   */
+  public Class&lt;T&gt; getMapperInterface() {
+<span class="fc" id="L131">    return mapperInterface;</span>
+  }
+
+  /**
+   * If addToConfig is false the mapper will not be added to MyBatis. This means it must have been included in
+   * mybatis-config.xml.
+   * &lt;p&gt;
+   * If it is true, the mapper will be added to MyBatis in the case it is not already registered.
+   * &lt;p&gt;
+   * By default addToConfig is true.
+   *
+   * @param addToConfig
+   *          a flag that whether add mapper to MyBatis or not
+   */
+  public void setAddToConfig(boolean addToConfig) {
+<span class="fc" id="L146">    this.addToConfig = addToConfig;</span>
+<span class="fc" id="L147">  }</span>
+
+  /**
+   * Return the flag for addition into MyBatis config.
+   *
+   * @return true if the mapper will be added to MyBatis in the case it is not already registered.
+   */
+  public boolean isAddToConfig() {
+<span class="fc" id="L155">    return addToConfig;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
