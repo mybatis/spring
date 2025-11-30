@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2010-2024 the original author or authors.
+    Copyright 2010-2025 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -54,8 +54,11 @@
 
   <batch:job-repository/>
 
-  <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.TaskExecutorJobLauncher">
+  <bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry" />
+
+  <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobOperator">
     <property name="jobRepository" ref="jobRepository"/>
+    <property name="jobRegistry" ref="jobRegistry"/>
   </bean>
 
   <bean id="reader" class="org.mybatis.spring.batch.MyBatisCursorItemReader">
