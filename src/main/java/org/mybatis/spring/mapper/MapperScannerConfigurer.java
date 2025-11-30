@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.jspecify.annotations.Nullable;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyValues;
@@ -46,7 +47,6 @@ import org.springframework.core.type.filter.AspectJTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
