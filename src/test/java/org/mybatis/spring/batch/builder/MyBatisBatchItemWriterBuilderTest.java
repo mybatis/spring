@@ -34,9 +34,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.batch.infrastructure.item.Chunk;
 
@@ -47,6 +48,7 @@ import org.springframework.batch.infrastructure.item.Chunk;
  *
  * @author Kazuki Shimizu
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisBatchItemWriterBuilderTest {
 
   @Mock
@@ -60,19 +62,17 @@ class MyBatisBatchItemWriterBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-    {
-      var configuration = new Configuration();
-      var environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
-      configuration.setEnvironment(environment);
-      Mockito.when(this.sqlSessionFactory.getConfiguration()).thenReturn(configuration);
-      Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.BATCH)).thenReturn(this.sqlSession);
-    }
-    {
-      var result = new BatchResult(null, null);
-      result.setUpdateCounts(new int[] { 1 });
-      Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.singletonList(result));
-    }
+
+    var configuration = new Configuration();
+    var environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
+    configuration.setEnvironment(environment);
+    Mockito.when(this.sqlSessionFactory.getConfiguration()).thenReturn(configuration);
+    Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.BATCH)).thenReturn(this.sqlSession);
+
+    var result = new BatchResult(null, null);
+    result.setUpdateCounts(new int[] { 1 });
+    Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.singletonList(result));
+
   }
 
   @Test

@@ -28,9 +28,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 
 /**
@@ -40,6 +41,7 @@ import org.springframework.batch.infrastructure.item.ExecutionContext;
  *
  * @author Kazuki Shimizu
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisCursorItemReaderBuilderTest {
 
   @Mock
@@ -53,8 +55,6 @@ class MyBatisCursorItemReaderBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
     Mockito.when(this.cursor.iterator()).thenReturn(getFoos().iterator());
     Map<String, Object> parameters = new HashMap<>();

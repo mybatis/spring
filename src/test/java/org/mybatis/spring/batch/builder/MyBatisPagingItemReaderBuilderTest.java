@@ -32,9 +32,12 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 
 /**
@@ -44,6 +47,8 @@ import org.springframework.batch.infrastructure.item.ExecutionContext;
  *
  * @author Kazuki Shimizu
  */
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class MyBatisPagingItemReaderBuilderTest {
 
   @Mock
@@ -57,8 +62,6 @@ class MyBatisPagingItemReaderBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-
     var configuration = new Configuration();
     var environment = new Environment("unittest", new JdbcTransactionFactory(), dataSource);
     configuration.setEnvironment(environment);
@@ -70,19 +73,21 @@ class MyBatisPagingItemReaderBuilderTest {
     parameters.put("_page", 0);
     parameters.put("_pagesize", 10);
     parameters.put("_skiprows", 0);
+
+    // Most tests are using this, lenient as a result on class.
     Mockito.when(this.sqlSession.selectList("selectFoo", parameters)).thenReturn(getFoos());
   }
 
   @Test
   void testConfiguration() throws Exception {
     // @formatter:off
-        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-                .sqlSessionFactory(this.sqlSessionFactory)
-                .queryId("selectFoo")
-                .parameterValues(Collections.singletonMap("id", 1))
-                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-                .build();
-        // @formatter:on
+    var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+            .sqlSessionFactory(this.sqlSessionFactory)
+            .queryId("selectFoo")
+            .parameterValues(Collections.singletonMap("id", 1))
+            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .build();
+    // @formatter:on
     itemReader.afterPropertiesSet();
 
     var executionContext = new ExecutionContext();
@@ -102,14 +107,14 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationSaveStateIsFalse() throws Exception {
     // @formatter:off
-        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-                .sqlSessionFactory(this.sqlSessionFactory)
-                .queryId("selectFoo")
-                .parameterValues(Collections.singletonMap("id", 1))
-                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-                .saveState(false)
-                .build();
-        // @formatter:on
+    var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+            .sqlSessionFactory(this.sqlSessionFactory)
+            .queryId("selectFoo")
+            .parameterValues(Collections.singletonMap("id", 1))
+            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .saveState(false)
+            .build();
+    // @formatter:on
     itemReader.afterPropertiesSet();
 
     var executionContext = new ExecutionContext();
@@ -126,14 +131,14 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationMaxItemCount() throws Exception {
     // @formatter:off
-        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-                .sqlSessionFactory(this.sqlSessionFactory)
-                .queryId("selectFoo")
-                .parameterValues(Collections.singletonMap("id", 1))
-                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-                .maxItemCount(2)
-                .build();
-        // @formatter:on
+    var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+            .sqlSessionFactory(this.sqlSessionFactory)
+            .queryId("selectFoo")
+            .parameterValues(Collections.singletonMap("id", 1))
+            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .maxItemCount(2)
+            .build();
+    // @formatter:on
     itemReader.afterPropertiesSet();
 
     var executionContext = new ExecutionContext();
@@ -151,14 +156,14 @@ class MyBatisPagingItemReaderBuilderTest {
   @Test
   void testConfigurationPageSize() throws Exception {
     // @formatter:off
-        var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
-                .sqlSessionFactory(this.sqlSessionFactory)
-                .queryId("selectFoo")
-                .parameterValues(Collections.singletonMap("id", 1))
-                .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
-                .pageSize(2)
-                .build();
-        // @formatter:on
+    var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
+            .sqlSessionFactory(this.sqlSessionFactory)
+            .queryId("selectFoo")
+            .parameterValues(Collections.singletonMap("id", 1))
+            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .pageSize(2)
+            .build();
+    // @formatter:on
     itemReader.afterPropertiesSet();
 
     Map<String, Object> parameters = new HashMap<>();
@@ -167,6 +172,8 @@ class MyBatisPagingItemReaderBuilderTest {
     parameters.put("name", "Doe");
     parameters.put("_pagesize", 2);
     parameters.put("_skiprows", 0);
+
+    // The initial mock on this needed repeated here, lenient as a result on class.
     Mockito.when(this.sqlSession.selectList("selectFoo", parameters)).thenReturn(getFoos());
 
     var executionContext = new ExecutionContext();
