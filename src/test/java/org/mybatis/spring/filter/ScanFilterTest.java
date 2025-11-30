@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * test the function of excludeFilters in @MapperScan
  */
-public class ScanFilterTest {
+class ScanFilterTest {
 
   private AnnotationConfigApplicationContext applicationContext;
 
