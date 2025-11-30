@@ -27,6 +27,9 @@ import org.mybatis.spring.batch.MyBatisCursorItemReader;
  *
  * @author Kazuki Shimizu
  *
+ * @param <T>
+ *          the generic type
+ *
  * @since 2.0.0
  *
  * @see MyBatisCursorItemReader

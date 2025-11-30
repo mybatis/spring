@@ -32,7 +32,12 @@ import org.springframework.batch.infrastructure.item.support.AbstractItemCountin
 import org.springframework.beans.factory.InitializingBean;
 
 /**
+ * {@code ItemReader} that uses MyBatis Cursor to read data.
+ *
  * @author Guillaume Darmont / guillaume@dropinocean.com
+ *
+ * @param <T>
+ *          the generic type
  */
 public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamItemReader<T>
     implements InitializingBean {
@@ -48,6 +53,9 @@ public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamIt
   private Cursor<T> cursor;
   private Iterator<T> cursorIterator;
 
+  /**
+   * Instantiates a new my batis cursor item reader.
+   */
   public MyBatisCursorItemReader() {
     setName(getShortName(MyBatisCursorItemReader.class));
   }

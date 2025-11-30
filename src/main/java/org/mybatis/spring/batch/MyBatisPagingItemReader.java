@@ -38,6 +38,9 @@ import org.springframework.batch.infrastructure.item.database.AbstractPagingItem
  *
  * @author Eduardo Macarron
  *
+ * @param <T>
+ *          the generic type
+ *
  * @since 1.1.0
  */
 public class MyBatisPagingItemReader<T> extends AbstractPagingItemReader<T> {
@@ -52,6 +55,9 @@ public class MyBatisPagingItemReader<T> extends AbstractPagingItemReader<T> {
 
   private Supplier<Map<String, Object>> parameterValuesSupplier;
 
+  /**
+   * Instantiates a new my batis paging item reader.
+   */
   public MyBatisPagingItemReader() {
     setName(getShortName(MyBatisPagingItemReader.class));
   }

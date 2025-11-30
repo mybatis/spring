@@ -27,9 +27,12 @@ import org.mybatis.spring.batch.MyBatisPagingItemReader;
  *
  * @author Kazuki Shimizu
  *
- * @since 2.0.0
+ * @param <T>
+ *          the generic type
  *
  * @see MyBatisPagingItemReader
+ *
+ * @since 2.0.0
  */
 public class MyBatisPagingItemReaderBuilder<T> {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,12 @@ public class SpringManagedTransaction implements Transaction {
 
   private boolean autoCommit;
 
+  /**
+   * Instantiates a new spring managed transaction.
+   *
+   * @param dataSource
+   *          the data source
+   */
   public SpringManagedTransaction(DataSource dataSource) {
     notNull(dataSource, "No DataSource specified");
     this.dataSource = dataSource;

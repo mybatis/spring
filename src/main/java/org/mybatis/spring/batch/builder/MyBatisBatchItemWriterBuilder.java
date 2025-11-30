@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,9 @@ import org.springframework.core.convert.converter.Converter;
  * A builder for the {@link MyBatisBatchItemWriter}.
  *
  * @author Kazuki Shimizu
+ *
+ * @param <T>
+ *          the generic type
  *
  * @since 2.0.0
  *

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,14 +132,29 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
         new Class[] { SqlSession.class }, new SqlSessionInterceptor());
   }
 
+  /**
+   * Gets the sql session factory.
+   *
+   * @return the sql session factory
+   */
   public SqlSessionFactory getSqlSessionFactory() {
     return this.sqlSessionFactory;
   }
 
+  /**
+   * Gets the executor type.
+   *
+   * @return the executor type
+   */
   public ExecutorType getExecutorType() {
     return this.executorType;
   }
 
+  /**
+   * Gets the persistence exception translator.
+   *
+   * @return the persistence exception translator
+   */
   public PersistenceExceptionTranslator getPersistenceExceptionTranslator() {
     return this.exceptionTranslator;
   }
