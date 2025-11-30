@@ -14,7 +14,8 @@ MyBatis-Spring adapter is an easy-to-use [Spring Framework](https://github.com/s
 Supported Versions
 ------------------
 
-- master - Support for Spring 6 and Spring Batch 5
+- master - Support for Spring 7 and Spring Batch 6
+- 3.0.x - Support for Spring 6 and Spring Batch 5
 - 2.1.x - Maintenance for Spring 5 and Spring Batch 4
 
 Essentials
