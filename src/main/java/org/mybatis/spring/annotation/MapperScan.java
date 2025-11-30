@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import org.springframework.core.annotation.AliasFor;
  * the class that declares this annotation.
  * <p>
  * Configuration example:
- * </p>
  *
  * <pre class="code">
  * &#064;Configuration
@@ -168,7 +167,6 @@ public @interface MapperScan {
    * Whether enable lazy initialization of mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @return set {@code true} to enable lazy initialization
    *
@@ -180,7 +178,6 @@ public @interface MapperScan {
    * Specifies the default scope of scanned mappers.
    * <p>
    * Default is {@code ""} (equiv to singleton).
-   * </p>
    *
    * @return the default scope
    */

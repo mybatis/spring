@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,7 +118,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set whether enable lazy initialization for mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @param lazyInitialization
    *          Set the @{code true} to enable
@@ -133,7 +132,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set whether print warning log if not found mappers that matches conditions.
    * <p>
    * Default is {@code true}. But {@code false} when running in native image.
-   * </p>
    *
    * @param printWarnLogIfNotFoundMappers
    *          Set the @{code true} to print
@@ -192,7 +190,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set the default scope of scanned mappers.
    * <p>
    * Default is {@code null} (equiv to singleton).
-   * </p>
    *
    * @param defaultScope
    *          the scope
