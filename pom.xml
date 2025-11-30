@@ -29,7 +29,7 @@
 
   <groupId>org.mybatis</groupId>
   <artifactId>mybatis-spring</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1-SNAPSHOT</version>
 
   <name>mybatis-spring</name>
   <description>An easy-to-use Spring bridge for MyBatis sql mapping framework.</description>
@@ -122,7 +122,7 @@
     <junit.version>6.0.1</junit.version>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1764529899</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1764529975</project.build.outputTimestamp>
 
     <!-- Set byte buddy to experimental -->
     <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
