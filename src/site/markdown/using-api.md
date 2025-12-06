@@ -21,10 +21,9 @@ public class UserDaoImpl implements UserDao {
 }
 ```
 
-Use this option <strong>with care</strong> because wrong usage may produce runtime errors or worse, data integrity problems. Be aware of the following caveats with direct API usage:
+Use this option **with care** because wrong usage may produce runtime errors or worse, data integrity problems. Be aware of the following caveats with direct API usage:
 
-* It will **not** participate in any Spring transactions.
-* If the `SqlSession` is using a `DataSource` that is also being used by a Spring transaction manager and there is currently a transaction in progress, this code **will** throw an exception.
+* Unless **explicitly managed by Spring's `@Transactional` annotation** or configured for **auto-commit** at the database connection level, the raw `SqlSession` does **not** participate in any transaction management. Reliance on the raw `SqlSession` is highly discouraged as it bypasses Spring's automatic resource management mechanism.
 * MyBatis' `DefaultSqlSession` is not thread safe. If you inject it in your beans you **will** get errors.
 * Mappers created using `DefaultSqlSession` are not thread safe either. If you inject them it in your beans you **will** get errors.
 * You must make sure that your `SqlSession`s are **always** closed in a finally block.
