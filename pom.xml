@@ -160,7 +160,7 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
-      <version>1.9.25</version>
+      <version>1.9.25.1</version>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
