@@ -115,7 +115,7 @@
     <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.19</mybatis.version>
     <spring.version>7.0.3</spring.version>
-    <spring-boot.version>4.0.1</spring-boot.version>
+    <spring-boot.version>4.0.2</spring-boot.version>
     <spring-batch.version>6.0.2</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
