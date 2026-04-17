@@ -178,7 +178,7 @@
     <dependency>
       <groupId>com.atomikos</groupId>
       <artifactId>transactions-jdbc</artifactId>
-      <version>6.0.0</version>
+      <version>6.0.1</version>
       <scope>test</scope>
     </dependency>
 
