@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -285,9 +286,13 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
-      definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
+      var constructorArgument = new ConstructorArgumentValues.ValueHolder(beanClassName); // issue #59
+      definition.getConstructorArgumentValues().addGenericArgumentValue(constructorArgument);
       try {
         Class<?> beanClass = Resources.classForName(beanClassName);
+        if (shouldUseClassConstructorArgument(this.mapperFactoryBeanClass)) {
+          constructorArgument.setValue(beanClass);
+        }
         // Attribute for MockitoPostProcessor
         // https://github.com/mybatis/spring-boot-starter/issues/475
         definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClass);
@@ -357,6 +362,18 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
     return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
+  }
+
+  private boolean shouldUseClassConstructorArgument(Class<? extends MapperFactoryBean> mapperFactoryBeanClass) {
+    return hasSingleArgumentConstructorAccepting(mapperFactoryBeanClass, Class.class)
+        && !hasSingleArgumentConstructorAccepting(mapperFactoryBeanClass, String.class);
+  }
+
+  private boolean hasSingleArgumentConstructorAccepting(Class<? extends MapperFactoryBean> mapperFactoryBeanClass,
+      Class<?> argumentType) {
+    return Arrays.stream(mapperFactoryBeanClass.getDeclaredConstructors())
+        .anyMatch(constructor -> constructor.getParameterCount() == 1
+            && constructor.getParameterTypes()[0].isAssignableFrom(argumentType));
   }
 
   @Override
