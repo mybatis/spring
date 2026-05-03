@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.aot.AotDetector;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
@@ -382,6 +383,10 @@ public class MapperScannerConfigurer
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
     if (this.processPropertyPlaceHolders) {
       processPropertyPlaceHolders();
+    }
+
+    if (AotDetector.useGeneratedArtifacts()) {
+      return;
     }
 
     var scanner = new ClassPathMapperScanner(registry, getEnvironment());
