@@ -112,14 +112,19 @@ class MapperScannerConfigurerTest {
         .hasSize(1);
     assertThat(applicationContext.getBeanDefinition("mapperInterface").getPropertyValues().get("mapperInterface"))
         .isEqualTo(MapperInterface.class);
+    assertMapperInterfaceConstructorArgument("mapperInterface", MapperInterface.class);
     assertThat(applicationContext.getBeanDefinition("mapperSubinterface").getPropertyValues().get("mapperInterface"))
         .isEqualTo(MapperSubinterface.class);
+    assertMapperInterfaceConstructorArgument("mapperSubinterface", MapperSubinterface.class);
     assertThat(applicationContext.getBeanDefinition("mapperChildInterface").getPropertyValues().get("mapperInterface"))
         .isEqualTo(MapperChildInterface.class);
+    assertMapperInterfaceConstructorArgument("mapperChildInterface", MapperChildInterface.class);
     assertThat(applicationContext.getBeanDefinition("annotatedMapper").getPropertyValues().get("mapperInterface"))
         .isEqualTo(AnnotatedMapper.class);
+    assertMapperInterfaceConstructorArgument("annotatedMapper", AnnotatedMapper.class);
     assertThat(applicationContext.getBeanDefinition("scopedTarget.scopedProxyMapper").getPropertyValues()
         .get("mapperInterface")).isEqualTo(ScopedProxyMapper.class);
+    assertMapperInterfaceConstructorArgument("scopedTarget.scopedProxyMapper", ScopedProxyMapper.class);
   }
 
   @Test
@@ -392,6 +397,31 @@ class MapperScannerConfigurerTest {
     applicationContext.getBean("annotatedMapper");
 
     assertTrue(DummyMapperFactoryBean.getMapperCount() > 0);
+    assertMapperInterfaceConstructorArgument("mapperInterface", MapperInterface.class);
+  }
+
+  @Test
+  void testScanWithStringConstructorMapperFactoryBeanClass() {
+    applicationContext.getBeanDefinition("mapperScanner").getPropertyValues().add("mapperFactoryBeanClass",
+        StringConstructorMapperFactoryBean.class);
+
+    startContext();
+
+    applicationContext.getBean("mapperInterface");
+
+    assertMapperInterfaceConstructorArgument("mapperInterface", MapperInterface.class.getName());
+  }
+
+  @Test
+  void testScanWithStringAndClassConstructorMapperFactoryBeanClass() {
+    applicationContext.getBeanDefinition("mapperScanner").getPropertyValues().add("mapperFactoryBeanClass",
+        StringAndClassConstructorMapperFactoryBean.class);
+
+    startContext();
+
+    applicationContext.getBean("mapperInterface");
+
+    assertMapperInterfaceConstructorArgument("mapperInterface", MapperInterface.class.getName());
   }
 
   @Test
@@ -430,11 +460,47 @@ class MapperScannerConfigurerTest {
     }
   }
 
+  private void assertMapperInterfaceConstructorArgument(String beanName, Class<?> mapperInterface) {
+    var constructorArguments = applicationContext.getBeanDefinition(beanName).getConstructorArgumentValues()
+        .getGenericArgumentValues();
+    assertThat(constructorArguments).hasSize(1);
+    assertThat(constructorArguments.get(0).getValue()).isEqualTo(mapperInterface);
+  }
+
+  private void assertMapperInterfaceConstructorArgument(String beanName, String mapperInterface) {
+    var constructorArguments = applicationContext.getBeanDefinition(beanName).getConstructorArgumentValues()
+        .getGenericArgumentValues();
+    assertThat(constructorArguments).hasSize(1);
+    assertThat(constructorArguments.get(0).getValue()).isEqualTo(mapperInterface);
+  }
+
   public static class BeanNameGenerator implements org.springframework.beans.factory.support.BeanNameGenerator {
 
     @Override
     public String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry definitionRegistry) {
       return beanDefinition.getBeanClassName();
+    }
+
+  }
+
+  public static class StringConstructorMapperFactoryBean<T> extends MapperFactoryBean<T> {
+
+    @SuppressWarnings("unchecked")
+    public StringConstructorMapperFactoryBean(String mapperInterfaceName) throws ClassNotFoundException {
+      setMapperInterface((Class<T>) Class.forName(mapperInterfaceName));
+    }
+
+  }
+
+  public static class StringAndClassConstructorMapperFactoryBean<T> extends MapperFactoryBean<T> {
+
+    @SuppressWarnings("unchecked")
+    public StringAndClassConstructorMapperFactoryBean(String mapperInterfaceName) throws ClassNotFoundException {
+      setMapperInterface((Class<T>) Class.forName(mapperInterfaceName));
+    }
+
+    public StringAndClassConstructorMapperFactoryBean(Class<T> mapperInterface) {
+      super(mapperInterface);
     }
 
   }
