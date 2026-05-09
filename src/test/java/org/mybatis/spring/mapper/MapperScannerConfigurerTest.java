@@ -36,15 +36,24 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.mapper.child.MapperChildInterface;
 import org.mybatis.spring.type.DummyMapperFactoryBean;
+import org.springframework.aot.AotDetector;
+import org.springframework.aot.generate.ClassNameGenerator;
+import org.springframework.aot.generate.DefaultGenerationContext;
+import org.springframework.aot.generate.GeneratedFiles;
+import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.aot.ApplicationContextAotGenerator;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.core.SpringProperties;
+import org.springframework.javapoet.ClassName;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.stereotype.Component;
 
@@ -442,6 +451,49 @@ class MapperScannerConfigurerTest {
     assertThat(applicationContext.getBeanDefinition("annotatedMapperOnPropertyCondition")
         .getAttribute(ClassPathMapperScanner.FACTORY_BEAN_OBJECT_TYPE))
             .isEqualTo(AnnotatedMapperOnPropertyCondition.class);
+  }
+
+  @Test
+  void testMapperScannerConfigurerRegisteredInAotGeneratedRuntime() throws Exception {
+    var dataSourceDefinition = new GenericBeanDefinition();
+    dataSourceDefinition.setBeanClass(DriverManagerDataSource.class);
+    applicationContext.registerBeanDefinition("dataSource", dataSourceDefinition);
+    applicationContext.getBeanDefinition("sqlSessionFactory").getPropertyValues().add("dataSource",
+        new RuntimeBeanReference("dataSource"));
+
+    var generatedFiles = new InMemoryGeneratedFiles();
+    var generationContext = new DefaultGenerationContext(
+        new ClassNameGenerator(ClassName.get("org.mybatis.spring.mapper", "MapperScannerConfigurerAotTests")),
+        generatedFiles);
+
+    new ApplicationContextAotGenerator().processAheadOfTime(applicationContext, generationContext);
+    generationContext.writeGeneratedContent();
+
+    var source = String.join("\n", generatedFiles.getGeneratedFiles(GeneratedFiles.Kind.SOURCE).keySet());
+    assertThat(source).contains("MapperScannerConfigurer__BeanDefinitions.java");
+    assertThat(source).contains("MapperFactoryBean__BeanDefinitions.java");
+  }
+
+  @Test
+  void testSkipMapperScanWithAotGeneratedArtifacts() {
+    var definition = new GenericBeanDefinition();
+    definition.setBeanClass(MapperFactoryBean.class);
+    definition.getConstructorArgumentValues().addGenericArgumentValue(MapperInterface.class);
+    definition.getPropertyValues().add("sqlSessionFactory", new RuntimeBeanReference("sqlSessionFactory"));
+    applicationContext.registerBeanDefinition("mapperInterface", definition);
+
+    var aotEnabled = SpringProperties.getProperty(AotDetector.AOT_ENABLED);
+    SpringProperties.setFlag(AotDetector.AOT_ENABLED);
+    try {
+      startContext();
+    } finally {
+      SpringProperties.setProperty(AotDetector.AOT_ENABLED, aotEnabled);
+    }
+
+    assertThat(applicationContext.getBean("mapperScanner")).isInstanceOf(MapperScannerConfigurer.class);
+    assertThat(applicationContext.getBeanDefinition("mapperInterface").getBeanClassName())
+        .isEqualTo("org.mybatis.spring.mapper.MapperFactoryBean");
+    assertBeanNotLoaded("mapperSubinterface");
   }
 
   private void setupSqlSessionFactory(String name) {
