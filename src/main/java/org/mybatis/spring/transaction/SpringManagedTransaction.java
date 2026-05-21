@@ -71,7 +71,7 @@ public class SpringManagedTransaction implements Transaction {
    * connection or let it to Spring.
    * <p>
    * It also reads autocommit setting because when using Spring Transaction MyBatis thinks that autocommit is always
-   * false and will always call commit/rollback so we need to no-op that calls.:q
+   * false and will always call commit/rollback so we need to no-op that calls.
    */
   private void openConnection() throws SQLException {
     this.connection = DataSourceUtils.getConnection(this.dataSource);
