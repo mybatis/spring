@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.batch.item.ExecutionContext;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
 
 /**
  * Tests for {@link MyBatisCursorItemReaderBuilder}.
@@ -40,6 +41,7 @@ import org.springframework.batch.item.ExecutionContext;
  *
  * @author Kazuki Shimizu
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisCursorItemReaderBuilderTest {
 
   @Mock
@@ -53,8 +55,6 @@ class MyBatisCursorItemReaderBuilderTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
     Mockito.when(this.cursor.iterator()).thenReturn(getFoos().iterator());
     Map<String, Object> parameters = new HashMap<>();

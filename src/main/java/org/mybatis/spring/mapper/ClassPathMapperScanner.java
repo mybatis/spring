@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -90,6 +91,14 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   private String defaultScope;
   private List<TypeFilter> excludeFilters;
 
+  /**
+   * Instantiates a new class path mapper scanner.
+   *
+   * @param registry
+   *          the registry
+   * @param environment
+   *          the environment
+   */
   public ClassPathMapperScanner(BeanDefinitionRegistry registry, Environment environment) {
     super(registry, false, environment);
     setIncludeAnnotationConfig(!AotDetector.useGeneratedArtifacts());
@@ -97,6 +106,11 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   }
 
   /**
+   * Instantiates a new class path mapper scanner.
+   *
+   * @param registry
+   *          the registry
+   *
    * @deprecated Please use the {@link #ClassPathMapperScanner(BeanDefinitionRegistry, Environment)}.
    */
   @Deprecated(since = "3.0.4", forRemoval = true)
@@ -106,10 +120,22 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     setPrintWarnLogIfNotFoundMappers(!NativeDetector.inNativeImage());
   }
 
+  /**
+   * Sets the adds the to config.
+   *
+   * @param addToConfig
+   *          the new adds the to config
+   */
   public void setAddToConfig(boolean addToConfig) {
     this.addToConfig = addToConfig;
   }
 
+  /**
+   * Sets the annotation class.
+   *
+   * @param annotationClass
+   *          the new annotation class
+   */
   public void setAnnotationClass(Class<? extends Annotation> annotationClass) {
     this.annotationClass = annotationClass;
   }
@@ -118,7 +144,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set whether enable lazy initialization for mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @param lazyInitialization
    *          Set the @{code true} to enable
@@ -133,7 +158,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set whether print warning log if not found mappers that matches conditions.
    * <p>
    * Default is {@code true}. But {@code false} when running in native image.
-   * </p>
    *
    * @param printWarnLogIfNotFoundMappers
    *          Set the @{code true} to print
@@ -144,34 +168,75 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     this.printWarnLogIfNotFoundMappers = printWarnLogIfNotFoundMappers;
   }
 
+  /**
+   * Sets the marker interface.
+   *
+   * @param markerInterface
+   *          the new marker interface
+   */
   public void setMarkerInterface(Class<?> markerInterface) {
     this.markerInterface = markerInterface;
   }
 
+  /**
+   * Sets the exclude filters.
+   *
+   * @param excludeFilters
+   *          the new exclude filters
+   */
   public void setExcludeFilters(List<TypeFilter> excludeFilters) {
     this.excludeFilters = excludeFilters;
   }
 
+  /**
+   * Sets the sql session factory.
+   *
+   * @param sqlSessionFactory
+   *          the new sql session factory
+   */
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
     this.sqlSessionFactory = sqlSessionFactory;
   }
 
+  /**
+   * Sets the sql session template.
+   *
+   * @param sqlSessionTemplate
+   *          the new sql session template
+   */
   public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
     this.sqlSessionTemplate = sqlSessionTemplate;
   }
 
+  /**
+   * Sets the sql session template bean name.
+   *
+   * @param sqlSessionTemplateBeanName
+   *          the new sql session template bean name
+   */
   public void setSqlSessionTemplateBeanName(String sqlSessionTemplateBeanName) {
     this.sqlSessionTemplateBeanName = sqlSessionTemplateBeanName;
   }
 
+  /**
+   * Sets the sql session factory bean name.
+   *
+   * @param sqlSessionFactoryBeanName
+   *          the new sql session factory bean name
+   */
   public void setSqlSessionFactoryBeanName(String sqlSessionFactoryBeanName) {
     this.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;
   }
 
   /**
+   * Sets the mapper factory bean.
+   *
+   * @param mapperFactoryBean
+   *          the new mapper factory bean
+   *
    * @deprecated Since 2.0.1, Please use the {@link #setMapperFactoryBeanClass(Class)}.
    */
-  @Deprecated
+  @Deprecated(since = "2.0.1", forRemoval = true)
   public void setMapperFactoryBean(MapperFactoryBean<?> mapperFactoryBean) {
     this.mapperFactoryBeanClass = mapperFactoryBean == null ? MapperFactoryBean.class : mapperFactoryBean.getClass();
   }
@@ -192,7 +257,6 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
    * Set the default scope of scanned mappers.
    * <p>
    * Default is {@code null} (equiv to singleton).
-   * </p>
    *
    * @param defaultScope
    *          the scope
@@ -285,9 +349,13 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
       // the mapper interface is the original class of the bean
       // but, the actual class of the bean is MapperFactoryBean
-      definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
+      var constructorArgument = new ConstructorArgumentValues.ValueHolder(beanClassName); // issue #59
+      definition.getConstructorArgumentValues().addGenericArgumentValue(constructorArgument);
       try {
         Class<?> beanClass = Resources.classForName(beanClassName);
+        if (shouldUseClassConstructorArgument(this.mapperFactoryBeanClass)) {
+          constructorArgument.setValue(beanClass);
+        }
         // Attribute for MockitoPostProcessor
         // https://github.com/mybatis/spring-boot-starter/issues/475
         definition.setAttribute(FACTORY_BEAN_OBJECT_TYPE, beanClass);
@@ -357,6 +425,18 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
     return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
+  }
+
+  private boolean shouldUseClassConstructorArgument(Class<? extends MapperFactoryBean> mapperFactoryBeanClass) {
+    return hasSingleArgumentConstructorAccepting(mapperFactoryBeanClass, Class.class)
+        && !hasSingleArgumentConstructorAccepting(mapperFactoryBeanClass, String.class);
+  }
+
+  private boolean hasSingleArgumentConstructorAccepting(Class<? extends MapperFactoryBean> mapperFactoryBeanClass,
+      Class<?> argumentType) {
+    return Arrays.stream(mapperFactoryBeanClass.getDeclaredConstructors())
+        .anyMatch(constructor -> constructor.getParameterCount() == 1
+            && constructor.getParameterTypes()[0].isAssignableFrom(argumentType));
   }
 
   @Override

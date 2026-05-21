@@ -29,7 +29,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class MavenWrapperDownloader {
-    private static final String WRAPPER_VERSION = "3.3.2";
+    private static final String WRAPPER_VERSION = "3.3.4";
 
     private static final boolean VERBOSE = Boolean.parseBoolean(System.getenv("MVNW_VERBOSE"));
 
@@ -44,8 +44,11 @@ public final class MavenWrapperDownloader {
         try {
             log(" - Downloader started");
             final URL wrapperUrl = URI.create(args[0]).toURL();
-            final String jarPath = args[1].replace("..", ""); // Sanitize path
-            final Path wrapperJarPath = Path.of(jarPath).toAbsolutePath().normalize();
+            final Path baseDir = Path.of(".").toAbsolutePath().normalize();
+            final Path wrapperJarPath = baseDir.resolve(args[1]).normalize();
+            if (!wrapperJarPath.startsWith(baseDir)) {
+                throw new IOException("Invalid path: outside of allowed directory");
+            }
             downloadFileFromURL(wrapperUrl, wrapperJarPath);
             log("Done");
         } catch (IOException e) {

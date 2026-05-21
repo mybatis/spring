@@ -271,7 +271,7 @@ Entonces en la configuración de spring habrá un `CompositeItemWriter` que usar
 Fijate que el *InteractionMetadata* es una asociacióin en el ejemplo por lo que debe ser escrita antes para que la Interaction pueda recibir la clave generada.
 
 ```xml
-<bean id="interactionsItemWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+<bean id="interactionsItemWriter" class="org.springframework.batch.infrastructure.item.support.CompositeItemWriter">
   <property name="delegates">
     <list>
       <ref bean="visitorInteractionsWriter"/>

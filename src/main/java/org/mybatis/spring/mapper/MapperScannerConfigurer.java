@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.jspecify.annotations.Nullable;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.aot.AotDetector;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
@@ -46,7 +48,6 @@ import org.springframework.core.type.filter.AspectJTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -164,7 +165,6 @@ public class MapperScannerConfigurer
    * Set whether enable lazy initialization for mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @param lazyInitialization
    *          Set the @{code true} to enable
@@ -235,7 +235,6 @@ public class MapperScannerConfigurer
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
-   * <p>
    *
    * @deprecated Use {@link #setSqlSessionTemplateBeanName(String)} instead
    *
@@ -266,7 +265,6 @@ public class MapperScannerConfigurer
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
-   * <p>
    *
    * @deprecated Use {@link #setSqlSessionFactoryBeanName(String)} instead.
    *
@@ -357,7 +355,6 @@ public class MapperScannerConfigurer
    * Sets the default scope of scanned mappers.
    * <p>
    * Default is {@code null} (equiv to singleton).
-   * </p>
    *
    * @param defaultScope
    *          the default scope
@@ -382,6 +379,10 @@ public class MapperScannerConfigurer
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
     if (this.processPropertyPlaceHolders) {
       processPropertyPlaceHolders();
+    }
+
+    if (AotDetector.useGeneratedArtifacts()) {
+      return;
     }
 
     var scanner = new ClassPathMapperScanner(registry, getEnvironment());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,16 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
+import org.springframework.batch.infrastructure.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
+ * {@code ItemReader} that uses MyBatis Cursor to read data.
+ *
  * @author Guillaume Darmont / guillaume@dropinocean.com
+ *
+ * @param <T>
+ *          the generic type
  */
 public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamItemReader<T>
     implements InitializingBean {
@@ -48,6 +53,9 @@ public class MyBatisCursorItemReader<T> extends AbstractItemCountingItemStreamIt
   private Cursor<T> cursor;
   private Iterator<T> cursorIterator;
 
+  /**
+   * Instantiates a new my batis cursor item reader.
+   */
   public MyBatisCursorItemReader() {
     setName(getShortName(MyBatisCursorItemReader.class));
   }
