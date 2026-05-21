@@ -84,6 +84,7 @@ public class SpringManagedTransaction implements Transaction {
     LOGGER.debug(() -> "JDBC Connection [" + this.connection + "] will"
       + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
   }
+
   @Override
   public void commit() throws SQLException {
     if (this.connection != null && !this.isConnectionTransactional && !this.autoCommit) {
