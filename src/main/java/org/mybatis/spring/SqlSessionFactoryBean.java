@@ -565,9 +565,8 @@ public class SqlSessionFactoryBean
   public void afterPropertiesSet() throws Exception {
     notNull(dataSource, "Property 'dataSource' is required");
     notNull(sqlSessionFactoryBuilder, "Property 'sqlSessionFactoryBuilder' is required");
-    // TODO Review this statement as it seems off!
-    state((configuration == null && configLocation == null) || !(configuration != null && configLocation != null),
-        "Property 'configuration' and 'configLocation' can not specified with together");
+    state(configuration == null || configLocation == null,
+        "Property 'configuration' and 'configLocation' can not be specified together");
 
     this.sqlSessionFactory = buildSqlSessionFactory();
   }
