@@ -41,8 +41,8 @@ import org.springframework.transaction.TransactionException;
 public class MyBatisExceptionTranslator implements PersistenceExceptionTranslator {
 
   private final Supplier<SQLExceptionTranslator> exceptionTranslatorSupplier;
-  private SQLExceptionTranslator exceptionTranslator;
-  private ReentrantLock lock = new ReentrantLock();
+  private volatile SQLExceptionTranslator exceptionTranslator;
+  private final ReentrantLock lock = new ReentrantLock();
 
   /**
    * Creates a new {@code PersistenceExceptionTranslator} instance with {@code SQLErrorCodeSQLExceptionTranslator}.
@@ -104,9 +104,13 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   }
 
   /**
-   * Initializes the internal translator reference.
+   * Initializes the internal translator reference. Uses double-checked locking so that, once the translator is created,
+   * subsequent calls take a fast path without acquiring the lock.
    */
   private void initExceptionTranslator() {
+    if (this.exceptionTranslator != null) {
+      return;
+    }
     lock.lock();
     try {
       if (this.exceptionTranslator == null) {
