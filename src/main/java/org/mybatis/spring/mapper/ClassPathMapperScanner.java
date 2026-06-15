@@ -424,7 +424,9 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
 
   @Override
   protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-    return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
+    var metadata = beanDefinition.getMetadata();
+    // annotation types are interfaces too, but must never be treated as mapper candidates
+    return metadata.isInterface() && metadata.isIndependent() && !metadata.isAnnotation();
   }
 
   private boolean shouldUseClassConstructorArgument(Class<? extends MapperFactoryBean> mapperFactoryBeanClass) {
