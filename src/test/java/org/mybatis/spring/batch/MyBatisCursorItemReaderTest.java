@@ -18,8 +18,8 @@ package org.mybatis.spring.batch;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ExecutorType;
@@ -53,13 +53,12 @@ class MyBatisCursorItemReaderTest {
   void testCloseOnFailing() throws Exception {
 
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
-    Mockito.when(this.sqlSession.selectCursor("selectFoo", Collections.singletonMap("id", 1)))
-        .thenThrow(new RuntimeException("error."));
+    Mockito.when(this.sqlSession.selectCursor("selectFoo", Map.of("id", 1))).thenThrow(new RuntimeException("error."));
 
     var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.setSqlSessionFactory(this.sqlSessionFactory);
     itemReader.setQueryId("selectFoo");
-    itemReader.setParameterValues(Collections.singletonMap("id", 1));
+    itemReader.setParameterValues(Map.of("id", 1));
     itemReader.afterPropertiesSet();
 
     var executionContext = new ExecutionContext();

@@ -19,8 +19,8 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -71,7 +71,7 @@ class MyBatisBatchItemWriterBuilderTest {
 
     var result = new BatchResult(null, null);
     result.setUpdateCounts(new int[] { 1 });
-    Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.singletonList(result));
+    Mockito.when(this.sqlSession.flushStatements()).thenReturn(List.of(result));
 
   }
 
@@ -120,7 +120,7 @@ class MyBatisBatchItemWriterBuilderTest {
   @Test
   void testConfigurationAssertUpdatesIsFalse() {
 
-    Mockito.when(this.sqlSession.flushStatements()).thenReturn(Collections.emptyList());
+    Mockito.when(this.sqlSession.flushStatements()).thenReturn(List.of());
 
     // @formatter:off
         var itemWriter = new MyBatisBatchItemWriterBuilder<Foo>()

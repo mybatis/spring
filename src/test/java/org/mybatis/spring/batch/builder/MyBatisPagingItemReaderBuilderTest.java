@@ -16,7 +16,6 @@
 package org.mybatis.spring.batch.builder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,8 +83,8 @@ class MyBatisPagingItemReaderBuilderTest {
     var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
             .sqlSessionFactory(this.sqlSessionFactory)
             .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .parameterValues(Map.of("id", 1))
+            .parameterValuesSupplier(() -> Map.of("name", "Doe"))
             .build();
     // @formatter:on
     itemReader.afterPropertiesSet();
@@ -110,8 +109,8 @@ class MyBatisPagingItemReaderBuilderTest {
     var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
             .sqlSessionFactory(this.sqlSessionFactory)
             .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .parameterValues(Map.of("id", 1))
+            .parameterValuesSupplier(() -> Map.of("name", "Doe"))
             .saveState(false)
             .build();
     // @formatter:on
@@ -134,8 +133,8 @@ class MyBatisPagingItemReaderBuilderTest {
     var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
             .sqlSessionFactory(this.sqlSessionFactory)
             .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .parameterValues(Map.of("id", 1))
+            .parameterValuesSupplier(() -> Map.of("name", "Doe"))
             .maxItemCount(2)
             .build();
     // @formatter:on
@@ -159,8 +158,8 @@ class MyBatisPagingItemReaderBuilderTest {
     var itemReader = new MyBatisPagingItemReaderBuilder<Foo>()
             .sqlSessionFactory(this.sqlSessionFactory)
             .queryId("selectFoo")
-            .parameterValues(Collections.singletonMap("id", 1))
-            .parameterValuesSupplier(() -> Collections.singletonMap("name", "Doe"))
+            .parameterValues(Map.of("id", 1))
+            .parameterValuesSupplier(() -> Map.of("name", "Doe"))
             .pageSize(2)
             .build();
     // @formatter:on

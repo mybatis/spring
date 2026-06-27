@@ -84,11 +84,11 @@ public class SpringManagedTransaction implements Transaction {
     this.autoCommit = this.connection.getAutoCommit();
 
     boolean isInActiveTransaction = TransactionSynchronizationManager.isActualTransactionActive();
-    this.isConnectionTransactional = isInActiveTransaction &&
-      DataSourceUtils.isConnectionTransactional(this.connection, this.dataSource);
+    this.isConnectionTransactional = isInActiveTransaction
+        && DataSourceUtils.isConnectionTransactional(this.connection, this.dataSource);
 
     LOGGER.debug(() -> "JDBC Connection [" + this.connection + "] will"
-      + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
+        + (this.isConnectionTransactional ? " " : " not ") + "be managed by Spring");
   }
 
   @Override
