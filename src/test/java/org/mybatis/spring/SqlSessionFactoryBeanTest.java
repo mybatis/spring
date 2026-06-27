@@ -302,8 +302,7 @@ class SqlSessionFactoryBeanTest {
     factoryBean.setConfigLocation(new ClassPathResource("org/mybatis/spring/mybatis-config.xml"));
 
     Throwable e = assertThrows(IllegalStateException.class, factoryBean::getObject);
-    assertThat(e.getMessage())
-        .isEqualTo("Property 'configuration' and 'configLocation' can not specified with together");
+    assertThat(e.getMessage()).isEqualTo("Only one of 'configuration' or 'configLocation' may be specified");
   }
 
   @Test
