@@ -566,7 +566,7 @@ public class SqlSessionFactoryBean
     notNull(dataSource, "Property 'dataSource' is required");
     notNull(sqlSessionFactoryBuilder, "Property 'sqlSessionFactoryBuilder' is required");
     state(configuration == null || configLocation == null,
-        "Property 'configuration' and 'configLocation' can not be specified together");
+        "Only one of 'configuration' or 'configLocation' may be specified");
 
     this.sqlSessionFactory = buildSqlSessionFactory();
   }
