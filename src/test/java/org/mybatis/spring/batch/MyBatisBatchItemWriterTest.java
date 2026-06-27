@@ -22,7 +22,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ class MyBatisBatchItemWriterTest {
   @Test
   void testZeroBatchResultShouldThrowException() {
     Chunk<Employee> employees = Chunk.of(new Employee(), new Employee());
-    List<BatchResult> batchResults = Collections.emptyList();
+    List<BatchResult> batchResults = List.of();
 
     given(mockSqlSessionTemplate.flushStatements()).willReturn(batchResults);
 
@@ -69,7 +68,7 @@ class MyBatisBatchItemWriterTest {
 
     var batchResult = new BatchResult(null, null);
     batchResult.setUpdateCounts(new int[] { 1, 0 });
-    List<BatchResult> batchResults = Collections.singletonList(batchResult);
+    List<BatchResult> batchResults = List.of(batchResult);
 
     given(mockSqlSessionTemplate.flushStatements()).willReturn(batchResults);
 
