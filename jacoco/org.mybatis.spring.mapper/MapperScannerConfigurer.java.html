@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapperScannerConfigurer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring.mapper</a> &gt; <span class="el_source">MapperScannerConfigurer.java</span></div><h1>MapperScannerConfigurer.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2010-2025 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jspecify.annotations.Nullable;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.aot.AotDetector;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanNameAware;
@@ -97,12 +98,12 @@ import org.springframework.util.StringUtils;
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
  */
-<span class="fc" id="L100">public class MapperScannerConfigurer</span>
+<span class="fc" id="L101">public class MapperScannerConfigurer</span>
     implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
 
   private String basePackage;
 
-<span class="fc" id="L105">  private boolean addToConfig = true;</span>
+<span class="fc" id="L106">  private boolean addToConfig = true;</span>
 
   private String lazyInitialization;
 
@@ -145,8 +146,8 @@ import org.springframework.util.StringUtils;
    *          base package name
    */
   public void setBasePackage(String basePackage) {
-<span class="fc" id="L148">    this.basePackage = basePackage;</span>
-<span class="fc" id="L149">  }</span>
+<span class="fc" id="L149">    this.basePackage = basePackage;</span>
+<span class="fc" id="L150">  }</span>
 
   /**
    * Same as {@code MapperFactoryBean#setAddToConfig(boolean)}.
@@ -157,8 +158,8 @@ import org.springframework.util.StringUtils;
    * @see MapperFactoryBean#setAddToConfig(boolean)
    */
   public void setAddToConfig(boolean addToConfig) {
-<span class="nc" id="L160">    this.addToConfig = addToConfig;</span>
-<span class="nc" id="L161">  }</span>
+<span class="nc" id="L161">    this.addToConfig = addToConfig;</span>
+<span class="nc" id="L162">  }</span>
 
   /**
    * Set whether enable lazy initialization for mapper bean.
@@ -171,8 +172,8 @@ import org.springframework.util.StringUtils;
    * @since 2.0.2
    */
   public void setLazyInitialization(String lazyInitialization) {
-<span class="fc" id="L174">    this.lazyInitialization = lazyInitialization;</span>
-<span class="fc" id="L175">  }</span>
+<span class="fc" id="L175">    this.lazyInitialization = lazyInitialization;</span>
+<span class="fc" id="L176">  }</span>
 
   /**
    * This property specifies the annotation that the scanner will search for.
@@ -185,8 +186,8 @@ import org.springframework.util.StringUtils;
    *          annotation class
    */
   public void setAnnotationClass(Class&lt;? extends Annotation&gt; annotationClass) {
-<span class="fc" id="L188">    this.annotationClass = annotationClass;</span>
-<span class="fc" id="L189">  }</span>
+<span class="fc" id="L189">    this.annotationClass = annotationClass;</span>
+<span class="fc" id="L190">  }</span>
 
   /**
    * This property specifies the parent that the scanner will search for.
@@ -200,8 +201,8 @@ import org.springframework.util.StringUtils;
    *          parent class
    */
   public void setMarkerInterface(Class&lt;?&gt; superClass) {
-<span class="fc" id="L203">    this.markerInterface = superClass;</span>
-<span class="fc" id="L204">  }</span>
+<span class="fc" id="L204">    this.markerInterface = superClass;</span>
+<span class="fc" id="L205">  }</span>
 
   /**
    * Specifies which types are not eligible for the mapper scanner.
@@ -214,8 +215,8 @@ import org.springframework.util.StringUtils;
    *          list of TypeFilter
    */
   public void setExcludeFilters(List&lt;TypeFilter&gt; excludeFilters) {
-<span class="fc" id="L217">    this.excludeFilters = excludeFilters;</span>
-<span class="fc" id="L218">  }</span>
+<span class="fc" id="L218">    this.excludeFilters = excludeFilters;</span>
+<span class="fc" id="L219">  }</span>
 
   /**
    * In order to support process PropertyPlaceHolders.
@@ -228,8 +229,8 @@ import org.springframework.util.StringUtils;
    *          list of rawExcludeFilter
    */
   public void setRawExcludeFilters(List&lt;Map&lt;String, String&gt;&gt; rawExcludeFilters) {
-<span class="fc" id="L231">    this.rawExcludeFilters = rawExcludeFilters;</span>
-<span class="fc" id="L232">  }</span>
+<span class="fc" id="L232">    this.rawExcludeFilters = rawExcludeFilters;</span>
+<span class="fc" id="L233">  }</span>
 
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is more than one in the spring context.
@@ -242,8 +243,8 @@ import org.springframework.util.StringUtils;
    */
   @Deprecated
   public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-<span class="nc" id="L245">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
-<span class="nc" id="L246">  }</span>
+<span class="nc" id="L246">    this.sqlSessionTemplate = sqlSessionTemplate;</span>
+<span class="nc" id="L247">  }</span>
 
   /**
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is more than one in the spring context.
@@ -258,8 +259,8 @@ import org.springframework.util.StringUtils;
    *          Bean name of the {@code SqlSessionTemplate}
    */
   public void setSqlSessionTemplateBeanName(String sqlSessionTemplateName) {
-<span class="fc" id="L261">    this.sqlSessionTemplateBeanName = sqlSessionTemplateName;</span>
-<span class="fc" id="L262">  }</span>
+<span class="fc" id="L262">    this.sqlSessionTemplateBeanName = sqlSessionTemplateName;</span>
+<span class="fc" id="L263">  }</span>
 
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is more than one in the spring context.
@@ -272,8 +273,8 @@ import org.springframework.util.StringUtils;
    */
   @Deprecated
   public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-<span class="nc" id="L275">    this.sqlSessionFactory = sqlSessionFactory;</span>
-<span class="nc" id="L276">  }</span>
+<span class="nc" id="L276">    this.sqlSessionFactory = sqlSessionFactory;</span>
+<span class="nc" id="L277">  }</span>
 
   /**
    * Specifies which {@code SqlSessionFactory} to use in the case that there is more than one in the spring context.
@@ -288,8 +289,8 @@ import org.springframework.util.StringUtils;
    *          Bean name of the {@code SqlSessionFactory}
    */
   public void setSqlSessionFactoryBeanName(String sqlSessionFactoryName) {
-<span class="fc" id="L291">    this.sqlSessionFactoryBeanName = sqlSessionFactoryName;</span>
-<span class="fc" id="L292">  }</span>
+<span class="fc" id="L292">    this.sqlSessionFactoryBeanName = sqlSessionFactoryName;</span>
+<span class="fc" id="L293">  }</span>
 
   /**
    * Specifies a flag that whether execute a property placeholder processing or not.
@@ -302,8 +303,8 @@ import org.springframework.util.StringUtils;
    *          a flag that whether execute a property placeholder processing or not
    */
   public void setProcessPropertyPlaceHolders(boolean processPropertyPlaceHolders) {
-<span class="fc" id="L305">    this.processPropertyPlaceHolders = processPropertyPlaceHolders;</span>
-<span class="fc" id="L306">  }</span>
+<span class="fc" id="L306">    this.processPropertyPlaceHolders = processPropertyPlaceHolders;</span>
+<span class="fc" id="L307">  }</span>
 
   /**
    * The class of the {@link MapperFactoryBean} to return a mybatis proxy as spring bean.
@@ -314,18 +315,18 @@ import org.springframework.util.StringUtils;
    * @since 2.0.1
    */
   public void setMapperFactoryBeanClass(Class&lt;? extends MapperFactoryBean&gt; mapperFactoryBeanClass) {
-<span class="fc" id="L317">    this.mapperFactoryBeanClass = mapperFactoryBeanClass;</span>
-<span class="fc" id="L318">  }</span>
+<span class="fc" id="L318">    this.mapperFactoryBeanClass = mapperFactoryBeanClass;</span>
+<span class="fc" id="L319">  }</span>
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
-<span class="fc" id="L322">    this.applicationContext = applicationContext;</span>
-<span class="fc" id="L323">  }</span>
+<span class="fc" id="L323">    this.applicationContext = applicationContext;</span>
+<span class="fc" id="L324">  }</span>
 
   @Override
   public void setBeanName(String name) {
-<span class="fc" id="L327">    this.beanName = name;</span>
-<span class="fc" id="L328">  }</span>
+<span class="fc" id="L328">    this.beanName = name;</span>
+<span class="fc" id="L329">  }</span>
 
   /**
    * Gets beanNameGenerator to be used while running the scanner.
@@ -335,7 +336,7 @@ import org.springframework.util.StringUtils;
    * @since 1.2.0
    */
   public BeanNameGenerator getNameGenerator() {
-<span class="nc" id="L338">    return nameGenerator;</span>
+<span class="nc" id="L339">    return nameGenerator;</span>
   }
 
   /**
@@ -347,8 +348,8 @@ import org.springframework.util.StringUtils;
    * @since 1.2.0
    */
   public void setNameGenerator(BeanNameGenerator nameGenerator) {
-<span class="fc" id="L350">    this.nameGenerator = nameGenerator;</span>
-<span class="fc" id="L351">  }</span>
+<span class="fc" id="L351">    this.nameGenerator = nameGenerator;</span>
+<span class="fc" id="L352">  }</span>
 
   /**
    * Sets the default scope of scanned mappers.
@@ -361,47 +362,51 @@ import org.springframework.util.StringUtils;
    * @since 2.0.6
    */
   public void setDefaultScope(String defaultScope) {
-<span class="fc" id="L364">    this.defaultScope = defaultScope;</span>
-<span class="fc" id="L365">  }</span>
+<span class="fc" id="L365">    this.defaultScope = defaultScope;</span>
+<span class="fc" id="L366">  }</span>
 
   @Override
   public void afterPropertiesSet() throws Exception {
-<span class="fc" id="L369">    notNull(this.basePackage, &quot;Property 'basePackage' is required&quot;);</span>
-<span class="fc" id="L370">  }</span>
+<span class="fc" id="L370">    notNull(this.basePackage, &quot;Property 'basePackage' is required&quot;);</span>
+<span class="fc" id="L371">  }</span>
 
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
     // left intentionally blank
-<span class="fc" id="L375">  }</span>
+<span class="fc" id="L376">  }</span>
 
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
-<span class="fc bfc" id="L379" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
-<span class="fc" id="L380">      processPropertyPlaceHolders();</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
+<span class="fc" id="L381">      processPropertyPlaceHolders();</span>
     }
 
-<span class="fc" id="L383">    var scanner = new ClassPathMapperScanner(registry, getEnvironment());</span>
-<span class="fc" id="L384">    scanner.setAddToConfig(this.addToConfig);</span>
-<span class="fc" id="L385">    scanner.setAnnotationClass(this.annotationClass);</span>
-<span class="fc" id="L386">    scanner.setMarkerInterface(this.markerInterface);</span>
-<span class="fc" id="L387">    scanner.setExcludeFilters(this.excludeFilters = mergeExcludeFilters());</span>
-<span class="fc" id="L388">    scanner.setSqlSessionFactory(this.sqlSessionFactory);</span>
-<span class="fc" id="L389">    scanner.setSqlSessionTemplate(this.sqlSessionTemplate);</span>
-<span class="fc" id="L390">    scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);</span>
-<span class="fc" id="L391">    scanner.setSqlSessionTemplateBeanName(this.sqlSessionTemplateBeanName);</span>
-<span class="fc" id="L392">    scanner.setResourceLoader(this.applicationContext);</span>
-<span class="fc" id="L393">    scanner.setBeanNameGenerator(this.nameGenerator);</span>
-<span class="fc" id="L394">    scanner.setMapperFactoryBeanClass(this.mapperFactoryBeanClass);</span>
-<span class="fc bfc" id="L395" title="All 2 branches covered.">    if (StringUtils.hasText(lazyInitialization)) {</span>
-<span class="fc" id="L396">      scanner.setLazyInitialization(Boolean.parseBoolean(lazyInitialization));</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">    if (AotDetector.useGeneratedArtifacts()) {</span>
+<span class="fc" id="L385">      return;</span>
     }
-<span class="fc bfc" id="L398" title="All 2 branches covered.">    if (StringUtils.hasText(defaultScope)) {</span>
-<span class="fc" id="L399">      scanner.setDefaultScope(defaultScope);</span>
+
+<span class="fc" id="L388">    var scanner = new ClassPathMapperScanner(registry, getEnvironment());</span>
+<span class="fc" id="L389">    scanner.setAddToConfig(this.addToConfig);</span>
+<span class="fc" id="L390">    scanner.setAnnotationClass(this.annotationClass);</span>
+<span class="fc" id="L391">    scanner.setMarkerInterface(this.markerInterface);</span>
+<span class="fc" id="L392">    scanner.setExcludeFilters(this.excludeFilters = mergeExcludeFilters());</span>
+<span class="fc" id="L393">    scanner.setSqlSessionFactory(this.sqlSessionFactory);</span>
+<span class="fc" id="L394">    scanner.setSqlSessionTemplate(this.sqlSessionTemplate);</span>
+<span class="fc" id="L395">    scanner.setSqlSessionFactoryBeanName(this.sqlSessionFactoryBeanName);</span>
+<span class="fc" id="L396">    scanner.setSqlSessionTemplateBeanName(this.sqlSessionTemplateBeanName);</span>
+<span class="fc" id="L397">    scanner.setResourceLoader(this.applicationContext);</span>
+<span class="fc" id="L398">    scanner.setBeanNameGenerator(this.nameGenerator);</span>
+<span class="fc" id="L399">    scanner.setMapperFactoryBeanClass(this.mapperFactoryBeanClass);</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">    if (StringUtils.hasText(lazyInitialization)) {</span>
+<span class="fc" id="L401">      scanner.setLazyInitialization(Boolean.parseBoolean(lazyInitialization));</span>
     }
-<span class="fc" id="L401">    scanner.registerFilters();</span>
-<span class="fc" id="L402">    scanner.scan(</span>
-<span class="fc" id="L403">        StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));</span>
-<span class="fc" id="L404">  }</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">    if (StringUtils.hasText(defaultScope)) {</span>
+<span class="fc" id="L404">      scanner.setDefaultScope(defaultScope);</span>
+    }
+<span class="fc" id="L406">    scanner.registerFilters();</span>
+<span class="fc" id="L407">    scanner.scan(</span>
+<span class="fc" id="L408">        StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));</span>
+<span class="fc" id="L409">  }</span>
 
   /*
    * BeanDefinitionRegistries are called early in application startup, before BeanFactoryPostProcessors. This means that
@@ -410,130 +415,130 @@ import org.springframework.util.StringUtils;
    * definition. Then update the values.
    */
   private void processPropertyPlaceHolders() {
-<span class="fc" id="L413">    Map&lt;String, PropertyResourceConfigurer&gt; prcs = applicationContext.getBeansOfType(PropertyResourceConfigurer.class,</span>
+<span class="fc" id="L418">    Map&lt;String, PropertyResourceConfigurer&gt; prcs = applicationContext.getBeansOfType(PropertyResourceConfigurer.class,</span>
         false, false);
 
-<span class="pc bpc" id="L416" title="1 of 4 branches missed.">    if (!prcs.isEmpty() &amp;&amp; applicationContext instanceof ConfigurableApplicationContext) {</span>
-<span class="fc" id="L417">      var mapperScannerBean = ((ConfigurableApplicationContext) applicationContext).getBeanFactory()</span>
-<span class="fc" id="L418">          .getBeanDefinition(beanName);</span>
+<span class="pc bpc" id="L421" title="1 of 4 branches missed.">    if (!prcs.isEmpty() &amp;&amp; applicationContext instanceof ConfigurableApplicationContext) {</span>
+<span class="fc" id="L422">      var mapperScannerBean = ((ConfigurableApplicationContext) applicationContext).getBeanFactory()</span>
+<span class="fc" id="L423">          .getBeanDefinition(beanName);</span>
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
       // property placeholder substitution. Instead, create a BeanFactory that just
       // contains this mapper scanner and post process the factory.
-<span class="fc" id="L423">      var factory = new DefaultListableBeanFactory();</span>
-<span class="fc" id="L424">      factory.registerBeanDefinition(beanName, mapperScannerBean);</span>
+<span class="fc" id="L428">      var factory = new DefaultListableBeanFactory();</span>
+<span class="fc" id="L429">      factory.registerBeanDefinition(beanName, mapperScannerBean);</span>
 
-<span class="fc bfc" id="L426" title="All 2 branches covered.">      for (PropertyResourceConfigurer prc : prcs.values()) {</span>
-<span class="fc" id="L427">        prc.postProcessBeanFactory(factory);</span>
-<span class="fc" id="L428">      }</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">      for (PropertyResourceConfigurer prc : prcs.values()) {</span>
+<span class="fc" id="L432">        prc.postProcessBeanFactory(factory);</span>
+<span class="fc" id="L433">      }</span>
 
-<span class="fc" id="L430">      PropertyValues values = mapperScannerBean.getPropertyValues();</span>
+<span class="fc" id="L435">      PropertyValues values = mapperScannerBean.getPropertyValues();</span>
 
-<span class="fc" id="L432">      this.basePackage = getPropertyValue(&quot;basePackage&quot;, values);</span>
-<span class="fc" id="L433">      this.sqlSessionFactoryBeanName = getPropertyValue(&quot;sqlSessionFactoryBeanName&quot;, values);</span>
-<span class="fc" id="L434">      this.sqlSessionTemplateBeanName = getPropertyValue(&quot;sqlSessionTemplateBeanName&quot;, values);</span>
-<span class="fc" id="L435">      this.lazyInitialization = getPropertyValue(&quot;lazyInitialization&quot;, values);</span>
-<span class="fc" id="L436">      this.defaultScope = getPropertyValue(&quot;defaultScope&quot;, values);</span>
-<span class="fc" id="L437">      this.rawExcludeFilters = getPropertyValueForTypeFilter(&quot;rawExcludeFilters&quot;, values);</span>
+<span class="fc" id="L437">      this.basePackage = getPropertyValue(&quot;basePackage&quot;, values);</span>
+<span class="fc" id="L438">      this.sqlSessionFactoryBeanName = getPropertyValue(&quot;sqlSessionFactoryBeanName&quot;, values);</span>
+<span class="fc" id="L439">      this.sqlSessionTemplateBeanName = getPropertyValue(&quot;sqlSessionTemplateBeanName&quot;, values);</span>
+<span class="fc" id="L440">      this.lazyInitialization = getPropertyValue(&quot;lazyInitialization&quot;, values);</span>
+<span class="fc" id="L441">      this.defaultScope = getPropertyValue(&quot;defaultScope&quot;, values);</span>
+<span class="fc" id="L442">      this.rawExcludeFilters = getPropertyValueForTypeFilter(&quot;rawExcludeFilters&quot;, values);</span>
     }
-<span class="fc" id="L439">    this.basePackage = Optional.ofNullable(this.basePackage).map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
-<span class="fc" id="L440">    this.sqlSessionFactoryBeanName = Optional.ofNullable(this.sqlSessionFactoryBeanName)</span>
-<span class="fc" id="L441">        .map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
-<span class="fc" id="L442">    this.sqlSessionTemplateBeanName = Optional.ofNullable(this.sqlSessionTemplateBeanName)</span>
-<span class="fc" id="L443">        .map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
-<span class="fc" id="L444">    this.lazyInitialization = Optional.ofNullable(this.lazyInitialization).map(getEnvironment()::resolvePlaceholders)</span>
-<span class="fc" id="L445">        .orElse(null);</span>
-<span class="fc" id="L446">    this.defaultScope = Optional.ofNullable(this.defaultScope).map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
-<span class="fc" id="L447">  }</span>
+<span class="fc" id="L444">    this.basePackage = Optional.ofNullable(this.basePackage).map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
+<span class="fc" id="L445">    this.sqlSessionFactoryBeanName = Optional.ofNullable(this.sqlSessionFactoryBeanName)</span>
+<span class="fc" id="L446">        .map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
+<span class="fc" id="L447">    this.sqlSessionTemplateBeanName = Optional.ofNullable(this.sqlSessionTemplateBeanName)</span>
+<span class="fc" id="L448">        .map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
+<span class="fc" id="L449">    this.lazyInitialization = Optional.ofNullable(this.lazyInitialization).map(getEnvironment()::resolvePlaceholders)</span>
+<span class="fc" id="L450">        .orElse(null);</span>
+<span class="fc" id="L451">    this.defaultScope = Optional.ofNullable(this.defaultScope).map(getEnvironment()::resolvePlaceholders).orElse(null);</span>
+<span class="fc" id="L452">  }</span>
 
   private Environment getEnvironment() {
-<span class="fc" id="L450">    return this.applicationContext.getEnvironment();</span>
+<span class="fc" id="L455">    return this.applicationContext.getEnvironment();</span>
   }
 
   private String getPropertyValue(String propertyName, PropertyValues values) {
-<span class="fc" id="L454">    var property = values.getPropertyValue(propertyName);</span>
+<span class="fc" id="L459">    var property = values.getPropertyValue(propertyName);</span>
 
-<span class="fc bfc" id="L456" title="All 2 branches covered.">    if (property == null) {</span>
-<span class="fc" id="L457">      return null;</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">    if (property == null) {</span>
+<span class="fc" id="L462">      return null;</span>
     }
 
-<span class="fc" id="L460">    var value = property.getValue();</span>
+<span class="fc" id="L465">    var value = property.getValue();</span>
 
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">    if (value == null) {</span>
-<span class="nc" id="L463">      return null;</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">    if (value == null) {</span>
+<span class="nc" id="L468">      return null;</span>
     }
-<span class="fc bfc" id="L465" title="All 2 branches covered.">    if (value instanceof String) {</span>
-<span class="fc" id="L466">      return value.toString();</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">    if (value instanceof String) {</span>
+<span class="fc" id="L471">      return value.toString();</span>
     }
-<span class="pc bpc" id="L468" title="1 of 2 branches missed.">    if (value instanceof TypedStringValue) {</span>
-<span class="fc" id="L469">      return ((TypedStringValue) value).getValue();</span>
+<span class="pc bpc" id="L473" title="1 of 2 branches missed.">    if (value instanceof TypedStringValue) {</span>
+<span class="fc" id="L474">      return ((TypedStringValue) value).getValue();</span>
     }
-<span class="nc" id="L471">    return null;</span>
+<span class="nc" id="L476">    return null;</span>
   }
 
   @SuppressWarnings(&quot;unchecked&quot;)
   private List&lt;Map&lt;String, String&gt;&gt; getPropertyValueForTypeFilter(String propertyName, PropertyValues values) {
-<span class="fc" id="L476">    var property = values.getPropertyValue(propertyName);</span>
+<span class="fc" id="L481">    var property = values.getPropertyValue(propertyName);</span>
     Object value;
-<span class="pc bpc" id="L478" title="2 of 6 branches missed.">    if (property == null || (value = property.getValue()) == null || !(value instanceof List&lt;?&gt;)) {</span>
-<span class="fc" id="L479">      return null;</span>
+<span class="pc bpc" id="L483" title="2 of 6 branches missed.">    if (property == null || (value = property.getValue()) == null || !(value instanceof List&lt;?&gt;)) {</span>
+<span class="fc" id="L484">      return null;</span>
     }
-<span class="fc" id="L481">    return (List&lt;Map&lt;String, String&gt;&gt;) value;</span>
+<span class="fc" id="L486">    return (List&lt;Map&lt;String, String&gt;&gt;) value;</span>
   }
 
   private List&lt;TypeFilter&gt; mergeExcludeFilters() {
-<span class="fc" id="L485">    List&lt;TypeFilter&gt; typeFilters = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L486" title="All 4 branches covered.">    if (this.rawExcludeFilters == null || this.rawExcludeFilters.isEmpty()) {</span>
-<span class="fc" id="L487">      return this.excludeFilters;</span>
+<span class="fc" id="L490">    List&lt;TypeFilter&gt; typeFilters = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L491" title="All 4 branches covered.">    if (this.rawExcludeFilters == null || this.rawExcludeFilters.isEmpty()) {</span>
+<span class="fc" id="L492">      return this.excludeFilters;</span>
     }
-<span class="fc bfc" id="L489" title="All 4 branches covered.">    if (this.excludeFilters != null &amp;&amp; !this.excludeFilters.isEmpty()) {</span>
-<span class="fc" id="L490">      typeFilters.addAll(this.excludeFilters);</span>
+<span class="fc bfc" id="L494" title="All 4 branches covered.">    if (this.excludeFilters != null &amp;&amp; !this.excludeFilters.isEmpty()) {</span>
+<span class="fc" id="L495">      typeFilters.addAll(this.excludeFilters);</span>
     }
     try {
-<span class="fc bfc" id="L493" title="All 2 branches covered.">      for (Map&lt;String, String&gt; typeFilter : this.rawExcludeFilters) {</span>
-<span class="fc" id="L494">        typeFilters.add(</span>
-<span class="fc" id="L495">            createTypeFilter(typeFilter.get(&quot;type&quot;), typeFilter.get(&quot;expression&quot;), this.getClass().getClassLoader()));</span>
-<span class="fc" id="L496">      }</span>
-<span class="fc" id="L497">    } catch (ClassNotFoundException exception) {</span>
-<span class="fc" id="L498">      throw new RuntimeException(&quot;ClassNotFoundException occur when to load the Specified excludeFilter classes.&quot;,</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">      for (Map&lt;String, String&gt; typeFilter : this.rawExcludeFilters) {</span>
+<span class="fc" id="L499">        typeFilters.add(</span>
+<span class="fc" id="L500">            createTypeFilter(typeFilter.get(&quot;type&quot;), typeFilter.get(&quot;expression&quot;), this.getClass().getClassLoader()));</span>
+<span class="fc" id="L501">      }</span>
+<span class="fc" id="L502">    } catch (ClassNotFoundException exception) {</span>
+<span class="fc" id="L503">      throw new RuntimeException(&quot;ClassNotFoundException occur when to load the Specified excludeFilter classes.&quot;,</span>
           exception);
-<span class="fc" id="L500">    }</span>
-<span class="fc" id="L501">    return typeFilters;</span>
+<span class="fc" id="L505">    }</span>
+<span class="fc" id="L506">    return typeFilters;</span>
   }
 
   @SuppressWarnings(&quot;unchecked&quot;)
   private TypeFilter createTypeFilter(String filterType, String expression, @Nullable ClassLoader classLoader)
       throws ClassNotFoundException {
 
-<span class="fc bfc" id="L508" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
-<span class="fc" id="L509">      expression = this.getEnvironment().resolvePlaceholders(expression);</span>
+<span class="fc bfc" id="L513" title="All 2 branches covered.">    if (this.processPropertyPlaceHolders) {</span>
+<span class="fc" id="L514">      expression = this.getEnvironment().resolvePlaceholders(expression);</span>
     }
 
-<span class="pc bpc" id="L512" title="1 of 6 branches missed.">    switch (filterType) {</span>
+<span class="pc bpc" id="L517" title="1 of 6 branches missed.">    switch (filterType) {</span>
       case &quot;annotation&quot;:
-<span class="fc" id="L514">        Class&lt;?&gt; filterAnno = ClassUtils.forName(expression, classLoader);</span>
-<span class="fc bfc" id="L515" title="All 2 branches covered.">        if (!Annotation.class.isAssignableFrom(filterAnno)) {</span>
-<span class="fc" id="L516">          throw new IllegalArgumentException(</span>
-<span class="fc" id="L517">              &quot;Class is not assignable to [&quot; + Annotation.class.getName() + &quot;]: &quot; + expression);</span>
+<span class="fc" id="L519">        Class&lt;?&gt; filterAnno = ClassUtils.forName(expression, classLoader);</span>
+<span class="fc bfc" id="L520" title="All 2 branches covered.">        if (!Annotation.class.isAssignableFrom(filterAnno)) {</span>
+<span class="fc" id="L521">          throw new IllegalArgumentException(</span>
+<span class="fc" id="L522">              &quot;Class is not assignable to [&quot; + Annotation.class.getName() + &quot;]: &quot; + expression);</span>
         }
-<span class="fc" id="L519">        return new AnnotationTypeFilter((Class&lt;Annotation&gt;) filterAnno);</span>
+<span class="fc" id="L524">        return new AnnotationTypeFilter((Class&lt;Annotation&gt;) filterAnno);</span>
       case &quot;custom&quot;:
-<span class="fc" id="L521">        Class&lt;?&gt; filterClass = ClassUtils.forName(expression, classLoader);</span>
-<span class="fc bfc" id="L522" title="All 2 branches covered.">        if (!TypeFilter.class.isAssignableFrom(filterClass)) {</span>
-<span class="fc" id="L523">          throw new IllegalArgumentException(</span>
-<span class="fc" id="L524">              &quot;Class is not assignable to [&quot; + TypeFilter.class.getName() + &quot;]: &quot; + expression);</span>
+<span class="fc" id="L526">        Class&lt;?&gt; filterClass = ClassUtils.forName(expression, classLoader);</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">        if (!TypeFilter.class.isAssignableFrom(filterClass)) {</span>
+<span class="fc" id="L528">          throw new IllegalArgumentException(</span>
+<span class="fc" id="L529">              &quot;Class is not assignable to [&quot; + TypeFilter.class.getName() + &quot;]: &quot; + expression);</span>
         }
-<span class="fc" id="L526">        return (TypeFilter) BeanUtils.instantiateClass(filterClass);</span>
+<span class="fc" id="L531">        return (TypeFilter) BeanUtils.instantiateClass(filterClass);</span>
       case &quot;assignable&quot;:
-<span class="fc" id="L528">        return new AssignableTypeFilter(ClassUtils.forName(expression, classLoader));</span>
+<span class="fc" id="L533">        return new AssignableTypeFilter(ClassUtils.forName(expression, classLoader));</span>
       case &quot;regex&quot;:
-<span class="fc" id="L530">        return new RegexPatternTypeFilter(Pattern.compile(expression));</span>
+<span class="fc" id="L535">        return new RegexPatternTypeFilter(Pattern.compile(expression));</span>
       case &quot;aspectj&quot;:
-<span class="fc" id="L532">        return new AspectJTypeFilter(expression, classLoader);</span>
+<span class="fc" id="L537">        return new AspectJTypeFilter(expression, classLoader);</span>
       default:
-<span class="nc" id="L534">        throw new IllegalArgumentException(&quot;Unsupported filter type: &quot; + filterType);</span>
+<span class="nc" id="L539">        throw new IllegalArgumentException(&quot;Unsupported filter type: &quot; + filterType);</span>
     }
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

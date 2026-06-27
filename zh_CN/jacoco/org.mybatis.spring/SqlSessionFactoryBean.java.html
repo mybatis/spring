@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqlSessionFactoryBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">SqlSessionFactoryBean.java</span></div><h1>SqlSessionFactoryBean.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -565,12 +565,11 @@ import org.springframework.util.ClassUtils;
   public void afterPropertiesSet() throws Exception {
 <span class="fc" id="L566">    notNull(dataSource, &quot;Property 'dataSource' is required&quot;);</span>
 <span class="fc" id="L567">    notNull(sqlSessionFactoryBuilder, &quot;Property 'sqlSessionFactoryBuilder' is required&quot;);</span>
-    // TODO Review this statement as it seems off!
-<span class="fc bfc" id="L569" title="All 8 branches covered.">    state((configuration == null &amp;&amp; configLocation == null) || !(configuration != null &amp;&amp; configLocation != null),</span>
-        &quot;Property 'configuration' and 'configLocation' can not specified with together&quot;);
+<span class="fc bfc" id="L568" title="All 4 branches covered.">    state(configuration == null || configLocation == null,</span>
+        &quot;Only one of 'configuration' or 'configLocation' may be specified&quot;);
 
-<span class="fc" id="L572">    this.sqlSessionFactory = buildSqlSessionFactory();</span>
-<span class="fc" id="L573">  }</span>
+<span class="fc" id="L571">    this.sqlSessionFactory = buildSqlSessionFactory();</span>
+<span class="fc" id="L572">  }</span>
 
   /**
    * Build a {@code SqlSessionFactory} instance.
@@ -588,172 +587,172 @@ import org.springframework.util.ClassUtils;
 
     final Configuration targetConfiguration;
 
-<span class="fc" id="L591">    XMLConfigBuilder xmlConfigBuilder = null;</span>
-<span class="fc bfc" id="L592" title="All 2 branches covered.">    if (this.configuration != null) {</span>
-<span class="fc" id="L593">      targetConfiguration = this.configuration;</span>
-<span class="fc bfc" id="L594" title="All 2 branches covered.">      if (targetConfiguration.getVariables() == null) {</span>
-<span class="fc" id="L595">        targetConfiguration.setVariables(this.configurationProperties);</span>
-<span class="fc bfc" id="L596" title="All 2 branches covered.">      } else if (this.configurationProperties != null) {</span>
-<span class="fc" id="L597">        targetConfiguration.getVariables().putAll(this.configurationProperties);</span>
+<span class="fc" id="L590">    XMLConfigBuilder xmlConfigBuilder = null;</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">    if (this.configuration != null) {</span>
+<span class="fc" id="L592">      targetConfiguration = this.configuration;</span>
+<span class="fc bfc" id="L593" title="All 2 branches covered.">      if (targetConfiguration.getVariables() == null) {</span>
+<span class="fc" id="L594">        targetConfiguration.setVariables(this.configurationProperties);</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">      } else if (this.configurationProperties != null) {</span>
+<span class="fc" id="L596">        targetConfiguration.getVariables().putAll(this.configurationProperties);</span>
       }
-<span class="fc bfc" id="L599" title="All 2 branches covered.">    } else if (this.configLocation != null) {</span>
-<span class="fc" id="L600">      xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);</span>
-<span class="fc" id="L601">      targetConfiguration = xmlConfigBuilder.getConfiguration();</span>
+<span class="fc bfc" id="L598" title="All 2 branches covered.">    } else if (this.configLocation != null) {</span>
+<span class="fc" id="L599">      xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);</span>
+<span class="fc" id="L600">      targetConfiguration = xmlConfigBuilder.getConfiguration();</span>
     } else {
-<span class="fc" id="L603">      LOGGER.debug(</span>
-<span class="nc" id="L604">          () -&gt; &quot;Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration&quot;);</span>
-<span class="fc" id="L605">      targetConfiguration = new Configuration();</span>
-<span class="fc" id="L606">      Optional.ofNullable(this.configurationProperties).ifPresent(targetConfiguration::setVariables);</span>
+<span class="fc" id="L602">      LOGGER.debug(</span>
+<span class="nc" id="L603">          () -&gt; &quot;Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration&quot;);</span>
+<span class="fc" id="L604">      targetConfiguration = new Configuration();</span>
+<span class="fc" id="L605">      Optional.ofNullable(this.configurationProperties).ifPresent(targetConfiguration::setVariables);</span>
     }
 
-<span class="fc" id="L609">    Optional.ofNullable(this.objectFactory).ifPresent(targetConfiguration::setObjectFactory);</span>
-<span class="fc" id="L610">    Optional.ofNullable(this.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);</span>
-<span class="fc" id="L611">    Optional.ofNullable(this.vfs).ifPresent(targetConfiguration::setVfsImpl);</span>
+<span class="fc" id="L608">    Optional.ofNullable(this.objectFactory).ifPresent(targetConfiguration::setObjectFactory);</span>
+<span class="fc" id="L609">    Optional.ofNullable(this.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);</span>
+<span class="fc" id="L610">    Optional.ofNullable(this.vfs).ifPresent(targetConfiguration::setVfsImpl);</span>
 
-<span class="fc bfc" id="L613" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
-<span class="fc" id="L614">      scanClasses(this.typeAliasesPackage, this.typeAliasesSuperType).stream()</span>
-<span class="fc bfc" id="L615" title="All 4 branches covered.">          .filter(clazz -&gt; !clazz.isAnonymousClass()).filter(clazz -&gt; !clazz.isInterface())</span>
-<span class="fc bfc" id="L616" title="All 2 branches covered.">          .filter(clazz -&gt; !clazz.isMemberClass()).forEach(targetConfiguration.getTypeAliasRegistry()::registerAlias);</span>
+<span class="fc bfc" id="L612" title="All 2 branches covered.">    if (hasLength(this.typeAliasesPackage)) {</span>
+<span class="fc" id="L613">      scanClasses(this.typeAliasesPackage, this.typeAliasesSuperType).stream()</span>
+<span class="fc bfc" id="L614" title="All 4 branches covered.">          .filter(clazz -&gt; !clazz.isAnonymousClass()).filter(clazz -&gt; !clazz.isInterface())</span>
+<span class="fc bfc" id="L615" title="All 2 branches covered.">          .filter(clazz -&gt; !clazz.isMemberClass()).forEach(targetConfiguration.getTypeAliasRegistry()::registerAlias);</span>
     }
 
-<span class="fc bfc" id="L619" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
-<span class="fc" id="L620">      Stream.of(this.typeAliases).forEach(typeAlias -&gt; {</span>
-<span class="fc" id="L621">        targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
-<span class="pc" id="L622">        LOGGER.debug(() -&gt; &quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
-<span class="fc" id="L623">      });</span>
+<span class="fc bfc" id="L618" title="All 2 branches covered.">    if (!isEmpty(this.typeAliases)) {</span>
+<span class="fc" id="L619">      Stream.of(this.typeAliases).forEach(typeAlias -&gt; {</span>
+<span class="fc" id="L620">        targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);</span>
+<span class="pc" id="L621">        LOGGER.debug(() -&gt; &quot;Registered type alias: '&quot; + typeAlias + &quot;'&quot;);</span>
+<span class="fc" id="L622">      });</span>
     }
 
-<span class="fc bfc" id="L626" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
-<span class="fc" id="L627">      Stream.of(this.plugins).forEach(plugin -&gt; {</span>
-<span class="fc" id="L628">        targetConfiguration.addInterceptor(plugin);</span>
-<span class="pc" id="L629">        LOGGER.debug(() -&gt; &quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
-<span class="fc" id="L630">      });</span>
+<span class="fc bfc" id="L625" title="All 2 branches covered.">    if (!isEmpty(this.plugins)) {</span>
+<span class="fc" id="L626">      Stream.of(this.plugins).forEach(plugin -&gt; {</span>
+<span class="fc" id="L627">        targetConfiguration.addInterceptor(plugin);</span>
+<span class="pc" id="L628">        LOGGER.debug(() -&gt; &quot;Registered plugin: '&quot; + plugin + &quot;'&quot;);</span>
+<span class="fc" id="L629">      });</span>
     }
 
-<span class="fc bfc" id="L633" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
-<span class="fc bfc" id="L634" title="All 2 branches covered.">      scanClasses(this.typeHandlersPackage, TypeHandler.class).stream().filter(clazz -&gt; !clazz.isAnonymousClass())</span>
-<span class="pc bpc" id="L635" title="2 of 4 branches missed.">          .filter(clazz -&gt; !clazz.isInterface()).filter(clazz -&gt; !Modifier.isAbstract(clazz.getModifiers()))</span>
-<span class="fc" id="L636">          .forEach(targetConfiguration.getTypeHandlerRegistry()::register);</span>
+<span class="fc bfc" id="L632" title="All 2 branches covered.">    if (hasLength(this.typeHandlersPackage)) {</span>
+<span class="fc bfc" id="L633" title="All 2 branches covered.">      scanClasses(this.typeHandlersPackage, TypeHandler.class).stream().filter(clazz -&gt; !clazz.isAnonymousClass())</span>
+<span class="pc bpc" id="L634" title="2 of 4 branches missed.">          .filter(clazz -&gt; !clazz.isInterface()).filter(clazz -&gt; !Modifier.isAbstract(clazz.getModifiers()))</span>
+<span class="fc" id="L635">          .forEach(targetConfiguration.getTypeHandlerRegistry()::register);</span>
     }
 
-<span class="fc bfc" id="L639" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
-<span class="fc" id="L640">      Stream.of(this.typeHandlers).forEach(typeHandler -&gt; {</span>
-<span class="fc" id="L641">        targetConfiguration.getTypeHandlerRegistry().register(typeHandler);</span>
-<span class="pc" id="L642">        LOGGER.debug(() -&gt; &quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
-<span class="fc" id="L643">      });</span>
+<span class="fc bfc" id="L638" title="All 2 branches covered.">    if (!isEmpty(this.typeHandlers)) {</span>
+<span class="fc" id="L639">      Stream.of(this.typeHandlers).forEach(typeHandler -&gt; {</span>
+<span class="fc" id="L640">        targetConfiguration.getTypeHandlerRegistry().register(typeHandler);</span>
+<span class="pc" id="L641">        LOGGER.debug(() -&gt; &quot;Registered type handler: '&quot; + typeHandler + &quot;'&quot;);</span>
+<span class="fc" id="L642">      });</span>
     }
 
-<span class="fc" id="L646">    targetConfiguration.setDefaultEnumTypeHandler(defaultEnumTypeHandler);</span>
+<span class="fc" id="L645">    targetConfiguration.setDefaultEnumTypeHandler(defaultEnumTypeHandler);</span>
 
-<span class="fc bfc" id="L648" title="All 2 branches covered.">    if (!isEmpty(this.scriptingLanguageDrivers)) {</span>
-<span class="fc" id="L649">      Stream.of(this.scriptingLanguageDrivers).forEach(languageDriver -&gt; {</span>
-<span class="fc" id="L650">        targetConfiguration.getLanguageRegistry().register(languageDriver);</span>
-<span class="pc" id="L651">        LOGGER.debug(() -&gt; &quot;Registered scripting language driver: '&quot; + languageDriver + &quot;'&quot;);</span>
-<span class="fc" id="L652">      });</span>
+<span class="fc bfc" id="L647" title="All 2 branches covered.">    if (!isEmpty(this.scriptingLanguageDrivers)) {</span>
+<span class="fc" id="L648">      Stream.of(this.scriptingLanguageDrivers).forEach(languageDriver -&gt; {</span>
+<span class="fc" id="L649">        targetConfiguration.getLanguageRegistry().register(languageDriver);</span>
+<span class="pc" id="L650">        LOGGER.debug(() -&gt; &quot;Registered scripting language driver: '&quot; + languageDriver + &quot;'&quot;);</span>
+<span class="fc" id="L651">      });</span>
     }
-<span class="fc" id="L654">    Optional.ofNullable(this.defaultScriptingLanguageDriver)</span>
-<span class="fc" id="L655">        .ifPresent(targetConfiguration::setDefaultScriptingLanguage);</span>
+<span class="fc" id="L653">    Optional.ofNullable(this.defaultScriptingLanguageDriver)</span>
+<span class="fc" id="L654">        .ifPresent(targetConfiguration::setDefaultScriptingLanguage);</span>
 
-<span class="pc bpc" id="L657" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {// fix #64 set databaseId before parse mapper xmls</span>
+<span class="pc bpc" id="L656" title="1 of 2 branches missed.">    if (this.databaseIdProvider != null) {// fix #64 set databaseId before parse mapper xmls</span>
       try {
-<span class="nc" id="L659">        targetConfiguration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
-<span class="nc" id="L660">      } catch (SQLException e) {</span>
-<span class="nc" id="L661">        throw new IOException(&quot;Failed getting a databaseId&quot;, e);</span>
-<span class="nc" id="L662">      }</span>
+<span class="nc" id="L658">        targetConfiguration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));</span>
+<span class="nc" id="L659">      } catch (SQLException e) {</span>
+<span class="nc" id="L660">        throw new IOException(&quot;Failed getting a databaseId&quot;, e);</span>
+<span class="nc" id="L661">      }</span>
     }
 
-<span class="fc" id="L665">    Optional.ofNullable(this.cache).ifPresent(targetConfiguration::addCache);</span>
+<span class="fc" id="L664">    Optional.ofNullable(this.cache).ifPresent(targetConfiguration::addCache);</span>
 
-<span class="fc bfc" id="L667" title="All 2 branches covered.">    if (xmlConfigBuilder != null) {</span>
+<span class="fc bfc" id="L666" title="All 2 branches covered.">    if (xmlConfigBuilder != null) {</span>
       try {
-<span class="fc" id="L669">        xmlConfigBuilder.parse();</span>
-<span class="pc" id="L670">        LOGGER.debug(() -&gt; &quot;Parsed configuration file: '&quot; + this.configLocation + &quot;'&quot;);</span>
-<span class="nc" id="L671">      } catch (Exception ex) {</span>
-<span class="nc" id="L672">        throw new IOException(&quot;Failed to parse config resource: &quot; + this.configLocation, ex);</span>
+<span class="fc" id="L668">        xmlConfigBuilder.parse();</span>
+<span class="pc" id="L669">        LOGGER.debug(() -&gt; &quot;Parsed configuration file: '&quot; + this.configLocation + &quot;'&quot;);</span>
+<span class="nc" id="L670">      } catch (Exception ex) {</span>
+<span class="nc" id="L671">        throw new IOException(&quot;Failed to parse config resource: &quot; + this.configLocation, ex);</span>
       } finally {
-<span class="fc" id="L674">        ErrorContext.instance().reset();</span>
+<span class="fc" id="L673">        ErrorContext.instance().reset();</span>
       }
     }
 
-<span class="fc" id="L678">    targetConfiguration.setEnvironment(new Environment(this.environment,</span>
-<span class="fc bfc" id="L679" title="All 2 branches covered.">        this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,</span>
+<span class="fc" id="L677">    targetConfiguration.setEnvironment(new Environment(this.environment,</span>
+<span class="fc bfc" id="L678" title="All 2 branches covered.">        this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,</span>
         this.dataSource));
 
-<span class="fc bfc" id="L682" title="All 2 branches covered.">    if (this.mapperLocations != null) {</span>
-<span class="fc bfc" id="L683" title="All 2 branches covered.">      if (this.mapperLocations.length == 0) {</span>
-<span class="fc" id="L684">        LOGGER.warn(() -&gt; &quot;Property 'mapperLocations' was specified but matching resources are not found.&quot;);</span>
+<span class="fc bfc" id="L681" title="All 2 branches covered.">    if (this.mapperLocations != null) {</span>
+<span class="fc bfc" id="L682" title="All 2 branches covered.">      if (this.mapperLocations.length == 0) {</span>
+<span class="fc" id="L683">        LOGGER.warn(() -&gt; &quot;Property 'mapperLocations' was specified but matching resources are not found.&quot;);</span>
       } else {
-<span class="fc bfc" id="L686" title="All 2 branches covered.">        for (Resource mapperLocation : this.mapperLocations) {</span>
-<span class="fc bfc" id="L687" title="All 2 branches covered.">          if (mapperLocation == null) {</span>
-<span class="fc" id="L688">            continue;</span>
+<span class="fc bfc" id="L685" title="All 2 branches covered.">        for (Resource mapperLocation : this.mapperLocations) {</span>
+<span class="fc bfc" id="L686" title="All 2 branches covered.">          if (mapperLocation == null) {</span>
+<span class="fc" id="L687">            continue;</span>
           }
           try {
-<span class="fc" id="L691">            var xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,</span>
-<span class="fc" id="L692">                mapperLocation.toString(), targetConfiguration.getSqlFragments());</span>
-<span class="fc" id="L693">            xmlMapperBuilder.parse();</span>
-<span class="nc" id="L694">          } catch (Exception e) {</span>
-<span class="nc" id="L695">            throw new IOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>
+<span class="fc" id="L690">            var xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,</span>
+<span class="fc" id="L691">                mapperLocation.toString(), targetConfiguration.getSqlFragments());</span>
+<span class="fc" id="L692">            xmlMapperBuilder.parse();</span>
+<span class="nc" id="L693">          } catch (Exception e) {</span>
+<span class="nc" id="L694">            throw new IOException(&quot;Failed to parse mapping resource: '&quot; + mapperLocation + &quot;'&quot;, e);</span>
           } finally {
-<span class="fc" id="L697">            ErrorContext.instance().reset();</span>
+<span class="fc" id="L696">            ErrorContext.instance().reset();</span>
           }
-<span class="pc" id="L699">          LOGGER.debug(() -&gt; &quot;Parsed mapper file: '&quot; + mapperLocation + &quot;'&quot;);</span>
+<span class="pc" id="L698">          LOGGER.debug(() -&gt; &quot;Parsed mapper file: '&quot; + mapperLocation + &quot;'&quot;);</span>
         }
       }
     } else {
-<span class="pc" id="L703">      LOGGER.debug(() -&gt; &quot;Property 'mapperLocations' was not specified.&quot;);</span>
+<span class="pc" id="L702">      LOGGER.debug(() -&gt; &quot;Property 'mapperLocations' was not specified.&quot;);</span>
     }
 
-<span class="fc" id="L706">    return this.sqlSessionFactoryBuilder.build(targetConfiguration);</span>
+<span class="fc" id="L705">    return this.sqlSessionFactoryBuilder.build(targetConfiguration);</span>
   }
 
   @Override
   public SqlSessionFactory getObject() throws Exception {
-<span class="fc bfc" id="L711" title="All 2 branches covered.">    if (this.sqlSessionFactory == null) {</span>
-<span class="fc" id="L712">      afterPropertiesSet();</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">    if (this.sqlSessionFactory == null) {</span>
+<span class="fc" id="L711">      afterPropertiesSet();</span>
     }
 
-<span class="fc" id="L715">    return this.sqlSessionFactory;</span>
+<span class="fc" id="L714">    return this.sqlSessionFactory;</span>
   }
 
   @Override
   public Class&lt;? extends SqlSessionFactory&gt; getObjectType() {
-<span class="fc bfc" id="L720" title="All 2 branches covered.">    return this.sqlSessionFactory == null ? SqlSessionFactory.class : this.sqlSessionFactory.getClass();</span>
+<span class="fc bfc" id="L719" title="All 2 branches covered.">    return this.sqlSessionFactory == null ? SqlSessionFactory.class : this.sqlSessionFactory.getClass();</span>
   }
 
   @Override
   public boolean isSingleton() {
-<span class="fc" id="L725">    return true;</span>
+<span class="fc" id="L724">    return true;</span>
   }
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
-<span class="pc bpc" id="L730" title="1 of 2 branches missed.">    if (failFast) {</span>
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">    if (failFast) {</span>
       // fail-fast -&gt; check all statements are completed
-<span class="nc" id="L732">      this.sqlSessionFactory.getConfiguration().getMappedStatementNames();</span>
+<span class="nc" id="L731">      this.sqlSessionFactory.getConfiguration().getMappedStatementNames();</span>
     }
-<span class="fc" id="L734">  }</span>
+<span class="fc" id="L733">  }</span>
 
   private Set&lt;Class&lt;?&gt;&gt; scanClasses(String packagePatterns, Class&lt;?&gt; assignableType) throws IOException {
-<span class="fc" id="L737">    Set&lt;Class&lt;?&gt;&gt; classes = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L738">    var packagePatternArray = tokenizeToStringArray(packagePatterns,</span>
+<span class="fc" id="L736">    Set&lt;Class&lt;?&gt;&gt; classes = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L737">    var packagePatternArray = tokenizeToStringArray(packagePatterns,</span>
         ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<span class="fc bfc" id="L740" title="All 2 branches covered.">    for (String packagePattern : packagePatternArray) {</span>
-<span class="fc" id="L741">      var resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX</span>
-<span class="fc" id="L742">          + ClassUtils.convertClassNameToResourcePath(packagePattern) + &quot;/**/*.class&quot;);</span>
-<span class="fc bfc" id="L743" title="All 2 branches covered.">      for (Resource resource : resources) {</span>
+<span class="fc bfc" id="L739" title="All 2 branches covered.">    for (String packagePattern : packagePatternArray) {</span>
+<span class="fc" id="L740">      var resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX</span>
+<span class="fc" id="L741">          + ClassUtils.convertClassNameToResourcePath(packagePattern) + &quot;/**/*.class&quot;);</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">      for (Resource resource : resources) {</span>
         try {
-<span class="fc" id="L745">          var classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();</span>
-<span class="fc" id="L746">          Class&lt;?&gt; clazz = Resources.classForName(classMetadata.getClassName());</span>
-<span class="fc bfc" id="L747" title="All 4 branches covered.">          if (assignableType == null || assignableType.isAssignableFrom(clazz)) {</span>
-<span class="fc" id="L748">            classes.add(clazz);</span>
+<span class="fc" id="L744">          var classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();</span>
+<span class="fc" id="L745">          Class&lt;?&gt; clazz = Resources.classForName(classMetadata.getClassName());</span>
+<span class="fc bfc" id="L746" title="All 4 branches covered.">          if (assignableType == null || assignableType.isAssignableFrom(clazz)) {</span>
+<span class="fc" id="L747">            classes.add(clazz);</span>
           }
-<span class="nc" id="L750">        } catch (Throwable e) {</span>
-<span class="nc" id="L751">          LOGGER.warn(() -&gt; &quot;Cannot load the '&quot; + resource + &quot;'. Cause by &quot; + e.toString());</span>
-<span class="fc" id="L752">        }</span>
+<span class="nc" id="L749">        } catch (Throwable e) {</span>
+<span class="nc" id="L750">          LOGGER.warn(() -&gt; &quot;Cannot load the '&quot; + resource + &quot;'. Cause by &quot; + e.toString());</span>
+<span class="fc" id="L751">        }</span>
       }
     }
-<span class="fc" id="L755">    return classes;</span>
+<span class="fc" id="L754">    return classes;</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

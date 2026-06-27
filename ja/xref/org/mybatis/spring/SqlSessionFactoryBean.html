@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../apidocs/org/mybatis/spring/SqlSessionFactoryBean.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2024 the original author or authors.</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2010-2026 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
@@ -573,199 +573,198 @@
 <a class="jxr_linenumber" name="L565" href="#L565">565</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> afterPropertiesSet() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L566" href="#L566">566</a>     notNull(dataSource, <span class="jxr_string">"Property 'dataSource' is required"</span>);
 <a class="jxr_linenumber" name="L567" href="#L567">567</a>     notNull(sqlSessionFactoryBuilder, <span class="jxr_string">"Property 'sqlSessionFactoryBuilder' is required"</span>);
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>     <em class="jxr_comment">// TODO Review this statement as it seems off!</em>
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>     state((configuration == <strong class="jxr_keyword">null</strong> &amp;&amp; configLocation == <strong class="jxr_keyword">null</strong>) || !(configuration != <strong class="jxr_keyword">null</strong> &amp;&amp; configLocation != <strong class="jxr_keyword">null</strong>),
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>         <span class="jxr_string">"Property 'configuration' and 'configLocation' can not specified with together"</span>);
-<a class="jxr_linenumber" name="L571" href="#L571">571</a> 
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>     <strong class="jxr_keyword">this</strong>.sqlSessionFactory = buildSqlSessionFactory();
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>   }
-<a class="jxr_linenumber" name="L574" href="#L574">574</a> 
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L576" href="#L576">576</a> <em class="jxr_javadoccomment">   * Build a {@code SqlSessionFactory} instance.</em>
-<a class="jxr_linenumber" name="L577" href="#L577">577</a> <em class="jxr_javadoccomment">   * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L578" href="#L578">578</a> <em class="jxr_javadoccomment">   * The default implementation uses the standard MyBatis {@code XMLConfigBuilder} API to build a</em>
-<a class="jxr_linenumber" name="L579" href="#L579">579</a> <em class="jxr_javadoccomment">   * {@code SqlSessionFactory} instance based on a Reader. Since 1.3.0, it can be specified a {@link Configuration}</em>
-<a class="jxr_linenumber" name="L580" href="#L580">580</a> <em class="jxr_javadoccomment">   * instance directly(without config file).</em>
-<a class="jxr_linenumber" name="L581" href="#L581">581</a> <em class="jxr_javadoccomment">   *</em>
-<a class="jxr_linenumber" name="L582" href="#L582">582</a> <em class="jxr_javadoccomment">   * @return SqlSessionFactory</em>
-<a class="jxr_linenumber" name="L583" href="#L583">583</a> <em class="jxr_javadoccomment">   *</em>
-<a class="jxr_linenumber" name="L584" href="#L584">584</a> <em class="jxr_javadoccomment">   * @throws Exception</em>
-<a class="jxr_linenumber" name="L585" href="#L585">585</a> <em class="jxr_javadoccomment">   *           if configuration is failed</em>
-<a class="jxr_linenumber" name="L586" href="#L586">586</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>   <strong class="jxr_keyword">protected</strong> SqlSessionFactory buildSqlSessionFactory() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L588" href="#L588">588</a> 
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>     <strong class="jxr_keyword">final</strong> Configuration targetConfiguration;
-<a class="jxr_linenumber" name="L590" href="#L590">590</a> 
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>     XMLConfigBuilder xmlConfigBuilder = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configuration != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>       targetConfiguration = <strong class="jxr_keyword">this</strong>.configuration;
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>       <strong class="jxr_keyword">if</strong> (targetConfiguration.getVariables() == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L595" href="#L595">595</a>         targetConfiguration.setVariables(<strong class="jxr_keyword">this</strong>.configurationProperties);
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>       } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configurationProperties != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>         targetConfiguration.getVariables().putAll(<strong class="jxr_keyword">this</strong>.configurationProperties);
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>       }
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configLocation != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L600" href="#L600">600</a>       xmlConfigBuilder = <strong class="jxr_keyword">new</strong> XMLConfigBuilder(<strong class="jxr_keyword">this</strong>.configLocation.getInputStream(), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">this</strong>.configurationProperties);
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>       targetConfiguration = xmlConfigBuilder.getConfiguration();
-<a class="jxr_linenumber" name="L602" href="#L602">602</a>     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L603" href="#L603">603</a>       LOGGER.debug(
-<a class="jxr_linenumber" name="L604" href="#L604">604</a>           () -&gt; <span class="jxr_string">"Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration"</span>);
-<a class="jxr_linenumber" name="L605" href="#L605">605</a>       targetConfiguration = <strong class="jxr_keyword">new</strong> Configuration();
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>       Optional.ofNullable(<strong class="jxr_keyword">this</strong>.configurationProperties).ifPresent(targetConfiguration::setVariables);
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>     }
-<a class="jxr_linenumber" name="L608" href="#L608">608</a> 
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.objectFactory).ifPresent(targetConfiguration::setObjectFactory);
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);
-<a class="jxr_linenumber" name="L611" href="#L611">611</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.vfs).ifPresent(targetConfiguration::setVfsImpl);
-<a class="jxr_linenumber" name="L612" href="#L612">612</a> 
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeAliasesPackage)) {
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>       scanClasses(<strong class="jxr_keyword">this</strong>.typeAliasesPackage, <strong class="jxr_keyword">this</strong>.typeAliasesSuperType).stream()
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>           .filter(clazz -&gt; !clazz.isAnonymousClass()).filter(clazz -&gt; !clazz.isInterface())
-<a class="jxr_linenumber" name="L616" href="#L616">616</a>           .filter(clazz -&gt; !clazz.isMemberClass()).forEach(targetConfiguration.getTypeAliasRegistry()::registerAlias);
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>     }
-<a class="jxr_linenumber" name="L618" href="#L618">618</a> 
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeAliases)) {
-<a class="jxr_linenumber" name="L620" href="#L620">620</a>       Stream.of(<strong class="jxr_keyword">this</strong>.typeAliases).forEach(typeAlias -&gt; {
-<a class="jxr_linenumber" name="L621" href="#L621">621</a>         targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);
-<a class="jxr_linenumber" name="L622" href="#L622">622</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered type alias: '"</span> + typeAlias + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L623" href="#L623">623</a>       });
-<a class="jxr_linenumber" name="L624" href="#L624">624</a>     }
-<a class="jxr_linenumber" name="L625" href="#L625">625</a> 
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.plugins)) {
-<a class="jxr_linenumber" name="L627" href="#L627">627</a>       Stream.of(<strong class="jxr_keyword">this</strong>.plugins).forEach(plugin -&gt; {
-<a class="jxr_linenumber" name="L628" href="#L628">628</a>         targetConfiguration.addInterceptor(plugin);
-<a class="jxr_linenumber" name="L629" href="#L629">629</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered plugin: '"</span> + plugin + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>       });
-<a class="jxr_linenumber" name="L631" href="#L631">631</a>     }
-<a class="jxr_linenumber" name="L632" href="#L632">632</a> 
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeHandlersPackage)) {
-<a class="jxr_linenumber" name="L634" href="#L634">634</a>       scanClasses(<strong class="jxr_keyword">this</strong>.typeHandlersPackage, TypeHandler.<strong class="jxr_keyword">class</strong>).stream().filter(clazz -&gt; !clazz.isAnonymousClass())
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>           .filter(clazz -&gt; !clazz.isInterface()).filter(clazz -&gt; !Modifier.isAbstract(clazz.getModifiers()))
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>           .forEach(targetConfiguration.getTypeHandlerRegistry()::register);
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>     }
-<a class="jxr_linenumber" name="L638" href="#L638">638</a> 
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeHandlers)) {
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>       Stream.of(<strong class="jxr_keyword">this</strong>.typeHandlers).forEach(typeHandler -&gt; {
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>         targetConfiguration.getTypeHandlerRegistry().register(typeHandler);
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered type handler: '"</span> + typeHandler + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>       });
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>     }
-<a class="jxr_linenumber" name="L645" href="#L645">645</a> 
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>     targetConfiguration.setDefaultEnumTypeHandler(defaultEnumTypeHandler);
-<a class="jxr_linenumber" name="L647" href="#L647">647</a> 
-<a class="jxr_linenumber" name="L648" href="#L648">648</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.scriptingLanguageDrivers)) {
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>       Stream.of(<strong class="jxr_keyword">this</strong>.scriptingLanguageDrivers).forEach(languageDriver -&gt; {
-<a class="jxr_linenumber" name="L650" href="#L650">650</a>         targetConfiguration.getLanguageRegistry().register(languageDriver);
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered scripting language driver: '"</span> + languageDriver + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L652" href="#L652">652</a>       });
-<a class="jxr_linenumber" name="L653" href="#L653">653</a>     }
-<a class="jxr_linenumber" name="L654" href="#L654">654</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.defaultScriptingLanguageDriver)
-<a class="jxr_linenumber" name="L655" href="#L655">655</a>         .ifPresent(targetConfiguration::setDefaultScriptingLanguage);
-<a class="jxr_linenumber" name="L656" href="#L656">656</a> 
-<a class="jxr_linenumber" name="L657" href="#L657">657</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.databaseIdProvider != <strong class="jxr_keyword">null</strong>) {<em class="jxr_comment">// fix #64 set databaseId before parse mapper xmls</em>
-<a class="jxr_linenumber" name="L658" href="#L658">658</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L659" href="#L659">659</a>         targetConfiguration.setDatabaseId(<strong class="jxr_keyword">this</strong>.databaseIdProvider.getDatabaseId(<strong class="jxr_keyword">this</strong>.dataSource));
-<a class="jxr_linenumber" name="L660" href="#L660">660</a>       } <strong class="jxr_keyword">catch</strong> (SQLException e) {
-<a class="jxr_linenumber" name="L661" href="#L661">661</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed getting a databaseId"</span>, e);
-<a class="jxr_linenumber" name="L662" href="#L662">662</a>       }
-<a class="jxr_linenumber" name="L663" href="#L663">663</a>     }
-<a class="jxr_linenumber" name="L664" href="#L664">664</a> 
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.cache).ifPresent(targetConfiguration::addCache);
-<a class="jxr_linenumber" name="L666" href="#L666">666</a> 
-<a class="jxr_linenumber" name="L667" href="#L667">667</a>     <strong class="jxr_keyword">if</strong> (xmlConfigBuilder != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>       <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>         xmlConfigBuilder.parse();
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Parsed configuration file: '"</span> + <strong class="jxr_keyword">this</strong>.configLocation + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>       } <strong class="jxr_keyword">catch</strong> (Exception ex) {
-<a class="jxr_linenumber" name="L672" href="#L672">672</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed to parse config resource: "</span> + <strong class="jxr_keyword">this</strong>.configLocation, ex);
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>       } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>         ErrorContext.instance().reset();
-<a class="jxr_linenumber" name="L675" href="#L675">675</a>       }
-<a class="jxr_linenumber" name="L676" href="#L676">676</a>     }
-<a class="jxr_linenumber" name="L677" href="#L677">677</a> 
-<a class="jxr_linenumber" name="L678" href="#L678">678</a>     targetConfiguration.setEnvironment(<strong class="jxr_keyword">new</strong> Environment(<strong class="jxr_keyword">this</strong>.environment,
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>         <strong class="jxr_keyword">this</strong>.transactionFactory == <strong class="jxr_keyword">null</strong> ? <strong class="jxr_keyword">new</strong> <a name="SpringManagedTransactionFactory" href="../../../org/mybatis/spring/transaction/SpringManagedTransactionFactory.html#SpringManagedTransactionFactory">SpringManagedTransactionFactory</a>() : <strong class="jxr_keyword">this</strong>.transactionFactory,
-<a class="jxr_linenumber" name="L680" href="#L680">680</a>         <strong class="jxr_keyword">this</strong>.dataSource));
-<a class="jxr_linenumber" name="L681" href="#L681">681</a> 
-<a class="jxr_linenumber" name="L682" href="#L682">682</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mapperLocations != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>       <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mapperLocations.length == 0) {
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>         LOGGER.warn(() -&gt; <span class="jxr_string">"Property 'mapperLocations' was specified but matching resources are not found."</span>);
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>       } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L686" href="#L686">686</a>         <strong class="jxr_keyword">for</strong> (Resource mapperLocation : <strong class="jxr_keyword">this</strong>.mapperLocations) {
-<a class="jxr_linenumber" name="L687" href="#L687">687</a>           <strong class="jxr_keyword">if</strong> (mapperLocation == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L688" href="#L688">688</a>             <strong class="jxr_keyword">continue</strong>;
-<a class="jxr_linenumber" name="L689" href="#L689">689</a>           }
-<a class="jxr_linenumber" name="L690" href="#L690">690</a>           <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L691" href="#L691">691</a>             <strong class="jxr_keyword">var</strong> xmlMapperBuilder = <strong class="jxr_keyword">new</strong> XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,
-<a class="jxr_linenumber" name="L692" href="#L692">692</a>                 mapperLocation.toString(), targetConfiguration.getSqlFragments());
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>             xmlMapperBuilder.parse();
-<a class="jxr_linenumber" name="L694" href="#L694">694</a>           } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L695" href="#L695">695</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed to parse mapping resource: '"</span> + mapperLocation + <span class="jxr_string">"'"</span>, e);
-<a class="jxr_linenumber" name="L696" href="#L696">696</a>           } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="L697" href="#L697">697</a>             ErrorContext.instance().reset();
-<a class="jxr_linenumber" name="L698" href="#L698">698</a>           }
-<a class="jxr_linenumber" name="L699" href="#L699">699</a>           LOGGER.debug(() -&gt; <span class="jxr_string">"Parsed mapper file: '"</span> + mapperLocation + <span class="jxr_string">"'"</span>);
-<a class="jxr_linenumber" name="L700" href="#L700">700</a>         }
-<a class="jxr_linenumber" name="L701" href="#L701">701</a>       }
-<a class="jxr_linenumber" name="L702" href="#L702">702</a>     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L703" href="#L703">703</a>       LOGGER.debug(() -&gt; <span class="jxr_string">"Property 'mapperLocations' was not specified."</span>);
-<a class="jxr_linenumber" name="L704" href="#L704">704</a>     }
-<a class="jxr_linenumber" name="L705" href="#L705">705</a> 
-<a class="jxr_linenumber" name="L706" href="#L706">706</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactoryBuilder.build(targetConfiguration);
-<a class="jxr_linenumber" name="L707" href="#L707">707</a>   }
-<a class="jxr_linenumber" name="L708" href="#L708">708</a> 
-<a class="jxr_linenumber" name="L709" href="#L709">709</a>   @Override
-<a class="jxr_linenumber" name="L710" href="#L710">710</a>   <strong class="jxr_keyword">public</strong> SqlSessionFactory getObject() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L711" href="#L711">711</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.sqlSessionFactory == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L712" href="#L712">712</a>       afterPropertiesSet();
-<a class="jxr_linenumber" name="L713" href="#L713">713</a>     }
-<a class="jxr_linenumber" name="L714" href="#L714">714</a> 
-<a class="jxr_linenumber" name="L715" href="#L715">715</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactory;
-<a class="jxr_linenumber" name="L716" href="#L716">716</a>   }
-<a class="jxr_linenumber" name="L717" href="#L717">717</a> 
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>   @Override
-<a class="jxr_linenumber" name="L719" href="#L719">719</a>   <strong class="jxr_keyword">public</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> SqlSessionFactory&gt; getObjectType() {
-<a class="jxr_linenumber" name="L720" href="#L720">720</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactory == <strong class="jxr_keyword">null</strong> ? SqlSessionFactory.<strong class="jxr_keyword">class</strong> : <strong class="jxr_keyword">this</strong>.sqlSessionFactory.getClass();
-<a class="jxr_linenumber" name="L721" href="#L721">721</a>   }
-<a class="jxr_linenumber" name="L722" href="#L722">722</a> 
-<a class="jxr_linenumber" name="L723" href="#L723">723</a>   @Override
-<a class="jxr_linenumber" name="L724" href="#L724">724</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isSingleton() {
-<a class="jxr_linenumber" name="L725" href="#L725">725</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L726" href="#L726">726</a>   }
-<a class="jxr_linenumber" name="L727" href="#L727">727</a> 
-<a class="jxr_linenumber" name="L728" href="#L728">728</a>   @Override
-<a class="jxr_linenumber" name="L729" href="#L729">729</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onApplicationEvent(ContextRefreshedEvent event) {
-<a class="jxr_linenumber" name="L730" href="#L730">730</a>     <strong class="jxr_keyword">if</strong> (failFast) {
-<a class="jxr_linenumber" name="L731" href="#L731">731</a>       <em class="jxr_comment">// fail-fast -&gt; check all statements are completed</em>
-<a class="jxr_linenumber" name="L732" href="#L732">732</a>       <strong class="jxr_keyword">this</strong>.sqlSessionFactory.getConfiguration().getMappedStatementNames();
-<a class="jxr_linenumber" name="L733" href="#L733">733</a>     }
-<a class="jxr_linenumber" name="L734" href="#L734">734</a>   }
-<a class="jxr_linenumber" name="L735" href="#L735">735</a> 
-<a class="jxr_linenumber" name="L736" href="#L736">736</a>   <strong class="jxr_keyword">private</strong> Set&lt;Class&lt;?&gt;&gt; scanClasses(String packagePatterns, Class&lt;?&gt; assignableType) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L737" href="#L737">737</a>     Set&lt;Class&lt;?&gt;&gt; classes = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
-<a class="jxr_linenumber" name="L738" href="#L738">738</a>     <strong class="jxr_keyword">var</strong> packagePatternArray = tokenizeToStringArray(packagePatterns,
-<a class="jxr_linenumber" name="L739" href="#L739">739</a>         ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-<a class="jxr_linenumber" name="L740" href="#L740">740</a>     <strong class="jxr_keyword">for</strong> (String packagePattern : packagePatternArray) {
-<a class="jxr_linenumber" name="L741" href="#L741">741</a>       <strong class="jxr_keyword">var</strong> resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
-<a class="jxr_linenumber" name="L742" href="#L742">742</a>           + ClassUtils.convertClassNameToResourcePath(packagePattern) + <span class="jxr_string">"/**/*.class"</span>);
-<a class="jxr_linenumber" name="L743" href="#L743">743</a>       <strong class="jxr_keyword">for</strong> (Resource resource : resources) {
-<a class="jxr_linenumber" name="L744" href="#L744">744</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L745" href="#L745">745</a>           <strong class="jxr_keyword">var</strong> classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>           Class&lt;?&gt; clazz = Resources.classForName(classMetadata.getClassName());
-<a class="jxr_linenumber" name="L747" href="#L747">747</a>           <strong class="jxr_keyword">if</strong> (assignableType == <strong class="jxr_keyword">null</strong> || assignableType.isAssignableFrom(clazz)) {
-<a class="jxr_linenumber" name="L748" href="#L748">748</a>             classes.add(clazz);
-<a class="jxr_linenumber" name="L749" href="#L749">749</a>           }
-<a class="jxr_linenumber" name="L750" href="#L750">750</a>         } <strong class="jxr_keyword">catch</strong> (Throwable e) {
-<a class="jxr_linenumber" name="L751" href="#L751">751</a>           LOGGER.warn(() -&gt; <span class="jxr_string">"Cannot load the '"</span> + resource + <span class="jxr_string">"'. Cause by "</span> + e.toString());
-<a class="jxr_linenumber" name="L752" href="#L752">752</a>         }
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>       }
-<a class="jxr_linenumber" name="L754" href="#L754">754</a>     }
-<a class="jxr_linenumber" name="L755" href="#L755">755</a>     <strong class="jxr_keyword">return</strong> classes;
-<a class="jxr_linenumber" name="L756" href="#L756">756</a>   }
-<a class="jxr_linenumber" name="L757" href="#L757">757</a> 
-<a class="jxr_linenumber" name="L758" href="#L758">758</a> }
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>     state(configuration == <strong class="jxr_keyword">null</strong> || configLocation == <strong class="jxr_keyword">null</strong>,
+<a class="jxr_linenumber" name="L569" href="#L569">569</a>         <span class="jxr_string">"Only one of 'configuration' or 'configLocation' may be specified"</span>);
+<a class="jxr_linenumber" name="L570" href="#L570">570</a> 
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>     <strong class="jxr_keyword">this</strong>.sqlSessionFactory = buildSqlSessionFactory();
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>   }
+<a class="jxr_linenumber" name="L573" href="#L573">573</a> 
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L575" href="#L575">575</a> <em class="jxr_javadoccomment">   * Build a {@code SqlSessionFactory} instance.</em>
+<a class="jxr_linenumber" name="L576" href="#L576">576</a> <em class="jxr_javadoccomment">   * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L577" href="#L577">577</a> <em class="jxr_javadoccomment">   * The default implementation uses the standard MyBatis {@code XMLConfigBuilder} API to build a</em>
+<a class="jxr_linenumber" name="L578" href="#L578">578</a> <em class="jxr_javadoccomment">   * {@code SqlSessionFactory} instance based on a Reader. Since 1.3.0, it can be specified a {@link Configuration}</em>
+<a class="jxr_linenumber" name="L579" href="#L579">579</a> <em class="jxr_javadoccomment">   * instance directly(without config file).</em>
+<a class="jxr_linenumber" name="L580" href="#L580">580</a> <em class="jxr_javadoccomment">   *</em>
+<a class="jxr_linenumber" name="L581" href="#L581">581</a> <em class="jxr_javadoccomment">   * @return SqlSessionFactory</em>
+<a class="jxr_linenumber" name="L582" href="#L582">582</a> <em class="jxr_javadoccomment">   *</em>
+<a class="jxr_linenumber" name="L583" href="#L583">583</a> <em class="jxr_javadoccomment">   * @throws Exception</em>
+<a class="jxr_linenumber" name="L584" href="#L584">584</a> <em class="jxr_javadoccomment">   *           if configuration is failed</em>
+<a class="jxr_linenumber" name="L585" href="#L585">585</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>   <strong class="jxr_keyword">protected</strong> SqlSessionFactory buildSqlSessionFactory() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L587" href="#L587">587</a> 
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>     <strong class="jxr_keyword">final</strong> Configuration targetConfiguration;
+<a class="jxr_linenumber" name="L589" href="#L589">589</a> 
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>     XMLConfigBuilder xmlConfigBuilder = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configuration != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>       targetConfiguration = <strong class="jxr_keyword">this</strong>.configuration;
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>       <strong class="jxr_keyword">if</strong> (targetConfiguration.getVariables() == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L594" href="#L594">594</a>         targetConfiguration.setVariables(<strong class="jxr_keyword">this</strong>.configurationProperties);
+<a class="jxr_linenumber" name="L595" href="#L595">595</a>       } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configurationProperties != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>         targetConfiguration.getVariables().putAll(<strong class="jxr_keyword">this</strong>.configurationProperties);
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>       }
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>     } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.configLocation != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L599" href="#L599">599</a>       xmlConfigBuilder = <strong class="jxr_keyword">new</strong> XMLConfigBuilder(<strong class="jxr_keyword">this</strong>.configLocation.getInputStream(), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">this</strong>.configurationProperties);
+<a class="jxr_linenumber" name="L600" href="#L600">600</a>       targetConfiguration = xmlConfigBuilder.getConfiguration();
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>     } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L602" href="#L602">602</a>       LOGGER.debug(
+<a class="jxr_linenumber" name="L603" href="#L603">603</a>           () -&gt; <span class="jxr_string">"Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration"</span>);
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>       targetConfiguration = <strong class="jxr_keyword">new</strong> Configuration();
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>       Optional.ofNullable(<strong class="jxr_keyword">this</strong>.configurationProperties).ifPresent(targetConfiguration::setVariables);
+<a class="jxr_linenumber" name="L606" href="#L606">606</a>     }
+<a class="jxr_linenumber" name="L607" href="#L607">607</a> 
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.objectFactory).ifPresent(targetConfiguration::setObjectFactory);
+<a class="jxr_linenumber" name="L609" href="#L609">609</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.objectWrapperFactory).ifPresent(targetConfiguration::setObjectWrapperFactory);
+<a class="jxr_linenumber" name="L610" href="#L610">610</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.vfs).ifPresent(targetConfiguration::setVfsImpl);
+<a class="jxr_linenumber" name="L611" href="#L611">611</a> 
+<a class="jxr_linenumber" name="L612" href="#L612">612</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeAliasesPackage)) {
+<a class="jxr_linenumber" name="L613" href="#L613">613</a>       scanClasses(<strong class="jxr_keyword">this</strong>.typeAliasesPackage, <strong class="jxr_keyword">this</strong>.typeAliasesSuperType).stream()
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>           .filter(clazz -&gt; !clazz.isAnonymousClass()).filter(clazz -&gt; !clazz.isInterface())
+<a class="jxr_linenumber" name="L615" href="#L615">615</a>           .filter(clazz -&gt; !clazz.isMemberClass()).forEach(targetConfiguration.getTypeAliasRegistry()::registerAlias);
+<a class="jxr_linenumber" name="L616" href="#L616">616</a>     }
+<a class="jxr_linenumber" name="L617" href="#L617">617</a> 
+<a class="jxr_linenumber" name="L618" href="#L618">618</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeAliases)) {
+<a class="jxr_linenumber" name="L619" href="#L619">619</a>       Stream.of(<strong class="jxr_keyword">this</strong>.typeAliases).forEach(typeAlias -&gt; {
+<a class="jxr_linenumber" name="L620" href="#L620">620</a>         targetConfiguration.getTypeAliasRegistry().registerAlias(typeAlias);
+<a class="jxr_linenumber" name="L621" href="#L621">621</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered type alias: '"</span> + typeAlias + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L622" href="#L622">622</a>       });
+<a class="jxr_linenumber" name="L623" href="#L623">623</a>     }
+<a class="jxr_linenumber" name="L624" href="#L624">624</a> 
+<a class="jxr_linenumber" name="L625" href="#L625">625</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.plugins)) {
+<a class="jxr_linenumber" name="L626" href="#L626">626</a>       Stream.of(<strong class="jxr_keyword">this</strong>.plugins).forEach(plugin -&gt; {
+<a class="jxr_linenumber" name="L627" href="#L627">627</a>         targetConfiguration.addInterceptor(plugin);
+<a class="jxr_linenumber" name="L628" href="#L628">628</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered plugin: '"</span> + plugin + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L629" href="#L629">629</a>       });
+<a class="jxr_linenumber" name="L630" href="#L630">630</a>     }
+<a class="jxr_linenumber" name="L631" href="#L631">631</a> 
+<a class="jxr_linenumber" name="L632" href="#L632">632</a>     <strong class="jxr_keyword">if</strong> (hasLength(<strong class="jxr_keyword">this</strong>.typeHandlersPackage)) {
+<a class="jxr_linenumber" name="L633" href="#L633">633</a>       scanClasses(<strong class="jxr_keyword">this</strong>.typeHandlersPackage, TypeHandler.<strong class="jxr_keyword">class</strong>).stream().filter(clazz -&gt; !clazz.isAnonymousClass())
+<a class="jxr_linenumber" name="L634" href="#L634">634</a>           .filter(clazz -&gt; !clazz.isInterface()).filter(clazz -&gt; !Modifier.isAbstract(clazz.getModifiers()))
+<a class="jxr_linenumber" name="L635" href="#L635">635</a>           .forEach(targetConfiguration.getTypeHandlerRegistry()::register);
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>     }
+<a class="jxr_linenumber" name="L637" href="#L637">637</a> 
+<a class="jxr_linenumber" name="L638" href="#L638">638</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.typeHandlers)) {
+<a class="jxr_linenumber" name="L639" href="#L639">639</a>       Stream.of(<strong class="jxr_keyword">this</strong>.typeHandlers).forEach(typeHandler -&gt; {
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>         targetConfiguration.getTypeHandlerRegistry().register(typeHandler);
+<a class="jxr_linenumber" name="L641" href="#L641">641</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered type handler: '"</span> + typeHandler + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>       });
+<a class="jxr_linenumber" name="L643" href="#L643">643</a>     }
+<a class="jxr_linenumber" name="L644" href="#L644">644</a> 
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>     targetConfiguration.setDefaultEnumTypeHandler(defaultEnumTypeHandler);
+<a class="jxr_linenumber" name="L646" href="#L646">646</a> 
+<a class="jxr_linenumber" name="L647" href="#L647">647</a>     <strong class="jxr_keyword">if</strong> (!isEmpty(<strong class="jxr_keyword">this</strong>.scriptingLanguageDrivers)) {
+<a class="jxr_linenumber" name="L648" href="#L648">648</a>       Stream.of(<strong class="jxr_keyword">this</strong>.scriptingLanguageDrivers).forEach(languageDriver -&gt; {
+<a class="jxr_linenumber" name="L649" href="#L649">649</a>         targetConfiguration.getLanguageRegistry().register(languageDriver);
+<a class="jxr_linenumber" name="L650" href="#L650">650</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Registered scripting language driver: '"</span> + languageDriver + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L651" href="#L651">651</a>       });
+<a class="jxr_linenumber" name="L652" href="#L652">652</a>     }
+<a class="jxr_linenumber" name="L653" href="#L653">653</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.defaultScriptingLanguageDriver)
+<a class="jxr_linenumber" name="L654" href="#L654">654</a>         .ifPresent(targetConfiguration::setDefaultScriptingLanguage);
+<a class="jxr_linenumber" name="L655" href="#L655">655</a> 
+<a class="jxr_linenumber" name="L656" href="#L656">656</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.databaseIdProvider != <strong class="jxr_keyword">null</strong>) {<em class="jxr_comment">// fix #64 set databaseId before parse mapper xmls</em>
+<a class="jxr_linenumber" name="L657" href="#L657">657</a>       <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L658" href="#L658">658</a>         targetConfiguration.setDatabaseId(<strong class="jxr_keyword">this</strong>.databaseIdProvider.getDatabaseId(<strong class="jxr_keyword">this</strong>.dataSource));
+<a class="jxr_linenumber" name="L659" href="#L659">659</a>       } <strong class="jxr_keyword">catch</strong> (SQLException e) {
+<a class="jxr_linenumber" name="L660" href="#L660">660</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed getting a databaseId"</span>, e);
+<a class="jxr_linenumber" name="L661" href="#L661">661</a>       }
+<a class="jxr_linenumber" name="L662" href="#L662">662</a>     }
+<a class="jxr_linenumber" name="L663" href="#L663">663</a> 
+<a class="jxr_linenumber" name="L664" href="#L664">664</a>     Optional.ofNullable(<strong class="jxr_keyword">this</strong>.cache).ifPresent(targetConfiguration::addCache);
+<a class="jxr_linenumber" name="L665" href="#L665">665</a> 
+<a class="jxr_linenumber" name="L666" href="#L666">666</a>     <strong class="jxr_keyword">if</strong> (xmlConfigBuilder != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L667" href="#L667">667</a>       <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L668" href="#L668">668</a>         xmlConfigBuilder.parse();
+<a class="jxr_linenumber" name="L669" href="#L669">669</a>         LOGGER.debug(() -&gt; <span class="jxr_string">"Parsed configuration file: '"</span> + <strong class="jxr_keyword">this</strong>.configLocation + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>       } <strong class="jxr_keyword">catch</strong> (Exception ex) {
+<a class="jxr_linenumber" name="L671" href="#L671">671</a>         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed to parse config resource: "</span> + <strong class="jxr_keyword">this</strong>.configLocation, ex);
+<a class="jxr_linenumber" name="L672" href="#L672">672</a>       } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>         ErrorContext.instance().reset();
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>       }
+<a class="jxr_linenumber" name="L675" href="#L675">675</a>     }
+<a class="jxr_linenumber" name="L676" href="#L676">676</a> 
+<a class="jxr_linenumber" name="L677" href="#L677">677</a>     targetConfiguration.setEnvironment(<strong class="jxr_keyword">new</strong> Environment(<strong class="jxr_keyword">this</strong>.environment,
+<a class="jxr_linenumber" name="L678" href="#L678">678</a>         <strong class="jxr_keyword">this</strong>.transactionFactory == <strong class="jxr_keyword">null</strong> ? <strong class="jxr_keyword">new</strong> <a name="SpringManagedTransactionFactory" href="../../../org/mybatis/spring/transaction/SpringManagedTransactionFactory.html#SpringManagedTransactionFactory">SpringManagedTransactionFactory</a>() : <strong class="jxr_keyword">this</strong>.transactionFactory,
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>         <strong class="jxr_keyword">this</strong>.dataSource));
+<a class="jxr_linenumber" name="L680" href="#L680">680</a> 
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mapperLocations != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L682" href="#L682">682</a>       <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.mapperLocations.length == 0) {
+<a class="jxr_linenumber" name="L683" href="#L683">683</a>         LOGGER.warn(() -&gt; <span class="jxr_string">"Property 'mapperLocations' was specified but matching resources are not found."</span>);
+<a class="jxr_linenumber" name="L684" href="#L684">684</a>       } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L685" href="#L685">685</a>         <strong class="jxr_keyword">for</strong> (Resource mapperLocation : <strong class="jxr_keyword">this</strong>.mapperLocations) {
+<a class="jxr_linenumber" name="L686" href="#L686">686</a>           <strong class="jxr_keyword">if</strong> (mapperLocation == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L687" href="#L687">687</a>             <strong class="jxr_keyword">continue</strong>;
+<a class="jxr_linenumber" name="L688" href="#L688">688</a>           }
+<a class="jxr_linenumber" name="L689" href="#L689">689</a>           <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L690" href="#L690">690</a>             <strong class="jxr_keyword">var</strong> xmlMapperBuilder = <strong class="jxr_keyword">new</strong> XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,
+<a class="jxr_linenumber" name="L691" href="#L691">691</a>                 mapperLocation.toString(), targetConfiguration.getSqlFragments());
+<a class="jxr_linenumber" name="L692" href="#L692">692</a>             xmlMapperBuilder.parse();
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>           } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L694" href="#L694">694</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(<span class="jxr_string">"Failed to parse mapping resource: '"</span> + mapperLocation + <span class="jxr_string">"'"</span>, e);
+<a class="jxr_linenumber" name="L695" href="#L695">695</a>           } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="L696" href="#L696">696</a>             ErrorContext.instance().reset();
+<a class="jxr_linenumber" name="L697" href="#L697">697</a>           }
+<a class="jxr_linenumber" name="L698" href="#L698">698</a>           LOGGER.debug(() -&gt; <span class="jxr_string">"Parsed mapper file: '"</span> + mapperLocation + <span class="jxr_string">"'"</span>);
+<a class="jxr_linenumber" name="L699" href="#L699">699</a>         }
+<a class="jxr_linenumber" name="L700" href="#L700">700</a>       }
+<a class="jxr_linenumber" name="L701" href="#L701">701</a>     } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L702" href="#L702">702</a>       LOGGER.debug(() -&gt; <span class="jxr_string">"Property 'mapperLocations' was not specified."</span>);
+<a class="jxr_linenumber" name="L703" href="#L703">703</a>     }
+<a class="jxr_linenumber" name="L704" href="#L704">704</a> 
+<a class="jxr_linenumber" name="L705" href="#L705">705</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactoryBuilder.build(targetConfiguration);
+<a class="jxr_linenumber" name="L706" href="#L706">706</a>   }
+<a class="jxr_linenumber" name="L707" href="#L707">707</a> 
+<a class="jxr_linenumber" name="L708" href="#L708">708</a>   @Override
+<a class="jxr_linenumber" name="L709" href="#L709">709</a>   <strong class="jxr_keyword">public</strong> SqlSessionFactory getObject() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L710" href="#L710">710</a>     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.sqlSessionFactory == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L711" href="#L711">711</a>       afterPropertiesSet();
+<a class="jxr_linenumber" name="L712" href="#L712">712</a>     }
+<a class="jxr_linenumber" name="L713" href="#L713">713</a> 
+<a class="jxr_linenumber" name="L714" href="#L714">714</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactory;
+<a class="jxr_linenumber" name="L715" href="#L715">715</a>   }
+<a class="jxr_linenumber" name="L716" href="#L716">716</a> 
+<a class="jxr_linenumber" name="L717" href="#L717">717</a>   @Override
+<a class="jxr_linenumber" name="L718" href="#L718">718</a>   <strong class="jxr_keyword">public</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> SqlSessionFactory&gt; getObjectType() {
+<a class="jxr_linenumber" name="L719" href="#L719">719</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.sqlSessionFactory == <strong class="jxr_keyword">null</strong> ? SqlSessionFactory.<strong class="jxr_keyword">class</strong> : <strong class="jxr_keyword">this</strong>.sqlSessionFactory.getClass();
+<a class="jxr_linenumber" name="L720" href="#L720">720</a>   }
+<a class="jxr_linenumber" name="L721" href="#L721">721</a> 
+<a class="jxr_linenumber" name="L722" href="#L722">722</a>   @Override
+<a class="jxr_linenumber" name="L723" href="#L723">723</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isSingleton() {
+<a class="jxr_linenumber" name="L724" href="#L724">724</a>     <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L725" href="#L725">725</a>   }
+<a class="jxr_linenumber" name="L726" href="#L726">726</a> 
+<a class="jxr_linenumber" name="L727" href="#L727">727</a>   @Override
+<a class="jxr_linenumber" name="L728" href="#L728">728</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onApplicationEvent(ContextRefreshedEvent event) {
+<a class="jxr_linenumber" name="L729" href="#L729">729</a>     <strong class="jxr_keyword">if</strong> (failFast) {
+<a class="jxr_linenumber" name="L730" href="#L730">730</a>       <em class="jxr_comment">// fail-fast -&gt; check all statements are completed</em>
+<a class="jxr_linenumber" name="L731" href="#L731">731</a>       <strong class="jxr_keyword">this</strong>.sqlSessionFactory.getConfiguration().getMappedStatementNames();
+<a class="jxr_linenumber" name="L732" href="#L732">732</a>     }
+<a class="jxr_linenumber" name="L733" href="#L733">733</a>   }
+<a class="jxr_linenumber" name="L734" href="#L734">734</a> 
+<a class="jxr_linenumber" name="L735" href="#L735">735</a>   <strong class="jxr_keyword">private</strong> Set&lt;Class&lt;?&gt;&gt; scanClasses(String packagePatterns, Class&lt;?&gt; assignableType) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L736" href="#L736">736</a>     Set&lt;Class&lt;?&gt;&gt; classes = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
+<a class="jxr_linenumber" name="L737" href="#L737">737</a>     <strong class="jxr_keyword">var</strong> packagePatternArray = tokenizeToStringArray(packagePatterns,
+<a class="jxr_linenumber" name="L738" href="#L738">738</a>         ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+<a class="jxr_linenumber" name="L739" href="#L739">739</a>     <strong class="jxr_keyword">for</strong> (String packagePattern : packagePatternArray) {
+<a class="jxr_linenumber" name="L740" href="#L740">740</a>       <strong class="jxr_keyword">var</strong> resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+<a class="jxr_linenumber" name="L741" href="#L741">741</a>           + ClassUtils.convertClassNameToResourcePath(packagePattern) + <span class="jxr_string">"/**/*.class"</span>);
+<a class="jxr_linenumber" name="L742" href="#L742">742</a>       <strong class="jxr_keyword">for</strong> (Resource resource : resources) {
+<a class="jxr_linenumber" name="L743" href="#L743">743</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L744" href="#L744">744</a>           <strong class="jxr_keyword">var</strong> classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
+<a class="jxr_linenumber" name="L745" href="#L745">745</a>           Class&lt;?&gt; clazz = Resources.classForName(classMetadata.getClassName());
+<a class="jxr_linenumber" name="L746" href="#L746">746</a>           <strong class="jxr_keyword">if</strong> (assignableType == <strong class="jxr_keyword">null</strong> || assignableType.isAssignableFrom(clazz)) {
+<a class="jxr_linenumber" name="L747" href="#L747">747</a>             classes.add(clazz);
+<a class="jxr_linenumber" name="L748" href="#L748">748</a>           }
+<a class="jxr_linenumber" name="L749" href="#L749">749</a>         } <strong class="jxr_keyword">catch</strong> (Throwable e) {
+<a class="jxr_linenumber" name="L750" href="#L750">750</a>           LOGGER.warn(() -&gt; <span class="jxr_string">"Cannot load the '"</span> + resource + <span class="jxr_string">"'. Cause by "</span> + e.toString());
+<a class="jxr_linenumber" name="L751" href="#L751">751</a>         }
+<a class="jxr_linenumber" name="L752" href="#L752">752</a>       }
+<a class="jxr_linenumber" name="L753" href="#L753">753</a>     }
+<a class="jxr_linenumber" name="L754" href="#L754">754</a>     <strong class="jxr_keyword">return</strong> classes;
+<a class="jxr_linenumber" name="L755" href="#L755">755</a>   }
+<a class="jxr_linenumber" name="L756" href="#L756">756</a> 
+<a class="jxr_linenumber" name="L757" href="#L757">757</a> }
 </pre>
 <hr/>
-<div id="footer">© 2010–2025 <a href="https://www.mybatis.org/">MyBatis.org</a></div>
+<div id="footer">© 2010–2026 <a href="https://www.mybatis.org/">MyBatis.org</a></div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyBatisExceptionTranslator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mybatis-spring</a> &gt; <a href="index.source.html" class="el_package">org.mybatis.spring</a> &gt; <span class="el_source">MyBatisExceptionTranslator.java</span></div><h1>MyBatisExceptionTranslator.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2010-2024 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ import org.springframework.transaction.TransactionException;
 public class MyBatisExceptionTranslator implements PersistenceExceptionTranslator {
 
   private final Supplier&lt;SQLExceptionTranslator&gt; exceptionTranslatorSupplier;
-  private SQLExceptionTranslator exceptionTranslator;
-<span class="fc" id="L45">  private ReentrantLock lock = new ReentrantLock();</span>
+  private volatile SQLExceptionTranslator exceptionTranslator;
+<span class="fc" id="L45">  private final ReentrantLock lock = new ReentrantLock();</span>
 
   /**
    * Creates a new {@code PersistenceExceptionTranslator} instance with {@code SQLErrorCodeSQLExceptionTranslator}.
@@ -104,18 +104,22 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   }
 
   /**
-   * Initializes the internal translator reference.
+   * Initializes the internal translator reference. Uses double-checked locking so that, once the translator is created,
+   * subsequent calls take a fast path without acquiring the lock.
    */
   private void initExceptionTranslator() {
-<span class="fc" id="L110">    lock.lock();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    if (this.exceptionTranslator != null) {</span>
+<span class="fc" id="L112">      return;</span>
+    }
+<span class="fc" id="L114">    lock.lock();</span>
     try {
-<span class="fc bfc" id="L112" title="All 2 branches covered.">      if (this.exceptionTranslator == null) {</span>
-<span class="fc" id="L113">        this.exceptionTranslator = exceptionTranslatorSupplier.get();</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">      if (this.exceptionTranslator == null) {</span>
+<span class="fc" id="L117">        this.exceptionTranslator = exceptionTranslatorSupplier.get();</span>
       }
     } finally {
-<span class="fc" id="L116">      lock.unlock();</span>
+<span class="fc" id="L120">      lock.unlock();</span>
     }
-<span class="fc" id="L118">  }</span>
+<span class="fc" id="L122">  }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
