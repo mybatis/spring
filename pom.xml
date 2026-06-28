@@ -121,7 +121,7 @@
     <spring-batch.version>6.0.4</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
-    <junit.version>6.1.0</junit.version>
+    <junit.version>6.1.1</junit.version>
 
     <!-- Reproducible Builds -->
     <project.build.outputTimestamp>1782599883</project.build.outputTimestamp>
