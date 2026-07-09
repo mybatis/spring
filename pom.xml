@@ -112,7 +112,7 @@
     <java.test.version>17</java.test.version>
     <java.test.release.version>17</java.test.release.version>
 
-    <byte-buddy.version>1.18.11</byte-buddy.version>
+    <byte-buddy.version>1.18.11-jdk5</byte-buddy.version>
     <commons-logging.version>1.4.0</commons-logging.version>
     <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.19</mybatis.version>
