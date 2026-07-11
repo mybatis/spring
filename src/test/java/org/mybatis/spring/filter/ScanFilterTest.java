@@ -31,7 +31,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * test the function of excludeFilters in @MapperScan
  */
-public class ScanFilterTest {
+class ScanFilterTest {
 
   private AnnotationConfigApplicationContext applicationContext;
 

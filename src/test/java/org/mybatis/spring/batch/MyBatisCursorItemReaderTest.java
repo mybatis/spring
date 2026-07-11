@@ -18,25 +18,26 @@ package org.mybatis.spring.batch;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 
 /**
  * Tests for {@link MyBatisCursorItemReader}.
  */
+@ExtendWith(MockitoExtension.class)
 class MyBatisCursorItemReaderTest {
 
   @Mock
@@ -48,23 +49,16 @@ class MyBatisCursorItemReaderTest {
   @Mock
   private Cursor<Object> cursor;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
-
   @Test
   void testCloseOnFailing() throws Exception {
 
     Mockito.when(this.sqlSessionFactory.openSession(ExecutorType.SIMPLE)).thenReturn(this.sqlSession);
-    Mockito.when(this.cursor.iterator()).thenReturn(getFoos().iterator());
-    Mockito.when(this.sqlSession.selectCursor("selectFoo", Collections.singletonMap("id", 1)))
-        .thenThrow(new RuntimeException("error."));
+    Mockito.when(this.sqlSession.selectCursor("selectFoo", Map.of("id", 1))).thenThrow(new RuntimeException("error."));
 
     var itemReader = new MyBatisCursorItemReader<Foo>();
     itemReader.setSqlSessionFactory(this.sqlSessionFactory);
     itemReader.setQueryId("selectFoo");
-    itemReader.setParameterValues(Collections.singletonMap("id", 1));
+    itemReader.setParameterValues(Map.of("id", 1));
     itemReader.afterPropertiesSet();
 
     var executionContext = new ExecutionContext();

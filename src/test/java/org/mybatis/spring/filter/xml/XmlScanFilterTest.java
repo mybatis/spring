@@ -24,9 +24,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * test the function of excludeFilters in <mybatis:scan/>
+ * test the function of excludeFilters in <code><mybatis:scan/></code>.
  */
-public class XmlScanFilterTest {
+class XmlScanFilterTest {
 
   private ClassPathXmlApplicationContext applicationContext;
 
