@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
 }
 ```
 
-Use this option <strong>with care</strong> because wrong usage may produce runtime errors or worse, data integrity problems. Be aware of the following caveats with direct API usage:
+Use this option **with care** because wrong usage may produce runtime errors or worse, data integrity problems. Be aware of the following caveats with direct API usage:
 
 * It will **not** participate in any Spring transactions.
 * If the `SqlSession` is using a `DataSource` that is also being used by a Spring transaction manager and there is currently a transaction in progress, this code **will** throw an exception.
