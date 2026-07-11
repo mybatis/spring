@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>51</version>
+    <version>52</version>
     <relativePath />
   </parent>
 
@@ -112,17 +112,18 @@
     <java.test.version>17</java.test.version>
     <java.test.release.version>17</java.test.release.version>
 
+    <byte-buddy.version>1.18.11</byte-buddy.version>
     <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.19</mybatis.version>
-    <spring.version>6.2.14</spring.version>
-    <spring-boot.version>3.5.8</spring-boot.version>
-    <spring-batch.version>5.2.4</spring-batch.version>
+    <spring.version>6.2.19</spring.version>
+    <spring-boot.version>3.5.16</spring-boot.version>
+    <spring-batch.version>5.2.6</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
-    <junit.version>6.0.1</junit.version>
+    <junit.version>6.1.1</junit.version>
 
     <!-- Reproducible Builds -->
-    <project.build.outputTimestamp>1749492577</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1782599883</project.build.outputTimestamp>
 
     <!-- Set byte buddy to experimental -->
     <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
@@ -160,7 +161,7 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
-      <version>1.9.25</version>
+      <version>1.9.25.1</version>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
@@ -170,7 +171,7 @@
     <dependency>
       <groupId>com.atomikos</groupId>
       <artifactId>transactions-jdbc</artifactId>
-      <version>6.0.0</version>
+      <version>6.0.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -191,7 +192,7 @@
     <dependency>
       <groupId>org.jboss.byteman</groupId>
       <artifactId>byteman-bmunit</artifactId>
-      <version>4.0.26</version>
+      <version>4.0.27</version>
       <scope>test</scope>
     </dependency>
 
@@ -246,21 +247,21 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.17</version>
+      <version>2.0.18</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>5.20.0</version>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.23.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.27.6</version>
+      <version>3.27.7</version>
       <scope>test</scope>
     </dependency>
 
@@ -333,13 +334,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.18.2</version>
+      <version>${byte-buddy.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.2</version>
+      <version>${byte-buddy.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -466,24 +467,4 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>17</id>
-      <activation>
-        <jdk>[17,)</jdk>
-      </activation>
-      <properties>
-        <derby.version>10.16.1.1</derby.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>19</id>
-      <activation>
-        <jdk>[19,)</jdk>
-      </activation>
-      <properties>
-        <derby.version>10.17.1.0</derby.version>
-      </properties>
-    </profile>
-  </profiles>
 </project>
