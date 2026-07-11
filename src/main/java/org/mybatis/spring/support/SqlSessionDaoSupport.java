@@ -27,7 +27,6 @@ import org.springframework.dao.support.DaoSupport;
  * be used to execute SQL methods.
  * <p>
  * This class needs a SqlSessionTemplate or a SqlSessionFactory. If both are set the SqlSessionFactory will be ignored.
- * <p>
  *
  * @author Putthiphong Boonphong
  * @author Eduardo Macarron

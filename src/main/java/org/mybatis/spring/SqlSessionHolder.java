@@ -59,14 +59,29 @@ public final class SqlSessionHolder extends ResourceHolderSupport {
     this.exceptionTranslator = exceptionTranslator;
   }
 
+  /**
+   * Gets the sql session.
+   *
+   * @return the sql session
+   */
   public SqlSession getSqlSession() {
     return sqlSession;
   }
 
+  /**
+   * Gets the executor type.
+   *
+   * @return the executor type
+   */
   public ExecutorType getExecutorType() {
     return executorType;
   }
 
+  /**
+   * Gets the persistence exception translator.
+   *
+   * @return the persistence exception translator
+   */
   public PersistenceExceptionTranslator getPersistenceExceptionTranslator() {
     return exceptionTranslator;
   }

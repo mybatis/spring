@@ -26,30 +26,69 @@ import org.apache.ibatis.logging.Log;
  */
 public class Logger {
 
+  /** The log. */
   private final Log log;
 
+  /**
+   * Instantiates a new logger.
+   *
+   * @param log
+   *          the log
+   */
   Logger(Log log) {
     this.log = log;
   }
 
+  /**
+   * Error.
+   *
+   * @param s
+   *          the s
+   * @param e
+   *          the e
+   */
   public void error(Supplier<String> s, Throwable e) {
     log.error(s.get(), e);
   }
 
+  /**
+   * Error.
+   *
+   * @param s
+   *          the s
+   */
   public void error(Supplier<String> s) {
     log.error(s.get());
   }
 
+  /**
+   * Warn.
+   *
+   * @param s
+   *          the s
+   */
   public void warn(Supplier<String> s) {
     log.warn(s.get());
   }
 
+  /**
+   * Debug.
+   *
+   * @param s
+   *          the s
+   */
   public void debug(Supplier<String> s) {
     if (log.isDebugEnabled()) {
       log.debug(s.get());
     }
   }
 
+  /**
+   * Trace.
+   *
+   * @param s
+   *          the s
+   */
   public void trace(Supplier<String> s) {
     if (log.isTraceEnabled()) {
       log.trace(s.get());

@@ -40,7 +40,6 @@ import org.springframework.core.annotation.AliasFor;
  * the class that declares this annotation.
  * <p>
  * Configuration example:
- * </p>
  *
  * <pre class="code">
  * &#064;Configuration
@@ -168,7 +167,6 @@ public @interface MapperScan {
    * Whether enable lazy initialization of mapper bean.
    * <p>
    * Default is {@code false}.
-   * </p>
    *
    * @return set {@code true} to enable lazy initialization
    *
@@ -180,7 +178,6 @@ public @interface MapperScan {
    * Specifies the default scope of scanned mappers.
    * <p>
    * Default is {@code ""} (equiv to singleton).
-   * </p>
    *
    * @return the default scope
    */

@@ -48,6 +48,9 @@ import org.springframework.beans.factory.FactoryBean;
  *
  * @author Eduardo Macarron
  *
+ * @param <T>
+ *          the generic type
+ *
  * @see SqlSessionTemplate
  */
 public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements FactoryBean<T> {
@@ -56,10 +59,19 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
 
   private boolean addToConfig = true;
 
+  /**
+   * Instantiates a new mapper factory bean.
+   */
   public MapperFactoryBean() {
     // intentionally empty
   }
 
+  /**
+   * Instantiates a new mapper factory bean.
+   *
+   * @param mapperInterface
+   *          the mapper interface
+   */
   public MapperFactoryBean(Class<T> mapperInterface) {
     this.mapperInterface = mapperInterface;
   }

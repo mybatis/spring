@@ -132,14 +132,29 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
         new Class[] { SqlSession.class }, new SqlSessionInterceptor());
   }
 
+  /**
+   * Gets the sql session factory.
+   *
+   * @return the sql session factory
+   */
   public SqlSessionFactory getSqlSessionFactory() {
     return this.sqlSessionFactory;
   }
 
+  /**
+   * Gets the executor type.
+   *
+   * @return the executor type
+   */
   public ExecutorType getExecutorType() {
     return this.executorType;
   }
 
+  /**
+   * Gets the persistence exception translator.
+   *
+   * @return the persistence exception translator
+   */
   public PersistenceExceptionTranslator getPersistenceExceptionTranslator() {
     return this.exceptionTranslator;
   }

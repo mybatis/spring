@@ -47,6 +47,9 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
  *
  * @author Eduardo Macarron
  *
+ * @param <T>
+ *          the generic type
+ *
  * @since 1.1.0
  */
 public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBean {

@@ -27,6 +27,9 @@ import org.springframework.core.convert.converter.Converter;
  *
  * @author Kazuki Shimizu
  *
+ * @param <T>
+ *          the generic type
+ *
  * @since 2.0.0
  *
  * @see MyBatisBatchItemWriter

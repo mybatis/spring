@@ -53,6 +53,12 @@ public class SpringManagedTransaction implements Transaction {
 
   private boolean autoCommit;
 
+  /**
+   * Instantiates a new spring managed transaction.
+   *
+   * @param dataSource
+   *          the data source
+   */
   public SpringManagedTransaction(DataSource dataSource) {
     notNull(dataSource, "No DataSource specified");
     this.dataSource = dataSource;
