@@ -21,9 +21,9 @@ En este caso, Spring creará un bean `SqlSessionFactory` durante el arranque de 
 @Configuration
 public class MyBatisConfig {
   @Bean
-  public SqlSessionFactory sqlSessionFactory() {
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-    factoryBean.setDataSource(dataSource());
+    factoryBean.setDataSource(dataSource);
     return factoryBean.getObject();
   }
 }
@@ -58,6 +58,18 @@ El valor puede contener un patron tipo Ant para cargar todos los ficheros de un 
 </bean>
 ```
 
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+  return factoryBean.getObject();
+}
+```
+
 Esto cargaría todos los ficheros de mapeo XML en el paquete sample.config.mappers y sus subpaquetes.
 
 Otra propiedad que puede ser necesaria en un entorno con transacciones gestionadas por contenedor es la `transactionFactoryClass`. Lee la sección de transacciones para obtener más detalles.
@@ -84,6 +96,30 @@ En caso de usar la característica multi-db necesitarás informar la propiedad `
 </bean>
 ```
 
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public VendorDatabaseIdProvider databaseIdProvider() {
+  VendorDatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
+  Properties properties = new Properties();
+  properties.setProperty("SQL Server", "sqlserver");
+  properties.setProperty("DB2", "db2");
+  properties.setProperty("Oracle", "oracle");
+  properties.setProperty("MySQL", "mysql");
+  databaseIdProvider.setProperties(properties);
+  return databaseIdProvider;
+}
+
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource, DatabaseIdProvider databaseIdProvider) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setDatabaseIdProvider(databaseIdProvider);
+  return factoryBean.getObject();
+}
+```
+
 <span class="label important">NOTE</span>
 Since 1.3.0, `configuration` property has been added. It can be specified a `Configuration` instance directly without MyBatis XML configuration file.
 For example:
@@ -98,3 +134,48 @@ For example:
   </property>
 </bean>
 ```
+
+In Java, the equivalent code would be:
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+
+  org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+  configuration.setMapUnderscoreToCamelCase(true);
+  factoryBean.setConfiguration(configuration);
+
+  return factoryBean.getObject();
+}
+```
+
+## Java Configuration Example
+
+Here is a complete example of a configuration class that combines the properties described above.
+
+```java
+@Configuration
+public class MyBatisConfig {
+
+  @Bean
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource);
+
+    // Setting mapper locations
+    factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+
+    // Setting configuration property
+    org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+    configuration.setMapUnderscoreToCamelCase(true);
+    factoryBean.setConfiguration(configuration);
+
+    return factoryBean.getObject();
+  }
+}
+```
+
+<span class="label important">NOTE</span>
+This configuration class must be located within a package scanned by the Spring container (e.g., within the main application package). The class name itself (e.g., `MyBatisConfig`) is arbitrary; only the `@Configuration` annotation is required.

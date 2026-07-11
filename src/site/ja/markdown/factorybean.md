@@ -22,9 +22,9 @@ Spring の XML 設定ファイルに次の Bean を定義することで Factory
 @Configuration
 public class MyBatisConfig {
   @Bean
-  public SqlSessionFactory sqlSessionFactory() {
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-    factoryBean.setDataSource(dataSource());
+    factoryBean.setDataSource(dataSource);
     return factoryBean.getObject();
   }
 }
@@ -57,6 +57,18 @@ Ant スタイルのパターン文字列を使って特定のディレクトリ�
 </bean>
 ```
 
+Javaでは、同等のコードは次のようになります。
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+  return factoryBean.getObject();
+}
+```
+
 このように指定すると、クラスパス内の `sample.config.mappers` パッケージと、そのサブパッケージに含まれる全ての MyBatis Mapper XML ファイルがロードされます。
 
 Container-Managed トランザクションを利用する環境では、`transactionFactoryClass` プロパティが必須となります。「トランザクション」章の該当する節を参照してください。
@@ -83,6 +95,30 @@ Container-Managed トランザクションを利用する環境では、`transac
 </bean>
 ```
 
+Javaでは、同等のコードは次のようになります。
+
+```java
+@Bean
+public VendorDatabaseIdProvider databaseIdProvider() {
+  VendorDatabaseIdProvider databaseIdProvider = new VendorDatabaseIdProvider();
+  Properties properties = new Properties();
+  properties.setProperty("SQL Server", "sqlserver");
+  properties.setProperty("DB2", "db2");
+  properties.setProperty("Oracle", "oracle");
+  properties.setProperty("MySQL", "mysql");
+  databaseIdProvider.setProperties(properties);
+  return databaseIdProvider;
+}
+
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource, DatabaseIdProvider databaseIdProvider) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+  factoryBean.setDatabaseIdProvider(databaseIdProvider);
+  return factoryBean.getObject();
+}
+```
+
 <span class="label important">NOTE</span>
 1.3.0より、`configuration` プロパティが追加されました。このプロパティには、MyBatisのXML設定ファイルを使わずに`Configuration`インスタンスを直接指定することができます。
 次の例を見てください。
@@ -97,3 +133,48 @@ Container-Managed トランザクションを利用する環境では、`transac
   </property>
 </bean>
 ```
+
+Javaでは、同等のコードは次のようになります。
+
+```java
+@Bean
+public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource);
+
+  org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+  configuration.setMapUnderscoreToCamelCase(true);
+  factoryBean.setConfiguration(configuration);
+
+  return factoryBean.getObject();
+}
+```
+
+## Java Configurationサンプル
+
+上記で説明したプロパティを組み合わせた設定クラスの完全な例は以下の通りです。
+
+```java
+@Configuration
+public class MyBatisConfig {
+
+  @Bean
+  public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource);
+
+    // Setting mapper locations
+    factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:sample/config/mappers/**/*.xml"));
+
+    // Setting configuration property
+    org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+    configuration.setMapUnderscoreToCamelCase(true);
+    factoryBean.setConfiguration(configuration);
+
+    return factoryBean.getObject();
+  }
+}
+```
+
+<span class="label important">NOTE</span>
+この設定クラスは、Springコンテナによってスキャンされるパッケージ内に配置する必要があります（例：メインアプリケーションパッケージ内）。クラス名自体（例： `MyBatisConfig` ）は任意で、必要なのは `@Configuration` アノテーションだけです。
