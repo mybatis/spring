@@ -20,8 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.mockrunner.mock.jdbc.MockDataSource;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,8 +63,10 @@ import org.mybatis.spring.type.DummyTypeAlias;
 import org.mybatis.spring.type.DummyTypeHandler;
 import org.mybatis.spring.type.SuperType;
 import org.mybatis.spring.type.TypeHandlerFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 class SqlSessionFactoryBeanTest {
 
@@ -340,6 +344,41 @@ class SqlSessionFactoryBeanTest {
     factoryBean.setMapperLocations(new Resource[] { null });
 
     assertDefaultConfig(factoryBean.getObject());
+  }
+
+  @Test
+  void testSingleResourcePatternMapperLocationReportsResolutionHint() {
+    setupFactoryBean();
+    var resolver = new PathMatchingResourcePatternResolver();
+    var resource = resolver.getResource("classpath*:org/mybatis/spring/*Mapper.xml");
+    factoryBean.setMapperLocations(resource);
+
+    var exception = assertThrows(IOException.class, factoryBean::getObject);
+
+    assertThat(exception).hasMessageContaining("Failed to open mapping resource")
+        .hasMessageContaining("ResourcePatternResolver.getResources()");
+    assertThat(exception.getCause()).isInstanceOf(IOException.class);
+  }
+
+  @Test
+  void testResourcePatternMapperLocations() throws Exception {
+    setupFactoryBean();
+    var resolver = new PathMatchingResourcePatternResolver();
+    factoryBean.setMapperLocations(resolver.getResources("classpath*:org/mybatis/spring/*Mapper.xml"));
+
+    assertThat(factoryBean.getObject()).isNotNull();
+  }
+
+  @Test
+  void testMalformedMapperLocationReportsParseFailure() {
+    setupFactoryBean();
+    var resource = new ByteArrayResource("not xml".getBytes(StandardCharsets.UTF_8));
+    factoryBean.setMapperLocations(resource);
+
+    var exception = assertThrows(IOException.class, factoryBean::getObject);
+
+    assertThat(exception).hasMessageContaining("Failed to parse mapping resource")
+        .hasMessageNotContaining("Failed to open mapping resource");
   }
 
   @Test
