@@ -22,6 +22,7 @@ import static org.springframework.util.StringUtils.hasLength;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -687,11 +688,21 @@ public class SqlSessionFactoryBean
             continue;
           }
           try {
-            var xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), targetConfiguration,
-                mapperLocation.toString(), targetConfiguration.getSqlFragments());
-            xmlMapperBuilder.parse();
-          } catch (Exception e) {
-            throw new IOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
+            final InputStream inputStream;
+            try {
+              inputStream = mapperLocation.getInputStream();
+            } catch (Exception e) {
+              throw new IOException("Failed to open mapping resource: '" + mapperLocation
+                  + "'. When using a resource pattern, resolve it with ResourcePatternResolver.getResources() before passing the results to setMapperLocations().",
+                  e);
+            }
+            try {
+              var xmlMapperBuilder = new XMLMapperBuilder(inputStream, targetConfiguration, mapperLocation.toString(),
+                  targetConfiguration.getSqlFragments());
+              xmlMapperBuilder.parse();
+            } catch (Exception e) {
+              throw new IOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
+            }
           } finally {
             ErrorContext.instance().reset();
           }
