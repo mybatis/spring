@@ -17,6 +17,7 @@ package org.mybatis.spring;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 
@@ -27,8 +28,10 @@ import java.sql.SQLException;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 
 class MyBatisExceptionTranslatorTest {
 
@@ -50,6 +53,42 @@ class MyBatisExceptionTranslatorTest {
     assertTrue(e instanceof UncategorizedSQLException);
     Mockito.verify(sqlExceptionTranslator, times(1)).translate(SQLException.class.getName() + ": " + msg + "\n", null,
         sqlException);
+  }
+
+  @Test
+  void shouldNestedSqlExceptionPreserveParentMessage() {
+    var msg = "Error querying database. The error may exist in BlogMapper.xml.";
+    var sqlException = new SQLException("Bad SQL", "42000");
+    var translator = new MyBatisExceptionTranslator(SQLStateSQLExceptionTranslator::new, false);
+    var e = translator.translateExceptionIfPossible(
+        new PersistenceException(msg, new PersistenceException("Inner error!", sqlException)));
+    assertTrue(e instanceof BadSqlGrammarException);
+    assertTrue(e.getMessage().startsWith(msg));
+    assertSame(sqlException, e.getCause());
+  }
+
+  @Test
+  void shouldNestedSqlExceptionFallbackPreserveParentMessage() {
+    var msg = "Error querying database. The error may exist in BlogMapper.xml.";
+    var sqlException = new SQLException("Driver error");
+    var translator = new MyBatisExceptionTranslator(SQLStateSQLExceptionTranslator::new, false);
+    var e = translator.translateExceptionIfPossible(
+        new PersistenceException(msg, new PersistenceException("Inner error!", sqlException)));
+    assertTrue(e instanceof UncategorizedSQLException);
+    assertTrue(e.getMessage().startsWith(msg));
+    assertSame(sqlException, e.getCause());
+  }
+
+  @Test
+  void shouldNestedSqlExceptionUseChildMessageWhenParentMessageIsNull() {
+    var msg = "Inner error!";
+    var sqlException = new SQLException("Bad SQL", "42000");
+    var translator = new MyBatisExceptionTranslator(SQLStateSQLExceptionTranslator::new, false);
+    var e = translator
+        .translateExceptionIfPossible(new PersistenceException(null, new PersistenceException(msg, sqlException)));
+    assertTrue(e instanceof BadSqlGrammarException);
+    assertTrue(e.getMessage().startsWith(msg));
+    assertSame(sqlException, e.getCause());
   }
 
   @Test
