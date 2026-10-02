@@ -114,7 +114,6 @@
 
     <byte-buddy.version>1.18.14-jdk5</byte-buddy.version>
     <commons-logging.version>1.4.0</commons-logging.version>
-    <derby.version>10.17.1.0</derby.version>
     <mybatis.version>3.5.19</mybatis.version>
     <spring.version>7.0.9</spring.version>
     <spring-boot.version>4.1.1</spring-boot.version>
@@ -180,13 +179,6 @@
       <groupId>com.atomikos</groupId>
       <artifactId>transactions-jdbc</artifactId>
       <version>6.0.1</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${derby.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -417,10 +409,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <property>
-              <name>derby.stream.error.file</name>
-              <value>${project.build.directory}/derby.log</value>
-            </property>
             <property>
               <name>com.atomikos.icatch.log_base_dir</name>
               <value>${project.build.directory}</value>
