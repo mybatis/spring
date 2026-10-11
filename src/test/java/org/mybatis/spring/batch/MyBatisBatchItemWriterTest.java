@@ -16,6 +16,7 @@
 package org.mybatis.spring.batch;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 import java.time.Clock;
@@ -57,22 +58,26 @@ class MyBatisBatchItemWriterTest {
     Chunk<Employee> employees = Chunk.of(new Employee(), new Employee());
     List<BatchResult> batchResults = List.of();
 
+    this.writer.setStatementId("employeeMapper.update");
     given(mockSqlSessionTemplate.flushStatements()).willReturn(batchResults);
 
-    assertThrows(InvalidDataAccessResourceUsageException.class, () -> writer.write(employees));
+    var exception = assertThrows(InvalidDataAccessResourceUsageException.class, () -> writer.write(employees));
+    assertTrue(exception.getMessage().contains("employeeMapper.update"));
   }
 
   @Test
   void testZeroUpdateCountShouldThrowException() {
     Chunk<Employee> employees = Chunk.of(new Employee(), new Employee());
 
+    this.writer.setStatementId("employeeMapper.update");
     var batchResult = new BatchResult(null, null);
     batchResult.setUpdateCounts(new int[] { 1, 0 });
     List<BatchResult> batchResults = List.of(batchResult);
 
     given(mockSqlSessionTemplate.flushStatements()).willReturn(batchResults);
 
-    assertThrows(EmptyResultDataAccessException.class, () -> writer.write(employees));
+    var exception = assertThrows(EmptyResultDataAccessException.class, () -> writer.write(employees));
+    assertTrue(exception.getMessage().contains("employeeMapper.update"));
   }
 
   @Test
