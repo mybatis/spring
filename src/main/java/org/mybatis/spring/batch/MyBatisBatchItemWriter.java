@@ -147,8 +147,10 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
 
       if (assertUpdates) {
         if (results.size() != 1) {
-          throw new InvalidDataAccessResourceUsageException("Batch execution returned invalid results. "
-              + "Expected 1 but number of BatchResult objects returned was " + results.size());
+          String message = "Batch execution returned invalid results for statement '" + statementId + "'. "
+              + "Expected 1 but number of BatchResult objects returned was " + results.size();
+          LOGGER.warn(() -> message);
+          throw new InvalidDataAccessResourceUsageException(message);
         }
 
         var updateCounts = results.get(0).getUpdateCounts();
@@ -156,8 +158,10 @@ public class MyBatisBatchItemWriter<T> implements ItemWriter<T>, InitializingBea
         for (var i = 0; i < updateCounts.length; i++) {
           var value = updateCounts[i];
           if (value == 0) {
-            throw new EmptyResultDataAccessException("Item " + i + " of " + updateCounts.length
-                + " did not update any rows: [" + items.getItems().get(i) + "]", 1);
+            String message = "Item " + i + " of " + updateCounts.length + " for statement '" + statementId
+                + "' did not update any rows: [" + items.getItems().get(i) + "]";
+            LOGGER.warn(() -> message);
+            throw new EmptyResultDataAccessException(message, 1);
           }
         }
       }
