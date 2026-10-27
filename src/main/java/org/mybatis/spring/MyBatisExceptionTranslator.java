@@ -90,7 +90,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
       }
       if (e.getCause() instanceof SQLException) {
         this.initExceptionTranslator();
-        var task = e.getMessage() + "\n";
+        var task = msg + "\n";
         var se = (SQLException) e.getCause();
         var dae = this.exceptionTranslator.translate(task, null, se);
         return dae != null ? dae : new UncategorizedSQLException(task, null, se);
