@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>52</version>
+    <version>53</version>
     <relativePath />
   </parent>
 
@@ -112,12 +112,12 @@
     <java.test.version>17</java.test.version>
     <java.test.release.version>17</java.test.release.version>
 
-    <byte-buddy.version>1.18.14-jdk5</byte-buddy.version>
+    <byte-buddy.version>1.18.16</byte-buddy.version>
     <commons-logging.version>1.4.0</commons-logging.version>
     <mybatis.version>3.5.19</mybatis.version>
-    <spring.version>7.0.9</spring.version>
-    <spring-boot.version>4.1.1</spring-boot.version>
-    <spring-batch.version>6.0.5</spring-batch.version>
+    <spring.version>7.0.10</spring.version>
+    <spring-boot.version>4.1.2</spring-boot.version>
+    <spring-batch.version>6.0.6</spring-batch.version>
     <module.name>org.mybatis.spring</module.name>
 
     <junit.version>6.1.3</junit.version>
@@ -168,7 +168,7 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
-      <version>1.9.25.1</version>
+      <version>1.9.26</version>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
@@ -192,7 +192,7 @@
     <dependency>
       <groupId>org.jboss.byteman</groupId>
       <artifactId>byteman-bmunit</artifactId>
-      <version>4.0.27</version>
+      <version>4.0.28</version>
       <scope>test</scope>
     </dependency>
 
