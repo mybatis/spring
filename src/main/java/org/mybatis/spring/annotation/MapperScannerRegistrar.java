@@ -217,7 +217,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
           break;
         case CUSTOM:
           Assert.isAssignable(TypeFilter.class, filterClass,
-              "An error occured when processing a @ComponentScan " + "CUSTOM type filter: ");
+              "An error occurred when processing a @ComponentScan " + "CUSTOM type filter: ");
           typeFilters.add(BeanUtils.instantiateClass(filterClass, TypeFilter.class));
           break;
         default:
