@@ -30,6 +30,9 @@ And they could be mapped as the follow in a select statement:
 </select>
 ```
 
+<span class="label important">NOTE</span>
+The example uses offset-based pagination. When `_skiprows` is used as an SQL offset, later pages may become slower because the database may need to scan and discard preceding rows; the exact cost depends on the database and query plan. For large result sets, consider `MyBatisCursorItemReader` when a cursor is appropriate for the job, or implement keyset (seek) pagination in a custom `ItemReader` using a stable, indexed sort key. `MyBatisPagingItemReader` supplies page and offset parameters; it does not implement keyset pagination itself.
+
 Follows below a sample configuration snippet:
 
 ```xml
