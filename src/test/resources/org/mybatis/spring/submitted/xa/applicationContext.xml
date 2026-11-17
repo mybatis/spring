@@ -77,7 +77,7 @@
 	<bean id="master" class="com.atomikos.jdbc.AtomikosDataSourceBean"
 		init-method="init" destroy-method="close">
 		<property name="uniqueResourceName" value="masterDBUniqueName" />
-		<property name="xaDataSourceClassName" value="org.apache.derby.jdbc.EmbeddedXADataSource" />
+		<property name="xaDataSourceClassName" value="org.hsqldb.jdbc.pool.JDBCXADataSource" />
 		<property name="localTransactionMode" value="true"/>
 		<property name="minPoolSize">
 			<value>1</value>
@@ -87,8 +87,8 @@
 		</property>
 		<property name="xaProperties">
 			<props>
-				<prop key="databaseName">memory:masterDB</prop>
-				<prop key="createDatabase">create</prop>
+				<prop key="url">jdbc:hsqldb:mem:masterDB</prop>
+				<prop key="user">SA</prop>
 			</props>
 		</property>
 	</bean>
@@ -96,7 +96,7 @@
 	<bean id="slave" class="com.atomikos.jdbc.AtomikosDataSourceBean"
 		init-method="init" destroy-method="close">
 		<property name="uniqueResourceName" value="slaveDBUniqueName" />
-		<property name="xaDataSourceClassName" value="org.apache.derby.jdbc.EmbeddedXADataSource" />
+		<property name="xaDataSourceClassName" value="org.hsqldb.jdbc.pool.JDBCXADataSource" />
 		<property name="localTransactionMode" value="true"/>
 		<property name="minPoolSize">
 			<value>1</value>
@@ -106,8 +106,8 @@
 		</property>
 		<property name="xaProperties">
 			<props>
-				<prop key="databaseName">memory:slaveDB</prop>
-				<prop key="createDatabase">create</prop>
+				<prop key="url">jdbc:hsqldb:mem:slaveDB</prop>
+				<prop key="user">SA</prop>
 			</props>
 		</property>
 	</bean>
